@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  imports = [../shared.nix];
+
   users.users.evanazevedo = {
     home = "/Users/evanazevedo";
     shell = pkgs.zsh;
@@ -16,10 +18,6 @@
       VISUAL = "nvim";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    git
-  ];
 
   environment.pathsToLink = ["/share/zsh"];
 

@@ -45,6 +45,7 @@
         modules = [
           ./hosts/mac
           ./modules/zsh
+          ./modules/yabai.nix
 
           home-manager.darwinModules.home-manager
           {

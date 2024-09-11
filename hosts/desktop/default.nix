@@ -4,6 +4,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../shared.nix
   ];
 
   # Bootloader.
@@ -118,18 +119,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    cron
-    git
     gnome.gnome-terminal
-    home-manager
-    htop
-    meslo-lgs-nf
-    neovim
-    unzip
     xclip
-    wget
   ];
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
