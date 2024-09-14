@@ -48,9 +48,9 @@
         yabai -m rule --add app='^Sorted$'              space=^6
 
         # Load scripting addition
-        yabai -m signal --add event=dock_did_restart \
-          action="sudo yabai --load-sa"
-        sudo yabai --load-sa
+        # yabai -m signal --add event=dock_did_restart \
+        #   action="sudo yabai --load-sa"
+        # sudo yabai --load-sa
       '';
     };
   };
