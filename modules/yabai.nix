@@ -7,7 +7,7 @@
 
   services.yabai = {
     enable = true;
-    enableScriptingAddition = true;
+    # enableScriptingAddition = true;
 
     config = {
       layout = "bsp";
