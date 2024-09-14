@@ -21,7 +21,10 @@
   programs.git = {
     enable = true;
     userName = "Evan Azevedo";
-    userEmail = "evanazevdo.com";
+    userEmail = "me@evanazevdo.com";
+    extraConfig = {
+      init.defaultBranch = "main";
+    };
   };
 
   programs.zellij = {
