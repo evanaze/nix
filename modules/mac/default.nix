@@ -1,6 +1,6 @@
-{}: {
+{...}: {
   imports = [
     ./skhd.nix
-    ./yabai.nix
+    # ./yabai.nix
   ];
 }

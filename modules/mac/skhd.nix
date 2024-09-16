@@ -7,7 +7,7 @@
 
   services.skhd = {
     enable = true;
-    config = ''
+    skhdConfig = ''
       # change focus
       alt - h : yabai -m window --focus west
       alt - j : yabai -m window --focus south

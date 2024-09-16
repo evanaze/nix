@@ -1,5 +1,8 @@
-{ lib, buildGoModule, fetchFromGitHub }:
-
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+}:
 buildGoModule rec {
   pname = "air";
   version = "1.27.3";
@@ -18,8 +21,7 @@ buildGoModule rec {
     description = "Yet another live-reloading command line utility for Go applications in development";
     homepage = https://github.com/cosmtrek/air;
     license = licenses.mit;
-    maintainers = with maintainers; [ cosmtrek ];
+    maintainers = with maintainers; [cosmtrek];
     platforms = platforms.linux ++ platforms.darwin;
   };
 }
-
