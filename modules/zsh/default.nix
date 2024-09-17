@@ -36,6 +36,7 @@
           rebuild = "darwin-rebuild switch --flake $HOME/.config/nix#cooper";
           dka = "docker container kill $(docker ps -q)}";
           findpi = "arp -na | grep -i 2c:cf:67";
+          ll = "ls -al";
         };
       };
     };
