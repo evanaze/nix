@@ -19,7 +19,7 @@ buildGoModule rec {
 
   meta = with lib; {
     description = "Yet another live-reloading command line utility for Go applications in development";
-    homepage = https://github.com/cosmtrek/air;
+    homepage = "https://github.com/cosmtrek/air";
     license = licenses.mit;
     maintainers = with maintainers; [cosmtrek];
     platforms = platforms.linux ++ platforms.darwin;
