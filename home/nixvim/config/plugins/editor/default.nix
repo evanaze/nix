@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./copilot-chat.nix
+    # ./copilot-chat.nix
     ./illuminate.nix
     ./indent-blankline.nix
     ./navic.nix
