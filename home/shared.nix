@@ -18,6 +18,12 @@
     inputs.nixvim.packages.${system}.default
   ];
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   programs.git = {
     enable = true;
     userName = "Evan Azevedo";

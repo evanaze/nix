@@ -1,5 +1,5 @@
 {...}: {
-  imports = [./default.nix];
+  imports = [./shared.nix];
 
   programs.zellij.settings = {
     copy_command = "pbcopy";
