@@ -32,13 +32,14 @@
         specialArgs = {inherit pkgs-24;};
         modules = [
           ./hosts/desktop
+          ./modules/zsh
 
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {inherit inputs;};
-            home-manager.users.evanaze = import ./home;
+            home-manager.users.evanaze = import ./home/nixos;
           }
         ];
       };
@@ -58,7 +59,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {inherit inputs;};
-            home-manager.users.evanazevedo = import ./home;
+            home-manager.users.evanazevedo = import ./home/mac;
           }
         ];
       };
