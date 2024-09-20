@@ -46,7 +46,7 @@
               inherit inputs;
               inherit username;
             };
-            home-manager.users.${username} = import ./home/desktop;
+            home-manager.users.${username} = import ./home/desktop.nix;
           }
         ];
       };
@@ -72,7 +72,7 @@
               inherit inputs;
               inherit username;
             };
-            home-manager.users.${username} = import ./home/mac;
+            home-manager.users.${username} = import ./home/mac.nix;
           }
         ];
       };
