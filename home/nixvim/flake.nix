@@ -7,16 +7,12 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
-    };
   };
 
   outputs = {
     nixpkgs,
     nixvim,
     flake-parts,
-    pre-commit-hooks,
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -40,13 +36,6 @@
             inherit nvim;
             name = "A nixvim configuration";
           };
-          pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = ./.;
-            hooks = {
-              # statix.enable = true;
-              alejandra.enable = true;
-            };
-          };
         };
 
         formatter = pkgs.alejandra;
@@ -55,7 +44,7 @@
 
         devShells = {
           default = with pkgs;
-            mkShell {inherit (self'.checks.pre-commit-check) shellHook;};
+            mkShell {inherit shellHook;};
         };
       };
     };
