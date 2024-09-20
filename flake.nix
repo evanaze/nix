@@ -46,7 +46,7 @@
               inherit inputs;
               inherit username;
             };
-            home-manager.users.evanaze = import ./home/nixos;
+            home-manager.users.${username} = import ./home/desktop;
           }
         ];
       };
@@ -72,7 +72,7 @@
               inherit inputs;
               inherit username;
             };
-            home-manager.users.evanazevedo = import ./home/mac;
+            home-manager.users.${username} = import ./home/mac;
           }
         ];
       };
