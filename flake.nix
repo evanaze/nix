@@ -8,7 +8,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim.url = "./home/nixvim";
+    nixvim.url = "github:evanaze/nix-config?dir=home/nixvim";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
