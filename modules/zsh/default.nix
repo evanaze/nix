@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   environment = {
     systemPackages = with pkgs; [
       zsh-fast-syntax-highlighting
@@ -6,7 +10,7 @@
     ];
   };
 
-  home-manager.users.evanazevedo = {
+  home-manager.users.${username} = {
     home.file.".p10k.zsh".source = ./p10k.zsh;
 
     programs = {

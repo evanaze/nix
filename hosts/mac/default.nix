@@ -1,8 +1,12 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [../shared.nix];
 
-  users.users.evanazevedo = {
-    home = "/Users/evanazevedo";
+  users.users.${username} = {
+    home = "/Users/" + username;
     shell = pkgs.zsh;
   };
 

@@ -1,7 +1,8 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../shared.nix
@@ -75,7 +76,7 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.evanaze = {
+  users.users.${username} = {
     isNormalUser = true;
     description = "Evan Azevedo";
     extraGroups = ["networkmanager" "wheel"];
@@ -89,7 +90,7 @@
   # Enale sudo with no password for user
   security.sudo.extraRules = [
     {
-      users = ["evanaze"];
+      users = ["${username}"];
       commands = [
         {
           command = "ALL";
@@ -105,9 +106,6 @@
 
   # Install ZSH.
   programs.zsh.enable = true;
-  programs.zsh.promptInit = "
-  	source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-  	source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh";
   programs.steam.enable = true;
 
   # Allow unfree packages

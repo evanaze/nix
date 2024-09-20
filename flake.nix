@@ -24,12 +24,16 @@
     nixvim,
     ...
   }: let
-    pkgs-24 = nixpkgs-24.legacyPackages.${"x86_64-darwin"};
+    username = "evanaze";
+    pkgs-24 = nixpkgs-24.legacyPackages.${nixpkgs.system};
   in {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit pkgs-24;};
+        specialArgs = {
+          inherit pkgs-24;
+          inherit username;
+        };
         modules = [
           ./hosts/desktop
           ./modules/zsh
@@ -38,7 +42,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {inherit inputs;};
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
             home-manager.users.evanaze = import ./home/nixos;
           }
         ];
@@ -48,7 +55,10 @@
     darwinConfigurations = {
       cooper = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
-        specialArgs = {inherit pkgs-24;};
+        specialArgs = {
+          inherit pkgs-24;
+          inherit username;
+        };
         modules = [
           ./hosts/mac
           ./modules/zsh
@@ -58,7 +68,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {inherit inputs;};
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
             home-manager.users.evanazevedo = import ./home/mac;
           }
         ];
