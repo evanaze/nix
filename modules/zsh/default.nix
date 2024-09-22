@@ -39,6 +39,7 @@
           update = "pushd $HOME/.config/nix && nix flake update && popd";
           dka = "docker container kill $(docker ps -q)}";
           findpi = "arp -na | grep -i 2c:cf:67";
+          sshpi = "ssh evanaze@hs.local";
           ll = "ls -al";
         };
       };

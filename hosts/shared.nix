@@ -1,11 +1,7 @@
-{
-  pkgs,
-  pkgs-24,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     cron
-    pkgs-24.devenv
+    devenv
     git
     htop
     meslo-lgs-nf
