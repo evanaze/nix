@@ -10,6 +10,7 @@
     htop
     meslo-lgs-nf
     unzip
+    vim
     wget
   ];
 

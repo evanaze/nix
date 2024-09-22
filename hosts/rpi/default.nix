@@ -5,6 +5,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../shared.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -12,24 +13,13 @@
   boot.loader.efi.canTouchEfiVariables = false;
   boot.kernelPackages = pkgs.linuxPackages_rpi4;
 
-  networking.hostName = "hs"; # Define your hostname.
-  networking.wireless = {
-    enable = true;
-    secretsFile = "/run/secrets/wireless.env";
-    networks.BillWiTheScienceFi.pskRaw = "ext:PSK_HOME";
-    extraConfig = "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel";
-  };
+  networking.hostName = "hs";
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Set your time zone.
   time.timeZone = "America/Denver";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
@@ -54,7 +44,7 @@
   };
 
   users.users.evanaze = {
-    initialHashedPassword = "test";
+    initialPassword = "password";
     isNormalUser = true;
     description = "Evan Azevedo";
     extraGroups = ["networkmanager" "wheel"];
@@ -95,7 +85,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -108,19 +97,11 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
