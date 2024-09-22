@@ -13,6 +13,6 @@
   };
 
   programs.zsh.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#nixos";
+    rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#desktop";
   };
 }

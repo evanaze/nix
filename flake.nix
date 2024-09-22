@@ -28,7 +28,7 @@
     pkgs-24 = nixpkgs-24.legacyPackages."x86_64-darwin";
   in {
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
+      desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit pkgs-24;
@@ -47,6 +47,29 @@
               inherit username;
             };
             home-manager.users.${username} = import ./home/desktop.nix;
+          }
+        ];
+      };
+
+      rpi = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = {
+          inherit pkgs-24;
+          inherit username;
+        };
+        modules = [
+          ./hosts/rpi
+          ./modules/zsh
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
+            home-manager.users.${username} = import ./home/rpi.nix;
           }
         ];
       };
