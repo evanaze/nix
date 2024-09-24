@@ -1,6 +1,6 @@
-{pkgs-24, ...}: {
+{pkgs, ...}: {
   environment = {
-    systemPackages = with pkgs-24; [
+    systemPackages = with pkgs; [
       skhd
     ];
   };
