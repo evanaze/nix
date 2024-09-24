@@ -6,7 +6,7 @@
   };
 
   programs.zsh.shellAliases = {
-    rebuild = "darwin-rebuild switch --flake $HOME/.config/nix#nixos";
-    erebuild = "nix run darwin-rebuild -- switch --flake $HOME/.config/nix#nixos";
+    rebuild = "darwin-rebuild switch --flake $HOME/.config/nix#mac";
+    erebuild = "nix run darwin-rebuild -- switch --flake $HOME/.config/nix#mac";
   };
 }

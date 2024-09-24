@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./nvidia.nix
     ../shared.nix
   ];
 
@@ -55,14 +56,10 @@
     xkbVariant = "";
   };
 
-  # Enable the NVIDIA driver.
-  services.xserver.videoDrivers = ["nvidia"];
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
