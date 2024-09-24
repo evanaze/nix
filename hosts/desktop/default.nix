@@ -47,10 +47,8 @@
       layout = "us";
       variant = "";
     };
-    displayManager = {
-      # Enable the GNOME Desktop Environment.
-      gdm.enable = true;
-    };
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
   };
 
   services.displayManager = {
@@ -110,7 +108,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    gnome.gnome-terminal
+    gnome-terminal
     xclip
   ];
 
