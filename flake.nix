@@ -80,7 +80,6 @@
         modules = [
           ./hosts/mac
           ./modules/zsh
-          ./modules/mac
 
           home-manager.darwinModules.home-manager
           {
