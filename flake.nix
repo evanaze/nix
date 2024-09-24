@@ -25,7 +25,7 @@
     ...
   }: let
     username = "evanaze";
-    pkgs-24 = nixpkgs-24.legacyPackages.${nixpkgs.system};
+    pkgs-24 = nixpkgs-24.legacyPackages."x86_64-linux";
   in {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {

@@ -9,6 +9,7 @@
     git
     htop
     meslo-lgs-nf
+    nmap
     unzip
     wget
   ];
