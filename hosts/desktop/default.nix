@@ -9,6 +9,11 @@
     ../shared.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    gnome-terminal
+    xclip
+  ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -104,13 +109,6 @@
     allowUnfree = true;
     permittedInsecurePackages = ["electron-25.9.0"];
   };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    gnome-terminal
-    xclip
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
