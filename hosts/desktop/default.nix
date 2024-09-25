@@ -100,8 +100,6 @@
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-  # Install ZSH.
-  programs.zsh.enable = true;
   programs.steam.enable = true;
 
   # Allow unfree packages
