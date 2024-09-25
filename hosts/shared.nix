@@ -27,7 +27,17 @@
     };
   };
 
+  programs.zsh.enable = true;
+
   nix.extraOptions = ''
     trusted-users = root ${username}
   '';
+
+  environment = {
+    variables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+    pathsToLink = ["/share/zsh"];
+  };
 }

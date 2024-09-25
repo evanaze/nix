@@ -14,7 +14,6 @@
     nodejs
     python3
     ripgrep
-    zellij
     inputs.nixvim.packages.${system}.default
   ];
 
