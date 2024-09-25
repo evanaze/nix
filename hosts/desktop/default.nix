@@ -23,7 +23,10 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    nameservers = ["100.100.100.100" "1.1.1.1"];
+  };
 
   # Set your time zone.
   time.timeZone = "America/Denver";

@@ -29,6 +29,8 @@
 
   programs.zsh.enable = true;
 
+  sevices.tailscale.enable = true;
+
   nix.extraOptions = ''
     trusted-users = root ${username}
   '';
