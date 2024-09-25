@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     cron
     devenv
@@ -22,4 +26,8 @@
       workstation = true;
     };
   };
+
+  nix.extraOptions = ''
+    trusted-users = root ${username}
+  '';
 }
