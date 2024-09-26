@@ -37,6 +37,7 @@
         shellAliases = {
           gconflicts = "git diff --name-only --diff-filter=U --relative";
           gsminit = "git submodule update --init --recursive";
+          gsmupd = "git submodule update --remote --recursive";
           update = "pushd $HOME/.config/nix && nix flake update && popd";
           dka = "docker container kill $(docker ps -q)}";
           findpi = "arp -na | grep -i 2c:cf:67";
