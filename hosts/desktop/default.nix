@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./nvidia.nix
     ../shared.nix
+    ../nixos-shared.nix
   ];
 
   environment.systemPackages = with pkgs; [

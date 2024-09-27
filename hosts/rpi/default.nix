@@ -6,6 +6,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../shared.nix
+    ../nixos-shared.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
