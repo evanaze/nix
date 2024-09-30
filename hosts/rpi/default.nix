@@ -16,7 +16,14 @@
 
   networking.hostName = "hs";
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix = {
+    settings.experimental-features = ["nix-command" "flakes"];
+    nixPath = [
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "nixos-config=$HOME/.config/nix/hosts/rpi"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
+  };
 
   # Set your time zone.
   time.timeZone = "America/Denver";
