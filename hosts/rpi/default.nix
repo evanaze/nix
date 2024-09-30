@@ -16,7 +16,7 @@
       efi.canTouchEfiVariables = false;
     };
     kernelPackages = pkgs.linuxPackages_rpi4;
-    initrd.systemd.tmp2.enable = false;
+    initrd.systemd.enableTmp2 = false;
   };
 
   networking.hostName = "hs";
