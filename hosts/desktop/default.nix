@@ -36,9 +36,6 @@
     nameservers = ["100.100.100.100" "1.1.1.1"];
   };
 
-  # Set your time zone.
-  time.timeZone = "America/Denver";
-
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -85,27 +82,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
-    isNormalUser = true;
-    description = "Evan Azevedo";
-    extraGroups = ["networkmanager" "wheel"];
-    shell = pkgs.zsh;
-  };
-
-  # Enale sudo with no password for user
-  security.sudo.extraRules = [
-    {
-      users = ["${username}"];
-      commands = [
-        {
-          command = "ALL";
-          options = ["NOPASSWD"];
-        }
-      ];
-    }
-  ];
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;

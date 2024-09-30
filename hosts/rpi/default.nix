@@ -25,9 +25,6 @@
     ];
   };
 
-  # Set your time zone.
-  time.timeZone = "America/Denver";
-
   i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
@@ -49,14 +46,6 @@
       X11Forwarding = false;
       PermitRootLogin = "yes";
     };
-  };
-
-  users.users.evanaze = {
-    initialPassword = "password";
-    isNormalUser = true;
-    description = "Evan Azevedo";
-    extraGroups = ["networkmanager" "wheel"];
-    shell = pkgs.zsh;
   };
 
   # Configure keymap in X11
