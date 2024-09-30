@@ -23,6 +23,12 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  nix.nixPath = [
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+    "nixos-config=$HOME/.config/nix/hosts/desktop"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
+
   # Enable networking
   networking = {
     networkmanager.enable = true;
