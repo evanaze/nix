@@ -10,9 +10,14 @@
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.kernelPackages = pkgs.linuxPackages_rpi4;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = false;
+    };
+    kernelPackages = pkgs.linuxPackages_rpi4;
+    initrd.systemd.enableTpm2 = false;
+  };
 
   networking.hostName = "hs";
 
