@@ -4,18 +4,18 @@ _: {
     settings = {
       sections = {
         lualine_a = [
+          "mode"
           {
-            name = "mode";
             icon = " ";
           }
         ];
         lualine_b = [
+          "branch"
           {
-            name = "branch";
             icon = "";
           }
+          "diff"
           {
-            name = "diff";
             extraConfig = {
               symbols = {
                 added = " ";
@@ -26,8 +26,8 @@ _: {
           }
         ];
         lualine_c = [
+          "diagnostics"
           {
-            name = "diagnostics";
             extraConfig = {
               sources = ["nvim_lsp"];
               symbols = {
@@ -38,8 +38,8 @@ _: {
               };
             };
           }
+          "filetype"
           {
-            name = "filetype";
             extraConfig = {
               icon_only = true;
               separator = "";
@@ -57,9 +57,7 @@ _: {
           }
         ];
         lualine_x = [
-          {
-            name = "navic";
-          }
+          "navic"
           {
             name.__raw = ''
               function()
@@ -76,14 +74,10 @@ _: {
           }
         ];
         lualine_y = [
-          {
-            name = "progress";
-          }
+          "progress"
         ];
         lualine_z = [
-          {
-            name = "location";
-          }
+          "location"
         ];
       };
       theme = "catppuccin";
