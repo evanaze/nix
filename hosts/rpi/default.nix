@@ -6,6 +6,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./caddy.nix
+    ./blocky.nix
     ../shared.nix
     ../nixos-shared.nix
   ];
