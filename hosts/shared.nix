@@ -6,6 +6,7 @@
   environment.systemPackages = with pkgs; [
     cron
     devenv
+    dig
     git
     htop
     meslo-lgs-nf
