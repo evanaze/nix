@@ -33,7 +33,7 @@
   # Enable networking
   networking = {
     networkmanager.enable = true;
-    nameservers = ["100.100.100.100" "1.1.1.1"];
+    nameservers = ["192.168.50.150" "100.100.100.100" "1.1.1.1"];
   };
 
   # Select internationalisation properties.
