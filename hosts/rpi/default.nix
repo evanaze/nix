@@ -5,6 +5,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./caddy.nix
     ../shared.nix
     ../nixos-shared.nix
   ];
@@ -31,16 +32,9 @@
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [22];
   services.openssh = {
     enable = true;
     ports = [22];
@@ -70,12 +64,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
