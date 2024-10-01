@@ -2,10 +2,11 @@
   services.blocky = {
     enable = true;
     settings = {
-      ports.dns = 53;
+      ports.dns = 53; # Port for incoming DNS queries
       upstreams.groups.default = [
-        "https://one.one.one.one/dns-query"
+        "https://one.one.one.one/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
       ];
+      # For initially solving DoH/DoT Requests when no system Resolver is available.
       bootstrapDns = {
         upstream = "https://one.one.one.one/dns-query";
         ips = ["1.1.1.1" "1.0.0.1"];
@@ -19,6 +20,7 @@
           default = ["ads"];
         };
       };
+      # Enabling caching and prefetching
       caching = {
         minTime = "5m";
         maxTime = "30m";
@@ -27,6 +29,8 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [53];
-  networking.firewall.allowedUDPPorts = [53];
+  networking.firewall = {
+    allowedTCPPorts = [53];
+    allowedUDPPorts = [53];
+  };
 }
