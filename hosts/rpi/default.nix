@@ -5,8 +5,9 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./caddy.nix
+    ./authelia.nix
     ./blocky.nix
+    ./caddy.nix
     ../shared.nix
     ../nixos-shared.nix
   ];
