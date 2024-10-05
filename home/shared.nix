@@ -11,7 +11,6 @@
     cargo
     go
     hugo
-    nodejs
     python3
     ripgrep
     inputs.nixvim.packages.${system}.default

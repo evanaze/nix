@@ -5,9 +5,9 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./authelia.nix
+    # ./authelia.nix
     ./blocky.nix
-    ./caddy.nix
+    # ./caddy.nix
     ../shared.nix
     ../nixos-shared.nix
   ];
@@ -52,16 +52,17 @@
       interface = "end0";
     };
   };
+
   networking.firewall.allowedTCPPorts = [22];
   services.openssh = {
     enable = true;
     ports = [22];
     settings = {
-      PasswordAuthentication = true;
+      PasswordAuthentication = false;
       AllowUsers = null;
       UseDns = true;
       X11Forwarding = false;
-      PermitRootLogin = "yes";
+      PermitRootLogin = "no";
     };
   };
 

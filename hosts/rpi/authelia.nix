@@ -76,6 +76,7 @@
     unixSocket = "/run/redis-authelia-main/redis.sock";
     unixSocketPerm = 600;
   };
+
   services.caddy.virtualHosts."auth.evanazevedo.com" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:9091";
