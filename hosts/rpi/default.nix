@@ -6,7 +6,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # ./authelia.nix
-    ./blocky.nix
+    # ./blocky.nix
     # ./caddy.nix
     ../shared.nix
     ../nixos-shared.nix
@@ -35,7 +35,7 @@
 
   # Set static IP over ethernet
   networking = {
-    hostname = "hs";
+    hostName = "hs";
     firewall.enable = true;
     interfaces.end0 = {
       ipv4.addresses = [
