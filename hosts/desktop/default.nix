@@ -12,6 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     gnome-terminal
+    slack
     xclip
   ];
 
