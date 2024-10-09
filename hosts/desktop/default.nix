@@ -12,6 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     gnome-terminal
+    inkscape
+    slack
     xclip
   ];
 
