@@ -38,6 +38,10 @@
     nameservers = ["192.168.50.150" "100.100.100.100" "1.1.1.1"];
   };
 
+  fonts.packages = with pkgs; [
+    iosevka
+  ];
+
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
