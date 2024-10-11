@@ -39,6 +39,7 @@
           bang = true,
         })
       '';
+    prettier-plugin-go-template.enable = true;
     plugins.conform-nvim = {
       enable = true;
       settings = {
@@ -78,10 +79,7 @@
         notify_on_error = true;
         formatters_by_ft = {
           html = [
-            [
-              "prettierd"
-              "prettier"
-            ]
+            ["prettier"]
           ];
           css = [
             [
@@ -144,6 +142,9 @@
           };
           prettierd = {
             command = "${lib.getExe pkgs.prettierd}";
+          };
+          prettier = {
+            options.ft_parsers.html = "go-template";
           };
           stylua = {
             command = "${lib.getExe pkgs.stylua}";
