@@ -144,6 +144,7 @@
             command = "${lib.getExe pkgs.prettierd}";
           };
           prettier = {
+            command = "${lib.getExe pkgs.prettier}";
             options.ft_parsers.html = "go-template";
           };
           stylua = {
