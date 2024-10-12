@@ -55,8 +55,6 @@
   extraConfigLua = ''
         luasnip = require("luasnip")
         require("luasnip.loaders.from_vscode").lazy_load()
-        print("Loaded friendly-snippets")
-        print(vim.inspect(require("luasnip").snippets))
 
         kind_icons = {
           Text = "󰊄",
