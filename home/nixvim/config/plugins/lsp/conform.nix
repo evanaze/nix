@@ -86,7 +86,10 @@
         notify_no_formatters = true;
         formatters_by_ft = {
           html = [
-            ["prettier"]
+            [
+              "prettierd"
+              "prettier"
+            ]
           ];
           css = [
             [
@@ -149,8 +152,6 @@
           };
           prettierd = {
             command = "${lib.getExe pkgs.prettierd}";
-          };
-          prettier = {
             options.ft_parsers.html = "go-template";
           };
           stylua = {
