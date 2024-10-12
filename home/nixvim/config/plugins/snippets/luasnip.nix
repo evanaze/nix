@@ -6,4 +6,5 @@ _: {
       store_selection_keys = "<Tab>";
     };
   };
+  plugins.friendly-snippets.enable = true;
 }
