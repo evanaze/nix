@@ -8,16 +8,16 @@
       inlayHints = true;
       servers = {
         html = {enable = true;};
-        lua-ls = {enable = true;};
-        nil-ls = {enable = true;};
+        lua_ls = {enable = true;};
+        nil_ls = {enable = true;};
         marksman = {enable = true;};
         pyright = {enable = true;};
         gopls = {enable = true;};
         terraformls = {enable = true;};
-        ts-ls = {enable = true;};
+        ts_ls = {enable = true;};
         ansiblels = {enable = true;};
         jsonls = {enable = true;};
-        helm-ls = {
+        helm_ls = {
           enable = true;
           extraOptions = {
             settings = {

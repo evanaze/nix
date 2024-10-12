@@ -83,6 +83,7 @@
           end
         '';
         notify_on_error = true;
+        notify_no_formatters = true;
         formatters_by_ft = {
           html = [
             ["prettier"]

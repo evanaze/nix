@@ -303,16 +303,17 @@
       },
       "locked": {
         "dir": "home/nixvim",
-        "lastModified": 1727826543,
-        "narHash": "sha256-7Yh1DHJ2jGhdU2GTD7wjrwUAGNo4zbrhb7lDQ3d1GIw=",
+        "lastModified": 1728754071,
+        "narHash": "sha256-cvdoLyPvc+bxue3S3TUWmx8Ra6NavboNnfEoIOuai8Y=",
         "owner": "evanaze",
         "repo": "nix",
-        "rev": "15cf34307ec97897b3f5625cd1902fd225167391",
+        "rev": "0405815c1359ddc88e93340abaf0acd63f7f1c1e",
         "type": "github"
       },
       "original": {
         "dir": "home/nixvim",
         "owner": "evanaze",
+        "ref": "main",
         "repo": "nix",
         "type": "github"
       }
