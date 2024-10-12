@@ -16,12 +16,10 @@ _: {
           }
           "diff"
           {
-            extraConfig = {
-              symbols = {
-                added = " ";
-                modified = " ";
-                removed = " ";
-              };
+            symbols = {
+              added = " ";
+              modified = " ";
+              removed = " ";
             };
           }
         ];
