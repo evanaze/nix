@@ -41,8 +41,10 @@
       '';
 
     # Install Prettier and the Go Template plugin
-    nodePackages.prettier.enable = true;
-    prettier-plugin-go-template.enable = true;
+    extraPlugins = with pkgs; [
+      nodePackages.prettier
+      prettier-plugin-go-template
+    ];
 
     plugins.conform-nvim = {
       enable = true;
@@ -148,7 +150,6 @@
             command = "${lib.getExe pkgs.prettierd}";
           };
           prettier = {
-            command = "${lib.getExe pkgs.prettier}";
             options.ft_parsers.html = "go-template";
           };
           stylua = {
