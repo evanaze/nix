@@ -51,7 +51,7 @@
       };
     };
     cmp-cmdline = {enable = false;}; # autocomplete for cmdline
-    cmp_luasnip = {enable = true;}; # autocomplete for cmdline
+    # cmp_luasnip = {enable = true;}; # autocomplete for cmdline
   };
   extraConfigLua = ''
         luasnip = require("luasnip")
