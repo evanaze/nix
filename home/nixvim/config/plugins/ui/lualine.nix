@@ -18,7 +18,7 @@ _: {
           {
             symbols = {
               added = " ";
-              modified = " ";
+              # modified = " ";
               removed = " ";
             };
           }
