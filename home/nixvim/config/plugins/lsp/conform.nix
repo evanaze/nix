@@ -39,7 +39,11 @@
           bang = true,
         })
       '';
+
+    # Install Prettier and the Go Template plugin
+    nodePackages.prettier.enable = true;
     prettier-plugin-go-template.enable = true;
+
     plugins.conform-nvim = {
       enable = true;
       settings = {
