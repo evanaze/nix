@@ -37,6 +37,7 @@
   networking = {
     hostName = "hs";
     firewall.enable = true;
+    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
     interfaces.end0 = {
       ipv4.addresses = [
         {
@@ -51,17 +52,13 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [22];
-  services.openssh = {
+  services.resolved = {
     enable = true;
-    ports = [22];
-    settings = {
-      PasswordAuthentication = false;
-      AllowUsers = null;
-      UseDns = true;
-      X11Forwarding = false;
-      PermitRootLogin = "no";
-    };
+    dnssec = "true";
+    domains = ["~."];
+    fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    dnsovertls = "true";
   };
+
   system.stateVersion = "24.11"; # Did you read the comment?
 }
