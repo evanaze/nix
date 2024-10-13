@@ -28,6 +28,7 @@
     userEmail = "me@evanazevdo.com";
     extraConfig = {
       init.defaultBranch = "main";
+      pull.rebase = "false";
     };
   };
 

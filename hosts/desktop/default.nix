@@ -12,6 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     gnome-terminal
+    inkscape
+    slack
     xclip
   ];
 
@@ -35,6 +37,10 @@
     networkmanager.enable = true;
     nameservers = ["192.168.50.150" "100.100.100.100" "1.1.1.1"];
   };
+
+  fonts.packages = with pkgs; [
+    iosevka
+  ];
 
   # Select internationalisation properties.
   i18n = {
