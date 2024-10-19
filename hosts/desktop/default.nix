@@ -35,7 +35,7 @@
   # Enable networking
   networking = {
     networkmanager.enable = true;
-    nameservers = ["192.168.50.150" "100.100.100.100" "1.1.1.1"];
+    nameservers = ["1.1.1.1" "1.0.0.1" "100.100.100.100"];
   };
 
   fonts.packages = with pkgs; [
