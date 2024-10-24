@@ -20,6 +20,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # boot.initrd.systemd.network.wait-online.enable = false;
+  # systemd.network.wait-online.enable = false;
 
   networking.hostName = "father"; # Define your hostname.
 
