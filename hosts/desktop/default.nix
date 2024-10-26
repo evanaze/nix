@@ -7,7 +7,6 @@
     ./hardware-configuration.nix
     ./nvidia.nix
     ../shared.nix
-    ../devenv.nix
     ../nixos-shared.nix
   ];
 
