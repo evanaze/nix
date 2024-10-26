@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./nvidia.nix
     ../shared.nix
+    ../devenv.nix
     ../nixos-shared.nix
   ];
 
@@ -20,8 +21,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # boot.initrd.systemd.network.wait-online.enable = false;
-  # systemd.network.wait-online.enable = false;
 
   networking.hostName = "father"; # Define your hostname.
 
@@ -75,7 +74,7 @@
   services.displayManager = {
     # Enable automatic login for the user.
     autoLogin.enable = true;
-    autoLogin.user = "evanaze";
+    autoLogin.user = username;
   };
 
   # Enable CUPS to print documents.
