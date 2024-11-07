@@ -7,6 +7,7 @@
     cron
     devenv
     dig
+    expect
     git
     htop
     meslo-lgs-nf
