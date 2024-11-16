@@ -13,6 +13,7 @@
   environment.systemPackages = with pkgs; [
     gnome-terminal
     inkscape
+    protonmail-desktop
     slack
     xclip
   ];
