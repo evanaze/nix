@@ -5,14 +5,12 @@
 }: {
   environment = {
     systemPackages = with pkgs; [
+      pure-prompt
       zsh-fast-syntax-highlighting
-      zsh-powerlevel10k
     ];
   };
 
   home-manager.users.${username} = {
-    home.file.".p10k.zsh".source = ./p10k.zsh;
-
     programs = {
       zsh = {
         enable = true;
@@ -21,9 +19,6 @@
         enableCompletion = true;
         history.size = 10000;
         initExtra = ''
-          source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-          [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
           function epush() {
               branch=$(git rev-parse --abbrev-ref HEAD)
               ticket=$(echo $branch | cut -d / -f2 -)
@@ -32,6 +27,9 @@
               git pull
               git push
           }
+
+          autoload -U promptinit; promptinit
+          prompt pure
         '';
 
         shellAliases = {
