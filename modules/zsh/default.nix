@@ -29,6 +29,12 @@
           }
 
           autoload -U promptinit; promptinit
+
+          # Style Prompt
+          zstyle :prompt:pure:prompt color red
+          zstyle :prompt:pure:git:branch color green
+          zstyle :prompt:pure:virtualenv color yellow
+
           prompt pure
         '';
 
