@@ -11,8 +11,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    google-chrome
     gnome-terminal
     inkscape
+    keymapp
     protonmail-desktop
     slack
     xclip
