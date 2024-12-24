@@ -46,6 +46,8 @@
           gsminit = "git submodule update --init --recursive";
           gsmupd = "git submodule update --remote --recursive";
           ll = "ls -al";
+          n = "nvim .";
+          dup = "devenv up";
           sshpi = "ssh evanaze@hs.spitz-pickerel.ts.net";
           sshdt = "ssh evanaze@father.spitz-pickerel.ts.net";
           update = "pushd $HOME/.config/nix && nix flake update && popd";
