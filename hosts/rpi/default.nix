@@ -9,11 +9,11 @@
     # Necessary configuration
     ./networking.nix
     ./users.nix
-
-    # Services
-    ./apps/caddy.nix
     ../shared.nix
     ../nixos-shared.nix
+
+    # Services
+    ./apps
   ];
 
   # Use the systemd-boot EFI boot loader.
