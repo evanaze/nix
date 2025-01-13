@@ -19,9 +19,16 @@
 
   programs.zsh.enable = true;
 
-  nix.extraOptions = ''
-    trusted-users = root ${username}
-  '';
+  nix = {
+    extraOptions = ''
+      trusted-users = root ${username}
+    '';
+    gc = {
+      automatic = true;
+      interval.Day = 7;
+      options = "--delete-older-than 7d";
+    };
+  };
 
   environment = {
     variables = {

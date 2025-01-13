@@ -35,12 +35,6 @@
       "nixos-config=$HOME/.config/nix/hosts/rpi"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
-    gc = {
-      automatic = true;
-      # Every Monday 01:00 (UTC)
-      dates = "Monday 01:00 UTC";
-      options = "--delete-older-than 7d";
-    };
   };
 
   system = {
