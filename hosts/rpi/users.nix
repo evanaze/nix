@@ -13,10 +13,17 @@
         extraGroups = ["wheel"];
         shell = pkgs.zsh;
       };
+      caddyProxy = {
+        group = "caddyProxy";
+        home = "/var/lib/caddyProxy";
+        createHome = true;
+        isSystemUser = true;
+      };
     };
 
     groups = {
       nixos = {};
+      caddyProxy = {};
     };
   };
 }

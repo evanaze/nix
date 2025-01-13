@@ -3,7 +3,7 @@
   networking = {
     hostName = "hs";
     firewall.enable = true;
-    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    nameservers = ["::1" "127.0.0.1"];
     interfaces.end0 = {
       ipv4.addresses = [
         {
@@ -35,19 +35,19 @@
       dnssec = "GETDNS_EXTENSION_TRUE";
       upstream_recursive_servers = [
         {
-          address_data = "1.1.1.2";
+          address_data = "1.1.1.1";
           tls_auth_name = "cloudflare-dns.com";
         }
         {
-          address_data = "1.0.0.2";
+          address_data = "1.0.0.1";
           tls_auth_name = "cloudflare-dns.com";
         }
         {
-          address_data = "2606:4700:4700::1112";
+          address_data = "2606:4700:4700::1111";
           tls_auth_name = "cloudflare-dns.com";
         }
         {
-          address_data = "2606:4700:4700::1002";
+          address_data = "2606:4700:4700::1001";
           tls_auth_name = "cloudflare-dns.com";
         }
         {
