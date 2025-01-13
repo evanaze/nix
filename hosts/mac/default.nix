@@ -3,7 +3,10 @@
   username,
   ...
 }: {
-  imports = [../shared.nix];
+  imports = [
+    ../shared.nix
+    ./homebrew.nix
+  ];
 
   users.users.${username} = {
     home = "/Users/" + username;
