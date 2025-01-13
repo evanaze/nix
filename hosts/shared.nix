@@ -19,11 +19,11 @@
 
   programs.zsh.enable = true;
 
-  services.tailscale.enable = true;
-
   nix.extraOptions = ''
     trusted-users = root ${username}
   '';
+
+  services.tailscale.enable = true;
 
   environment = {
     variables = {

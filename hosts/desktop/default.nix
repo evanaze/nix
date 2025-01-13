@@ -79,6 +79,27 @@
     autoLogin.user = username;
   };
 
+  users.users.${username} = {
+    initialPassword = "password";
+    isNormalUser = true;
+    description = "Evan Azevedo";
+    extraGroups = ["networkmanager" "wheel"];
+    shell = pkgs.zsh;
+  };
+
+  # Enale sudo with no password for user
+  security.sudo.extraRules = [
+    {
+      users = ["${username}"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
