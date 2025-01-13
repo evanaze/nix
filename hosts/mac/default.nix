@@ -22,6 +22,11 @@
   nixpkgs.hostPlatform = "x86_64-darwin";
   nix = {
     package = pkgs.nix;
+    gc = {
+      automatic = true;
+      interval.Day = 7;
+      options = "--delete-older-than 7d";
+    };
     settings = {
       experimental-features = "nix-command flakes";
     };
