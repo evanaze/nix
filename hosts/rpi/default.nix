@@ -35,9 +35,24 @@
       "nixos-config=$HOME/.config/nix/hosts/rpi"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
+    gc = {
+      automatic = true;
+      # Every Monday 01:00 (UTC)
+      dates = "Monday 01:00 UTC";
+      options = "--delete-older-than 7d";
+    };
+  };
+
+  system = {
+    # Auto upgrade
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+      # Daily 00:00
+      dates = "daily UTC";
+    };
+    stateVersion = "24.11";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
-
-  system.stateVersion = "24.11"; # Did you read the comment?
 }
