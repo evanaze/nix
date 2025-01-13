@@ -23,8 +23,6 @@
     trusted-users = root ${username}
   '';
 
-  services.tailscale.enable = true;
-
   environment = {
     variables = {
       EDITOR = "nvim";
