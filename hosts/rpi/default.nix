@@ -11,9 +11,7 @@
     ./users.nix
 
     # Services
-    # ./apps/authelia.nix
-    # ./apps/blocky.nix
-    # ./apps/caddy.nix
+    ./apps/caddy.nix
     ../shared.nix
     ../nixos-shared.nix
   ];
