@@ -16,6 +16,7 @@
     inkscape
     keymapp
     protonmail-desktop
+    python314
     slack
     xclip
   ];
