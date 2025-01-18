@@ -47,7 +47,7 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/www 0755 builder builder -"
+    "d /var/www/evanazevedo.com 0755 evanaze nixos -"
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
