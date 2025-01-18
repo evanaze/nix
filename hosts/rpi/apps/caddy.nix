@@ -2,7 +2,8 @@
   services.caddy = {
     enable = true;
     email = "me@evanazevedo.com";
-    virtualHosts."localhost".extraConfig = ''
+    virtualHosts."evanazevedo.com".extraConfig = ''
+      root * /var/www/evanazevedo.com
       respond "Hello, world!"
     '';
   };

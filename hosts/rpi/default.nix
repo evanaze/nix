@@ -46,5 +46,9 @@
     stateVersion = "24.11";
   };
 
+  systemd.tmpfiles.rules = [
+    "d /var/www 0755 builder builder -"
+  ];
+
   i18n.defaultLocale = "en_US.UTF-8";
 }
