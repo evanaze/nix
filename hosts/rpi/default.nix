@@ -46,8 +46,9 @@
     stateVersion = "24.11";
   };
 
+  # "d /var/www/evanazevedo.com 0755 github-runner-hs github-runner-hs -"
   systemd.tmpfiles.rules = [
-    "d /var/www/evanazevedo.com 0775 github-runner-hs github-runner-hs -"
+    "d /var/www/evanazevedo.com 0755 evanaze nixos -"
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
