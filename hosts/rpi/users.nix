@@ -13,17 +13,10 @@
         extraGroups = ["wheel"];
         shell = pkgs.zsh;
       };
-      builder = {
-        group = "builder";
-        home = "/var/lib/builder";
-        createHome = true;
-        isSystemUser = true;
-      };
     };
 
     groups = {
       nixos = {};
-      builder = {};
     };
   };
 }
