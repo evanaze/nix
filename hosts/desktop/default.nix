@@ -8,6 +8,7 @@
     ./nvidia.nix
     ../shared.nix
     ../nixos-shared.nix
+    ./apps
   ];
 
   environment.systemPackages = with pkgs; [
