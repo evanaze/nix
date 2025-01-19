@@ -20,10 +20,10 @@
         history.size = 10000;
         initExtra = ''
           function epush() {
-              branch=$(git rev-parse --abbrev-ref HEAD)
-              ticket=$(echo $branch | cut -d / -f2 -)
+              # branch=$(git rev-parse --abbrev-ref HEAD)
+              # ticket=$(echo $branch | cut -d / -f2 -)
               git add .
-              git commit -m "$ticket $*"
+              git commit -m "$*"
               git pull
               git push
           }
