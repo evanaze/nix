@@ -7,7 +7,6 @@ in {
     email = "me@evanazevedo.com";
     virtualHosts."${domain}".extraConfig = ''
       root * ${pkgs.portfolio-site}
-      respond "Hello, world!"
     '';
   };
 }
