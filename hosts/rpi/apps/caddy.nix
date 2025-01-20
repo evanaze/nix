@@ -10,4 +10,5 @@ in {
     '';
   };
   networking.firewall.allowedTCPPorts = [80 443];
+  services.cloudflared.enable = true;
 }
