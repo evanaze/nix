@@ -9,4 +9,5 @@ in {
       file_server
     '';
   };
+  networking.firewall.allowedTCPPorts = [80 443];
 }
