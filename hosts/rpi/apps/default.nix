@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./caddy.nix
+    ./webserver.nix
   ];
 
   # Github actions runner
