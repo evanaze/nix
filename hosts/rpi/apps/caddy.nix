@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{...}: let
   domain = "evanazevedo.com";
 in {
   services.caddy = {
@@ -6,7 +6,8 @@ in {
     agree = true;
     email = "me@evanazevedo.com";
     virtualHosts."${domain}".extraConfig = ''
-      root * ${pkgs.portfolio-site}
+      root * /var/www/${domain}
+      file_server
     '';
   };
 }
