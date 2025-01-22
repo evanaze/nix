@@ -16,7 +16,7 @@ in {
     enable = true;
     tunnels = {
       "3c99cee8-ecb7-4274-8b6b-b50df55bc5c5" = {
-        credentialsFile = "/home/evanaze/.cloudflared/3c99cee8-ecb7-4274-8b6b-b50df55bc5c5.json";
+        credentialsFile = "/var/lib/cloudflared/3c99cee8-ecb7-4274-8b6b-b50df55bc5c5.json";
         ingress = {
           "*.${domain}" = {
             service = "http://localhost:80";
