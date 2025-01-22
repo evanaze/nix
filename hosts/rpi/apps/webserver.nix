@@ -18,10 +18,7 @@ in {
       "3c99cee8-ecb7-4274-8b6b-b50df55bc5c5" = {
         credentialsFile = "/var/lib/cloudflared/3c99cee8-ecb7-4274-8b6b-b50df55bc5c5.json";
         ingress = {
-          "*.${domain}" = {
-            service = "http://localhost:80";
-            path = "/*.(jpg|png|css|js)";
-          };
+          "*.${domain}" = "http://localhost:80";
         };
         default = "http_status:404";
       };
