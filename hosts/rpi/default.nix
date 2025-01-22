@@ -16,6 +16,10 @@
     ./apps
   ];
 
+  environment.systemPackages = with pkgs; [
+    cloudflared
+  ];
+
   # Use the systemd-boot EFI boot loader.
   boot = {
     loader = {
