@@ -4,9 +4,13 @@ in {
   services.caddy = {
     enable = true;
     email = "me@evanazevedo.com";
-    virtualHosts."${domain}".extraConfig = ''
+    virtualHosts."${domain}:80".extraConfig = ''
       root * /var/www/${domain}
-      file_server
+      encode gzip
+      file_server {
+        hide .git
+      }
+      tls internal
     '';
   };
 
