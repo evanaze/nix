@@ -8,16 +8,12 @@ in {
   services.caddy = {
     enable = true;
     email = "me@evanazevedo.com";
-    virtualHosts."localhost".extraConfig = ''
+    virtualHosts."localhost:80".extraConfig = ''
       root * /var/www/${domain}
       encode gzip
 
       file_server {
         hide .git
-      }
-
-      tls /var/lib/caddy/evanazevedo.com.pem /var/lib/caddy/evanazevedo.com.key {
-        protocols tls1.3
       }
     '';
   };

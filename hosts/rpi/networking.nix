@@ -2,7 +2,10 @@
   # Set static IP over ethernet
   networking = {
     hostName = "hs";
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [80 443];
+    };
     nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
     interfaces.end0 = {
       ipv4.addresses = [
