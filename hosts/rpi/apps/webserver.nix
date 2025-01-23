@@ -9,11 +9,16 @@ in {
     enable = true;
     email = "me@evanazevedo.com";
     virtualHosts."localhost:80".extraConfig = ''
+      bind 127.0.0.1 [::1]
       root * /var/www/${domain}
       encode gzip
 
       file_server {
         hide .git
+      }
+
+      header {
+        ?Cache-Control "max-age=1800"
       }
     '';
   };
