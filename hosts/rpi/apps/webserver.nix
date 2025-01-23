@@ -1,16 +1,24 @@
-{...}: let
+{pkgs, ...}: let
   domain = "evanazevedo.com";
 in {
+  environment.systemPackages = with pkgs; [
+    nss
+  ];
+
   services.caddy = {
     enable = true;
     email = "me@evanazevedo.com";
-    virtualHosts."${domain}:80".extraConfig = ''
+    virtualHosts."localhost".extraConfig = ''
       root * /var/www/${domain}
       encode gzip
+
       file_server {
         hide .git
       }
-      tls internal
+
+      tls /var/lib/caddy/evanazevedo.com.pem /var/lib/caddy/evanazevedo.com.key {
+        protocols tls1.3
+      }
     '';
   };
 
