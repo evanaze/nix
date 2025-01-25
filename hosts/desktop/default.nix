@@ -12,6 +12,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    code-cursor
     google-chrome
     gnome-terminal
     inkscape
