@@ -4,7 +4,7 @@
   };
 
   services.prometheus = {
-    enable = true;
+    enable = false;
     exporters.node.enable = true;
 
     globalConfig.scrape_interval = "15s";
