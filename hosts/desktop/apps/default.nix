@@ -1,4 +1,8 @@
 {...}: {
+  imports = [
+    ./ai.nix
+  ];
+
   services.grafana = {
     enable = true;
   };
