@@ -18,6 +18,4 @@
     acceleration = "cuda";
     loadModels = ["deepseek-r1:14b"];
   };
-
-  services.tailscale.extraUpFlags = ["serve 8080"];
 }

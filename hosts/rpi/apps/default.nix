@@ -3,6 +3,10 @@
     ./webserver.nix
   ];
 
+  services.tailscale = {
+    extraSetFlags = ["--webserver"];
+  };
+
   # Github actions runner
   services.github-runners.hs = {
     enable = true;
