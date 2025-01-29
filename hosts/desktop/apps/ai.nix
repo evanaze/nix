@@ -15,6 +15,7 @@
     enable = true;
     port = 11434;
     package = pkgs.ollama-cuda;
+    acceleration = "cuda";
     loadModels = ["deepseek-r1:14b"];
   };
 
