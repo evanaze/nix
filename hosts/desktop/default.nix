@@ -17,7 +17,6 @@
     gnome-terminal
     inkscape
     keymapp
-    ollama-cuda
     protonmail-desktop
     python314
     slack
