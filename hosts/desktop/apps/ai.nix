@@ -19,16 +19,16 @@
     loadModels = ["deepseek-r1:14b"];
   };
 
-  # systemd.services.tailscale-serve-open-webui = {
-  #   after = ["tailscaled.service"];
-  #   wants = ["tailscaled.service"];
-  #   wantedBy = ["multi-user.target"];
-  #   description = "Using Tailscale Serve to publish my AI Chatbot";
-  #   serviceConfig = {
-  #     Type = "exec";
-  #   };
-  #   script = ''
-  #     ${pkgs.tailscale} serve 8080
-  #   '';
-  # };
+  systemd.services.tailscale-serve-open-webui = {
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish my AI Chatbot";
+    serviceConfig = {
+      Type = "exec";
+    };
+    script = ''
+      ${pkgs.tailscale}/bin/tailscale serve 8080
+    '';
+  };
 }
