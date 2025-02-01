@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     ollama-cuda
   ];
@@ -27,8 +31,6 @@
     serviceConfig = {
       Type = "exec";
     };
-    script = ''
-      ${pkgs.tailscale}/bin/tailscale serve 8080
-    '';
+    script = "${lib.getExe pkgs.tailscale} serve 8080";
   };
 }
