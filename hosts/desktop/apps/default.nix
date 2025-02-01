@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./ai.nix
+    ./melee.nix
   ];
 
   services.grafana = {
