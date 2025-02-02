@@ -6,7 +6,7 @@ in {
   ];
 
   services.tailscale = {
-    extraSetFlags = ["--webclient"];
+    extraSetFlags = ["--webclient" "--advertise-exit-node"];
   };
 
   services.caddy = {
