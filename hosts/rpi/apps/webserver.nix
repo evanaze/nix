@@ -6,7 +6,7 @@ in {
   ];
 
   services.tailscale = {
-    extraSetFlags = ["--webserver"];
+    extraSetFlags = ["--webclient"];
   };
 
   services.caddy = {

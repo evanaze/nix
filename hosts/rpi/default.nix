@@ -23,10 +23,6 @@
     initrd.systemd.tpm2.enable = false;
   };
 
-  environment.systemPackages = with pkgs; [
-    cloudflared
-  ];
-
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
     nixPath = [
