@@ -39,6 +39,7 @@
         modules = [
           ./hosts/desktop
           ./modules/zsh.nix
+          ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -53,9 +54,6 @@
               imports = [
                 ./home/desktop.nix
                 slippi.homeManagerModules.default 
-                {
-                  slippi-launcher.isoPath = "/home/evanaze/Downloads/melee.iso";
-                }
               ];
             };
           }
