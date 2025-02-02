@@ -2,7 +2,7 @@
   home-manager.users.${username} = {
     slippi-launcher = {
       enable = true;
-      isoPath = "~/Documents/melee.iso";
+      isoPath = "~/Downloads/melee.iso";
       launchMeleeOnPlay = false;
     };
   };

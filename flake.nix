@@ -39,10 +39,10 @@
         modules = [
           ./hosts/desktop
           ./modules/zsh.nix
-          ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
           {
+            home-manager.backupFileExtension = "backup";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
@@ -52,7 +52,10 @@
             home-manager.users.${username} = {
               imports = [
                 ./home/desktop.nix
-                slippi.homeManagerModules.default
+                slippi.homeManagerModules.default 
+                {
+                  slippi-launcher.isoPath = "/home/evanaze/Downloads/melee.iso";
+                }
               ];
             };
           }
