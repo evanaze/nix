@@ -2,9 +2,12 @@
   domain = "evanazevedo.com";
 in {
   environment.systemPackages = with pkgs; [
-    cloudflared
     nss
   ];
+
+  services.tailscale = {
+    extraSetFlags = ["--webserver"];
+  };
 
   services.caddy = {
     enable = true;
