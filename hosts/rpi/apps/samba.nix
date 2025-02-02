@@ -1,4 +1,8 @@
-{...}: {
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    exfat
+  ];
+
   services.samba = {
     enable = true;
     settings = {

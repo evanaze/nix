@@ -2,6 +2,7 @@
   domain = "evanazevedo.com";
 in {
   environment.systemPackages = with pkgs; [
+    cloudflared
     nss
   ];
 
