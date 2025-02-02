@@ -1,5 +1,7 @@
 {pkgs, ...}: {
-  imports = [./shared.nix];
+  imports = [
+    ./shared.nix
+  ];
 
   home.packages = with pkgs; [
     brave

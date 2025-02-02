@@ -12,6 +12,11 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    slippi = {
+      url = "github:lytedev/slippi-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs = inputs @ {
@@ -20,6 +25,7 @@
     home-manager,
     nix-darwin,
     nixvim,
+    slippi,
     ...
   }: let
     username = "evanaze";
@@ -32,7 +38,8 @@
         };
         modules = [
           ./hosts/desktop
-          ./modules/zsh
+          ./modules/zsh.nix
+          ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -42,8 +49,14 @@
               inherit inputs;
               inherit username;
             };
-            home-manager.users.${username} = import ./home/desktop.nix;
+            home-manager.users.${username} = {
+              imports = [
+                ./home/desktop.nix
+                slippi.homeManagerModules.default
+              ];
+            };
           }
+          slippi.nixosModules.default
         ];
       };
 
@@ -54,7 +67,7 @@
         };
         modules = [
           ./hosts/rpi
-          ./modules/zsh
+          ./modules/zsh.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -78,7 +91,7 @@
         };
         modules = [
           ./hosts/mac
-          ./modules/zsh
+          ./modules/zsh.nix
 
           home-manager.darwinModules.home-manager
           {
