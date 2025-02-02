@@ -18,6 +18,9 @@
   services.samba = {
     enable = true;
     settings = {
+      global = {
+        "bind interfaces only" = "no";
+      };
       "tm_share" = {
         "path" = "/mnt/backup";
         "valid users" = "evanaze";

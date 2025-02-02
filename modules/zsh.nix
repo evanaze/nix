@@ -48,6 +48,7 @@
           ll = "ls -al";
           n = "nvim .";
           dup = "devenv up";
+          showsvcs = "systemctl --type=service --state=running";
           sshpi = "ssh evanaze@hs.spitz-pickerel.ts.net";
           sshdt = "ssh evanaze@father.spitz-pickerel.ts.net";
           update = "pushd $HOME/.config/nix && nix flake update && popd";
