@@ -4,4 +4,6 @@
     ./samba.nix
     ./webserver.nix
   ];
+
+  services.tailscale.useRoutingFeatures = "server";
 }
