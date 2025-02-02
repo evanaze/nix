@@ -5,10 +5,6 @@ in {
     nss
   ];
 
-  services.tailscale = {
-    extraSetFlags = ["--webclient" "--advertise-exit-node"];
-  };
-
   services.caddy = {
     enable = true;
     email = "me@evanazevedo.com";

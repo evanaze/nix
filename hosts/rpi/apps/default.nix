@@ -2,8 +2,7 @@
   imports = [
     ./gh-actions.nix
     ./samba.nix
+    ./tailscale.nix
     ./webserver.nix
   ];
-
-  services.tailscale.useRoutingFeatures = "server";
 }
