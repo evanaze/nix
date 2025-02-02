@@ -1,6 +1,6 @@
 {...}: {
   services.tailscale = {
     useRoutingFeatures = "server";
-    extraSetFlags = ["--webclient" "--advertise-exit-node"];
+    extraSetFlags = ["--advertise-exit-node"];
   };
 }
