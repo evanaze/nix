@@ -50,10 +50,5 @@
     stateVersion = "24.11";
   };
 
-  systemd.tmpfiles.rules = [
-    "d /var/lib/cloudflared 0755 cloudflared cloudflared -"
-    "d /var/www/evanazevedo.com 0755 github-runner-hs github-runner-hs -"
-  ];
-
   i18n.defaultLocale = "en_US.UTF-8";
 }

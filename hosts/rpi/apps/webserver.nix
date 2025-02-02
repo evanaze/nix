@@ -23,7 +23,10 @@ in {
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [80 443];
+  systemd.tmpfiles.rules = [
+    "d /var/lib/cloudflared 0755 cloudflared cloudflared -"
+    "d /var/www/evanazevedo.com 0755 github-runner-hs github-runner-hs -"
+  ];
 
   services.cloudflared = {
     enable = true;
