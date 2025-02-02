@@ -23,7 +23,7 @@
     loadModels = ["deepseek-r1:14b"];
   };
 
-  systemd.services.tailscale-serve-open-webui = {
+  systemd.services.tsserve-open-webui = {
     after = ["tailscaled.service"];
     wants = ["tailscaled.service"];
     wantedBy = ["multi-user.target"];
