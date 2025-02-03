@@ -1,7 +1,9 @@
 {...}: {
   homebrew = {
     enable = true;
-
+    brews = [
+      "direnv"
+    ];
     casks = [
       "bitwarden"
       "brave-browser"
