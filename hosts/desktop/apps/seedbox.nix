@@ -4,6 +4,10 @@
     web.enable = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    protonvpn-gui
+  ];
+
   # creating network namespace
   systemd.services."netns@" = {
     description = "%I network namespace";
@@ -33,7 +37,7 @@
           ${iproute2}/bin/ip -n wg address add <ipv4 VPN addr/cidr> dev wg0
           # ${iproute2}/bin/ip -n wg -6 address add <ipv6 VPN addr/cidr> dev wg0
           ${iproute2}/bin/ip netns exec wg \
-            ${wireguard-tools}/bin/wg setconf wg0 /root/myVPNprovider.conf
+            ${wireguard-tools}/bin/wg setconf wg0 /var/lib/deluge/protonvpn_wg.conf
           ${iproute2}/bin/ip -n wg link set wg0 up
           # need to set lo up as network namespace is started with lo down
           ${iproute2}/bin/ip -n wg link set lo up
