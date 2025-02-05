@@ -13,7 +13,6 @@
     meslo-lgs-nf
     nmap
     unzip
-    vim
     wget
   ];
 
