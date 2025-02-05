@@ -1,9 +1,14 @@
 {...}: {
   homebrew = {
     enable = true;
-    onActivation.autoUpdate = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+      cleanup = "zap";
+    };
     brews = [
       "direnv"
+      "jq"
       "yt-dlp"
     ];
     casks = [
