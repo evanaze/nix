@@ -17,7 +17,6 @@
       "brave-browser"
       "cursor"
       "docker"
-      "duplicati"
       "iterm2"
       "keyboardcleantool"
       "nordvpn"
