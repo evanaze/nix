@@ -9,6 +9,7 @@
     brews = [
       "direnv"
       "jq"
+      "rclone"
       "yt-dlp"
     ];
     casks = [
