@@ -18,13 +18,17 @@
 
   system.stateVersion = 4;
 
-  services.fcron = {
-    enable = true;
-    systab = ''
-      0 0 * * * rclone sync /Users/evanaze rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current --backup-dir=rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/`date -I`
-    '';
+  launchd.agents.rclone = {
+    command = "rclone sync /Users/evanaze rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current --backup-dir=rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/`date -I`";
+    serviceConfig = {
+      KeepAlive = false;
+      processType = "Background";
+      startCalendarInterval = {
+        Hour = 0;
+        Minute = 0;
+      };
+    };
   };
-
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
   nix = {
