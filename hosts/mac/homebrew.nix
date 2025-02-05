@@ -1,8 +1,10 @@
 {...}: {
   homebrew = {
     enable = true;
+    onActivation.autoUpdate = true;
     brews = [
       "direnv"
+      "yt-dlp"
     ];
     casks = [
       "bitwarden"
