@@ -20,7 +20,7 @@
 
   # Backups using RClone and Tailscale Taildrive
   launchd.agents.rclone = {
-    command = "rclone sync /Users/evanaze rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current --backup-dir=rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/`date -I`";
+    command = "/usr/local/bin/rclone sync /Users/evanaze rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current --backup-dir=rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/`date -I`";
     serviceConfig = {
       KeepAlive = false;
       ProcessType = "Background";
