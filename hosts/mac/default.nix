@@ -28,6 +28,8 @@
         Hour = 0;
         Minute = 0;
       };
+      StandardErrorPath = "/tmp/rclone.err";
+      StandardOutPath = "/tmp/rclone.out";
     };
   };
 
