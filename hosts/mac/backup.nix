@@ -10,6 +10,7 @@
     folders=("Documents" "Music" "Movies")
 
     # Loop through each folder and run the rclone sync command
+    # String escaping as explained here: https://nix.dev/manual/nix/2.25/language/string-literals
     for folder in "''${folders[@]}"; do
         echo "Syncing folder: $folder"
 
