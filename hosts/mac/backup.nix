@@ -10,7 +10,7 @@
     folders=("Documents" "Music" "Movies")
 
     # Loop through each folder and run the rclone sync command
-    for folder in "$\{folders[@]\}"; do
+    for folder in "''${folders[@]}"; do
         echo "Syncing folder: $folder"
 
         ${lib.getExe pkgs.rclone} sync "/Users/evanaze/$folder" \
