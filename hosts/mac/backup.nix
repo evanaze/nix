@@ -17,7 +17,8 @@
         ${lib.getExe pkgs.rclone} sync "/Users/evanaze/$folder" \
             "rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current/$folder" \
             --backup-dir="rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/$(date -I)/$folder" \
-            --config="/Users/evanaze/.config/rclone/rclone.conf"
+            --config="/Users/evanaze/.config/rclone/rclone.conf" \
+            --exclude=.git/**
 
         echo "Finished syncing $folder"
     done
