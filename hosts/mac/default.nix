@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../shared.nix
+    ./backup.nix
     ./homebrew.nix
   ];
 
@@ -17,21 +18,6 @@
   services.nix-daemon.enable = true;
 
   system.stateVersion = 4;
-
-  # Backups using RClone and Tailscale Taildrive
-  launchd.agents.rclone = {
-    command = "/usr/local/bin/rclone sync /Users/evanaze rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/current --backup-dir=rpi:kb9n9h7fxq@privaterelay.appleid.com/hs/backup/mac/archive/`date -I` --config=/Users/evanaze/.config/rclone/rclone.conf";
-    serviceConfig = {
-      KeepAlive = false;
-      ProcessType = "Background";
-      StartCalendarInterval = {
-        Hour = 0;
-        Minute = 0;
-      };
-      StandardErrorPath = "/tmp/rclone.err";
-      StandardOutPath = "/tmp/rclone.out";
-    };
-  };
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
