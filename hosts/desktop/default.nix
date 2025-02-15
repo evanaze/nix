@@ -17,6 +17,7 @@
     gnome-terminal
     inkscape
     keymapp
+    lm_sensors
     protonmail-desktop
     python314
     slack
