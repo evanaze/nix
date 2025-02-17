@@ -8,6 +8,10 @@
     protonvpn-gui
   ];
 
+  services.jellyfin = {
+    enable = true;
+  };
+
   # creating network namespace
   systemd.services."netns@" = {
     description = "%I network namespace";
