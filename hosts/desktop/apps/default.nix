@@ -2,6 +2,6 @@
   imports = [
     ./ai.nix
     ./prometheus.nix
-    ./seedbox.nix
+    ./seedbox
   ];
 }

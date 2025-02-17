@@ -1,15 +1,14 @@
 {pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    protonvpn-gui
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+  ];
+
   services.deluge = {
     enable = true;
     web.enable = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    protonvpn-gui
-  ];
-
-  services.jellyfin = {
-    enable = true;
   };
 
   # creating network namespace
