@@ -1,9 +1,8 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     protonvpn-gui
-    jellyfin
-    jellyfin-web
-    jellyfin-ffmpeg
+    iproute2
+    wireguard-tools
   ];
 
   services.deluge = {
