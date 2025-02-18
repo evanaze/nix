@@ -39,7 +39,7 @@
           ${iproute2}/bin/ip -n wg address add <ipv4 VPN addr/cidr> dev wg0
           # ${iproute2}/bin/ip -n wg -6 address add <ipv6 VPN addr/cidr> dev wg0
           ${iproute2}/bin/ip netns exec wg \
-            ${wireguard-tools}/bin/wg setconf wg0 /var/lib/deluge/wg-US-CO-48.conf
+            ${wireguard-tools}/bin/wg setconf wg0 /var/lib/deluge/wg-protonvpn.conf
           ${iproute2}/bin/ip -n wg link set wg0 up
           # need to set lo up as network namespace is started with lo down
           ${iproute2}/bin/ip -n wg link set lo up
