@@ -36,20 +36,17 @@
           see -e
           ${iproute2}/bin/ip link add wg0 type wireguard
           ${iproute2}/bin/ip link set wg0 netns wg
-          ${iproute2}/bin/ip -n wg address add <ipv4 VPN addr/cidr> dev wg0
-          # ${iproute2}/bin/ip -n wg -6 address add <ipv6 VPN addr/cidr> dev wg0
+          ${iproute2}/bin/ip -n wg address add 10.2.0.2/32 dev wg0
           ${iproute2}/bin/ip netns exec wg \
             ${wireguard-tools}/bin/wg setconf wg0 /var/lib/deluge/wg-protonvpn.conf
           ${iproute2}/bin/ip -n wg link set wg0 up
           # need to set lo up as network namespace is started with lo down
           ${iproute2}/bin/ip -n wg link set lo up
           ${iproute2}/bin/ip -n wg route add default dev wg0
-          # ${iproute2}/bin/ip -n wg -6 route add default dev wg0
         '';
       ExecStop = with pkgs;
         writers.writeBash "wg-down" ''
           ${iproute2}/bin/ip -n wg route del default dev wg0
-          # ${iproute2}/bin/ip -n wg -6 route del default dev wg0
           ${iproute2}/bin/ip -n wg link del wg0
         '';
     };
