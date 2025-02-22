@@ -52,7 +52,7 @@
           sshpi = "ssh evanaze@hs.spitz-pickerel.ts.net";
           sshdt = "ssh evanaze@father.spitz-pickerel.ts.net";
           update = "pushd $HOME/.config/nix && nix flake update && popd";
-          npush = "pushd $HOME/.config/nix && epush $* && popd";
+          npush = "pushd $HOME/.config/nix && epush $@ && popd";
         };
       };
     };

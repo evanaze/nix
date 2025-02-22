@@ -24,8 +24,8 @@
   };
 
   systemd.services.tsserve-open-webui = {
-    after = ["tailscaled.service"];
-    wants = ["tailscaled.service"];
+    after = ["tailscaled.service" "open-webui.service"];
+    wants = ["tailscaled.service" "open-webui.service"];
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish my AI Chatbot";
     serviceConfig = {
