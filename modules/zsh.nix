@@ -51,8 +51,8 @@
           showsvcs = "systemctl --type=service --state=running";
           sshpi = "ssh evanaze@hs.spitz-pickerel.ts.net";
           sshdt = "ssh evanaze@father.spitz-pickerel.ts.net";
-          update = "pushd $HOME/.config/nix && nix flake update && popd";
-          updnvim = "pushd $HOME/.config/nix && nix flake update nixvim && popd";
+          update = "pushd $HOME/.config/nix && nix flake update && epush updating flake inputs && popd";
+          updnvim = "pushd $HOME/.config/nix && nix flake update nixvim && epush updating nixvim && popd";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
         };
       };
