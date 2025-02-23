@@ -14,9 +14,6 @@
     shell = pkgs.zsh;
   };
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-
   system.stateVersion = 4;
 
   # The platform the configuration will be used on.
