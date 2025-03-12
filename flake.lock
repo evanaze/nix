@@ -350,11 +350,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1740447190,
-        "narHash": "sha256-zEba7ZbPwpYxdVo9bMwWx2ba55H+X59hB0qChqn2R0M=",
+        "lastModified": 1741743479,
+        "narHash": "sha256-vmWFSTV5NIgRX3lYXEmtTRPe19HZFj3+CQ9RdnB2hLs=",
         "owner": "lytedev",
         "repo": "slippi-nix",
-        "rev": "44a27a202d43e6cf05e8ed32bf69c35d3aca647e",
+        "rev": "33f57a434794f896dbb246366063b53d749502a8",
         "type": "github"
       },
       "original": {
