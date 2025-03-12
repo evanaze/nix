@@ -4,7 +4,7 @@
       enable = true;
       isoPath = "/home/evanaze/Games/melee_patched.iso";
       launchMeleeOnPlay = false;
-      useNetplayBeta = false;
+      useNetplayBeta = true;
     };
   };
 
