@@ -17,7 +17,6 @@
       # Daily 00:00
       dates = "daily UTC";
     };
-    stateVersion = "24.11";
   };
 
   services.tailscale.enable = true;
