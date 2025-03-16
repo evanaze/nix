@@ -9,5 +9,16 @@
     options = "--delete-older-than 7d";
   };
 
+  system = {
+    # Auto upgrade
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+      # Daily 00:00
+      dates = "daily UTC";
+    };
+    stateVersion = "24.11";
+  };
+
   services.tailscale.enable = true;
 }
