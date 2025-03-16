@@ -8,6 +8,7 @@
     };
     brews = [
       "direnv"
+      "ffmpeg"
       "jq"
       "yt-dlp"
     ];
