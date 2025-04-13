@@ -20,7 +20,7 @@
     port = 11434;
     package = pkgs.ollama-cuda;
     acceleration = "cuda";
-    loadModels = ["deepseek-r1:14b"];
+    loadModels = ["qwq"];
   };
 
   systemd.services.tsserve-open-webui = {

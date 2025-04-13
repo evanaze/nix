@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    # ./ai.nix
+    ./ai.nix
     ./prometheus.nix
     ./seedbox
   ];
