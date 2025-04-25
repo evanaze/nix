@@ -18,7 +18,7 @@
         syntaxHighlighting.enable = true;
         enableCompletion = true;
         history.size = 10000;
-        initExtra = ''
+        initContent = ''
           function epush() {
               # branch=$(git rev-parse --abbrev-ref HEAD)
               # ticket=$(echo $branch | cut -d / -f2 -)
