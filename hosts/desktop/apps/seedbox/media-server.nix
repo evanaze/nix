@@ -7,5 +7,6 @@
 
   services.jellyfin = {
     enable = true;
+    user = "evanaze";
   };
 }
