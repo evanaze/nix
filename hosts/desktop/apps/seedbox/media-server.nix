@@ -1,12 +1,15 @@
-{pkgs, ...}: {
-  environment.systemPackages = with pkgs; [
-    jellyfin
-    jellyfin-web
-    jellyfin-ffmpeg
-  ];
+{...}: {
+  # environment.systemPackages = with pkgs; [
+  #   jellyfin
+  #   jellyfin-web
+  #   jellyfin-ffmpeg
+  # ];
 
-  services.jellyfin = {
+  # services.jellyfin = {
+  #   enable = true;
+  #   user = "evanaze";
+  # };
+  services.plex = {
     enable = true;
-    user = "evanaze";
   };
 }

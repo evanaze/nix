@@ -1,9 +1,11 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    protonvpn-cli
+    protonvpn-gui
     iproute2
     wireguard-tools
   ];
+
+  nixpkgs.config.allowBroken = true;
 
   services.deluge = {
     enable = true;
