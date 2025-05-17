@@ -191,16 +191,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1746904237,
-        "narHash": "sha256-3e+AVBczosP5dCLQmMoMEogM57gmZ2qrVSrmq9aResQ=",
+        "lastModified": 1747488543,
+        "narHash": "sha256-auqJBEiW9j1UexT+p61MjqFa2bJBwZTeVvyNgBEswNg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d89fc19e405cb2d55ce7cc114356846a0ee5e956",
+        "rev": "d5b2098f59d0222d95dc9e15c2e7d085962aaa0f",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
+        "ref": "release-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -333,11 +333,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745620717,
-        "narHash": "sha256-pUxNcvpQsPOA4QVRlPWOLcOVExTVYIJTORj4YA1KJlo=",
+        "lastModified": 1747373105,
+        "narHash": "sha256-i2rSdjs4LJuVlo9u5AXg0TbhNumMNck31tGf5lOBDsI=",
         "owner": "lytedev",
         "repo": "slippi-nix",
-        "rev": "27dbd71ff98c0f8bbd23b778322660ee88aefac4",
+        "rev": "26e593eb8adab64310d5321d1a12bb27f9eefde2",
         "type": "github"
       },
       "original": {
