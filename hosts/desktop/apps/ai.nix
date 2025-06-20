@@ -5,6 +5,7 @@
 }: {
   environment.systemPackages = with pkgs; [
     ollama-cuda
+    aider-chat
   ];
 
   services.open-webui = {
