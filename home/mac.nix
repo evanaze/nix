@@ -6,7 +6,7 @@
   };
 
   programs.zsh.shellAliases = {
-    rebuild = "darwin-rebuild switch --flake $HOME/.config/nix#cooper";
+    rebuild = "sudo darwin-rebuild switch --flake $HOME/.config/nix#cooper";
     erebuild = "sudo nix run nix-darwin -- switch --flake $HOME/.config/nix#cooper";
   };
 }
