@@ -15,6 +15,7 @@
   };
 
   system.stateVersion = 4;
+  system.primaryUser = username;
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
