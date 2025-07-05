@@ -79,14 +79,15 @@
       layout = "us";
       variant = "";
     };
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
   };
+
+  services.desktopManager.gnome.enable = true;
 
   services.displayManager = {
     # Enable automatic login for the user.
     autoLogin.enable = true;
     autoLogin.user = username;
+    gdm.enable = true;
   };
 
   users.users.${username} = {
