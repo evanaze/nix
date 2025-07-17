@@ -7,6 +7,7 @@
     ../shared.nix
     ./backup.nix
     ./homebrew.nix
+    ./odoo/odoo.nix
   ];
 
   users.users.${username} = {
