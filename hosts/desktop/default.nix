@@ -12,6 +12,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    claude-code
     code-cursor
     google-chrome
     gnome-terminal
