@@ -4,6 +4,7 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
+    claude-code
     cron
     devenv
     dig
