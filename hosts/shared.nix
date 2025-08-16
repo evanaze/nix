@@ -23,6 +23,8 @@
     trusted-users = root ${username}
   '';
 
+  nixpkgs.config.allowUnfree = true;
+
   environment = {
     variables = {
       EDITOR = "nvim";
