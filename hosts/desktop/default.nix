@@ -137,6 +137,11 @@
     permittedInsecurePackages = ["electron-25.9.0"];
   };
 
+  # Set permissions for /dev/hidraw8
+  services.udev.extraRules = ''
+    SUBSYSTEM=="hidraw", KERNEL=="hidraw8", MODE="0666"
+  '';
+
   networking.firewall.enable = false;
 
   system.stateVersion = "23.11";
