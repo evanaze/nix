@@ -36,7 +36,7 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      theme = "tokyo-night";
+      theme = "catppuccin-macchiato";
     };
   };
 }
