@@ -61,6 +61,33 @@
         ];
       };
 
+      framework = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit username;
+        };
+        modules = [
+          ./hosts/framework
+          ./modules/zsh.nix
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.backupFileExtension = "backup";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
+            home-manager.users.${username} = {
+              imports = [
+                ./home/framework.nix
+              ];
+            };
+          }
+        ];
+      };
+
       rpi = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         specialArgs = {
