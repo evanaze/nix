@@ -2,6 +2,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./fprint.nix
+
     ./hardware-configuration.nix
     ../shared.nix
     ../nixos-shared.nix
@@ -26,6 +27,9 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+
+  # Enable bios updates
+  services.fwupd.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
