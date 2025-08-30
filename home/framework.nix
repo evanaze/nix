@@ -16,6 +16,6 @@
   };
 
   programs.zsh.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#framework";
+    rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#framework --impure";
   };
 }
