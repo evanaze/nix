@@ -9,6 +9,7 @@
       fd
       fzf
       gh
+      pass
       pure-prompt
       ripgrep
       zoxide
