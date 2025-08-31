@@ -5,7 +5,13 @@
 }: {
   environment = {
     systemPackages = with pkgs; [
+      doppler
+      fd
+      fzf
+      gh
       pure-prompt
+      ripgrep
+      zoxide
       zsh-fast-syntax-highlighting
     ];
   };
