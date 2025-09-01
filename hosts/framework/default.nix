@@ -3,6 +3,7 @@
     # Include the results of the hardware scan.
     ./fprint.nix
 
+    <nixos-hardware/framework/13-inch/7040-amd>
     ./hardware-configuration.nix
     ../shared.nix
     ../nixos-shared.nix
