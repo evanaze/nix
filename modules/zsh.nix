@@ -53,6 +53,7 @@
           gsminit = "git submodule update --init --recursive";
           gsmupd = "git submodule update --remote --recursive";
           ll = "ls -al";
+          cd = "z"; # Map zoxide to cd
           n = "nvim .";
           dup = "devenv up";
           showsvcs = "systemctl --type=service --state=running";
