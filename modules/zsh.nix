@@ -53,7 +53,7 @@
           gsminit = "git submodule update --init --recursive";
           gsmupd = "git submodule update --remote --recursive";
           ll = "ls -al";
-          cd = "z"; # Map zoxide to cd
+          cd = "z";
           n = "nvim .";
           dup = "devenv up";
           showsvcs = "systemctl --type=service --state=running";
@@ -64,6 +64,11 @@
           updnvim = "pushd $HOME/.config/nix && nix flake update nixvim && epush updating nixvim && popd";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
         };
+      };
+
+      zoxide = {
+        enable = true;
+        enableZshIntegration = true;
       };
     };
   };
