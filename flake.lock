@@ -256,11 +256,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1747694756,
-        "narHash": "sha256-Mm1ef+EQCsGQQgBgovCPrgO8aw8BG77UjsB7Mf5hjfQ=",
+        "lastModified": 1756911081,
+        "narHash": "sha256-foXbzt1bx30+ISxlJvpyDds3KJLKwC9Bk1g4GV7BVZc=",
         "owner": "evanaze",
         "repo": "nixvim-conf",
-        "rev": "d688baefb339714d05607d859080660558286d5c",
+        "rev": "84ee159caf7acb18c2b978ae7c920511e7dfaf4e",
         "type": "github"
       },
       "original": {
