@@ -32,6 +32,17 @@
     };
   };
 
+  programs.ghostty = {
+    enable = true;
+    enableZshIntegration = true;
+    installVimSyntax = true;
+    settings = {
+      font-family = "Iosevka";
+      theme = "catppuccin-macchiato";
+      background-opacity = 0.96;
+    };
+  };
+
   programs.zellij = {
     enable = true;
     enableZshIntegration = true;
