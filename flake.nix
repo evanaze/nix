@@ -12,6 +12,10 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     slippi = {
       url = "github:lytedev/slippi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +29,7 @@
     home-manager,
     nix-darwin,
     nixvim,
+    sops-nix,
     slippi,
     ...
   }: let
@@ -41,6 +46,7 @@
           ./modules/zsh.nix
           ./modules/slippi.nix
 
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.backupFileExtension = "backup";
@@ -70,6 +76,7 @@
           ./hosts/framework
           ./modules/zsh.nix
 
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.backupFileExtension = "backup";
@@ -97,6 +104,7 @@
           ./hosts/rpi
           ./modules/zsh.nix
 
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -121,6 +129,7 @@
           ./hosts/mac
           ./modules/zsh.nix
 
+          sops-nix.darwinModules.sops
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
