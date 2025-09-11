@@ -4,6 +4,10 @@
   config,
   ...
 }: {
+  imports = [
+    ./ipfs.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
     claude-code
@@ -69,10 +73,5 @@
       LC_TELEPHONE = "en_US.UTF-8";
       LC_TIME = "en_US.UTF-8";
     };
-  };
-
-  # IPFS
-  services.kubo = {
-    enable = true;
   };
 }
