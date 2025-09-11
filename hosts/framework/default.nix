@@ -5,9 +5,9 @@
 
     <nixos-hardware/framework/13-inch/7040-amd>
     ./hardware-configuration.nix
-    ../shared.nix
-    ../nixos-shared.nix
-    ../linux-dev-shared.nix
+    ../shared
+    ../shared/nixos
+    ../shared/pc
   ];
 
   # Bootloader.

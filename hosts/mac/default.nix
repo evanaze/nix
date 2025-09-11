@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ../shared.nix
+    ../shared
     ./backup.nix
     ./homebrew.nix
   ];

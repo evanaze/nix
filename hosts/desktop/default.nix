@@ -7,9 +7,9 @@
     ./apps
     ./hardware-configuration.nix
     ./nvidia.nix
-    ../shared.nix
-    ../nixos-shared.nix
-    ../linux-dev-shared.nix
+    ../shared
+    ../shared/nixos
+    ../shared/pc
   ];
 
   # Bootloader

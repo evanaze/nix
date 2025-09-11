@@ -6,8 +6,8 @@
     # Necessary configuration
     ./networking.nix
     ./users.nix
-    ../shared.nix
-    ../nixos-shared.nix
+    ../shared
+    ../shared/nixos
 
     # Services
     ./apps
