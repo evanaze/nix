@@ -1,6 +1,7 @@
 {
   pkgs,
   username,
+  config,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -46,7 +47,7 @@
     initialPassword = "password";
     isNormalUser = true;
     description = "Evan Azevedo";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" config.services.kubo.group];
     shell = pkgs.zsh;
   };
 
@@ -68,5 +69,10 @@
       LC_TELEPHONE = "en_US.UTF-8";
       LC_TIME = "en_US.UTF-8";
     };
+  };
+
+  # IPFS
+  services.kubo = {
+    enable = true;
   };
 }
