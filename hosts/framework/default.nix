@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     # Include the results of the hardware scan.
-    ./fprint.nix
+    # ./fprint.nix
 
     ./hardware-configuration.nix
     ../shared
@@ -17,9 +17,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Needed for easyeffects
-  programs.dconf.enable = true;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
