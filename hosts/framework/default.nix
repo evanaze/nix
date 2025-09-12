@@ -33,7 +33,11 @@
 
   # Enable bios updates
   services.fwupd.enable = true;
-  hardware.framework.enableKmod = true;
+  # Enable hardware settings
+  hardware.framework = {
+    enableKmod = true;
+    laptop13.audioEnhancement.enable = true;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
