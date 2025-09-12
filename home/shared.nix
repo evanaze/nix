@@ -59,8 +59,4 @@
       autoupdate = true;
     };
   };
-
-  programs.thunderbird = {
-    enable = true;
-  };
 }
