@@ -13,6 +13,7 @@
     hugo
     python3
     ripgrep
+    thunderbird
     inputs.nixvim.packages.${system}.default
   ];
 
