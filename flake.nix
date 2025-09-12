@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim.url = "github:evanaze/nixvim-conf";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -25,6 +26,7 @@
     home-manager,
     nix-darwin,
     nixvim,
+    nixos-hardware,
     slippi,
     ...
   }: let
@@ -69,6 +71,8 @@
         modules = [
           ./hosts/framework
           ./modules/zsh.nix
+
+          nixos-hardware.nixosModules.framework-13-7040-amd
 
           home-manager.nixosModules.home-manager
           {
