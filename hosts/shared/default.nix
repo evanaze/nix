@@ -12,10 +12,14 @@
     htop
     meslo-lgs-nf
     nmap
-    sops
     unzip
     wget
   ];
+
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    age.keyFile = "home/${username}/.config/sops/age/keys.txt";
+  };
 
   programs.zsh.enable = true;
 

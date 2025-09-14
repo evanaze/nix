@@ -18,6 +18,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -28,6 +32,7 @@
     nixvim,
     nixos-hardware,
     slippi,
+    sops-nix,
     ...
   }: let
     username = "evanaze";
@@ -36,6 +41,7 @@
       desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
+          inherit inputs;
           inherit username;
         };
         modules = [
@@ -49,7 +55,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
-              inherit inputs;
               inherit username;
             };
             home-manager.users.${username} = {
@@ -60,6 +65,7 @@
             };
           }
           slippi.nixosModules.default
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -80,7 +86,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
-              inherit inputs;
               inherit username;
             };
             home-manager.users.${username} = {
@@ -89,6 +94,7 @@
               ];
             };
           }
+          sops-nix.nixosModules.sops
         ];
       };
 
@@ -111,6 +117,7 @@
             };
             home-manager.users.${username} = import ./home/rpi.nix;
           }
+          sops-nix.nixosModules.sops
         ];
       };
     };
@@ -135,6 +142,7 @@
             };
             home-manager.users.${username} = import ./home/mac.nix;
           }
+          sops-nix.nixosModules.sops
         ];
       };
     };
