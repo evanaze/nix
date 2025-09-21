@@ -41,7 +41,6 @@
       desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit inputs;
           inherit username;
         };
         modules = [
@@ -55,6 +54,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
+              inherit inputs;
               inherit username;
             };
             home-manager.users.${username} = {
@@ -86,6 +86,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
+              inherit inputs;
               inherit username;
             };
             home-manager.users.${username} = {
