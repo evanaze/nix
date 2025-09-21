@@ -33,7 +33,10 @@
   # Enable hardware settings
   hardware.framework = {
     enableKmod = true;
-    laptop13.audioEnhancement.enable = true;
+    laptop13.audioEnhancement = {
+      enable = true;
+      hideRawDevice = false;
+    };
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
