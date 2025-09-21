@@ -40,7 +40,7 @@
       installVimSyntax = true;
       settings = {
         font-family = "Iosevka";
-        theme = "catppuccin-macchiato";
+        theme = "Catppuccin Macchiato";
         background-opacity = 0.96;
       };
     };
