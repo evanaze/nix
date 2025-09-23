@@ -1,8 +1,5 @@
 {...}: {
   imports = [
-    # Include the results of the hardware scan.
-    # ./fprint.nix
-
     ./hardware-configuration.nix
     ../shared
     ../shared/nixos

@@ -10,7 +10,7 @@
 
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
-    # calibre
+    calibre
     claude-code
     code-cursor
     google-chrome
