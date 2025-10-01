@@ -1,5 +1,8 @@
 {...}: {
   imports = [
+    # Include the results of the hardware scan.
+    # ./fprint.nix
+
     ./hardware-configuration.nix
     ../shared
     ../shared/nixos
@@ -30,10 +33,7 @@
   # Enable hardware settings
   hardware.framework = {
     enableKmod = true;
-    laptop13.audioEnhancement = {
-      enable = true;
-      hideRawDevice = false;
-    };
+    laptop13.audioEnhancement.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).

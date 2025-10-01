@@ -108,8 +108,6 @@
           ./hosts/rpi
           ./modules/zsh.nix
 
-          nixos-hardware.nixosModules.raspberry-pi-5
-
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
