@@ -17,46 +17,48 @@
     inputs.nixvim.packages.${system}.default
   ];
 
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.git = {
-    enable = true;
-    userName = "Evan Azevedo";
-    userEmail = "me@evanazevdo.com";
-    extraConfig = {
-      init.defaultBranch = "main";
-      pull.rebase = "false";
+  programs = {
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
-  };
 
-  programs.ghostty = {
-    enable = true;
-    enableZshIntegration = true;
-    installVimSyntax = true;
-    settings = {
-      font-family = "Iosevka";
-      theme = "catppuccin-macchiato";
-      background-opacity = 0.96;
+    git = {
+      enable = true;
+      userName = "Evan Azevedo";
+      userEmail = "me@evanazevdo.com";
+      extraConfig = {
+        init.defaultBranch = "main";
+        pull.rebase = "false";
+      };
     };
-  };
 
-  programs.zellij = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      theme = "catppuccin-macchiato";
+    ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+      installVimSyntax = true;
+      settings = {
+        font-family = "Iosevka";
+        theme = "Catppuccin Macchiato";
+        background-opacity = 0.96;
+      };
     };
-  };
 
-  programs.opencode = {
-    enable = true;
-    settings = {
-      theme = "catppuccin";
-      autoupdate = true;
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        theme = "catppuccin-macchiato";
+      };
+    };
+
+    opencode = {
+      enable = true;
+      settings = {
+        theme = "catppuccin";
+        autoupdate = true;
+      };
     };
   };
 }
