@@ -12,7 +12,6 @@
     htop
     meslo-lgs-nf
     nmap
-    protonvpn-gui
     unzip
     wget
   ];

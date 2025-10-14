@@ -4,6 +4,7 @@
     ../shared
     ../shared/nixos
     ../shared/pc
+    ../desktop/apps/seedbox
   ];
 
   # Bootloader.
