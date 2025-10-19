@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ./games.nix
     ./ipfs.nix
   ];
 
