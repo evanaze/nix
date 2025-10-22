@@ -26,6 +26,8 @@
     pulse.enable = true;
   };
 
+  services.gnome.gnome-keyring.enable = true;
+
   # Enable bios updates
   services.fwupd.enable = true;
   # Enable hardware settings
