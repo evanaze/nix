@@ -43,11 +43,14 @@
   };
 
   services.desktopManager.gnome.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
+  services.gnome.gnome-keyring.enable = true;
 
   services.displayManager = {
-    # Enable automatic login for the user.
-    autoLogin.enable = false;
-    autoLogin.user = username;
+    autoLogin = {
+      enable = true;
+      user = username;
+    };
     gdm.enable = true;
   };
 
