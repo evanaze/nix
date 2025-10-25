@@ -48,7 +48,7 @@
 
   services.displayManager = {
     autoLogin = {
-      enable = true;
+      enable = false;
       user = username;
     };
     gdm.enable = true;
