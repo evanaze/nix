@@ -21,13 +21,12 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     pulse.enable = true;
   };
-
-  # services.gnome3.gnome-keyring.enable = true;
-  security.pam.services.gdm.enableGnomeKeyring = true;
 
   # Enable bios updates
   services.fwupd.enable = true;
