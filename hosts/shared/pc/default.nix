@@ -44,7 +44,7 @@
 
   services.desktopManager.gnome.enable = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
-  services.gnome.gnome-keyring.enable = true;
+  services.gnome3.gnome-keyring.enable = true;
 
   services.displayManager = {
     autoLogin = {
