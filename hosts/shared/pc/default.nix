@@ -46,7 +46,7 @@
 
   services.displayManager = {
     # Enable automatic login for the user.
-    autoLogin.enable = true;
+    autoLogin.enable = false;
     autoLogin.user = username;
     gdm.enable = true;
   };
