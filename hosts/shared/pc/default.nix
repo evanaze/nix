@@ -16,7 +16,7 @@
     google-chrome
     gnome-terminal
     hunspell
-    hunspellDicts.us_EN
+    hunspellDicts.en-us
     inkscape
     keymapp
     libreoffice-fresh

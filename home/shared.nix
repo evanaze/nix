@@ -8,7 +8,7 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    calibre
+    # calibre
     cargo
     go
     hugo
@@ -27,9 +27,11 @@
 
     git = {
       enable = true;
-      userName = "Evan Azevedo";
-      userEmail = "me@evanazevdo.com";
-      extraConfig = {
+      settings = {
+        user = {
+          name = "Evan Azevedo";
+          email = "me@evanazevdo.com";
+        };
         init.defaultBranch = "main";
         pull.rebase = "false";
       };
