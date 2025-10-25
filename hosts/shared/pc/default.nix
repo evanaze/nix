@@ -15,8 +15,11 @@
     code-cursor
     google-chrome
     gnome-terminal
+    hunspell
+    hunspellDicts.us_EN
     inkscape
     keymapp
+    libreoffice-fresh
     protonmail-desktop
     python314
     slack
