@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./games.nix
+    ./gnome-keyring.nix
     ./ipfs.nix
   ];
 
