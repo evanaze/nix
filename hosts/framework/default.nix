@@ -8,8 +8,8 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    gnome-power-manager
     powertop
-    gnome.gnome-power-manager
   ];
 
   # Bootloader.
