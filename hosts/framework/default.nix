@@ -12,9 +12,14 @@
     powertop
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelParams = ["amdgpu.abmlevel=0"];
+  };
 
   networking.hostName = "fw"; # Define your hostname.
 
