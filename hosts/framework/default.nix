@@ -1,10 +1,15 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../shared
     ../shared/nixos
     ../shared/pc
     ../desktop/apps/seedbox
+  ];
+
+  environment.systemPackages = with pkgs; [
+    powertop
+    gnome.gnome-power-manager
   ];
 
   # Bootloader.
