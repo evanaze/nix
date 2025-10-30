@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./sleep.nix
     ../shared
     ../shared/nixos
     ../shared/pc
