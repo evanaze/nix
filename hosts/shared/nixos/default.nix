@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./seedbox
-    ./slippi.nix
     ./zsh.nix
   ];
 
