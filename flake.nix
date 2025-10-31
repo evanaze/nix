@@ -9,10 +9,6 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim.url = "github:evanaze/nixvim-conf";
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     slippi = {
       url = "github:lytedev/slippi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,7 +24,6 @@
     self,
     nixpkgs,
     home-manager,
-    nix-darwin,
     nixvim,
     nixos-hardware,
     slippi,
@@ -119,31 +114,6 @@
               inherit username;
             };
             home-manager.users.${username} = import ./home/rpi.nix;
-          }
-          sops-nix.nixosModules.sops
-        ];
-      };
-    };
-
-    darwinConfigurations = {
-      cooper = nix-darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
-        specialArgs = {
-          inherit username;
-        };
-        modules = [
-          ./hosts/mac
-          ./modules/nixos/zsh.nix
-
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-            };
-            home-manager.users.${username} = import ./home/mac.nix;
           }
           sops-nix.nixosModules.sops
         ];
