@@ -40,8 +40,6 @@
         };
         modules = [
           ./hosts/desktop
-          ./modules/nixos/zsh.nix
-          ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -71,7 +69,6 @@
         };
         modules = [
           ./hosts/framework
-          ./modules/nixos/zsh.nix
 
           nixos-hardware.nixosModules.framework-13-7040-amd
 
@@ -101,7 +98,6 @@
         };
         modules = [
           ./hosts/rpi
-          ./modules/nixos/zsh.nix
 
           nixos-hardware.nixosModules.raspberry-pi-5
 

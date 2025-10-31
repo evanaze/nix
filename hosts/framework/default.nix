@@ -5,7 +5,6 @@
     ../shared
     ../shared/nixos
     ../shared/pc
-    ../shared/nixos/seedbox
   ];
 
   environment.systemPackages = with pkgs; [

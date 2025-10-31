@@ -2,7 +2,7 @@
   home-manager.users.${username} = {
     slippi-launcher = {
       enable = true;
-      isoPath = "/home/evanaze/Games/melee_patched.iso";
+      isoPath = "/home/${username}/Games/melee_patched.iso";
       launchMeleeOnPlay = false;
       useNetplayBeta = true;
     };
