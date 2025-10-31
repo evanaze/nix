@@ -69,26 +69,41 @@ nix flake check
 ├── flake.nix              # Main flake defining all system configurations
 ├── hosts/                 # Host-specific configurations
 │   ├── desktop/          # Gaming/AI desktop configuration
-│   │   ├── apps/         # Desktop-specific services (AI, seedbox, Prometheus)
+│   │   ├── apps/         # Desktop-specific services
+│   │   │   ├── ai/       # AI stack (Ollama, Open WebUI, Aider)
+│   │   │   ├── default.nix
+│   │   │   └── prometheus.nix
 │   │   └── nvidia.nix    # NVIDIA GPU configuration
 │   ├── framework/        # Framework laptop configuration
-│   │   └── sleep.nix     # Power management for battery optimization
+│   │   ├── sleep.nix     # Power management for battery optimization
+│   │   └── gnome-keyring-unlock.nix
 │   ├── rpi/              # Raspberry Pi server configuration
-│   ├── mac/              # macOS configuration
+│   │   ├── apps/         # RPi services (blocky, webserver, gh-actions)
+│   │   ├── networking.nix
+│   │   └── users.nix
 │   └── shared/           # Shared configurations across hosts
 │       ├── default.nix   # Common packages and settings
-│       ├── nixos/        # NixOS-specific shared config (auto-upgrade, GC)
-│       └── pc/           # Desktop/laptop shared config (GNOME, networking)
+│       ├── nixos/        # NixOS-specific shared config
+│       │   ├── default.nix      # Auto-upgrade, GC
+│       │   ├── zsh.nix          # Zsh configuration with aliases
+│       │   └── seedbox/         # Jellyfin + torrent server (shared)
+│       └── pc/           # Desktop/laptop shared config
+│           ├── default.nix      # GNOME, networking
+│           ├── games.nix        # Gaming packages
+│           ├── gnome-keyring.nix
+│           └── ipfs.nix
 ├── home/                 # home-manager configurations per host
 │   ├── desktop.nix
 │   ├── framework.nix
 │   ├── mac.nix
 │   ├── rpi.nix
-│   └── shared.nix        # Shared home-manager config (git, direnv, ghostty)
+│   ├── shared.nix        # Shared home-manager config (git, direnv, ghostty)
+│   └── shared/
+│       └── zsh.nix       # User-level zsh config
 ├── modules/              # Reusable NixOS/home-manager modules
-│   ├── zsh.nix           # Zsh configuration with aliases and prompt
-│   ├── slippi.nix        # Super Smash Bros Melee gaming setup
-│   └── mac/              # macOS-specific modules (yabai, skhd)
+│   └── slippi.nix        # Super Smash Bros Melee gaming setup
+├── pkgs/                 # Custom package definitions
+│   └── air.nix           # Air live reload tool
 ├── secrets.yaml          # sops-encrypted secrets
 └── .sops.yaml           # sops configuration with age key
 ```
@@ -112,7 +127,6 @@ nix flake check
 **External Dependencies:**
 - Custom nixvim configuration: `github:evanaze/nixvim-conf`
 - Hardware optimizations via nixos-hardware (Framework 13 7040 AMD, RPi 5)
-- Slippi gaming package from `github:lytedev/slippi-nix`
 
 ### Host-Specific Features
 
@@ -128,7 +142,7 @@ nix flake check
 **Framework (fw):**
 - Framework-specific hardware optimizations (kmod, audio enhancement)
 - Battery optimization via sleep.nix (disables WiFi/Bluetooth during suspend)
-- Shares seedbox configuration from desktop
+- GNOME keyring auto-unlock on login
 - Power management tools (gnome-power-manager, powertop)
 - AMD GPU configuration (amdgpu.abmlevel=0)
 
@@ -136,10 +150,7 @@ nix flake check
 - ARM64 architecture
 - Hardware profile from nixos-hardware
 - Tailscale for remote access
-
-**macOS (cooper):**
-- nix-darwin based
-- Includes yabai window manager and skhd hotkey daemon
+- Self-hosted services: Blocky DNS, webserver, GitHub Actions runner
 
 ### Common Patterns
 
@@ -147,7 +158,11 @@ nix flake check
 
 **PC Packages:** Desktop apps in `hosts/shared/pc/default.nix` (Claude Code, Cursor, Chrome, Bitwarden, etc.)
 
+**Gaming:** Defined in `hosts/shared/pc/games.nix` (Steam, Slippi for Super Smash Bros Melee)
+
 **GNOME Desktop:** Configured in `hosts/shared/pc/default.nix` with autologin workaround
+
+**Seedbox (Shared):** Media server (Jellyfin) and torrent server moved to `hosts/shared/nixos/seedbox/` for reuse across desktop and framework
 
 **Automatic Maintenance:**
 - Garbage collection: Weekly on Mondays, deletes >7 days old
@@ -176,7 +191,15 @@ nix flake check
 
 ### Creating New Modules
 
-Place reusable modules in `modules/` directory. Import in `flake.nix` or host configs as needed.
+**Reusable modules:** Place in `modules/` directory for truly generic, cross-platform modules
+
+**Custom packages:** Place in `pkgs/` directory for custom package definitions
+
+**NixOS-specific shared config:** Place in `hosts/shared/nixos/` for system-level NixOS configs (zsh, services)
+
+**PC-specific shared config:** Place in `hosts/shared/pc/` for desktop/laptop configs (GNOME, games)
+
+Import modules in `flake.nix` or host configs as needed.
 
 ### Working with Secrets
 
