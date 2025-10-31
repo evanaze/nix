@@ -40,6 +40,7 @@
         };
         modules = [
           ./hosts/desktop
+          ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
           {
