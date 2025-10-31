@@ -45,7 +45,7 @@
         };
         modules = [
           ./hosts/desktop
-          ./modules/zsh.nix
+          ./modules/nixos/zsh.nix
           ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
@@ -76,7 +76,7 @@
         };
         modules = [
           ./hosts/framework
-          ./modules/zsh.nix
+          ./modules/nixos/zsh.nix
 
           nixos-hardware.nixosModules.framework-13-7040-amd
 
@@ -106,7 +106,7 @@
         };
         modules = [
           ./hosts/rpi
-          ./modules/zsh.nix
+          ./modules/nixos/zsh.nix
 
           nixos-hardware.nixosModules.raspberry-pi-5
 
@@ -133,7 +133,7 @@
         };
         modules = [
           ./hosts/mac
-          ./modules/zsh.nix
+          ./modules/nixos/zsh.nix
 
           home-manager.darwinModules.home-manager
           {
