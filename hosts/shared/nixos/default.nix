@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./seedbox
-    ./zsh.nix
   ];
 
   # Set your time zone.
