@@ -57,6 +57,7 @@
       enableZshIntegration = true;
       settings = {
         theme = "catppuccin-macchiato";
+        advanced_mouse_actions = false;
       };
     };
 
