@@ -20,6 +20,6 @@
     serviceConfig = {
       Type = "exec";
     };
-    script = "${lib.getExe pkgs.tailscale} serve 8080";
+    script = "${lib.getExe pkgs.tailscale} serve https /chat 8080";
   };
 }
