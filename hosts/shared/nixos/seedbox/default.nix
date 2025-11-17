@@ -1,6 +1,6 @@
 {...}: {
   imports = [
     ./media-server.nix
-    ./torrent-server.nix
+    # ./torrent-server.nix
   ];
 }

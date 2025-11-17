@@ -22,6 +22,6 @@
     serviceConfig = {
       Type = "exec";
     };
-    script = "${lib.getExe pkgs.tailscale} serve https /media 8080";
+    script = "${lib.getExe pkgs.tailscale} serve https /media http://localhost:8096";
   };
 }
