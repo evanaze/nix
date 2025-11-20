@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./shared/zsh.nix
+    ./thunderbird.nix
   ];
 
   home.stateVersion = "23.11"; # Please read the comment before changing.
@@ -18,7 +19,6 @@
     hugo
     python3
     ripgrep
-    thunderbird
     inputs.nixvim.packages.${system}.default
   ];
 
