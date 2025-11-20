@@ -1,7 +1,7 @@
 {...}: {
-  imports = [
-    ./seedbox
-  ];
+  # imports = [
+  #   ./seedbox
+  # ];
 
   # Set your time zone.
   time.timeZone = "America/Denver";
