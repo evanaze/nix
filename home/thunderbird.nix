@@ -8,6 +8,8 @@
       name = "Evanaze Gmail";
       address = "evanaze@gmail.com";
       flavor = "gmail.com";
+      primary = true;
+      realName = "Evan Azevedo";
       thunderbird.enable = true;
     };
   };
