@@ -3,6 +3,6 @@
     ./ai
     ./prometheus.nix
     # ./seedbox
-    ./seafile.nix
+    # ./seafile.nix
   ];
 }
