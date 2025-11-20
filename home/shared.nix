@@ -19,7 +19,7 @@
     hugo
     python3
     ripgrep
-    inputs.nixvim.packages.${system}.default
+    inputs.nixvim.packages.${stdenv.hostPlatform.system}.default
   ];
 
   programs = {
