@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     gnome-power-manager
     powertop
+    super-productivity
   ];
 
   # Bootloader
