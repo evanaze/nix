@@ -25,6 +25,7 @@
     python314
     slack
     xclip
+    zoom-us
   ];
 
   # Enable networking
