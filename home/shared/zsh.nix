@@ -18,6 +18,21 @@
             git push
         }
 
+        function ebranch() {
+            bname="$1"
+            git checkout main
+            git pull
+            git checkout -b $bname
+            git push -u origin $bname
+        }
+
+        function dbranch() {
+            bname=$(git rev-parse --abbrev-ref HEAD)
+            git checkout main
+            git pull
+            git branch -D $bname
+        }
+
         autoload -U promptinit; promptinit
 
         # Style Prompt
