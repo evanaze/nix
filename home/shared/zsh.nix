@@ -56,10 +56,11 @@
         t = "tree -L 2";
         dup = "devenv up";
         showsvcs = "systemctl --type=service --state=running";
-        svcsts = "journalctl -xe -u $1";
+        svc-stat = "journalctl -xe -u $1";
         sshpi = "ssh evanaze@hs.spitz-pickerel.ts.net";
         sshdt = "ssh evanaze@father.spitz-pickerel.ts.net";
         update = "pushd $HOME/.config/nix && nix flake update && epush updating flake inputs && popd";
+        unpack = "fd . $1/ -x mv {} .";
         updnvim = "pushd $HOME/.config/nix && nix flake update nixvim && epush updating nixvim && popd";
         npush = "pushd $HOME/.config/nix && epush $@ && popd";
       };
