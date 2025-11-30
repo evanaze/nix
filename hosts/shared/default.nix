@@ -16,6 +16,7 @@
     htop
     meslo-lgs-nf
     nmap
+    tree
     unzip
     wget
   ];
