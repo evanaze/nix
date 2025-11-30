@@ -53,6 +53,7 @@
         ll = "ls -al";
         cd = "z";
         n = "nvim .";
+        t = "tree -L 2";
         dup = "devenv up";
         showsvcs = "systemctl --type=service --state=running";
         svcsts = "journalctl -xe -u $1";
