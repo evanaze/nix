@@ -15,6 +15,7 @@
     expect
     git
     htop
+    lsof
     meslo-lgs-nf
     nmap
     tree
