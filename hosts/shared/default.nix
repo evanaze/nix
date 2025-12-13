@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     cron
     devenv
+    docker
     dig
     expect
     git
