@@ -1,16 +1,15 @@
-{...}: {
-  # imports = [
-  #   ./seedbox
-  # ];
-
+{username, ...}: {
   # Set your time zone.
   time.timeZone = "America/Denver";
 
   ## Garbage collector
-  nix.gc = {
-    automatic = true;
-    dates = "Monday 01:00 UTC";
-    options = "--delete-older-than 7d";
+  programs.nh = {
+    enable = true;
+    flake = "/home/${username}/.config/nix/flake.nix";
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 7d --keep 3";
+    };
   };
 
   system = {

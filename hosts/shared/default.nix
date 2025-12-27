@@ -18,7 +18,6 @@
     lsof
     meslo-lgs-nf
     nmap
-    nh
     tree
     unzip
     wget
