@@ -7,7 +7,6 @@
     ./networking.nix
     ./users.nix
     ../shared
-    ../shared/nixos
 
     # Services
     ./apps
@@ -24,7 +23,10 @@
   };
 
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     nixPath = [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
       "nixos-config=$HOME/.config/nix/hosts/rpi"
