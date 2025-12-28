@@ -55,9 +55,9 @@ in {
   services.zfs.trim.enable = true;
 
   disko.devices = {
-    disk.nvme0 = {
+    disk.sdcard = {
       type = "disk";
-      device = "/dev/nvme0n1";
+      device = "/dev/mmcblk0";
       content = {
         type = "gpt";
         partitions = {

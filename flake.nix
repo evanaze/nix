@@ -116,6 +116,7 @@
         specialArgs = {
           inherit inputs;
           inherit username;
+          inherit nixos-raspberrypi;
         };
         modules = [
           ./hosts/rpi
@@ -123,14 +124,15 @@
           nixos-hardware.nixosModules.raspberry-pi-5
           disko.nixosModules.disko
           # WARNING: formatting disk with disko is DESTRUCTIVE, check if
-          # `disko.devices.disk.nvme0.device` is set correctly!
-          ./disko-nvme-zfs.nix
+          # `disko.devices.disk.sdcard.device` is set correctly!
+          ./hosts/rpi/disko-nvme-zfs.nix
           {networking.hostId = "8821e309";} # NOTE: for zfs, must be unique
           # Further user configuration
           {
             boot.tmp.useTmpfs = true;
           }
 
+          sops-nix.nixosModules.sops
           # home-manager.nixosModules.home-manager
           # {
           #   home-manager.useGlobalPkgs = true;
@@ -141,7 +143,6 @@
           #   };
           #   home-manager.users.${username} = import ./home/rpi.nix;
           # }
-          # sops-nix.nixosModules.sops
         ];
       };
     };

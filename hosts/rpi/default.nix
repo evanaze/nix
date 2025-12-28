@@ -20,7 +20,7 @@ in {
     ./users.nix
     ../shared
 
-    ./apps
+    # ./apps
   ];
 
   # Use the systemd-boot EFI boot loader.
