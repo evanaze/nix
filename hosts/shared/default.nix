@@ -9,6 +9,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    cachix
     cron
     devenv
     dig
