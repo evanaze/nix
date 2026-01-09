@@ -1,6 +1,16 @@
 {
   description = "NixOS configuration";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://nixos-raspberrypi.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+    ];
+    connect-timeout = 5;
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -8,6 +18,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixos-raspberrypi/nixpkgs";
+    };
+    nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixvim.url = "github:evanaze/nixvim-conf";
     slippi = {
       url = "github:lytedev/slippi-nix";
@@ -26,6 +42,9 @@
     home-manager,
     nixvim,
     nixos-hardware,
+    nixos-raspberrypi,
+    disko,
+    nixos-anywhere,
     slippi,
     sops-nix,
     ...
@@ -92,27 +111,38 @@
         ];
       };
 
-      rpi = nixpkgs.lib.nixosSystem {
+      rpi = nixos-raspberrypi.lib.nixosSystemFull {
         system = "aarch64-linux";
         specialArgs = {
+          inherit inputs;
           inherit username;
+          inherit nixos-raspberrypi;
         };
         modules = [
           ./hosts/rpi
 
           nixos-hardware.nixosModules.raspberry-pi-5
-
-          home-manager.nixosModules.home-manager
+          disko.nixosModules.disko
+          # WARNING: formatting disk with disko is DESTRUCTIVE, check if
+          # `disko.devices.disk.sdcard.device` is set correctly!
+          ./hosts/rpi/disko-nvme-zfs.nix
+          {networking.hostId = "8821e309";} # NOTE: for zfs, must be unique
+          # Further user configuration
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-            };
-            home-manager.users.${username} = import ./home/rpi.nix;
+            boot.tmp.useTmpfs = true;
           }
+
           sops-nix.nixosModules.sops
+          # home-manager.nixosModules.home-manager
+          # {
+          #   home-manager.useGlobalPkgs = true;
+          #   home-manager.useUserPackages = true;
+          #   home-manager.extraSpecialArgs = {
+          #     inherit inputs;
+          #     inherit username;
+          #   };
+          #   home-manager.users.${username} = import ./home/rpi.nix;
+          # }
         ];
       };
     };

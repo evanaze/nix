@@ -3,7 +3,6 @@
     ./hardware-configuration.nix
     ./sleep.nix
     ../shared
-    ../shared/nixos
     ../shared/pc
   ];
 
@@ -60,7 +59,10 @@
   # Install firefox.
   programs.firefox.enable = true;
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

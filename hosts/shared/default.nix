@@ -9,6 +9,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    cachix
     cron
     devenv
     dig
@@ -23,12 +24,28 @@
     wget
   ];
 
-  sops = {
-    defaultSopsFile = ../../secrets.yaml;
-    age.keyFile = "home/${username}/.config/sops/age/keys.txt";
+  # Set your time zone.
+  time.timeZone = "America/Denver";
+
+  ## Garbage collector
+  programs.nh = {
+    enable = true;
+    flake = "/home/${username}/.config/nix";
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 7d --keep 3";
+    };
   };
 
-  programs.zsh.enable = true;
+  system = {
+    # Auto upgrade
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+      # Daily 00:00
+      dates = "daily UTC";
+    };
+  };
 
   nix.extraOptions = ''
     trusted-users = root ${username}
@@ -43,4 +60,13 @@
     };
     pathsToLink = ["/share/zsh"];
   };
+
+  sops = {
+    defaultSopsFile = ../../secrets.yaml;
+    age.keyFile = "home/${username}/.config/sops/age/keys.txt";
+  };
+
+  programs.zsh.enable = true;
+
+  services.tailscale.enable = true;
 }
