@@ -12,7 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
-    brave-browser
+    brave
     claude-code
     code-cursor
     firefox
