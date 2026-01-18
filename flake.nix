@@ -119,6 +119,7 @@
         modules = [
           ./hosts/jupiter
 
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.backupFileExtension = "backup";

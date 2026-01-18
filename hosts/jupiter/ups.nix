@@ -1,4 +1,11 @@
-{...}: {
+{config, ...}: {
+  # Configure sops secret for UPS password
+  sops.secrets."ups/nut-admin-password" = {
+    owner = "nut";
+    mode = "0400";
+    sopsFile = ../secrets/secrets.yaml;
+  };
+
   power.ups = {
     enable = true;
     ups."UPS-1" = {
@@ -50,7 +57,7 @@
     };
 
     users."nut-admin" = {
-      passwordFile = "${../resources/ups-passwd.txt}";
+      passwordFile = config.sops.secrets."ups/nut-admin-password".path;
       upsmon = "primary";
     };
 
@@ -58,7 +65,7 @@
       system = "UPS-1@localhost";
       powerValue = 1;
       user = "nut-admin";
-      passwordFile = "${../resources/ups-passwd.txt}";
+      passwordFile = config.sops.secrets."ups/nut-admin-password".path;
       type = "primary";
     };
 
