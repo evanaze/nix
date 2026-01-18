@@ -14,6 +14,7 @@
     bitwarden-desktop
     claude-code
     code-cursor
+    firefox
     google-chrome
     gnome-terminal
     hunspell
@@ -31,7 +32,10 @@
   # Enable networking
   networking = {
     networkmanager.enable = true;
-    nameservers = ["1.1.1.1" "1.0.0.1"];
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
   };
 
   # Enable the X11 windowing system.
@@ -58,7 +62,11 @@
     initialPassword = "password";
     isNormalUser = true;
     description = "Evan Azevedo";
-    extraGroups = ["networkmanager" "wheel" config.services.kubo.group];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      config.services.kubo.group
+    ];
     shell = pkgs.zsh;
   };
 

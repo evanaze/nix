@@ -7,7 +7,6 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    firefox
     gnome-power-manager
     powertop
     super-productivity
