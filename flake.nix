@@ -111,6 +111,33 @@
         ];
       };
 
+      jupiter = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit username;
+        };
+        modules = [
+          ./hosts/jupiter
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.backupFileExtension = "backup";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
+            home-manager.users.${username} = {
+              imports = [
+                ./home/jupiter.nix
+              ];
+            };
+          }
+          sops-nix.nixosModules.sops
+        ];
+      };
+
       rpi = nixos-raspberrypi.lib.nixosSystemFull {
         system = "aarch64-linux";
         specialArgs = {
