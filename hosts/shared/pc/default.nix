@@ -12,6 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
+    brave-browser
     claude-code
     code-cursor
     firefox
@@ -22,7 +23,6 @@
     inkscape
     keymapp
     libreoffice-fresh
-    protonmail-desktop
     python314
     slack
     xclip

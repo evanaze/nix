@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./ups.nix
     ../shared
     ../shared/pc
   ];
