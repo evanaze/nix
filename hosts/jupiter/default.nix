@@ -13,5 +13,8 @@
     #  wget
   ];
 
+  # Keep awake
+  services.xserver.displayManager.gdm.autoSuspend = false;
+
   system.stateVersion = "25.11";
 }
