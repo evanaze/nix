@@ -21,7 +21,7 @@
     kernelParams = ["amdgpu.abmlevel=0"];
   };
 
-  networking.hostName = "fw"; # Define your hostname.
+  networking.hostName = "mars";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

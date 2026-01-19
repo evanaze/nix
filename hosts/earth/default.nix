@@ -21,7 +21,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  networking.hostName = "father"; # Define your hostname.
+  networking.hostName = "earth";
 
   nix = {
     settings.experimental-features = [
@@ -30,7 +30,7 @@
     ];
     nixPath = [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "nixos-config=$HOME/.config/nix/hosts/desktop"
+      "nixos-config=$HOME/.config/nix/hosts/earth"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
   };

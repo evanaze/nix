@@ -52,13 +52,13 @@
     username = "evanaze";
   in {
     nixosConfigurations = {
-      desktop = nixpkgs.lib.nixosSystem {
+      earth = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit username;
         };
         modules = [
-          ./hosts/desktop
+          ./hosts/earth
           ./modules/slippi.nix
 
           home-manager.nixosModules.home-manager
@@ -72,7 +72,7 @@
             };
             home-manager.users.${username} = {
               imports = [
-                ./home/desktop.nix
+                ./home/earth.nix
                 slippi.homeManagerModules.default
               ];
             };
@@ -82,13 +82,13 @@
         ];
       };
 
-      framework = nixpkgs.lib.nixosSystem {
+      mars = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit username;
         };
         modules = [
-          ./hosts/framework
+          ./hosts/mars
 
           nixos-hardware.nixosModules.framework-13-7040-amd
 
@@ -103,7 +103,7 @@
             };
             home-manager.users.${username} = {
               imports = [
-                ./home/framework.nix
+                ./home/mars.nix
               ];
             };
           }
