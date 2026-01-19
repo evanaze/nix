@@ -1,9 +1,4 @@
-{
-  pkgs,
-  username,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./games.nix
     ./ipfs.nix

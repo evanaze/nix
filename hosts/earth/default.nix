@@ -25,8 +25,6 @@
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-  programs.steam.enable = true;
-
   # Needed for Obsidian
   nixpkgs.config.permittedInsecurePackages = ["electron-25.9.0"];
 
