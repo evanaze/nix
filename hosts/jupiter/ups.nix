@@ -56,18 +56,18 @@
       ];
     };
 
-    users."nut-admin" = {
-      passwordFile = config.sops.secrets."ups/nut-admin-password".path;
-      upsmon = "primary";
-    };
+    # users."nut-admin" = {
+    #   passwordFile = config.sops.secrets."ups/nut-admin-password".path;
+    #   upsmon = "primary";
+    # };
 
-    upsmon.monitor."UPS-1" = {
-      system = "UPS-1@localhost";
-      powerValue = 1;
-      user = "nut-admin";
-      passwordFile = config.sops.secrets."ups/nut-admin-password".path;
-      type = "primary";
-    };
+    # upsmon.monitor."UPS-1" = {
+    #   system = "UPS-1@localhost";
+    #   powerValue = 1;
+    #   user = "nut-admin";
+    #   passwordFile = config.sops.secrets."ups/nut-admin-password".path;
+    #   type = "primary";
+    # };
 
     upsmon.settings = {
       # This configuration file declares how upsmon is to handle
