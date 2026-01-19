@@ -12,10 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
-    brave
     claude-code
     code-cursor
-    firefox
     google-chrome
     gnome-terminal
     hunspell
