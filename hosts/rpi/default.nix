@@ -42,17 +42,11 @@ in {
     })
   ];
 
-  nix = {
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    nixPath = [
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "nixos-config=$HOME/.config/nix/hosts/rpi"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
-  };
+  nix.nixPath = [
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+    "nixos-config=$HOME/.config/nix/hosts/rpi"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
 
   services.udev.extraRules = ''
     # Ignore partitions with "Required Partition" GPT partition attribute

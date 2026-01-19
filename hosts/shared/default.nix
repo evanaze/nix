@@ -7,6 +7,7 @@
     ./docker.nix
     ./locale.nix
     ./networking.nix
+    ./ssh.nix
     ./zsh.nix
   ];
 
