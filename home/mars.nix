@@ -4,7 +4,7 @@
   ];
 
   home.packages = with pkgs; [
-    brave
+    # brave
     firefox
     obsidian
     spotify
