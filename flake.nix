@@ -135,7 +135,6 @@
               ];
             };
           }
-          sops-nix.nixosModules.sops
         ];
       };
 

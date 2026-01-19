@@ -14,7 +14,7 @@
   ];
 
   # Keep awake
-  services.xserver.displayManager.gdm.autoSuspend = false;
+  services.displayManager.gdm.autoSuspend = false;
 
   system.stateVersion = "25.11";
 }

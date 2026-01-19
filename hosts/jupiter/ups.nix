@@ -1,10 +1,10 @@
 {config, ...}: {
   # Configure sops secret for UPS password
-  sops.secrets."ups/nut-admin-password" = {
-    owner = "nut";
-    mode = "0400";
-    sopsFile = ../secrets/secrets.yaml;
-  };
+  # sops.secrets."ups/nut-admin-password" = {
+  #   owner = "nut";
+  #   mode = "0400";
+  #   sopsFile = ../secrets/secrets.yaml;
+  # };
 
   power.ups = {
     enable = true;
