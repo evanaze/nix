@@ -7,6 +7,7 @@
     ./docker.nix
     ./locale.nix
     ./networking.nix
+    ./sops.nix
     ./ssh.nix
     ./zsh.nix
   ];
@@ -68,11 +69,6 @@
       VISUAL = "nvim";
     };
     pathsToLink = ["/share/zsh"];
-  };
-
-  sops = {
-    defaultSopsFile = ../../secrets.yaml;
-    age.keyFile = "home/${username}/.config/sops/age/keys.txt";
   };
 
   programs.zsh.enable = true;
