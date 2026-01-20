@@ -77,5 +77,8 @@
 
   programs.zsh.enable = true;
 
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+  };
 }
