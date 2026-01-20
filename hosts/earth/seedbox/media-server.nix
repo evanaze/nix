@@ -15,8 +15,14 @@
   };
 
   systemd.services.tsserve-jellyfin = {
-    after = ["tailscaled.service" "jellyfin.service"];
-    wants = ["tailscaled.service" "jellyfin.service"];
+    after = [
+      "tailscaled-autoconnect.service"
+      "jellyfin.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "jellyfin.service"
+    ];
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish Jellyfin";
     serviceConfig = {
