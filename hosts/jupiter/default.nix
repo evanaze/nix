@@ -4,6 +4,7 @@
     # ./ups.nix
     ../shared
     ../shared/pc
+    ../shared/server.nix
   ];
 
   networking.hostName = "jupiter";
