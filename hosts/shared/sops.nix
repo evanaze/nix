@@ -16,5 +16,8 @@
       keyFile = "/home/${username}/.config/sops/age/keys.txt";
       generateKey = true;
     };
+    secrets = {
+      ts-server-key = {};
+    };
   };
 }
