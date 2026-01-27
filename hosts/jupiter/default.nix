@@ -3,7 +3,6 @@
     ./hardware-configuration.nix
     # ./ups.nix
     ../shared
-    ../shared/pc
     ../shared/server.nix
     ./disks-sleep.nix
     ./tailscale-webui.nix
