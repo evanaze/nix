@@ -3,7 +3,6 @@
     ./games.nix
     ./ipfs.nix
     ./sound.nix
-    ./user-evanaze.nix
     ./window-manager.nix
   ];
 
@@ -13,7 +12,6 @@
     claude-code
     code-cursor
     google-chrome
-    gnome-terminal
     hunspell
     hunspellDicts.en-us
     inkscape

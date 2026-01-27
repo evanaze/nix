@@ -9,6 +9,7 @@
     ./networking.nix
     ./sops.nix
     ./ssh.nix
+    ./user-evanaze.nix
     ./zsh.nix
   ];
 
@@ -54,7 +55,7 @@
   };
 
   nix = {
-    extraOptions = ''trusted-users = root ${username}'';
+    extraOptions = "trusted-users = root ${username}";
     settings.experimental-features = [
       "nix-command"
       "flakes"
