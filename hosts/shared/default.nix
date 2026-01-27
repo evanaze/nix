@@ -76,5 +76,9 @@
   services.tailscale = {
     enable = true;
     openFirewall = true;
+    extraSetFlags = [
+      "--auto-update"
+      "--ssh"
+    ];
   };
 }
