@@ -5,7 +5,7 @@
     ../shared
     ../shared/pc
     ../shared/server.nix
-    # ./tailscale-webui.nix
+    ./tailscale-webui.nix
   ];
 
   networking.hostName = "jupiter";
