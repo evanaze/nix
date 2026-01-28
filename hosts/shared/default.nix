@@ -10,6 +10,7 @@
     ./sops.nix
     ./ssh.nix
     ./user-evanaze.nix
+    ./xserver.nix
     ./zsh.nix
   ];
 

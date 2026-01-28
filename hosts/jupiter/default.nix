@@ -2,6 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     # ./ups.nix
+    # ./disko.nix
     ../shared
     ../shared/server.nix
     ./disks-sleep.nix
