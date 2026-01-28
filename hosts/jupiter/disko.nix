@@ -1,8 +1,8 @@
 {username, ...}: {
   disko.devices = {
     disk = {
-      main = {
-        device = "/dev/sda";
+      nvme = {
+        device = "/dev/disk/by-id/nvme-CT2000P310SSD8_252350A0C5C3";
         type = "disk";
         content = {
           type = "gpt";
@@ -55,6 +55,56 @@
                   type = "zfs";
                   pool = "nvme-pool";
                 };
+              };
+            };
+          };
+        };
+      };
+
+      # HDD pool drives for RAIDZ1
+      hdd1 = {
+        device = "/dev/disk/by-id/ata-WDC_WD120EAGZ-00CRJB0_WD-B00N465D";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "hdd-pool";
+              };
+            };
+          };
+        };
+      };
+      hdd2 = {
+        device = "/dev/disk/by-id/ata-WDC_WD120EAGZ-00CRJB0_WD-B00N73PD";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "hdd-pool";
+              };
+            };
+          };
+        };
+      };
+      hdd3 = {
+        device = "/dev/disk/by-id/ata-WDC_WD120EAGZ-00CRJB0_WD-B00NAZ1D";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "hdd-pool";
               };
             };
           };
@@ -134,6 +184,63 @@
               mountpoint = "none";
               reservation = "100G";
               quota = "100G";
+              "com.sun:auto-snapshot" = "false";
+            };
+          };
+        };
+      };
+
+      # HDD pool - RAIDZ1 across 3x 12TB drives (~24TB usable)
+      hdd-pool = {
+        type = "zpool";
+        mode = "raidz";
+        options = {
+          ashift = "12";
+        };
+        rootFsOptions = {
+          compression = "zstd";
+          mountpoint = "none";
+          "com.sun:auto-snapshot" = "false";
+        };
+
+        datasets = {
+          # Media storage (movies, music, etc.)
+          media = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+            mountpoint = "/storage/media";
+          };
+
+          # Backups
+          backups = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+            mountpoint = "/storage/backups";
+          };
+
+          # General data storage
+          data = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+            mountpoint = "/storage/data";
+          };
+
+          # Reserved space for ZFS over-provisioning
+          reserved = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "none";
+              reservation = "500G";
+              quota = "500G";
               "com.sun:auto-snapshot" = "false";
             };
           };
