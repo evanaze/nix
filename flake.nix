@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration";
+  description = "NixOS configuration - Dendritic Pattern";
 
   nixConfig = {
     extra-substituters = [
@@ -13,171 +13,146 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixos-raspberrypi/nixpkgs";
     };
+
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
+
     nixvim.url = "github:evanaze/nixvim-conf";
+
     slippi = {
       url = "github:lytedev/slippi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    home-manager,
-    nixvim,
-    nixos-hardware,
-    nixos-raspberrypi,
-    disko,
-    nixos-anywhere,
-    slippi,
-    sops-nix,
-    ...
-  }: let
-    username = "evanaze";
-  in {
-    nixosConfigurations = {
-      earth = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit username;
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-linux"];
+
+      flake = let
+        lib = import ./lib {inherit inputs;};
+        inherit (lib) mkHost username;
+      in {
+        nixosConfigurations = {
+          # Earth - Desktop with NVIDIA GPU, gaming, AI services
+          earth = mkHost {
+            system = "x86_64-linux";
+            hostname = "earth";
+            stateVersion = "23.11";
+            homeStateVersion = "23.11";
+            aspects = [
+              ./aspects/core
+              ./aspects/shell
+              ./aspects/desktop
+              ./aspects/development
+              ./aspects/gaming
+              ./aspects/media
+              ./aspects/ai
+              ./aspects/monitoring
+              ./aspects/hardware/nvidia.nix
+            ];
+            extraModules = [
+              ./hosts/earth/hardware-configuration.nix
+              ./hosts/earth
+
+              inputs.nixos-hardware.nixosModules.common-pc
+              inputs.nixos-hardware.nixosModules.common-pc-ssd
+              inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+
+              inputs.slippi.nixosModules.default
+            ];
+            homeModules = [
+              inputs.slippi.homeManagerModules.default
+            ];
+          };
+
+          # Mars - Framework 13 laptop
+          mars = mkHost {
+            system = "x86_64-linux";
+            hostname = "mars";
+            stateVersion = "25.05";
+            homeStateVersion = "23.11";
+            aspects = [
+              ./aspects/core
+              ./aspects/shell
+              ./aspects/desktop
+              ./aspects/development
+              ./aspects/gaming
+              ./aspects/hardware/framework.nix
+            ];
+            extraModules = [
+              ./hosts/mars/hardware-configuration.nix
+              ./hosts/mars
+
+              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+            ];
+          };
+
+          # Jupiter - Server
+          jupiter = mkHost {
+            system = "x86_64-linux";
+            hostname = "jupiter";
+            stateVersion = "25.11";
+            homeStateVersion = "23.11";
+            aspects = [
+              ./aspects/core
+              ./aspects/shell
+              ./aspects/development
+            ];
+            extraModules = [
+              ./hosts/jupiter/hardware-configuration.nix
+              ./hosts/jupiter
+
+              inputs.disko.nixosModules.disko
+            ];
+          };
+
+          # Raspberry Pi 5
+          rpi = mkHost {
+            system = "aarch64-linux";
+            hostname = "mercury";
+            stateVersion = "24.11";
+            homeStateVersion = "23.11";
+            useRaspberryPi = true;
+            aspects = [
+              ./aspects/core/rpi.nix
+              ./aspects/shell
+              ./aspects/networking/blocky.nix
+              ./aspects/hardware/raspberry-pi.nix
+            ];
+            extraModules = [
+              ./hosts/rpi/hardware-configuration.nix
+              ./hosts/rpi
+              ./hosts/rpi/pi5-configtxt.nix
+
+              inputs.nixos-hardware.nixosModules.raspberry-pi-5
+              inputs.disko.nixosModules.disko
+              ./hosts/rpi/disko-nvme-zfs.nix
+              {networking.hostId = "8821e309";}
+            ];
+          };
         };
-        modules = [
-          ./hosts/earth
-          ./modules/slippi.nix
-
-          nixos-hardware.nixosModules.common-pc
-          nixos-hardware.nixosModules.common-pc-ssd
-          nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-          # nixos-hardware.nixosModules.common-gpu-nvidia
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.backupFileExtension = "backup";
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-            };
-            home-manager.users.${username} = {
-              imports = [
-                ./home/earth.nix
-                slippi.homeManagerModules.default
-              ];
-            };
-          }
-          slippi.nixosModules.default
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      mars = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit username;
-        };
-        modules = [
-          ./hosts/mars
-
-          nixos-hardware.nixosModules.framework-13-7040-amd
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.backupFileExtension = "backup";
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-            };
-            home-manager.users.${username} = {
-              imports = [
-                ./home/mars.nix
-              ];
-            };
-          }
-          sops-nix.nixosModules.sops
-        ];
-      };
-
-      jupiter = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit username;
-        };
-        modules = [
-          ./hosts/jupiter
-
-          sops-nix.nixosModules.sops
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.backupFileExtension = "backup";
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit username;
-            };
-            home-manager.users.${username} = {
-              imports = [
-                ./home/jupiter.nix
-              ];
-            };
-          }
-        ];
-      };
-
-      rpi = nixos-raspberrypi.lib.nixosSystemFull {
-        system = "aarch64-linux";
-        specialArgs = {
-          inherit inputs;
-          inherit username;
-          inherit nixos-raspberrypi;
-        };
-        modules = [
-          ./hosts/rpi
-
-          nixos-hardware.nixosModules.raspberry-pi-5
-          disko.nixosModules.disko
-          # WARNING: formatting disk with disko is DESTRUCTIVE, check if
-          # `disko.devices.disk.sdcard.device` is set correctly!
-          ./hosts/rpi/disko-nvme-zfs.nix
-          {networking.hostId = "8821e309";} # NOTE: for zfs, must be unique
-          # Further user configuration
-          {
-            boot.tmp.useTmpfs = true;
-          }
-
-          sops-nix.nixosModules.sops
-          # home-manager.nixosModules.home-manager
-          # {
-          #   home-manager.useGlobalPkgs = true;
-          #   home-manager.useUserPackages = true;
-          #   home-manager.extraSpecialArgs = {
-          #     inherit inputs;
-          #     inherit username;
-          #   };
-          #   home-manager.users.${username} = import ./home/rpi.nix;
-          # }
-        ];
       };
     };
-  };
 }

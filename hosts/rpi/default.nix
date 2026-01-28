@@ -1,68 +1,107 @@
+# hosts/rpi/default.nix - Raspberry Pi 5 host-specific configuration
 {
-  nixos-raspberrypi,
   pkgs,
   lib,
-  config,
+  username,
   ...
-}: let
-  kernelBundle = pkgs.linuxAndFirmware.v6_6_31;
-in {
-  imports = with nixos-raspberrypi.nixosModules; [
-    ./hardware-configuration.nix
-
-    raspberry-pi-5.base
-    raspberry-pi-5.page-size-16k
-    raspberry-pi-5.display-vc4
-    raspberry-pi-5.bluetooth
-    ./pi5-configtxt.nix
-
-    ./networking.nix
-    ./users.nix
-    ../shared
-
-    # ./apps
-  ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot = {
-    loader.raspberryPi.firmwarePackage = kernelBundle.raspberrypifw;
-    loader.raspberryPi.bootloader = "kernel";
-    kernelPackages = kernelBundle.linuxPackages_rpi5;
-  };
-
-  nixpkgs.overlays = lib.mkAfter [
-    (self: super: {
-      # This is used in (modulesPath + "/hardware/all-firmware.nix") when at least
-      # enableRedistributableFirmware is enabled
-      # I know no easier way to override this package
-      inherit (kernelBundle) raspberrypiWirelessFirmware;
-      # Some derivations want to use it as an input,
-      # e.g. raspberrypi-dtbs, omxplayer, sd-image-* modules
-      inherit (kernelBundle) raspberrypifw;
-    })
-  ];
-
+}: {
   nix.nixPath = [
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "nixos-config=$HOME/.config/nix/hosts/rpi"
     "/nix/var/nix/profiles/per-user/root/channels"
   ];
 
-  services.udev.extraRules = ''
-    # Ignore partitions with "Required Partition" GPT partition attribute
-    # On our RPis this is firmware (/boot/firmware) partition
-    ENV{ID_PART_ENTRY_SCHEME}=="gpt", \
-      ENV{ID_PART_ENTRY_FLAGS}=="0x1", \
-      ENV{UDISKS_IGNORE}="1"
-  '';
+  # RPI-specific networking
+  # mdns
+  systemd.network.networks = {
+    "99-ethernet-default-dhcp".networkConfig.MulticastDNS = "yes";
+    "99-wireless-client-dhcp".networkConfig.MulticastDNS = "yes";
+  };
 
-  system.nixos.tags = let
-    cfg = config.boot.loader.raspberryPi;
-  in [
-    "raspberry-pi-${cfg.variant}"
-    cfg.bootloader
-    config.boot.kernelPackages.kernel.version
-  ];
+  # This comment was lifted from `srvos`
+  # Do not take down the network for too long when upgrading
+  systemd.services = {
+    systemd-networkd.stopIfChanged = false;
+    systemd-resolved.stopIfChanged = false;
+  };
+
+  # Set static IP over ethernet
+  networking = {
+    hostName = "mercury";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [80 443];
+      allowedUDPPorts = [5353];
+    };
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
+    interfaces.end0 = {
+      ipv4.addresses = [
+        {
+          address = "192.168.50.150";
+          prefixLength = 24;
+        }
+      ];
+    };
+    useNetworkd = true;
+    defaultGateway = {
+      address = "192.168.50.1";
+      interface = "end0";
+    };
+    wireless.enable = false;
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        Network = {
+          EnableIPv6 = true;
+          RoutePriorityOffset = 300;
+        };
+        Settings.AutoConnect = true;
+      };
+    };
+  };
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = ["~."];
+    fallbackDns = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
+    dnsovertls = "true";
+  };
+
+  # RPI-specific user configuration
+  users = {
+    users = {
+      root.initialHashedPassword = "";
+      ${username} = {
+        group = "nixos";
+        initialHashedPassword = "";
+        isNormalUser = true;
+        extraGroups = ["wheel" "networkmanager" "video"];
+        shell = pkgs.zsh;
+      };
+    };
+    groups.nixos = {};
+  };
+
+  security.polkit.enable = true;
+  security.sudo = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
+
+  services.getty.autologinUser = username;
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "yes";
+  };
+
+  nix.settings.trusted-users = [username];
+
   system.stateVersion = "24.11";
-  i18n.defaultLocale = "en_US.UTF-8";
 }

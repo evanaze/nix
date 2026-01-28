@@ -1,16 +1,9 @@
+# hosts/earth/default.nix - Earth (Desktop) host-specific configuration
 {
   pkgs,
   username,
   ...
 }: {
-  imports = [
-    ./apps
-    ./hardware-configuration.nix
-    ./nvidia.nix
-    ../shared
-    ../shared/pc
-  ];
-
   networking.hostName = "earth";
 
   # Bootloader
@@ -28,10 +21,21 @@
   # Needed for Obsidian
   nixpkgs.config.permittedInsecurePackages = ["electron-25.9.0"];
 
-  # Set permissions for /dev/hidraw8, i.e. Voyager keyboard
+  # udev rules: Voyager keyboard + GameCube controller adapter
   services.udev.extraRules = ''
     SUBSYSTEM=="hidraw", KERNEL=="hidraw8", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="0337", MODE="0666"
   '';
+
+  # Slippi configuration for home-manager
+  home-manager.users.${username} = {
+    slippi-launcher = {
+      enable = true;
+      isoPath = "/home/${username}/Games/melee_patched.iso";
+      launchMeleeOnPlay = false;
+      useNetplayBeta = true;
+    };
+  };
 
   system.stateVersion = "23.11";
 }
