@@ -4,40 +4,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a NixOS/nix-darwin flake configuration managing multiple systems:
-- **desktop** (father): x86_64-linux desktop with NVIDIA GPU, gaming, AI services, and seedbox
-- **framework** (fw): x86_64-linux Framework 13 laptop with AMD 7040 CPU
-- **rpi**: aarch64-linux Raspberry Pi 5 server
-- **mac** (cooper): x86_64-darwin macOS system
+This is a NixOS flake configuration using the **dendritic pattern** - an aspect-oriented architecture where each `.nix` file provides config for the same feature across NixOS and home-manager.
 
-The configuration uses flakes with home-manager for user configuration management, sops-nix for secrets, and includes a custom nixvim configuration.
+**Managed systems:**
+- **earth**: x86_64-linux desktop with NVIDIA GPU, gaming, AI services
+- **mars**: x86_64-linux Framework 13 laptop with AMD 7040 CPU
+- **jupiter**: x86_64-linux server
+- **rpi** (mercury): aarch64-linux Raspberry Pi 5 server
+
+The configuration uses flake-parts, home-manager for user configuration, sops-nix for secrets, and includes a custom nixvim configuration.
 
 ## Build and Deployment Commands
 
 ### Building Configurations
 ```bash
 # Build a specific system configuration
-nix build .#nixosConfigurations.desktop.config.system.build.toplevel
-nix build .#nixosConfigurations.framework.config.system.build.toplevel
+nix build .#nixosConfigurations.earth.config.system.build.toplevel
+nix build .#nixosConfigurations.mars.config.system.build.toplevel
+nix build .#nixosConfigurations.jupiter.config.system.build.toplevel
 nix build .#nixosConfigurations.rpi.config.system.build.toplevel
-nix build .#darwinConfigurations.cooper.system
 
 # Test build without deploying
-nixos-rebuild build --flake .#desktop
-nixos-rebuild build --flake .#framework
+nixos-rebuild build --flake .#earth
+nixos-rebuild build --flake .#mars
 ```
 
 ### Deploying Changes
 ```bash
 # Deploy to current system (NixOS)
-sudo nixos-rebuild switch --flake .#desktop
-sudo nixos-rebuild switch --flake .#framework
-
-# Deploy to macOS
-darwin-rebuild switch --flake .#cooper
+sudo nixos-rebuild switch --flake .#earth
+sudo nixos-rebuild switch --flake .#mars
+sudo nixos-rebuild switch --flake .#jupiter
 
 # Test configuration without making it default
-sudo nixos-rebuild test --flake .#desktop
+sudo nixos-rebuild test --flake .#earth
 ```
 
 ### Updating Dependencies
@@ -54,170 +54,198 @@ nix flake update home-manager
 nix flake check
 ```
 
-### Useful Aliases (from zsh.nix)
+### Useful Aliases (from zsh aspect)
 - `econf` - Navigate to config directory and open nvim
 - `update` - Update all flake inputs and commit changes
 - `updnvim` - Update only nixvim input and commit
 - `npush` - Commit and push changes from config directory
+- `rebuild` - Rebuild current system (host-specific)
 
 ## Architecture
 
-### Configuration Structure
+### Dendritic Configuration Structure
 
 ```
 .
-├── flake.nix              # Main flake defining all system configurations
-├── hosts/                 # Host-specific configurations
-│   ├── desktop/          # Gaming/AI desktop configuration
-│   │   ├── apps/         # Desktop-specific services
-│   │   │   ├── ai/       # AI stack (Ollama, Open WebUI, Aider)
-│   │   │   ├── default.nix
-│   │   │   └── prometheus.nix
-│   │   └── nvidia.nix    # NVIDIA GPU configuration
-│   ├── framework/        # Framework laptop configuration
-│   │   ├── sleep.nix     # Power management for battery optimization
-│   │   └── gnome-keyring-unlock.nix
-│   ├── rpi/              # Raspberry Pi server configuration
-│   │   ├── apps/         # RPi services (blocky, webserver, gh-actions)
-│   │   ├── networking.nix
-│   │   └── users.nix
-│   └── shared/           # Shared configurations across hosts
-│       ├── default.nix   # Common packages and settings
-│       ├── nixos/        # NixOS-specific shared config
-│       │   ├── default.nix      # Auto-upgrade, GC
-│       │   ├── zsh.nix          # Zsh configuration with aliases
-│       │   └── seedbox/         # Jellyfin + torrent server (shared)
-│       └── pc/           # Desktop/laptop shared config
-│           ├── default.nix      # GNOME, networking
-│           ├── games.nix        # Gaming packages
-│           ├── gnome-keyring.nix
-│           └── ipfs.nix
-├── home/                 # home-manager configurations per host
-│   ├── desktop.nix
-│   ├── framework.nix
-│   ├── mac.nix
-│   ├── rpi.nix
-│   ├── shared.nix        # Shared home-manager config (git, direnv, ghostty)
-│   └── shared/
-│       └── zsh.nix       # User-level zsh config
-├── modules/              # Reusable NixOS/home-manager modules
-│   └── slippi.nix        # Super Smash Bros Melee gaming setup
-├── pkgs/                 # Custom package definitions
-│   └── air.nix           # Air live reload tool
-├── secrets.yaml          # sops-encrypted secrets
-└── .sops.yaml           # sops configuration with age key
+├── flake.nix                    # Minimal: inputs + flake-parts + host definitions
+├── lib/
+│   ├── default.nix              # Library entry point
+│   └── mkHost.nix               # Host builder function
+├── aspects/                     # Feature-oriented modules (NixOS + home-manager combined)
+│   ├── core/
+│   │   ├── default.nix          # Aggregator
+│   │   ├── bootloader.nix       # systemd-boot
+│   │   ├── locale.nix           # Timezone, i18n
+│   │   ├── maintenance.nix      # Auto-upgrade, GC
+│   │   ├── networking.nix       # NetworkManager
+│   │   ├── nix.nix              # Flakes, unfree, experimental
+│   │   ├── packages.nix         # CLI tools
+│   │   ├── rpi.nix              # Core for Raspberry Pi (no bootloader/networking)
+│   │   ├── sops.nix             # Secrets management
+│   │   ├── ssh.nix              # OpenSSH
+│   │   ├── tailscale.nix        # VPN service
+│   │   └── user.nix             # User account
+│   ├── shell/
+│   │   ├── default.nix
+│   │   ├── packages.nix         # Shell utilities
+│   │   └── zsh.nix              # System + home-manager zsh combined
+│   ├── desktop/
+│   │   ├── default.nix
+│   │   ├── apps.nix             # Desktop applications
+│   │   ├── fonts.nix
+│   │   ├── gnome.nix            # GNOME + GDM
+│   │   ├── printing.nix         # CUPS
+│   │   ├── sound.nix            # PipeWire
+│   │   └── xserver.nix          # X11
+│   ├── development/
+│   │   ├── default.nix
+│   │   ├── direnv.nix
+│   │   ├── docker.nix
+│   │   ├── editors.nix          # nixvim, ghostty, zellij
+│   │   ├── git.nix              # System + home-manager git
+│   │   └── languages.nix        # Programming languages
+│   ├── gaming/
+│   │   ├── default.nix
+│   │   ├── slippi.nix           # Super Smash Bros Melee
+│   │   └── steam.nix
+│   ├── media/
+│   │   ├── default.nix
+│   │   ├── ipfs.nix             # Kubo IPFS node
+│   │   └── jellyfin.nix         # Media server
+│   ├── ai/
+│   │   ├── default.nix
+│   │   ├── aider.nix            # AI coding assistant
+│   │   └── ollama.nix           # CUDA-aware LLM server
+│   ├── monitoring/
+│   │   ├── default.nix
+│   │   ├── grafana.nix
+│   │   └── prometheus.nix
+│   ├── networking/
+│   │   ├── default.nix
+│   │   ├── blocky.nix           # DNS ad-blocking
+│   │   └── networkmanager.nix
+│   └── hardware/
+│       ├── default.nix
+│       ├── framework.nix        # Framework + power management
+│       ├── nvidia.nix           # NVIDIA GPU
+│       └── raspberry-pi.nix     # RPi 5 configuration
+├── hosts/                       # Host-specific overrides only
+│   ├── earth/
+│   │   ├── default.nix          # Host-specific config + overrides
+│   │   └── hardware-configuration.nix
+│   ├── mars/
+│   │   ├── default.nix
+│   │   └── hardware-configuration.nix
+│   ├── jupiter/
+│   │   ├── default.nix
+│   │   └── hardware-configuration.nix
+│   └── rpi/
+│       ├── default.nix
+│       ├── disko-nvme-zfs.nix
+│       ├── hardware-configuration.nix
+│       └── pi5-configtxt.nix
+├── pkgs/                        # Custom package definitions
+│   └── air.nix
+└── secrets/
+    ├── secrets.yaml             # sops-encrypted secrets
+    └── .sops.yaml               # sops configuration
 ```
 
-### Key Configuration Patterns
+### Key Architecture Principles
 
-**Layered Configuration Model:**
-1. `flake.nix` defines systems and imports host configs
-2. Host configs (e.g., `hosts/desktop/default.nix`) import:
-   - Hardware-specific settings
-   - Shared base configurations from `hosts/shared/`
-   - Host-specific apps/services
-3. home-manager configs layer user-level settings similarly
+1. **Aspect-oriented**: Files organized by feature, not host
+2. **Combined configs**: Each aspect file contains both NixOS and home-manager config
+3. **Host composition**: Hosts select which aspects to apply
+4. **No specialArgs**: Uses `_module.args` for shared values (username, inputs, hostname)
+5. **flake-parts** as foundation
 
-**Secrets Management:**
-- Uses sops-nix with age encryption
-- Age key location: `~/.config/sops/age/keys.txt`
-- Secrets file: `secrets.yaml`
-- Configuration: `.sops.yaml`
+### Host-to-Aspect Mapping
 
-**External Dependencies:**
-- Custom nixvim configuration: `github:evanaze/nixvim-conf`
-- Hardware optimizations via nixos-hardware (Framework 13 7040 AMD, RPi 5)
+| Host    | Aspects |
+|---------|---------|
+| earth   | core, shell, desktop, development, gaming, media, ai, monitoring, hardware/nvidia |
+| mars    | core, shell, desktop, development, gaming, hardware/framework |
+| jupiter | core, shell, development |
+| rpi     | core/rpi, shell, networking/blocky, hardware/raspberry-pi |
 
-### Host-Specific Features
+### Aspect Pattern Example
 
-**Desktop (father):**
-- NVIDIA GPU support
-- Steam gaming
-- Self-hosted services: Ollama, Open WebUI, Aider (AI stack)
-- Seedbox: Jellyfin media server + torrent server
-- Prometheus monitoring
-- Passwordless sudo
-- Latest kernel
+Each aspect file follows this structure:
 
-**Framework (fw):**
-- Framework-specific hardware optimizations (kmod, audio enhancement)
-- Battery optimization via sleep.nix (disables WiFi/Bluetooth during suspend)
-- GNOME keyring auto-unlock on login
-- Power management tools (gnome-power-manager, powertop)
-- AMD GPU configuration (amdgpu.abmlevel=0)
+```nix
+# aspects/shell/zsh.nix
+{pkgs, username, hostname, ...}: {
+  # NixOS System Configuration
+  programs.zsh.enable = true;
+  environment.systemPackages = with pkgs; [fzf ripgrep zoxide];
 
-**Raspberry Pi (rpi):**
-- ARM64 architecture
-- Hardware profile from nixos-hardware
-- Tailscale for remote access
-- Self-hosted services: Blocky DNS, webserver, GitHub Actions runner
-
-### Common Patterns
-
-**System Packages:** Defined in `hosts/shared/default.nix` (git, htop, devenv, etc.)
-
-**PC Packages:** Desktop apps in `hosts/shared/pc/default.nix` (Claude Code, Cursor, Chrome, Bitwarden, etc.)
-
-**Gaming:** Defined in `hosts/shared/pc/games.nix` (Steam, Slippi for Super Smash Bros Melee)
-
-**GNOME Desktop:** Configured in `hosts/shared/pc/default.nix` with autologin workaround
-
-**Seedbox (Shared):** Media server (Jellyfin) and torrent server moved to `hosts/shared/nixos/seedbox/` for reuse across desktop and framework
-
-**Automatic Maintenance:**
-- Garbage collection: Weekly on Mondays, deletes >7 days old
-- Auto-upgrade: Daily with automatic reboot (NixOS systems)
-- Defined in `hosts/shared/nixos/default.nix`
+  # Home-Manager Configuration
+  home-manager.users.${username} = {
+    programs.zsh = {
+      enable = true;
+      shellAliases = {
+        rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#${hostname}";
+      };
+    };
+  };
+}
+```
 
 ## Development Workflow
 
 ### Making Configuration Changes
 
-1. Edit relevant `.nix` files in appropriate directory
-2. Test build: `nixos-rebuild build --flake .#<hostname>`
-3. If successful, deploy: `sudo nixos-rebuild switch --flake .#<hostname>`
-4. Commit changes with descriptive message
+1. Identify which aspect the change belongs to
+2. Edit the relevant aspect file in `aspects/`
+3. For host-specific overrides, edit `hosts/<hostname>/default.nix`
+4. Test build: `nixos-rebuild build --flake .#<hostname>`
+5. If successful, deploy: `sudo nixos-rebuild switch --flake .#<hostname>`
 
 ### Adding New Packages
 
-**System-wide:** Add to `environment.systemPackages` in:
-- `hosts/shared/default.nix` (all systems)
-- `hosts/shared/pc/default.nix` (desktop/laptop)
-- Host-specific `default.nix` (single system)
+**System-wide (all hosts):** Add to `aspects/core/packages.nix`
 
-**User-level:** Add to `home.packages` in:
-- `home/shared.nix` (all users)
-- Host-specific home config (single user)
+**Desktop/laptop:** Add to `aspects/desktop/apps.nix`
 
-### Creating New Modules
+**Development tools:** Add to `aspects/development/` (appropriate file)
 
-**Reusable modules:** Place in `modules/` directory for truly generic, cross-platform modules
+**Host-specific:** Add to `hosts/<hostname>/default.nix`
 
-**Custom packages:** Place in `pkgs/` directory for custom package definitions
+### Creating New Aspects
 
-**NixOS-specific shared config:** Place in `hosts/shared/nixos/` for system-level NixOS configs (zsh, services)
-
-**PC-specific shared config:** Place in `hosts/shared/pc/` for desktop/laptop configs (GNOME, games)
-
-Import modules in `flake.nix` or host configs as needed.
+1. Create a new `.nix` file in the appropriate category under `aspects/`
+2. Follow the aspect pattern (system config + home-manager config)
+3. Import in the category's `default.nix` aggregator
+4. Add to host aspect lists in `flake.nix` as needed
 
 ### Working with Secrets
 
 ```bash
 # Edit secrets (requires age key)
-sops secrets.yaml
+sops secrets/secrets.yaml
 
 # Update sops configuration
-# Edit .sops.yaml to add new paths or keys
+# Edit secrets/.sops.yaml to add new paths or keys
 ```
 
 ## Important Notes
 
-- Username is hardcoded as "evanaze" in `flake.nix:38`
-- Editor is set to nvim globally via `hosts/shared/default.nix`
+- Username is hardcoded as "evanaze" in `lib/default.nix`
+- `hostname` variable is passed to all modules and available for host-specific logic
+- Editor is set to nvim globally via `aspects/core/nix.nix`
 - All systems use zsh as default shell
 - Flakes and nix-command are enabled on all systems
 - Unfree packages are allowed globally
-- Desktop uses systemd-boot, not GRUB
+- Desktop/laptop systems use systemd-boot
 - Time zone: America/Denver (all systems)
 - Tailscale enabled on all systems for VPN access
+
+### External Dependencies
+
+- **flake-parts**: Flake structure management
+- **nixvim**: Custom neovim configuration (`github:evanaze/nixvim-conf`)
+- **nixos-hardware**: Hardware optimizations (Framework 13 7040 AMD, RPi 5)
+- **nixos-raspberrypi**: Raspberry Pi 5 support
+- **slippi**: Super Smash Bros Melee netplay
+- **sops-nix**: Secrets management with age encryption
+- **disko**: Declarative disk partitioning (RPI, Jupiter)
