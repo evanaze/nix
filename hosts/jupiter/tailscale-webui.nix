@@ -1,5 +1,0 @@
-{...}: {
-  services.tailscale = {
-    extraSetFlags = ["--webclient"];
-  };
-}
