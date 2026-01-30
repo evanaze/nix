@@ -9,11 +9,4 @@
     steam
     zeroad
   ];
-
-  # Home-manager gaming packages
-  home-manager.users.${username} = {
-    home.packages = with pkgs; [
-      steam
-    ];
-  };
 }
