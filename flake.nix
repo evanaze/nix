@@ -48,7 +48,10 @@
 
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux"];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
       flake = let
         lib = import ./lib {inherit inputs;};
@@ -71,11 +74,9 @@
               ./aspects/ai
               ./aspects/monitoring
               ./aspects/hardware/nvidia.nix
+              ./aspects/hardware/earth.nix
             ];
             extraModules = [
-              ./hosts/earth/hardware-configuration.nix
-              ./hosts/earth
-
               inputs.nixos-hardware.nixosModules.common-pc
               inputs.nixos-hardware.nixosModules.common-pc-ssd
               inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
@@ -102,9 +103,6 @@
               ./aspects/hardware/framework.nix
             ];
             extraModules = [
-              ./hosts/mars/hardware-configuration.nix
-              ./hosts/mars
-
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
             ];
           };
@@ -121,9 +119,6 @@
               ./aspects/development
             ];
             extraModules = [
-              ./hosts/jupiter/hardware-configuration.nix
-              ./hosts/jupiter
-
               inputs.disko.nixosModules.disko
             ];
           };
@@ -142,10 +137,6 @@
               ./aspects/hardware/raspberry-pi.nix
             ];
             extraModules = [
-              ./hosts/rpi/hardware-configuration.nix
-              ./hosts/rpi
-              ./hosts/rpi/pi5-configtxt.nix
-
               inputs.nixos-hardware.nixosModules.raspberry-pi-5
               inputs.disko.nixosModules.disko
               ./hosts/rpi/disko-nvme-zfs.nix

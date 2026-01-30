@@ -1,5 +1,9 @@
 # aspects/media/default.nix - Media configuration aggregator
-{pkgs, username, ...}: {
+{
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ./ipfs.nix
     # ./jellyfin.nix  # Enable when needed
@@ -11,5 +15,4 @@
       calibre
     ];
   };
-}
 }
