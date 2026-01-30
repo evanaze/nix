@@ -1,12 +1,9 @@
 # aspects/gaming/steam.nix - Steam and gaming packages
-{
-  pkgs,
-  username,
-  ...
-}: {
+{pkgs, ...}: {
+  programs.steam.enable = true;
+
   environment.systemPackages = with pkgs; [
     shattered-pixel-dungeon
-    steam
     zeroad
   ];
 }
