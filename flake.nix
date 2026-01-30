@@ -101,6 +101,7 @@
               ./aspects/development
               ./aspects/gaming
               ./aspects/hardware/framework.nix
+              ./aspects/hardware/mars.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -117,6 +118,7 @@
               ./aspects/core
               ./aspects/shell
               ./aspects/development
+              ./aspects/hardware/jupiter.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
