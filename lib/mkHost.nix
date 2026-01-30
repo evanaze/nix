@@ -48,6 +48,11 @@
     };
   };
 
+  # NixOS system state version
+  stateVersionConfig = {
+    system.stateVersion = stateVersion;
+  };
+
   # Base specialArgs - required for nixos-raspberrypi
   baseSpecialArgs = {
     inherit inputs username;
@@ -61,6 +66,9 @@ in
         [
           # Pass args via _module.args
           moduleArgs
+
+          # NixOS state version
+          stateVersionConfig
 
           # Home-manager module
           inputs.home-manager.nixosModules.home-manager
