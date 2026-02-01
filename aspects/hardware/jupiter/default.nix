@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -13,35 +12,24 @@
     ./disko.nix
   ];
 
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "xhci_pci"
-    "ahci"
-    "usb_storage"
-    "usbhid"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd"];
-  boot.extraModulePackages = [];
+  # Required for ZFS
+  networking.hostId = "a8c09e01";
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/8f8f3a4c-4c7d-4dc4-b3fa-ef92d3814891";
-    fsType = "ext4";
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      kernelModules = [];
+    };
+    kernelModules = ["kvm-amd"];
+    extraModulePackages = [];
   };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/E887-FEE6";
-    fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
-  };
-
-  swapDevices = [
-    {device = "/dev/disk/by-uuid/572dcfb3-a043-41f4-9141-c62dad78fad8";}
-  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
