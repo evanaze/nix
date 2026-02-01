@@ -8,4 +8,6 @@
     ./sound.nix
     ./xserver.nix
   ];
+
+  services.openssh.enable = true;
 }
