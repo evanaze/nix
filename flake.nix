@@ -118,7 +118,7 @@
               ./aspects/core
               ./aspects/shell
               ./aspects/development
-              ./aspects/hardware/jupiter.nix
+              ./aspects/hardware/jupiter
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
