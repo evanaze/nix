@@ -7,9 +7,9 @@
 }: {
   services.openssh.enable = true;
 
-  environment.systemPackages = map lib.lowprio [
-    pkgs.curl
-    pkgs.git
+  environment.systemPackages = with pkgs; [
+    curl
+    git
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [
