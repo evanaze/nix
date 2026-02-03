@@ -122,7 +122,6 @@
               ./aspects/hardware/jupiter
             ];
             extraModules = [
-              ./hardware-configuration.nix
               inputs.disko.nixosModules.disko
             ];
           };
