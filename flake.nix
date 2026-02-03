@@ -116,7 +116,6 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/core
-              ./aspects/core/init.nix
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
