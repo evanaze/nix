@@ -108,7 +108,7 @@
             ];
           };
 
-          # Jupiter - Server
+          # Jupiter - Aoostar NAS Server
           jupiter = mkHost {
             system = "x86_64-linux";
             hostname = "jupiter";
@@ -122,6 +122,7 @@
               ./aspects/hardware/jupiter
             ];
             extraModules = [
+              ./hardware-configuration.nix
               inputs.disko.nixosModules.disko
             ];
           };
