@@ -11,4 +11,9 @@
   environment.systemPackages = with pkgs; [
     zfs
   ];
+
+  services.zfs.autoScrub = {
+    enable = true;
+    interval = "*-*-1,15 02:30";
+  };
 }
