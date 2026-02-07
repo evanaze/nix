@@ -120,6 +120,7 @@
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
+              ./aspects/media/syncthing-server.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
