@@ -12,8 +12,8 @@
     zfs
   ];
 
-  services.zfs.autoScrub = {
-    enable = true;
-    interval = "*-*-1,15 02:30";
+  services.zfs = {
+    autoScrub.enable = true;
+    autoSnapshot.enable = true;
   };
 }

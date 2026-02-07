@@ -39,6 +39,16 @@
     ];
   };
 
+  fileSystems."/mnt/eye" = {
+    device = "eye";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/documents" = {
+    device = "eye/documents";
+    fsType = "zfs";
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/30b26b23-04fd-4645-b72a-da5c240c030e";}
   ];
