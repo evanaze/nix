@@ -16,7 +16,7 @@
     user = username;
   };
 
-  systemd.services.tsserve-jellyfin = {
+  systemd.services.jellyfin-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
       "jellyfin.service"
