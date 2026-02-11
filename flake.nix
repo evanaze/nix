@@ -120,6 +120,7 @@
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
+              ./aspects/hardware/disk-sleep.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
