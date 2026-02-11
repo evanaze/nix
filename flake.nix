@@ -102,6 +102,7 @@
               ./aspects/gaming
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
+              ./aspects/media/syncthing-server.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
