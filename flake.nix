@@ -73,6 +73,7 @@
               ./aspects/media
               ./aspects/ai
               ./aspects/monitoring
+              ./aspects/media/syncthing-server.nix
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
             ];
