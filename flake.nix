@@ -121,6 +121,7 @@
               ./aspects/development
               ./aspects/hardware/jupiter
               ./aspects/hardware/disk-sleep.nix
+              ./aspects/media/syncthing-server.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
