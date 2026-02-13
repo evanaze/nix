@@ -73,9 +73,9 @@
               ./aspects/media
               ./aspects/ai
               ./aspects/monitoring
-              ./aspects/media/syncthing-server.nix
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
+              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
@@ -103,7 +103,7 @@
               ./aspects/gaming
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
-              ./aspects/media/syncthing-server.nix
+              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -123,7 +123,7 @@
               ./aspects/development
               ./aspects/hardware/jupiter
               ./aspects/hardware/disk-sleep.nix
-              ./aspects/media/syncthing-server.nix
+              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko

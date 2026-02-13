@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  username,
   ...
 }: {
   services.syncthing = {
@@ -10,6 +11,23 @@
     settings = {
       gui = {
         user = "admin";
+      };
+      devices = {
+        "earth" = {
+          id = "DEVICE-ID-GOES-HERE";
+        };
+        "jupiter" = {
+          id = "DEVICE-ID-GOES-HERE";
+        };
+      };
+      folders = {
+        "Documents" = {
+          path = "/home/${username}/Documents";
+          devices = [
+            "jupiter"
+            "earth"
+          ];
+        };
       };
     };
   };
