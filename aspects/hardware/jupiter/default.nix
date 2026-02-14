@@ -49,6 +49,21 @@
     fsType = "zfs";
   };
 
+  fileSystems."/mnt/eye/movies" = {
+    device = "eye/movies";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/music" = {
+    device = "eye/music";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/pictures" = {
+    device = "eye/pictures";
+    fsType = "zfs";
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/30b26b23-04fd-4645-b72a-da5c240c030e";}
   ];
