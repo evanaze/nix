@@ -15,4 +15,7 @@
   systemd.tmpfiles.rules = [
     "d /mnt/eye/documents 0755 evanaze users -"
   ];
+
+  systemd.services.syncthing.after = ["zfs-mount.service"];
+  systemd.services.syncthing.requires = ["zfs-mount.service"];
 }
