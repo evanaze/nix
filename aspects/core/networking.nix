@@ -1,6 +1,11 @@
 # aspects/core/networking.nix - NetworkManager configuration
-{lib, ...}: {
+{
+  hostname,
+  lib,
+  ...
+}: {
   networking = {
+    hostName = hostname;
     networkmanager.enable = lib.mkDefault true;
     nameservers = lib.mkDefault [
       "1.1.1.1"

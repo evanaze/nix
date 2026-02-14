@@ -1,10 +1,6 @@
 # A simple configuration used when bootstraping a new
 # device with nixos-anywhere
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   services.openssh.enable = true;
 
   environment.systemPackages = with pkgs; [
