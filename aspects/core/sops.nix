@@ -19,6 +19,8 @@
     };
     secrets = {
       ts-server-key = {};
+      admin-pass = {};
+      syncthing-earth-id = {};
     };
   };
 }

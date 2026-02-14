@@ -7,18 +7,20 @@
   services.syncthing = {
     enable = true;
     openDefaultPorts = false;
-    guiPasswordFile = "/run/secrets/hs-admin-pass";
+    guiPasswordFile = "/run/secrets/admin-pass";
+    guiAddress = "127.0.0.1:8384";
     settings = {
       gui = {
         user = "admin";
       };
       devices = {
         "earth" = {
-          addresses = ["earth.spitz-pickerel.ts.net"];
-          id = "DEVICE-ID-GOES-HERE";
+          addresses = ["tcp://100.99.77.56:22000"];
+          id = "";
         };
         "jupiter" = {
-          id = "DEVICE-ID-GOES-HERE";
+          addresses = ["tcp://100.114.214.80:22000"];
+          id = "";
         };
       };
       folders = {
