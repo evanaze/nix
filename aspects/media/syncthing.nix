@@ -28,6 +28,7 @@
       folders = {
         "Documents" = {
           path = "/home/${username}/Documents";
+          ignorePerms = false;
           devices = [
             "jupiter"
             "earth"
