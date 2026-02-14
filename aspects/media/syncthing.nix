@@ -37,6 +37,8 @@
         };
       };
     };
+
+    networking.firewall.allowedTCPPorts = [22000];
   };
 
   # systemd.services.syncthing-tsserve = {
