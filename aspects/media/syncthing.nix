@@ -9,7 +9,7 @@
     dataDir = "/home/${username}";
     key = "/run/secrets/syncthing-${hostname}-key-pem";
     cert = "/run/secrets/syncthing-${hostname}-cert-pem";
-    openDefaultPorts = true;
+    openDefaultPorts = false;
     guiPasswordFile = "/run/secrets/admin-pass";
     guiAddress = "127.0.0.1:8384";
     settings = {
