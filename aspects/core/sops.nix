@@ -21,6 +21,7 @@
       ts-server-key = {};
       admin-pass = {};
       syncthing-earth-id = {};
+      syncthing-jupiter-id = {};
     };
   };
 }

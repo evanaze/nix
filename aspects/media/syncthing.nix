@@ -16,11 +16,11 @@
       devices = {
         "earth" = {
           addresses = ["tcp://100.99.77.56:22000"];
-          id = "";
+          id = "/run/secrets/syncthing-earth-id";
         };
         "jupiter" = {
           addresses = ["tcp://100.114.214.80:22000"];
-          id = "";
+          id = "/run/secrets/syncthing-jupiter-id";
         };
       };
       folders = {
