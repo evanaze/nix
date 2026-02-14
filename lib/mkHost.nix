@@ -45,7 +45,6 @@
   moduleArgs = {
     _module.args = {
       inherit inputs username hostname;
-      networking.hostName = hostname;
     };
   };
 
