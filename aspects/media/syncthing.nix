@@ -14,6 +14,7 @@
       };
       devices = {
         "earth" = {
+          addresses = ["earth.spitz-pickerel.ts.net"];
           id = "DEVICE-ID-GOES-HERE";
         };
         "jupiter" = {
