@@ -129,7 +129,12 @@
               inputs.disko.nixosModules.disko
               (
                 {lib, ...}: {
-                  services.syncthing.settings.folders."Documents".path = lib.mkForce "/mnt/eye/documents";
+                  services.syncthing.settings.folders = {
+                    "Documents".path = lib.mkForce "/mnt/eye/documents";
+                    "Movies".path = lib.mkForce "/mnt/eye/movies";
+                    "Music".path = lib.mkForce "/mnt/eye/music";
+                    "Pictures".path = lib.mkForce "/mnt/eye/pictures";
+                  };
                 }
               )
             ];
