@@ -6,6 +6,7 @@
 }: {
   services.syncthing = {
     enable = true;
+    user = username;
     openDefaultPorts = false;
     guiPasswordFile = "/run/secrets/admin-pass";
     guiAddress = "127.0.0.1:8384";
