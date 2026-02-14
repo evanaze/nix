@@ -35,6 +35,30 @@
             "earth"
           ];
         };
+        "Movies" = {
+          path = "/home/${username}/Movies";
+          ignorePerms = false;
+          devices = [
+            "jupiter"
+            "earth"
+          ];
+        };
+        "Music" = {
+          path = "/home/${username}/Music";
+          ignorePerms = false;
+          devices = [
+            "jupiter"
+            "earth"
+          ];
+        };
+        "Pictures" = {
+          path = "/home/${username}/Pictures";
+          ignorePerms = false;
+          devices = [
+            "jupiter"
+            "earth"
+          ];
+        };
       };
     };
   };
