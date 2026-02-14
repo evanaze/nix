@@ -20,12 +20,12 @@
         "earth" = {
           addresses = ["tcp://100.99.77.56:22000"];
           # id = "/run/secrets/syncthing-earth-id";
-          id = "PG2GD3S-2QH7I2X-2SMHKFF-3SKFGKW-CRFFXHI-QFVKWLM-SDG7PFM-WX2V7QB";
+          id = "7Y3UBW3-H2FYEKH-44BQUYC-TJXCAC7-WSMGVEP-GZM5DXK-QV5XPKG-ZBG55AY";
         };
         "jupiter" = {
           addresses = ["tcp://100.114.214.80:22000"];
           # id = "/run/secrets/syncthing-jupiter-id";
-          id = "XAGP47U-NMVPKUO-FA43ZCU-YND4BUB-DQRRSYO-IIIENIJ-7ZJL34Y-BIZMXQ3";
+          id = "HUSB4BP-ISO6UAK-2KL3PND-VQX3OE7-F5ZRFPR-IX7K3UV-Q3UCMFW-34C2XAV";
         };
       };
       folders = {
