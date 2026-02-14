@@ -19,12 +19,10 @@
       devices = {
         "earth" = {
           addresses = ["tcp://100.99.77.56:22000"];
-          # id = "/run/secrets/syncthing-earth-id";
           id = "7Y3UBW3-H2FYEKH-44BQUYC-TJXCAC7-WSMGVEP-GZM5DXK-QV5XPKG-ZBG55AY";
         };
         "jupiter" = {
           addresses = ["tcp://100.114.214.80:22000"];
-          # id = "/run/secrets/syncthing-jupiter-id";
           id = "HUSB4BP-ISO6UAK-2KL3PND-VQX3OE7-F5ZRFPR-IX7K3UV-Q3UCMFW-34C2XAV";
         };
       };
@@ -55,6 +53,6 @@
   #   serviceConfig = {
   #     Type = "exec";
   #   };
-  #   script = "${lib.getExe pkgs.tailscale} serve --service=svc:docs --https=443 8384";
+  #   script = "${lib.getExe pkgs.tailscale} serve --service=svc:sync --https=443 8384";
   # };
 }
