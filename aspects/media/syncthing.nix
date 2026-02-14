@@ -16,11 +16,13 @@
       devices = {
         "earth" = {
           addresses = ["tcp://100.99.77.56:22000"];
-          id = "/run/secrets/syncthing-earth-id";
+          # id = "/run/secrets/syncthing-earth-id";
+          id = "PG2GD3S-2QH7I2X-2SMHKFF-3SKFGKW-CRFFXHI-QFVKWLM-SDG7PFM-WX2V7QB";
         };
         "jupiter" = {
           addresses = ["tcp://100.114.214.80:22000"];
-          id = "/run/secrets/syncthing-jupiter-id";
+          # id = "/run/secrets/syncthing-jupiter-id";
+          id = "XAGP47U-NMVPKUO-FA43ZCU-YND4BUB-DQRRSYO-IIIENIJ-7ZJL34Y-BIZMXQ3";
         };
       };
       folders = {
