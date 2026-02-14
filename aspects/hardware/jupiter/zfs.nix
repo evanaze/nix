@@ -11,4 +11,8 @@
     autoScrub.enable = true;
     autoSnapshot.enable = true;
   };
+
+  systemd.tmpfiles.rules = [
+    "d /mnt/eye/documents 0755 evanaze users -"
+  ];
 }
