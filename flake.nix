@@ -72,6 +72,7 @@
               ./aspects/development
               ./aspects/gaming
               ./aspects/media
+              ./aspects/media/immich.nix
               ./aspects/ai
               ./aspects/monitoring
               ./aspects/hardware/nvidia.nix
@@ -118,6 +119,7 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/backup/syncthing.nix
+              ./aspects/backup/rclone.nix
               ./aspects/core
               ./aspects/core/init.nix
               ./aspects/shell
