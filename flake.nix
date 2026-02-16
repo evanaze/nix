@@ -65,6 +65,7 @@
             stateVersion = "23.11";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/shell
               ./aspects/desktop
@@ -75,7 +76,6 @@
               ./aspects/monitoring
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
-              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
@@ -96,6 +96,7 @@
             stateVersion = "25.05";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/shell
               ./aspects/desktop
@@ -103,7 +104,6 @@
               ./aspects/gaming
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
-              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -117,13 +117,13 @@
             stateVersion = "25.11";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/core/init.nix
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
               ./aspects/hardware/disk-sleep.nix
-              ./aspects/media/syncthing.nix
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
