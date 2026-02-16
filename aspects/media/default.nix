@@ -5,14 +5,7 @@
   ...
 }: {
   imports = [
-    ./ipfs.nix
+    ./immich.nix
     # ./jellyfin.nix  # Enable when needed
   ];
-
-  # Home-manager language packages
-  home-manager.users.${username} = {
-    home.packages = with pkgs; [
-      calibre
-    ];
-  };
 }

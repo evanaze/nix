@@ -21,11 +21,16 @@
     "f /mnt/eye/movies/.stfolder 0644 evanaze users -"
     "d /mnt/eye/music 0755 evanaze users -"
     "f /mnt/eye/music/.stfolder 0644 evanaze users -"
-    "d /mnt/eye/pictures 0755 evanaze users -"
+    "d /mnt/eye/pictures 0775 evanaze media -"
     "f /mnt/eye/pictures/.stfolder 0644 evanaze users -"
   ];
 
   systemd.services.syncthing = {
+    after = ["zfs-mount.service"];
+    requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.immich-server = {
     after = ["zfs-mount.service"];
     requires = ["zfs-mount.service"];
   };
