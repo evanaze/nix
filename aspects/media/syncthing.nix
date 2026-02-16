@@ -35,32 +35,33 @@
           path = "/home/${username}/Documents";
           ignorePerms = false;
           devices = [
-            "jupiter"
             "earth"
+            "mars"
+            "jupiter"
           ];
         };
         "Movies" = {
           path = "/home/${username}/Movies";
           ignorePerms = false;
           devices = [
-            "jupiter"
             "earth"
+            "jupiter"
           ];
         };
         "Music" = {
           path = "/home/${username}/Music";
           ignorePerms = false;
           devices = [
-            "jupiter"
             "earth"
+            "jupiter"
           ];
         };
         "Pictures" = {
           path = "/home/${username}/Pictures";
           ignorePerms = false;
           devices = [
-            "jupiter"
             "earth"
+            "jupiter"
           ];
         };
       };
