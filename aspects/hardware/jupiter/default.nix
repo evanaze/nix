@@ -49,6 +49,11 @@
     fsType = "zfs";
   };
 
+  fileSystems."/mnt/eye/downloads" = {
+    device = "eye/downloads";
+    fsType = "zfs";
+  };
+
   fileSystems."/mnt/eye/movies" = {
     device = "eye/movies";
     fsType = "zfs";

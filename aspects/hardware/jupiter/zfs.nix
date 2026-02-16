@@ -15,6 +15,8 @@
   systemd.tmpfiles.rules = [
     "d /mnt/eye/documents 0755 evanaze users -"
     "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
+    "d /mnt/eye/downloads 0755 evanaze users -"
+    "f /mnt/eye/downloads/.stfolder 0644 evanaze users -"
     "d /mnt/eye/movies 0755 evanaze users -"
     "f /mnt/eye/movies/.stfolder 0644 evanaze users -"
     "d /mnt/eye/music 0755 evanaze users -"

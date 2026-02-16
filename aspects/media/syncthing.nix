@@ -40,6 +40,15 @@
             "jupiter"
           ];
         };
+        "Downloads" = {
+          path = "/home/${username}/Downloads";
+          ignorePerms = false;
+          devices = [
+            "earth"
+            "mars"
+            "jupiter"
+          ];
+        };
         "Movies" = {
           path = "/home/${username}/Movies";
           ignorePerms = false;

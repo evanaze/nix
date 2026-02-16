@@ -131,6 +131,7 @@
                 {lib, ...}: {
                   services.syncthing.settings.folders = {
                     "Documents".path = lib.mkForce "/mnt/eye/documents";
+                    "Downloads".path = lib.mkForce "/mnt/eye/downloads";
                     "Movies".path = lib.mkForce "/mnt/eye/movies";
                     "Music".path = lib.mkForce "/mnt/eye/music";
                     "Pictures".path = lib.mkForce "/mnt/eye/pictures";
