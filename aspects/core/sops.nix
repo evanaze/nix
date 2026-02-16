@@ -22,6 +22,8 @@
       admin-pass = {};
       syncthing-earth-key-pem = {};
       syncthing-earth-cert-pem = {};
+      syncthing-mars-key-pem = {};
+      syncthing-mars-cert-pem = {};
       syncthing-jupiter-key-pem = {};
       syncthing-jupiter-cert-pem = {};
     };
