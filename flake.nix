@@ -118,14 +118,11 @@
             stateVersion = "25.11";
             homeStateVersion = "23.11";
             aspects = [
-              ./aspects/backup/syncthing.nix
-              ./aspects/backup/rclone.nix
+              ./aspects/backup
               ./aspects/core
-              ./aspects/core/init.nix
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
-              ./aspects/hardware/disk-sleep.nix
               ./aspects/media
             ];
             extraModules = [

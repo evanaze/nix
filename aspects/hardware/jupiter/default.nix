@@ -10,6 +10,7 @@
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ./disk-sleep.nix
     ./zfs.nix
   ];
 
