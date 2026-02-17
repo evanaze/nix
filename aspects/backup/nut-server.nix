@@ -207,6 +207,6 @@
     serviceConfig = {
       Type = "exec";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:nut --tcp=443 3493";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:nut --tcp=3493 3493";
   };
 }
