@@ -1,15 +1,9 @@
 {
+  lib,
   pkgs,
   config,
   ...
 }: {
-  # Configure sops secret for UPS password
-  # sops.secrets."ups/nut-admin-password" = {
-  #   owner = "nut";
-  #   mode = "0400";
-  #   sopsFile = ../secrets/secrets.yaml;
-  # };
-
   power.ups = {
     enable = true;
     ups."UPS-1" = {
@@ -197,5 +191,22 @@
       ConditionPathExists = config.power.ups.upsmon.settings.POWERDOWNFLAG;
       DefaultDependencies = "no";
     };
+  };
+
+  systemd.services.nut-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "upsd.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "upsd.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish NUT server";
+    serviceConfig = {
+      Type = "exec";
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:nut --https=443 3493";
   };
 }
