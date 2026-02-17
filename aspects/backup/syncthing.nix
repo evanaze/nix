@@ -7,8 +7,8 @@
     enable = true;
     user = username;
     dataDir = "/home/${username}";
-    key = "/run/secrets/syncthing-${hostname}-key-pem";
-    cert = "/run/secrets/syncthing-${hostname}-cert-pem";
+    key = "/run/secrets/syncthing/${hostname}/key";
+    cert = "/run/secrets/syncthing/${hostname}/cert";
     openDefaultPorts = false;
     guiPasswordFile = "/run/secrets/admin-pass";
     guiAddress = "127.0.0.1:8384";

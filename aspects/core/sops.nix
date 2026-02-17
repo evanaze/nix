@@ -20,12 +20,12 @@
     secrets = {
       ts-server-key = {};
       admin-pass = {};
-      syncthing-earth-key-pem = {};
-      syncthing-earth-cert-pem = {};
-      syncthing-mars-key-pem = {};
-      syncthing-mars-cert-pem = {};
-      syncthing-jupiter-key-pem = {};
-      syncthing-jupiter-cert-pem = {};
+      "syncthing/earth/key" = {};
+      "syncthing/earth/cert" = {};
+      "syncthing/mars/key" = {};
+      "syncthing/mars/cert" = {};
+      "syncthing/jupiter/key" = {};
+      "syncthing/jupiter/cert" = {};
     };
   };
 }
