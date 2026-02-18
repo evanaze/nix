@@ -26,20 +26,7 @@
       firefox
       obsidian
       spotify
-      thunderbird
     ];
-
-    # Thunderbird email configuration
-    accounts.email.accounts = {
-      evanaze = {
-        name = "Evanaze Gmail";
-        address = "evanaze@gmail.com";
-        flavor = "gmail.com";
-        primary = true;
-        realName = "Evan Azevedo";
-        thunderbird.enable = true;
-      };
-    };
 
     # Zellij clipboard configuration for X11
     programs.zellij.settings = {
