@@ -21,6 +21,7 @@
       };
       "evan@azevedo.com" = {
         address = "evan@azevedo.com";
+        userName = "evan@azevedo.com";
         realName = "Evan Azevedo";
         thunderbird.enable = true;
         imap = {
@@ -32,8 +33,23 @@
           tls.useStartTls = true;
         };
       };
+      "me@evanazevedo.com" = {
+        address = "me@evanazevedo.com";
+        userName = "evanazz@icloud.com";
+        realName = "Evan Azevedo";
+        thunderbird.enable = true;
+        imap = {
+          host = "imap.mail.me.com";
+          tls.useStartTls = true;
+        };
+        smtp = {
+          host = "smtp.mail.me.com";
+          tls.useStartTls = true;
+        };
+      };
       "evan@stackmagic.io" = {
         address = "evan@stackmagic.io";
+        userName = "evan@stackmagic.io";
         realName = "Evan Azevedo";
         thunderbird.enable = true;
         imap = {
