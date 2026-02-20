@@ -26,7 +26,6 @@
         thunderbird.enable = true;
         imap = {
           host = "mail.hover.com";
-          tls.useStartTls = true;
         };
         smtp = {
           host = "mail.hover.com";
@@ -44,7 +43,7 @@
         };
         smtp = {
           host = "smtp.mail.me.com";
-          tls.enable = true;
+          tls.useStartTls = true;
         };
       };
       "evan@stackmagic.io" = {
