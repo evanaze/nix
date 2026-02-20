@@ -106,6 +106,7 @@
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
               ./aspects/media/calibre.nix
+              ./aspects/networking/vpn.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
