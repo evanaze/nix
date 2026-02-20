@@ -1,3 +1,6 @@
-{...}: {
-  services.mullvad-vpn.enable = true;
+{pkgs, ...}: {
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
 }
