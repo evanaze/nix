@@ -40,11 +40,11 @@
         thunderbird.enable = true;
         imap = {
           host = "imap.mail.me.com";
-          tls.useStartTls = true;
+          tls.enable = true;
         };
         smtp = {
           host = "smtp.mail.me.com";
-          tls.useStartTls = true;
+          tls.enable = true;
         };
       };
       "evan@stackmagic.io" = {
