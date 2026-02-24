@@ -73,7 +73,6 @@
               ./aspects/development
               ./aspects/gaming
               ./aspects/ai
-              ./aspects/monitoring
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
               ./aspects/media/calibre.nix
