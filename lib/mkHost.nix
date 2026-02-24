@@ -44,7 +44,7 @@
   # Pass shared args via _module.args instead of specialArgs
   moduleArgs = {
     _module.args = {
-      inherit inputs username hostname;
+      inherit inputs username hostname system;
     };
   };
 

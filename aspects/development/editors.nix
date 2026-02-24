@@ -3,12 +3,19 @@
   pkgs,
   inputs,
   username,
+  system,
   ...
-}: {
+}: let
+  nixvim' = inputs.nixvim.legacyPackages.${system};
+  nvim = nixvim'.makeNixvimWithModule {
+    inherit pkgs;
+    module = ./nixvim;
+  };
+in {
   # Home-manager editor configuration
   home-manager.users.${username} = {
-    home.packages = with pkgs; [
-      inputs.nixvim.packages.${stdenv.hostPlatform.system}.default
+    home.packages = [
+      nvim
     ];
 
     programs = {

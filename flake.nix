@@ -32,7 +32,10 @@
 
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
 
-    nixvim.url = "github:evanaze/nixvim-conf";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     slippi = {
       url = "github:lytedev/slippi-nix";

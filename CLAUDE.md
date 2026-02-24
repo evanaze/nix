@@ -101,9 +101,23 @@ nix flake check
 │   │   ├── default.nix
 │   │   ├── direnv.nix
 │   │   ├── docker.nix
-│   │   ├── editors.nix          # nixvim, ghostty, zellij
+│   │   ├── editors.nix          # Builds nixvim from local config, ghostty, zellij
 │   │   ├── git.nix              # System + home-manager git
-│   │   └── languages.nix        # Programming languages
+│   │   ├── languages.nix        # Programming languages
+│   │   └── nixvim/              # Local nixvim configuration (built using nix-community/nixvim)
+│   │       ├── default.nix      # Main imports
+│   │       ├── settings.nix     # General vim settings
+│   │       ├── keymaps.nix      # Keybindings
+│   │       ├── auto_cmds.nix    # Autocommands
+│   │       ├── file_types.nix   # Filetype settings
+│   │       ├── cmp/             # Completion
+│   │       ├── editor/          # Editor plugins
+│   │       ├── git/             # Git integrations
+│   │       ├── lsp/             # LSP and formatting
+│   │       ├── snippets/        # Code snippets
+│   │       ├── themes/          # Color schemes
+│   │       ├── ui/              # UI plugins
+│   │       └── utils/           # Utility plugins
 │   ├── gaming/
 │   │   ├── default.nix
 │   │   ├── slippi.nix           # Super Smash Bros Melee
@@ -243,7 +257,7 @@ sops secrets/secrets.yaml
 ### External Dependencies
 
 - **flake-parts**: Flake structure management
-- **nixvim**: Custom neovim configuration (`github:evanaze/nixvim-conf`)
+- **nixvim**: Neovim configuration framework (`github:nix-community/nixvim`), config stored locally in `aspects/development/nixvim/`
 - **nixos-hardware**: Hardware optimizations (Framework 13 7040 AMD, RPi 5)
 - **nixos-raspberrypi**: Raspberry Pi 5 support
 - **slippi**: Super Smash Bros Melee netplay
