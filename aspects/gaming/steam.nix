@@ -4,6 +4,7 @@
 
   environment.systemPackages = with pkgs; [
     shattered-pixel-dungeon
-    zeroad
+    # Temporarily disabled - 0ad failing to build on unstable
+    # zeroad
   ];
 }

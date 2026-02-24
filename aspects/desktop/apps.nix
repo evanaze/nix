@@ -7,6 +7,7 @@
   environment.systemPackages = with pkgs; [
     bitwarden-desktop
     brave
+    calibre
     code-cursor
     google-chrome
     hunspell
