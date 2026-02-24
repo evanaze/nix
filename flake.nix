@@ -78,7 +78,6 @@
               ./aspects/ai
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
-              ./aspects/media/calibre.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
@@ -107,7 +106,6 @@
               ./aspects/gaming
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
-              ./aspects/media/calibre.nix
               ./aspects/networking/vpn.nix
             ];
             extraModules = [
