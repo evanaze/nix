@@ -25,7 +25,6 @@
     home.packages = with pkgs; [
       firefox
       obsidian
-      spotify
     ];
 
     # Zellij clipboard configuration for X11
