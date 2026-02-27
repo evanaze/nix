@@ -27,7 +27,8 @@
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish Immich";
     serviceConfig = {
-      Type = "exec";
+      Type = "oneshot";
+      RemainAfterExit = true;
     };
     script = "${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 2283";
   };
