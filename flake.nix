@@ -73,7 +73,6 @@
               ./aspects/core
               ./aspects/shell
               ./aspects/desktop
-              ./aspects/media
               ./aspects/development
               ./aspects/gaming
               ./aspects/ai
@@ -126,7 +125,7 @@
               ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
-              # ./aspects/media
+              ./aspects/media
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
