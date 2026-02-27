@@ -12,6 +12,7 @@
     enable = true;
     group = "media";
     port = 2283;
+    openFirewall = true;
     mediaLocation = "/mnt/eye/pictures";
   };
 
