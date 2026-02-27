@@ -31,6 +31,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 2283";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://[::1]:2283";
   };
 }
