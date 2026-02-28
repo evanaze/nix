@@ -30,6 +30,6 @@
     serviceConfig = {
       Type = "exec";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 http://localhost:8096";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 8096";
   };
 }
