@@ -6,6 +6,6 @@
 }: {
   imports = [
     ./immich.nix
-    # ./jellyfin.nix  # Enable when needed
+    ./jellyfin.nix
   ];
 }
