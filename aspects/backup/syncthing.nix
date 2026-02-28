@@ -54,6 +54,7 @@
           ignorePerms = false;
           devices = [
             "earth"
+            "mars"
             "jupiter"
           ];
         };
@@ -62,6 +63,7 @@
           ignorePerms = false;
           devices = [
             "earth"
+            "mars"
             "jupiter"
           ];
         };
@@ -70,6 +72,7 @@
           ignorePerms = false;
           devices = [
             "earth"
+            "mars"
             "jupiter"
           ];
         };
