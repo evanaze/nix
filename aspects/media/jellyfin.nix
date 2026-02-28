@@ -14,6 +14,7 @@
   services.jellyfin = {
     enable = true;
     user = username;
+    dataDir = "/mnt/eye/media";
   };
 
   systemd.services.jellyfin-tsserve = {

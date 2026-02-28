@@ -17,6 +17,7 @@
     "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
     "d /mnt/eye/downloads 0755 evanaze users -"
     "f /mnt/eye/downloads/.stfolder 0644 evanaze users -"
+    "d /mnt/eye/media 0755 evanaze media -"
     "d /mnt/eye/movies 0755 evanaze users -"
     "f /mnt/eye/movies/.stfolder 0644 evanaze users -"
     "d /mnt/eye/music 0755 evanaze users -"
@@ -31,6 +32,11 @@
   };
 
   systemd.services.immich-server = {
+    after = ["zfs-mount.service"];
+    requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.jellyfin = {
     after = ["zfs-mount.service"];
     requires = ["zfs-mount.service"];
   };
