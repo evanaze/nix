@@ -2,6 +2,6 @@
 {...}: {
   imports = [
     ./steam.nix
-    # ./slippi.nix  # Requires slippi module from flake
+    ./slippi.nix # Requires slippi module from flake
   ];
 }
