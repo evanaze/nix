@@ -18,6 +18,7 @@
     "d /mnt/eye/downloads 0755 evanaze users -"
     "f /mnt/eye/downloads/.stfolder 0644 evanaze users -"
     "d /mnt/eye/media 0755 evanaze media -"
+    "d /mnt/eye/media/pictures 0755 evanaze media -"
     "d /mnt/eye/movies 0755 evanaze users -"
     "f /mnt/eye/movies/.stfolder 0644 evanaze users -"
     "d /mnt/eye/music 0755 evanaze users -"
