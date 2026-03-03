@@ -20,6 +20,7 @@
     secrets = {
       ts-server-key = {};
       admin-pass = {};
+      grafana = {};
       "nut/ups-passwd" = {};
       "syncthing/earth/key" = {};
       "syncthing/earth/cert" = {};
