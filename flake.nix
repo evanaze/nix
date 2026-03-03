@@ -121,7 +121,7 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/backup
-              ./aspects/business
+              # ./aspects/business
               ./aspects/core
               ./aspects/shell
               ./aspects/development
