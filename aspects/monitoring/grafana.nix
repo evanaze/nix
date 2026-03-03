@@ -1,5 +1,6 @@
 # aspects/monitoring/grafana.nix - Grafana dashboards
 {
+  config,
   lib,
   pkgs,
   ...
@@ -16,10 +17,13 @@
     };
 
     provision = {
-      datasources.settings.datasources = {
-        name = "Prometheus";
-        url = "http://localhost:9001";
-      };
+      datasources.settings.datasources = [
+        {
+          name = "Prometheus";
+          type = "prometheus";
+          url = "http://localhost:${toString config.services.prometheus.exporters.node.port}";
+        }
+      ];
     };
   };
 
