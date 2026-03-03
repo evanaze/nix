@@ -10,8 +10,16 @@
       server = {
         http_port = 2342;
         http_addr = "127.0.0.1";
+        domain = "monitoring.spitz-pickerel.ts.net";
       };
       security.secret_key = "/run/secrets/grafana";
+    };
+
+    provision = {
+      datasources.settings.datasources = {
+        name = "Prometheus";
+        url = "http://localhost:9001";
+      };
     };
   };
 
