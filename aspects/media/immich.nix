@@ -16,6 +16,13 @@
     mediaLocation = "/mnt/eye/media/pictures";
   };
 
+  # Ensure immich owns its data subdirectories so it can write to them
+  systemd.tmpfiles.rules = let
+    mediaDir = "/mnt/eye/media/pictures";
+    immichDirs = ["encoded-video" "thumbs" "upload" "profile" "backups" "library"];
+  in
+    map (d: "d ${mediaDir}/${d} 0750 immich media -") immichDirs;
+
   systemd.services.immich-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
