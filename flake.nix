@@ -127,6 +127,7 @@
               ./aspects/development
               ./aspects/hardware/jupiter
               ./aspects/media
+              ./aspects/monitoring
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
