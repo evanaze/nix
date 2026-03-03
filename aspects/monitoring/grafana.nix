@@ -8,6 +8,7 @@
     enable = true;
     port = 2342;
     addr = "127.0.0.1";
+    settings.security.secret_key = "/run/secrets/grafana";
   };
 
   # systemd.services.grafana-tsserve = {
