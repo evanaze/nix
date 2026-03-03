@@ -78,6 +78,7 @@
               ./aspects/ai
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
+              ./aspects/monitoring/node-exporter.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
@@ -107,6 +108,7 @@
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
               ./aspects/networking/vpn.nix
+              ./aspects/monitoring/node-exporter.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -156,6 +158,7 @@
               ./aspects/shell
               ./aspects/networking/blocky.nix
               ./aspects/hardware/raspberry-pi.nix
+              ./aspects/monitoring/node-exporter.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.raspberry-pi-5

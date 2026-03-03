@@ -15,10 +15,23 @@
 
     scrapeConfigs = [
       {
-        job_name = "chrysalis";
+        job_name = "nodes";
         static_configs = [
           {
             targets = ["127.0.0.1:${toString config.services.prometheus.exporters.node.port}"];
+            labels.host = "jupiter";
+          }
+          {
+            targets = ["earth.spitz-pickerel.ts.net:9002"];
+            labels.host = "earth";
+          }
+          {
+            targets = ["mars.spitz-pickerel.ts.net:9002"];
+            labels.host = "mars";
+          }
+          {
+            targets = ["mercury.spitz-pickerel.ts.net:9002"];
+            labels.host = "mercury";
           }
         ];
       }
