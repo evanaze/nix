@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   services.postgresql = {
     enable = true;
     ensureDatabases = ["mydatabase"];
@@ -9,6 +9,10 @@
          superuser_map      postgres  postgres
          # Let other names login as themselves
          superuser_map      /^(.*)$   \1
+    '';
+    authentication = pkgs.lib.mkOverride 10 ''
+      #type database  DBuser  auth-method optional_ident_map
+      local sameuser  all     peer        map=superuser_map
     '';
   };
 }
