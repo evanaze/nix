@@ -3,7 +3,6 @@
     enable = true;
     configuration = {
       auth_enabled = false;
-
       server.http_listen_port = 3100;
 
       common = {
@@ -12,7 +11,7 @@
           kvstore.store = "inmemory";
         };
         replication_factor = 1;
-        path_prefix = /tmp/loki;
+        path_prefix = "/tmp/loki";
       };
 
       schema_config.configs = [
