@@ -21,7 +21,7 @@
         {
           name = "Prometheus";
           type = "prometheus";
-          url = "http://localhost:${toString config.services.prometheus.exporters.node.port}";
+          url = "http://localhost:${toString config.services.prometheus.port}";
         }
       ];
     };
