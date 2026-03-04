@@ -104,7 +104,7 @@
               ./aspects/shell
               ./aspects/desktop
               ./aspects/development
-              ./aspects/gaming
+              ./aspects/gaming/steam.nix
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
               ./aspects/networking/vpn.nix
