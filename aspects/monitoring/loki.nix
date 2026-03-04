@@ -28,6 +28,14 @@
       ];
 
       storage_config.filesystem.directory = "/tmp/loki/chunks";
+
+      compactor = {
+        working_directory = "/tmp/loki/retention";
+        retention_enabled = true;
+        delete_request_store = "filesystem";
+      };
+
+      limits_config.retention_period = "168h";
     };
   };
 }
