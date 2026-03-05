@@ -1,0 +1,23 @@
+loki.relabel "journal" {
+  forward_to = [loki.write.local.receiver]
+
+  rule {
+    source_labels = ["__journal__hostname"]
+    target_label  = "host"
+  }
+
+  rule {
+    replacement  = "systemd-journal"
+    target_label = "job"
+  }
+}
+
+loki.source.journal "journal" {
+  forward_to = [loki.relabel.journal.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://jupiter.spitz-pickerel.ts.net:3100/loki/api/v1/push"
+  }
+}
