@@ -8,7 +8,7 @@
     enable = true;
     user = username;
     settings = {
-      hostname = "budget.spitz-pickerel.ts.net";
+      hostname = "localhost";
       port = 5006;
     };
   };
