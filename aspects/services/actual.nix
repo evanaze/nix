@@ -1,9 +1,17 @@
 {
   lib,
   pkgs,
+  username,
   ...
 }: {
-  services.actual.enable = true;
+  services.actual = {
+    enable = true;
+    user = username;
+    settings = {
+      hostname = "budget.spitz-pickerel.ts.net";
+      port = 5006;
+    };
+  };
 
   systemd.services.actual-tsserve = {
     after = [
