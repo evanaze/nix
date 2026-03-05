@@ -105,7 +105,7 @@
               ./aspects/shell
               ./aspects/desktop
               ./aspects/development
-              ./aspects/gaming
+              ./aspects/gaming/steam.nix
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
               ./aspects/networking/vpn.nix
@@ -127,11 +127,12 @@
               ./aspects/backup
               # ./aspects/business
               ./aspects/core
-              ./aspects/shell
               ./aspects/development
               ./aspects/hardware/jupiter
               ./aspects/media
               ./aspects/monitoring
+              ./aspects/services
+              ./aspects/shell
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
