@@ -5,5 +5,11 @@
   };
 
   # Grant alloy access to read the systemd journal
-  users.users.alloy.extraGroups = ["systemd-journal"];
+  users.users.alloy = {
+    group = "monitoring";
+    isSystemUser = true;
+    extraGroups = ["systemd-journal"];
+  };
+
+  users.groups.monitoring = {};
 }
