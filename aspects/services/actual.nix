@@ -20,6 +20,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=4432 http://127.0.0.1:5006";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=4432 5006";
   };
 }
