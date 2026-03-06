@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: {
+{config, pkgs, ...}: {
   power.ups = {
     enable = true;
     ups."UPS-1" = {
@@ -44,11 +39,11 @@
     upsd = {
       listen = [
         {
-          address = "127.0.0.1";
+          address = "0.0.0.0";
           port = 3493;
         }
         {
-          address = "::1";
+          address = "::";
           port = 3493;
         }
       ];
@@ -57,6 +52,11 @@
     users."nut-admin" = {
       passwordFile = config.sops.secrets."nut/ups-passwd".path;
       upsmon = "primary";
+    };
+
+    users."nut-client" = {
+      passwordFile = config.sops.secrets."nut/ups-passwd".path;
+      upsmon = "secondary";
     };
 
     upsmon.monitor."UPS-1" = {
@@ -193,20 +193,4 @@
     };
   };
 
-  systemd.services.nut-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "upsd.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "upsd.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish NUT server";
-    serviceConfig = {
-      Type = "exec";
-    };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:nut --tcp=3493 3493";
-  };
 }

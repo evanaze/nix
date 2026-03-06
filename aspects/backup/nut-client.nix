@@ -13,6 +13,8 @@
     };
 
     upsmon.settings = {
+      # Allow time for Tailscale to reconnect after wake before declaring UPS dead
+      DEADTIME = 90;
       # Shut down immediately when signaled
       FINALDELAY = 0;
     };
