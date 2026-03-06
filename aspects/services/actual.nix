@@ -8,7 +8,6 @@
     enable = true;
     user = username;
     settings = {
-      hostname = "localhost";
       port = 5006;
     };
   };
