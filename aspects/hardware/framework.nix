@@ -5,6 +5,9 @@
     powertop
   ];
 
+  # Use latest kernel to fix MT7922 Bluetooth WMT initialization bug (fixed in 6.13+)
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Bootloader kernel params for AMD GPU
   boot.kernelParams = ["amdgpu.abmlevel=0"];
 
