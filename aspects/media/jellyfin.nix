@@ -22,7 +22,7 @@
     extraPackages = with pkgs; [
       rocmPackages.clr.icd # OpenCL for AMD
       libva-utils
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
   };
