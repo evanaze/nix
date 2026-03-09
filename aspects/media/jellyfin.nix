@@ -14,7 +14,7 @@
   services.jellyfin = {
     enable = true;
     user = username;
-    dataDir = "/mnt/eye/media";
+    dataDir = "/var/lib/jellyfin";
   };
 
   hardware.opengl = {
