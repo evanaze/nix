@@ -1,4 +1,9 @@
 {config, ...}: {
+  # NixOS generates pre-sleep.service with no ExecStart when powerDownCommands=""
+  # (the default), causing systemd to refuse it on every sleep attempt.
+  # A no-op command ensures the service has a valid ExecStart.
+  powerManagement.powerDownCommands = ":";
+
   power.ups = {
     enable = true;
     mode = "netclient";
