@@ -14,8 +14,23 @@
   services.jellyfin = {
     enable = true;
     user = username;
-    dataDir = "/mnt/eye/media";
+    dataDir = "/var/lib/jellyfin";
   };
+
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      rocmPackages.clr.icd # OpenCL for AMD
+      libva-utils
+      libva-vdpau-driver
+      libvdpau-va-gl
+    ];
+  };
+
+  users.users.${username}.extraGroups = [
+    "video"
+    "render"
+  ];
 
   systemd.services.jellyfin-tsserve = {
     after = [

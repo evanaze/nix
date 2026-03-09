@@ -49,24 +49,6 @@
             "jupiter"
           ];
         };
-        "Movies" = {
-          path = "/home/${username}/Movies";
-          ignorePerms = false;
-          devices = [
-            "earth"
-            "mars"
-            "jupiter"
-          ];
-        };
-        "Music" = {
-          path = "/home/${username}/Music";
-          ignorePerms = false;
-          devices = [
-            "earth"
-            "mars"
-            "jupiter"
-          ];
-        };
       };
     };
   };
