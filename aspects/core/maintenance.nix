@@ -19,6 +19,8 @@
     autoUpgrade = {
       enable = true;
       flake = inputs.self.outPath;
+      flags = ["--commit-lock-file"];
+      runGarbageCollection = true;
       allowReboot = true;
       # Daily around 00:00
       dates = "daily UTC";
