@@ -12,6 +12,28 @@
     };
   };
 
+  # Service to sync transactions from bank
+  # systemd.timers."actual-sync" = {
+  #   after = ["actual.service"];
+  #   wantedBy = ["timers.target"];
+  #   timerConfig = {
+  #     OnBootSec = "5m";
+  #     OnUnitActiveSec = "5m";
+  #     Unit = "actual-sync.service";
+  #   };
+  # };
+
+  # systemd.services."actual-sync" = {
+  #   script = ''
+  #     set -eu
+  #     actual-server sync
+  #   '';
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "root";
+  #   };
+  # };
+
   systemd.services.actual-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
