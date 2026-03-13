@@ -20,8 +20,9 @@
       enable = true;
       flake = inputs.self.outPath;
       allowReboot = true;
-      # Daily 00:00
+      # Daily around 00:00
       dates = "daily UTC";
+      randomizedDelaySec = "45min";
     };
   };
 }
