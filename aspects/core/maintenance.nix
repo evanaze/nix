@@ -7,7 +7,7 @@
   # Garbage collector using nh
   programs.nh = {
     enable = true;
-    flake = "/home/${username}/.config/nix";
+    flake = inputs.self.outPath;
     clean = {
       enable = true;
       extraArgs = "--keep-since 7d --keep 3";
