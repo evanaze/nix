@@ -15,15 +15,13 @@
   };
 
   system = {
-    # Auto upgrade
     autoUpgrade = {
       enable = true;
       flake = inputs.self.outPath;
       flags = ["--commit-lock-file"];
       runGarbageCollection = true;
       allowReboot = true;
-      # Daily around 00:00
-      dates = "daily UTC";
+      dates = "daily UTC"; # Daily around 00:00
       randomizedDelaySec = "45min";
     };
   };
