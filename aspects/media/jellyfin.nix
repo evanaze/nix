@@ -17,7 +17,7 @@
     dataDir = "/var/lib/jellyfin";
   };
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd # OpenCL for AMD
@@ -44,7 +44,8 @@
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish Jellyfin";
     serviceConfig = {
-      Type = "exec";
+      Type = "oneshot";
+      RemainAfterExit = true;
     };
     script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 8096";
   };
