@@ -39,10 +39,12 @@
         thunderbird.enable = true;
         imap = {
           host = "imap.mail.me.com";
+          port = 993;
           tls.enable = true;
         };
         smtp = {
           host = "smtp.mail.me.com";
+          port = 587;
           tls.useStartTls = true;
         };
       };
