@@ -3,7 +3,23 @@
   pkgs,
   username,
   ...
-}: {
+}: let
+  actual-cli = pkgs.buildNpmPackage {
+    pname = "actual-cli";
+    version = "26.4.0-nightly.20260319";
+
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
+      hash = "sha256-0fk853ris7dz03acbarbxcmq00d0h4dls6w3f8rah4pfwssmsrnz=";
+    };
+
+    # Run: nix build .#nixosConfigurations.jupiter.config.system.build.toplevel
+    # with this set to lib.fakeHash to get the correct hash from the error output
+    npmDepsHash = lib.fakeHash;
+
+    meta.mainProgram = "actual";
+  };
+in {
   services.actual = {
     enable = true;
     user = username;
@@ -12,27 +28,29 @@
     };
   };
 
-  # Service to sync transactions from bank
-  # systemd.timers."actual-sync" = {
-  #   after = ["actual.service"];
-  #   wantedBy = ["timers.target"];
-  #   timerConfig = {
-  #     OnBootSec = "5m";
-  #     OnUnitActiveSec = "5m";
-  #     Unit = "actual-sync.service";
-  #   };
-  # };
+  # Service to sync transactions from bank daily at 2 AM
+  systemd.timers."actual-sync" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "02:00:00";
+      Persistent = true;
+      Unit = "actual-sync.service";
+    };
+  };
 
-  # systemd.services."actual-sync" = {
-  #   script = ''
-  #     set -eu
-  #     actual-server sync
-  #   '';
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     User = "root";
-  #   };
-  # };
+  systemd.services."actual-sync" = {
+    after = ["actual.service"];
+    requires = ["actual.service"];
+    description = "Sync Actual Budget bank transactions";
+    script = ''
+      set -eu
+      ${lib.getExe actual-cli} server bank-sync
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = username;
+    };
+  };
 
   systemd.services.actual-tsserve = {
     after = [
