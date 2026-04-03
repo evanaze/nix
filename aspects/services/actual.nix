@@ -4,25 +4,28 @@
   username,
   ...
 }: let
-  actual-cli = pkgs.stdenv.mkDerivation {
+  actual-cli = pkgs.buildNpmPackage {
     pname = "actual-cli";
     version = "26.4.0-nightly.20260319";
 
-    src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
-      hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
-    };
+    src = pkgs.runCommand "actual-cli-src" {} ''
+      mkdir -p $out
+      tar xzf ${pkgs.fetchurl {
+        url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
+        hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
+      }} -C $out --strip-components=1
+      cp ${./actual-cli-package-lock.json} $out/package-lock.json
+    '';
+
+    npmDepsHash = "sha256-pH6uVnERlG5QMzsx5wj2CepoCfEyhR3/KJQ5M3y/lsQ=";
+    dontNpmBuild = true;
 
     nativeBuildInputs = [pkgs.makeWrapper];
 
-    unpackPhase = ''
-      tar xzf $src
-    '';
-
     installPhase = ''
       runHook preInstall
-      mkdir -p $out/lib $out/bin
-      cp -r package $out/lib/actual-cli
+      mkdir -p $out/lib/actual-cli $out/bin
+      cp -r dist node_modules $out/lib/actual-cli/
       makeWrapper ${pkgs.nodejs_22}/bin/node $out/bin/actual \
         --add-flags "$out/lib/actual-cli/dist/cli.js"
       runHook postInstall
