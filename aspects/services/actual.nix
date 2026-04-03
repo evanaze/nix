@@ -4,18 +4,29 @@
   username,
   ...
 }: let
-  actual-cli = pkgs.buildNpmPackage {
+  actual-cli = pkgs.stdenv.mkDerivation {
     pname = "actual-cli";
     version = "26.4.0-nightly.20260319";
 
     src = pkgs.fetchurl {
       url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
-      hash = "sha256-0fk853ris7dz03acbarbxcmq00d0h4dls6w3f8rah4pfwssmsrnz=";
+      hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
     };
 
-    # Run: nix build .#nixosConfigurations.jupiter.config.system.build.toplevel
-    # with this set to lib.fakeHash to get the correct hash from the error output
-    npmDepsHash = lib.fakeHash;
+    nativeBuildInputs = [pkgs.makeWrapper];
+
+    unpackPhase = ''
+      tar xzf $src
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/lib $out/bin
+      cp -r package $out/lib/actual-cli
+      makeWrapper ${pkgs.nodejs_22}/bin/node $out/bin/actual \
+        --add-flags "$out/lib/actual-cli/dist/cli.js"
+      runHook postInstall
+    '';
 
     meta.mainProgram = "actual";
   };
