@@ -21,6 +21,7 @@
       ts-server-key = {};
       admin-pass = {};
       grafana = {};
+      actual = {};
       "nut/ups-passwd" = {};
       "syncthing/earth/key" = {};
       "syncthing/earth/cert" = {};

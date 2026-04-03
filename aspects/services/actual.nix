@@ -1,5 +1,6 @@
 {
   lib,
+  config,
   pkgs,
   username,
   ...
@@ -60,11 +61,12 @@ in {
     description = "Sync Actual Budget bank transactions";
     script = ''
       set -eu
-      ${lib.getExe actual-cli} server bank-sync --server-url http://localhost:5006
+      ${lib.getExe actual-cli} server bank-sync --server-url http://localhost:5006 --password /run/secrets/ts-server-key;
     '';
     serviceConfig = {
       Type = "oneshot";
       User = username;
+      EnvironmentFile = config.sops.secrets.actual.path;
     };
   };
 
