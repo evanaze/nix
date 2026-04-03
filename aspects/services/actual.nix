@@ -10,10 +10,12 @@
 
     src = pkgs.runCommand "actual-cli-src" {} ''
       mkdir -p $out
-      tar xzf ${pkgs.fetchurl {
-        url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
-        hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
-      }} -C $out --strip-components=1
+      tar xzf ${
+        pkgs.fetchurl {
+          url = "https://registry.npmjs.org/@actual-app/cli/-/cli-26.4.0-nightly.20260319.tgz";
+          hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
+        }
+      } -C $out --strip-components=1
       cp ${./actual-cli-package-lock.json} $out/package-lock.json
     '';
 
@@ -58,7 +60,7 @@ in {
     description = "Sync Actual Budget bank transactions";
     script = ''
       set -eu
-      ${lib.getExe actual-cli} server bank-sync
+      ${lib.getExe actual-cli} server bank-sync --server-url http://localhost:5006
     '';
     serviceConfig = {
       Type = "oneshot";
