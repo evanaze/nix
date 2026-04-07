@@ -29,7 +29,7 @@
         };
         smtp = {
           host = "mail.hover.com";
-          tls.useStartTls = true;
+          tls.useStartTls = false;
         };
       };
       "me@evanazevedo.com" = {
