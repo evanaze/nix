@@ -31,7 +31,7 @@
         };
         smtp = {
           host = "mail.hover.com";
-          port = 995;
+          port = 465;
           tls.enable = true;
         };
       };
