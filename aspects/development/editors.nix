@@ -41,8 +41,8 @@ in {
 
       opencode = {
         enable = true;
+        tui.theme = "catppuccin";
         settings = {
-          theme = "catppuccin";
           autoupdate = true;
         };
       };
