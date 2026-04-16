@@ -26,10 +26,13 @@
         thunderbird.enable = true;
         imap = {
           host = "mail.hover.com";
+          port = 993;
+          tls.enable = true;
         };
         smtp = {
           host = "mail.hover.com";
-          tls.useStartTls = false;
+          port = 995;
+          tls.enable = true;
         };
       };
       "me@evanazevedo.com" = {
