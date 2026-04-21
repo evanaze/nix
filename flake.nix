@@ -76,6 +76,7 @@
               ./aspects/development
               ./aspects/gaming
               ./aspects/ai
+              ./aspects/hardware
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
               ./aspects/monitoring/node-exporter.nix
@@ -106,6 +107,7 @@
               ./aspects/desktop
               ./aspects/development
               ./aspects/gaming/steam.nix
+              ./aspects/hardware
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
               ./aspects/networking/vpn.nix
@@ -128,6 +130,7 @@
               # ./aspects/business
               ./aspects/core
               ./aspects/development
+              ./aspects/hardware
               ./aspects/hardware/jupiter
               ./aspects/media
               ./aspects/monitoring
