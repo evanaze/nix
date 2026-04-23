@@ -167,7 +167,7 @@
             extraModules = [
               inputs.nixos-hardware.nixosModules.raspberry-pi-5
               inputs.disko.nixosModules.disko
-              ./hosts/rpi/disko-nvme-zfs.nix
+              ./aspects/hardware/rpi-disko.nix
               {networking.hostId = "8821e309";}
             ];
           };
