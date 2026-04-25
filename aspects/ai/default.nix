@@ -3,11 +3,22 @@
   imports = [];
 
   environment.systemPackages = with pkgs; [
-    llama-cpp
     llmfit
     lmstudio
     pi-coding-agent
     # python312Packages.huggingface-hub
-    vllm
+    # vllm
   ];
+
+  services.llama-cpp = {
+    enable = true;
+    package = pkgs.llama-cpp.override
+    {
+      cudaSupport = true;
+      rocmSupport = false;
+      metalSupport = false;
+      # Enable BLAS for optimized CPU layer performance (OpenBLAS)
+      blasSupport = true;
+    }
+  };
 }
