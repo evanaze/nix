@@ -49,6 +49,14 @@
             "jupiter"
           ];
         };
+        "Music" = {
+          path = "/home/${username}/Music";
+          ignorePerms = false;
+          devices = [
+            "earth"
+            "jupiter"
+          ];
+        };
       };
     };
   };

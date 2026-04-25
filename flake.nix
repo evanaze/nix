@@ -144,6 +144,7 @@
                   services.syncthing.settings.folders = {
                     "Documents".path = lib.mkForce "/mnt/eye/documents";
                     "Downloads".path = lib.mkForce "/mnt/eye/downloads";
+                    "Music".path = lib.mkForce "/mnt/eye/media/music";
                   };
                 }
               )
