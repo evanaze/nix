@@ -5,15 +5,7 @@
       where = "/home/evanaze/Music";
       type = "none";
       mountConfig = {
-        Options = "bind,uid=evanaze,gid=evanaze";
-      };
-    }
-    {
-      what = "/mnt/eye/media/music";
-      where = "/home/evanaze/Music";
-      type = "none";
-      mountConfig = {
-        Options = "bind,uid=evanaze,gid=evanaze";
+        Options = "bind";
       };
     }
     {
@@ -21,15 +13,7 @@
       where = "/home/evanaze/Documents";
       type = "none";
       mountConfig = {
-        Options = "bind,uid=evanaze,gid=evanaze";
-      };
-    }
-    {
-      what = "/mnt/eye/downloads";
-      where = "/home/evanaze/Downloads";
-      type = "none";
-      mountConfig = {
-        Options = "bind,uid=evanaze,gid=evanaze";
+        Options = "bind";
       };
     }
     {
