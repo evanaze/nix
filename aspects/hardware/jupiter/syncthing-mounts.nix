@@ -5,7 +5,7 @@
       where = "/home/evanaze/Music";
       type = "none";
       mountConfig = {
-        Options = "bind";
+        Options = "bind,uid=evanaze,gid=evanaze";
       };
     }
     {
