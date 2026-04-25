@@ -5,6 +5,6 @@
     ./zsh.nix
   ];
   environment.systemPackages = with pkgs; [
-    claude-code
+    pi-coding-agent
   ];
 }
