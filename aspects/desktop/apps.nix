@@ -15,6 +15,7 @@
     inkscape
     keymapp
     libreoffice-fresh
+    picard
     python314
     slack
     xclip
