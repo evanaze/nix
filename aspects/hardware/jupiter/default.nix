@@ -11,6 +11,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./disk-sleep.nix
+    ./syncthing-mounts.nix
     ./zfs.nix
   ];
 
