@@ -5,9 +5,7 @@
   lib,
   config,
   ...
-}: let
-  kernelBundle = pkgs.linuxAndFirmware.v6_6_31;
-in {
+}: {
   imports = with inputs.nixos-raspberrypi.nixosModules; [
     raspberry-pi-5.base
     raspberry-pi-5.page-size-16k
@@ -15,26 +13,12 @@ in {
     raspberry-pi-5.bluetooth
   ];
 
-  # Use the systemd-boot EFI boot loader.
   boot = {
-    loader.raspberryPi.firmwarePackage = kernelBundle.raspberrypifw;
-    loader.raspberryPi.bootloader = "kernel";
-    kernelPackages = kernelBundle.linuxPackages_rpi5;
+    kernelPackages = pkgs.linuxPackages_rpi5;
     tmp.useTmpfs = true;
   };
 
-  nixpkgs.overlays = lib.mkAfter [
-    (self: super: {
-      # This is used in (modulesPath + "/hardware/all-firmware.nix") when at least
-      # enableRedistributableFirmware is enabled
-      inherit (kernelBundle) raspberrypiWirelessFirmware;
-      inherit (kernelBundle) raspberrypifw;
-    })
-  ];
-
   services.udev.extraRules = ''
-    # Ignore partitions with "Required Partition" GPT partition attribute
-    # On our RPis this is firmware (/boot/firmware) partition
     ENV{ID_PART_ENTRY_SCHEME}=="gpt", \
       ENV{ID_PART_ENTRY_FLAGS}=="0x1", \
       ENV{UDISKS_IGNORE}="1"

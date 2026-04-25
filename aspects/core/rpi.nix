@@ -6,11 +6,11 @@
     ./maintenance.nix
     ./nix.nix
     ./packages.nix
+    ./rpi-user.nix
     ./sops.nix
     ./tailscale.nix
     # Note: No bootloader.nix (RPI uses different bootloader)
     # Note: No networking.nix (RPI has custom networking)
-    # Note: No user.nix (RPI has custom user setup)
     # Note: No ssh.nix (RPI has custom ssh setup)
   ];
 }

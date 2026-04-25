@@ -1,7 +1,6 @@
-# aspects/core/user.nix - User account configuration
+# aspects/core/rpi-user.nix - User account configuration for Raspberry Pi
 {
   username,
-  config,
   pkgs,
   ...
 }: {
@@ -12,7 +11,6 @@
     isNormalUser = true;
     description = "Evan Azevedo";
     extraGroups = [
-      "networkmanager"
       "wheel"
     ];
     shell = pkgs.zsh;

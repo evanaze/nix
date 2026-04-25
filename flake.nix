@@ -151,7 +151,7 @@
           };
 
           # Raspberry Pi 5
-          rpi = mkHost {
+          mercury = mkHost {
             system = "aarch64-linux";
             hostname = "mercury";
             stateVersion = "24.11";
@@ -160,7 +160,6 @@
             aspects = [
               ./aspects/core/rpi.nix
               ./aspects/shell
-              ./aspects/networking/blocky.nix
               ./aspects/hardware/raspberry-pi.nix
               ./aspects/monitoring/node-exporter.nix
               ./aspects/monitoring/alloy.nix
@@ -168,7 +167,7 @@
             extraModules = [
               inputs.nixos-hardware.nixosModules.raspberry-pi-5
               inputs.disko.nixosModules.disko
-              ./hosts/rpi/disko-nvme-zfs.nix
+              ./aspects/hardware/rpi-disko.nix
               {networking.hostId = "8821e309";}
             ];
           };
