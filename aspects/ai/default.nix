@@ -7,7 +7,7 @@
     llmfit
     lmstudio
     pi-coding-agent
-    python312Packages.huggingface-hub
+    # python312Packages.huggingface-hub
     vllm
   ];
 }
