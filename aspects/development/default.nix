@@ -3,7 +3,7 @@
   imports = [
     ./direnv.nix
     ./docker.nix
-    ./editors.nix
+    # ./editors.nix # Temporarily disabled due to vim plugin issues
     ./git.nix
     ./languages.nix
   ];
