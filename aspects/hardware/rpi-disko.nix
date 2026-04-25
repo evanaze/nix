@@ -1,4 +1,4 @@
-{username, ...}: {
+{...}: {
   disko.devices = {
     disk = {
       main = {
@@ -8,6 +8,7 @@
           type = "gpt";
           partitions = {
             ESP = {
+              device = "/dev/mmcblk0p1"; # Explicit device path
               size = "512M";
               content = {
                 type = "filesystem";
@@ -17,12 +18,12 @@
               };
             };
             root = {
+              device = "/dev/mmcblk0p2"; # Explicit device path
               size = "100%";
               content = {
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
-                mountOptions = ["defaults"];
               };
             };
           };
