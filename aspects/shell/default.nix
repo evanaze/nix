@@ -1,7 +1,6 @@
 # aspects/shell/default.nix - Shell configuration aggregator
 {pkgs, ...}: {
   imports = [
-    ./packages.nix
     ./zsh.nix
   ];
 
