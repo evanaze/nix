@@ -7,5 +7,6 @@
     llmfit
     lmstudio
     pi-coding-agent
+    vllm
   ];
 }
