@@ -16,26 +16,6 @@
         "type": "github"
       }
     },
-    "bix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1718278744,
-        "narHash": "sha256-XUZ0eXe0tJwYU8SUGIa+J+OgMXZ3PaHR54wMbp5ZfFM=",
-        "owner": "knarkzel",
-        "repo": "bix",
-        "rev": "60f5d1be2c70cafac3f967dcde3f314ab71d930f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "knarkzel",
-        "repo": "bix",
-        "type": "github"
-      }
-    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -473,7 +453,6 @@
     },
     "root": {
       "inputs": {
-        "bix": "bix",
         "disko": "disko",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
