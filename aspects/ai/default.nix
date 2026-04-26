@@ -2,13 +2,13 @@
 {pkgs, ...}: {
   imports = [];
 
-  environment.systemPackages = with pkgs; [
-    llmfit
-    lmstudio
-    pi-coding-agent
-    # python312Packages.huggingface-hub
-    # vllm
-  ];
+  # environment.systemPackages = with pkgs; [
+  # llmfit
+  # lmstudio
+  # pi-coding-agent
+  # python312Packages.huggingface-hub
+  # vllm
+  # ];
 
   # services.llama-cpp = {
   #   enable = true;
