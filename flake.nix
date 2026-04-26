@@ -138,14 +138,6 @@
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
-              (
-                {lib, ...}: {
-                  services.syncthing.settings.folders = {
-                    "Documents".path = lib.mkForce "/mnt/eye/documents";
-                    "Downloads".path = lib.mkForce "/mnt/eye/downloads";
-                  };
-                }
-              )
             ];
           };
 
