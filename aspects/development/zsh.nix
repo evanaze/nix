@@ -1,5 +1,6 @@
 # aspects/shell/zsh.nix - Combined system and home-manager zsh configuration
 {
+  config,
   pkgs,
   username,
   hostname,
@@ -11,13 +12,17 @@
 
   # System packages needed for zsh functionality
   environment.systemPackages = with pkgs; [
+    bat
     doppler
+    eza
     fd
     fzf
     gh
+    jq
     pass
     pure-prompt
     ripgrep
+    yq
     zoxide
     zsh-fast-syntax-highlighting
   ];
@@ -33,6 +38,8 @@
         history.size = 10000;
 
         initContent = ''
+          export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter-api-key.path})"
+
           function epush() {
               git add .
               git commit -m "$*"

@@ -2,9 +2,7 @@
   description = "NixOS configuration - Dendritic Pattern";
 
   nixConfig = {
-    extra-substituters = [
-      "https://nixos-raspberrypi.cachix.org"
-    ];
+    extra-substituters = ["https://nixos-raspberrypi.cachix.org"];
     extra-trusted-public-keys = [
       "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     ];
@@ -12,37 +10,28 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
-
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixos-raspberrypi/nixpkgs";
     };
-
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
-
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     slippi = {
       url = "github:lytedev/slippi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,7 +60,6 @@
               ./aspects/backup/nut-client.nix
               ./aspects/backup/syncthing.nix
               ./aspects/core
-              ./aspects/shell
               ./aspects/desktop
               ./aspects/development
               ./aspects/gaming
@@ -103,7 +91,6 @@
             aspects = [
               ./aspects/backup/syncthing.nix
               ./aspects/core
-              ./aspects/shell
               ./aspects/desktop
               ./aspects/development
               ./aspects/gaming/steam.nix
@@ -135,7 +122,6 @@
               ./aspects/media
               ./aspects/monitoring
               ./aspects/services
-              ./aspects/shell
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
@@ -151,7 +137,6 @@
             useRaspberryPi = true;
             aspects = [
               ./aspects/core/rpi.nix
-              ./aspects/shell
               ./aspects/hardware/raspberry-pi.nix
               ./aspects/monitoring/node-exporter.nix
               ./aspects/monitoring/alloy.nix

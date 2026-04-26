@@ -19,6 +19,8 @@
     };
     secrets = {
       ts-server-key = {};
+      cache-private-key = {};
+      openrouter-api-key = {};
       admin-pass = {};
       grafana = {};
       actual = {};
