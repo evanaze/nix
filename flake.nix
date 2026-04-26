@@ -12,12 +12,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    bix = {
-      url = "github:knarkzel/bix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/archive/release-25.11.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
