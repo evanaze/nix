@@ -10,14 +10,14 @@
     # vllm
   ];
 
-  services.llama-cpp = {
-    enable = true;
-    package = pkgs.llama-cpp.override {
-      cudaSupport = true;
-      rocmSupport = false;
-      metalSupport = false;
-      # Enable BLAS for optimized CPU layer performance (OpenBLAS)
-      # blasSupport = true;
-    };
-  };
+  # services.llama-cpp = {
+  #   enable = true;
+  #   package = pkgs.llama-cpp.override {
+  #     cudaSupport = true;
+  #     rocmSupport = false;
+  #     metalSupport = false;
+  #     # Enable BLAS for optimized CPU layer performance (OpenBLAS)
+  #     # blasSupport = true;
+  #   };
+  # };
 }
