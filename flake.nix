@@ -69,7 +69,6 @@
               ./aspects/core
               ./aspects/desktop
               ./aspects/development
-              ./aspects/development/oh-my-pi.nix
               ./aspects/gaming
               ./aspects/ai
               ./aspects/hardware
@@ -101,7 +100,6 @@
               ./aspects/core
               ./aspects/desktop
               ./aspects/development
-              ./aspects/development/oh-my-pi.nix
               ./aspects/gaming/steam.nix
               ./aspects/hardware
               ./aspects/hardware/framework.nix
@@ -126,7 +124,6 @@
               # ./aspects/business
               ./aspects/core
               ./aspects/development
-              ./aspects/development/oh-my-pi.nix
               ./aspects/hardware
               ./aspects/hardware/jupiter
               ./aspects/media
