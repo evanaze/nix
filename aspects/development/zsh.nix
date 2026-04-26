@@ -11,13 +11,17 @@
 
   # System packages needed for zsh functionality
   environment.systemPackages = with pkgs; [
+    bat
     doppler
+    eza
     fd
     fzf
     gh
+    jq
     pass
     pure-prompt
     ripgrep
+    yq
     zoxide
     zsh-fast-syntax-highlighting
   ];

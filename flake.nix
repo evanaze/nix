@@ -67,7 +67,6 @@
               ./aspects/backup/nut-client.nix
               ./aspects/backup/syncthing.nix
               ./aspects/core
-              ./aspects/shell
               ./aspects/desktop
               ./aspects/development
               ./aspects/development/oh-my-pi.nix
@@ -100,7 +99,6 @@
             aspects = [
               ./aspects/backup/syncthing.nix
               ./aspects/core
-              ./aspects/shell
               ./aspects/desktop
               ./aspects/development
               ./aspects/development/oh-my-pi.nix
@@ -134,7 +132,6 @@
               ./aspects/media
               ./aspects/monitoring
               ./aspects/services
-              ./aspects/shell
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
@@ -150,7 +147,6 @@
             useRaspberryPi = true;
             aspects = [
               ./aspects/core/rpi.nix
-              ./aspects/shell
               ./aspects/hardware/raspberry-pi.nix
               ./aspects/monitoring/node-exporter.nix
               ./aspects/monitoring/alloy.nix
