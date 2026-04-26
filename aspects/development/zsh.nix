@@ -1,5 +1,6 @@
 # aspects/shell/zsh.nix - Combined system and home-manager zsh configuration
 {
+  config,
   pkgs,
   username,
   hostname,
@@ -37,6 +38,8 @@
         history.size = 10000;
 
         initContent = ''
+          export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter-api-key.path})"
+
           function epush() {
               git add .
               git commit -m "$*"
