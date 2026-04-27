@@ -6,7 +6,7 @@
 }: {
   networking = {
     hostName = hostname;
-    networkmanager.enable = lib.mkDefault true;
+    networkmanager.enable = true;
     nameservers = lib.mkDefault [
       "1.1.1.1"
       "1.0.0.1"
