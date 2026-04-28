@@ -9,12 +9,12 @@
 
   services.restic.backups.harddrive = {
     initialize = true;
-    repository = "/mnt/";
+    passwordFile = "/run/secrets/restic-password";
+    repository = "/backup/drive";
     paths = [
       "/home/${username}/Documents"
       "/home/${username}/Downloads"
     ];
-    passwordFile = "/run/secrets/restic-password";
     pruneOpts = [
       "--keep-daily 7"
       "--keep-weekly 5"
