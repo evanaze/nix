@@ -20,7 +20,10 @@
     secrets = {
       ts-server-key = {};
       cache-private-key = {};
-      openrouter-api-key = {};
+      openrouter-api-key = {
+        owner = username;
+      };
+      restic-password = {};
       admin-pass = {};
       grafana = {};
       actual = {};
