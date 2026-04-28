@@ -8,8 +8,8 @@
   ];
 
   fileSystems."/mnt/drive" = {
-    device = "/dev/disk/by-uuid/01d60a2c-04b6-4856-8a12-459c2b20428b";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/6950-3024";
+    fsType = "exfat";
     options = [
       "nofail"
       "x-systemd.automount"
