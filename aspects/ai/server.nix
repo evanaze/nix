@@ -3,8 +3,8 @@
     llmfit
     lmstudio
     pi-coding-agent
-    python312Packages.huggingface-hub
-    vllm
+    # python312Packages.huggingface-hub
+    # vllm
   ];
 
   services.llama-cpp = {
