@@ -35,6 +35,24 @@
           }
         ];
       }
+      {
+        job_name = "restic";
+        static_configs = [
+          {
+            targets = ["http://127.0.0.1:9753"];
+            labels.host = "jupiter";
+          }
+        ];
+      }
+      {
+        job_name = "restic";
+        static_configs = [
+          {
+            targets = ["127.0.0.1:8000"];
+            labels.host = "jupiter";
+          }
+        ];
+      }
     ];
   };
 }
