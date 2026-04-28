@@ -30,7 +30,8 @@
 
   services.prometheus.exporters.restic = {
     enable = true;
-    repositoryFile = pkgs.writeText "restic-repo" "/backup/drive/backup";
+    repository = "/backup/drive/backup";
     passwordFile = "/run/secrets/restic-password";
+    user = "root";
   };
 }
