@@ -10,7 +10,7 @@
   services.restic.backups.harddrive = {
     initialize = true;
     passwordFile = "/run/secrets/restic-password";
-    repository = "/backup/drive";
+    repository = "/backup/drive/backup";
     paths = [
       "/home/${username}/Documents"
       "/home/${username}/Downloads"
@@ -29,5 +29,7 @@
 
   services.prometheus.exporters.restic = {
     enable = true;
+    repositoryFile = pkgs.writeText "restic-repo" "/backup/drive/backup";
+    passwordFile = "/run/secrets/restic-password";
   };
 }
