@@ -7,10 +7,19 @@
     restic
   ];
 
+  fileSystems."/mnt/drive" = {
+    device = "/dev/disk/by-uuid/01d60a2c-04b6-4856-8a12-459c2b20428b";
+    fsType = "ext4";
+    options = [
+      "nofail"
+      "x-systemd.automount"
+    ];
+  };
+
   services.restic.backups.harddrive = {
     initialize = true;
     passwordFile = "/run/secrets/restic-password";
-    repository = "/backup/drive/backup";
+    repository = "/mnt/drive/backup";
     paths = [
       "/home/${username}/Documents"
       "/home/${username}/Downloads"
@@ -30,7 +39,7 @@
 
   services.prometheus.exporters.restic = {
     enable = true;
-    repository = "/backup/drive/backup";
+    repository = "/mnt/drive/backup";
     passwordFile = "/run/secrets/restic-password";
     user = "root";
   };
