@@ -16,13 +16,14 @@
       "/home/${username}/Downloads"
     ];
     pruneOpts = [
+      "--keep-hourly 24"
       "--keep-daily 7"
       "--keep-weekly 5"
       "--keep-monthly 12"
       "--keep-yearly 75"
     ];
     timerConfig = {
-      OnCalendar = "daily";
+      OnCalendar = "hourly";
       Persistent = true;
     };
   };
