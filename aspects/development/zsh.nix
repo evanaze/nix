@@ -38,7 +38,7 @@
         history.size = 10000;
 
         initContent = ''
-          # export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter-api-key.path})"
+          export OPENROUTER_API_KEY="$(cat ${config.sops.secrets.openrouter-api-key.path})"
 
           function epush() {
               git add .
