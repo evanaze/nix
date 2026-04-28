@@ -39,7 +39,7 @@
         job_name = "restic";
         static_configs = [
           {
-            targets = ["http://127.0.0.1:9753"];
+            targets = ["127.0.0.1:${toString config.services.prometheus.exporters.restic.port}"];
             labels.host = "jupiter";
           }
         ];
