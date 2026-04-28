@@ -26,4 +26,8 @@
       Persistent = true;
     };
   };
+
+  services.prometheus.exporters.restic = {
+    enable = true;
+  };
 }
