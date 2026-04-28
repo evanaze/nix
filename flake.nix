@@ -57,13 +57,14 @@
             stateVersion = "23.11";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/ai
+              ./aspects/ai/server.nix
               ./aspects/backup/nut-client.nix
               ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/desktop
               ./aspects/development
               ./aspects/gaming
-              ./aspects/ai
               ./aspects/hardware
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
@@ -89,6 +90,7 @@
             stateVersion = "25.05";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/ai
               ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/desktop
@@ -113,6 +115,7 @@
             stateVersion = "25.11";
             homeStateVersion = "23.11";
             aspects = [
+              ./aspects/ai
               ./aspects/backup
               # ./aspects/business
               ./aspects/core
