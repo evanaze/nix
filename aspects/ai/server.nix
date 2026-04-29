@@ -9,6 +9,8 @@
 
   services.llama-cpp = {
     enable = true;
+    model = "$HOME/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf";
+    port = 8723;
     package = pkgs.llama-cpp.override {
       cudaSupport = true;
       rocmSupport = false;
