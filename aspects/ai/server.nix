@@ -14,14 +14,19 @@
   services.llama-cpp = {
     enable = true;
     port = 8723;
-    model = "${config.home.homeDirectory}/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf";
-    extraFlags = [];
+    extraFlags = [
+      "-m"
+      "/var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf"
+    ];
     package = pkgs.llama-cpp.override {
       cudaSupport = true;
       rocmSupport = false;
       metalSupport = false;
-      # Enable BLAS for optimized CPU layer performance (OpenBLAS)
-      # blasSupport = true;
     };
+  };
+
+  services.llama-swap = {
+    enable = true;
+    port = 8724;
   };
 }
