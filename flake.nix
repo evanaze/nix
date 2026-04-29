@@ -99,6 +99,7 @@
               ./aspects/hardware
               ./aspects/hardware/framework.nix
               ./aspects/hardware/mars.nix
+              ./aspects/hardware/usb-tethering.nix
               ./aspects/networking/vpn.nix
               ./aspects/monitoring/node-exporter.nix
               ./aspects/monitoring/alloy.nix
