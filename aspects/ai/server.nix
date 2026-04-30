@@ -19,11 +19,11 @@ in {
     # vllm
   ];
 
-  services.llama-cpp = {
-    enable = true;
-    port = 8723;
-    package = llama-cpp-cuda;
-  };
+  # services.llama-cpp = {
+  #   enable = true;
+  #   port = 8723;
+  #   package = llama-cpp-cuda;
+  # };
 
   services.llama-swap = {
     enable = true;
@@ -31,9 +31,15 @@ in {
     settings = {
       models = {
         "qwen3.6-35b-a3b" = {
-          cmd = "${llama-server} --port \${PORT} -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf -ngl 99";
+          cmd = "${llama-server} --port \${PORT} -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf -ngl 20";
+          healthCheckTimeout = 180;
         };
       };
     };
+  };
+
+  systemd.services.llama-swap.serviceConfig = {
+    MemoryDenyWriteExecute = lib.mkForce false;
+    ProtectSystem = lib.mkForce "full";
   };
 }
