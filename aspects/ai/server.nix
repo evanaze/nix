@@ -41,5 +41,6 @@ in {
   systemd.services.llama-swap.serviceConfig = {
     MemoryDenyWriteExecute = lib.mkForce false;
     ProtectSystem = lib.mkForce "full";
+    StateDirectory = "llama-cpp";
   };
 }
