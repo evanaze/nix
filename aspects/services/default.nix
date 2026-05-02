@@ -3,4 +3,10 @@
   imports = [
     ./actual.nix
   ];
+
+  services.tailscale = {
+    extraSetFlags = [
+      "--advertise-exit-node"
+    ];
+  };
 }
