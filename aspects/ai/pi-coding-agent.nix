@@ -12,6 +12,7 @@
       versionCheckHook,
       writableTmpDirAsHomeHook,
       ripgrep,
+      nodejs,
       makeBinaryWrapper,
     }:
       buildNpmPackage (finalAttrs: {
@@ -62,7 +63,11 @@
           find "$nm/.bin" -xtype l -delete
         '';
 
-        postFixup = "wrapProgram $out/bin/pi --prefix PATH : ${lib.makeBinPath [ripgrep nodejs]}";
+        postFixup = ''
+      wrapProgram $out/bin/pi \
+        --prefix PATH : ${lib.makeBinPath [ripgrep nodejs]} \
+        --set NPM_CONFIG_PREFIX '$HOME/.npm-global'
+    '';
 
         doInstallCheck = true;
         nativeInstallCheckInputs = [
