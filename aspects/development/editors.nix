@@ -1,6 +1,7 @@
 # aspects/development/editors.nix - Editors and terminal tools (nixvim, ghostty, zellij)
 {
   pkgs,
+  config,
   inputs,
   username,
   system,
@@ -44,6 +45,20 @@ in {
         tui.theme = "catppuccin";
         settings = {
           autoupdate = true;
+          provider = {
+            llama-local = {
+              name = "Llama Swap";
+              npm = "@ai-sdk/openai-compatible";
+              options = {
+                baseURL = "http://ai.spitz-pickerel.ts.net:${config.services.llama-swap.port}";
+              };
+              models = {
+                "unsloth/Qwen3.5-27B-GGUF" = {
+                  name = "Qwen3.5-27B Q4_K_XL";
+                };
+              };
+            };
+          };
         };
       };
     };
