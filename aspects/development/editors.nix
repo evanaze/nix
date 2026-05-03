@@ -50,7 +50,7 @@ in {
               name = "Llama Swap";
               npm = "@ai-sdk/openai-compatible";
               options = {
-                baseURL = "http://ai.spitz-pickerel.ts.net:${config.services.llama-swap.port}";
+                baseURL = "http://ai.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}";
               };
               models = {
                 "unsloth/Qwen3.5-27B-GGUF" = {
