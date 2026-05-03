@@ -45,6 +45,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${config.services.llama-swap.port} ${config.services.llama-swap.port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.llama-swap.port} ${toString config.services.llama-swap.port}";
   };
 }
