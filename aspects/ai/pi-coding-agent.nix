@@ -64,10 +64,15 @@
         '';
 
         postFixup = ''
-      wrapProgram $out/bin/pi \
-        --prefix PATH : ${lib.makeBinPath [ripgrep nodejs]} \
-        --set NPM_CONFIG_PREFIX '$HOME/.npm-global'
-    '';
+          wrapProgram $out/bin/pi \
+            --prefix PATH : ${
+            lib.makeBinPath [
+              ripgrep
+              nodejs
+            ]
+          } \
+            --set NPM_CONFIG_PREFIX '$HOME/.npm-global'
+        '';
 
         doInstallCheck = true;
         nativeInstallCheckInputs = [
