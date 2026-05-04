@@ -2,6 +2,7 @@
   pkgs,
   lib,
   username,
+  inputs,
   ...
 }: let
   pi-coding-agent = pkgs.callPackage (
@@ -97,7 +98,7 @@ in {
   home-manager.users.${username} = {
     home.packages = [pi-coding-agent];
 
-    home.activation.installPiPackages = ''
+    home.activation.installPiPackages = inputs.home-manager.lib.hm.dag.entryAfter ["writeBoundary"] ''
       for pipkg in @a5c-ai/babysitter-pi \
                   pi-subagents \
                   pi-total-recall \
@@ -107,7 +108,7 @@ in {
                   pi-markdown-preview \
                   pi-powerline-footer \
                   pi-mcp-adapter; do
-        $DRY_RUN_CMD pi install npm:$pipkg
+        $DRY_RUN_CMD ${pi-coding-agent}/bin/pi install npm:$pipkg
       done
     '';
   };
