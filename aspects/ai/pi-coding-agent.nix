@@ -68,7 +68,8 @@
                     pi-markdown-preview \
                     pi-powerline-footer \
                     pi-mcp-adapter; do
-          pi install npm:$pipkgs
+            pi install npm:$pipkgs
+          done
         '';
 
         postFixup = ''
