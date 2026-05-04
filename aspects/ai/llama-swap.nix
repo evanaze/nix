@@ -20,6 +20,12 @@ in {
           cmd = ''
             ${llama-server} \
                           -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
+                          --temp 1.0 \
+                          --top-p 0.95 \
+                          --top-k 20 \
+                          --min-p 0.00 \
+                          --presence-penalty 1.5 \
+                          --repetition-penalty 1.0 \
                           -ngl 24 \
                           -c 32768 \
                           -b 256 \
