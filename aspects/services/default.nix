@@ -2,6 +2,7 @@
 {...}: {
   imports = [
     ./actual.nix
+    ./open-webui.nix
   ];
 
   services.tailscale = {
