@@ -27,9 +27,7 @@
         };
 
         npmDepsHash = "sha256-MZgcHJdGFGSNgQ26/24iA12FdmO7S5vWv4crSNFhHi0=";
-
         npmWorkspace = "packages/coding-agent";
-
         npmRebuildFlags = ["--ignore-scripts"];
 
         nativeBuildInputs = [
@@ -71,7 +69,7 @@
               nodejs
             ]
           } \
-            --set NPM_CONFIG_PREFIX '$HOME/.npm-global'
+            --run 'export NPM_CONFIG_PREFIX="$HOME/.npm-global"'
         '';
 
         doInstallCheck = true;
