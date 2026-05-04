@@ -65,7 +65,7 @@
           {
             "providers": {
               "llama-cpp": {
-                "baseUrl": "http://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1",
+                "baseUrl": "https://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1",
                 "api": "openai-completions",
                 "apiKey": "swagswagswagswagswag",
                 "models": [
