@@ -74,8 +74,7 @@
                     "name": "Qwen3.6-35b-a3b (Local)",
                     "reasoning": false,
                     "input": ["text"],
-                    "contextWindow": 128000,
-                    "maxTokens": 32000,
+                    "contextWindow": 32768,
                     "cost": {
                       "input": 0,
                       "output": 0,
