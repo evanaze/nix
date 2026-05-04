@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   username,
   inputs,
   ...
@@ -59,6 +60,34 @@
 
           find "$nm" -type l -lname '*/packages/*' -delete
           find "$nm/.bin" -xtype l -delete
+
+          install -Dm644 /dev/stdin "$out/share/pi/default-config.json" <<'EOF'
+          {
+            "providers": {
+              "llama-cpp": {
+                "baseUrl": "http://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1",
+                "api": "openai-completions",
+                "apiKey": "swagswagswagswagswag",
+                "models": [
+                  {
+                    "id": "qwen3.6-35b-a3b",
+                    "name": "Qwen3.6-35b-a3b (Local)",
+                    "reasoning": false,
+                    "input": ["text"],
+                    "contextWindow": 128000,
+                    "maxTokens": 32000,
+                    "cost": {
+                      "input": 0,
+                      "output": 0,
+                      "cacheRead": 0,
+                      "cacheWrite": 0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+          EOF
         '';
 
         postFixup = ''
@@ -111,6 +140,12 @@ in {
                   pi-mcp-adapter; do
         $DRY_RUN_CMD ${pi-coding-agent}/bin/pi install npm:$pipkg
       done
+    '';
+
+    home.activation.setLocalModel = inputs.home-manager.lib.hm.dag.entryAfter ["installPiPackages"] ''
+      target="$HOME/.pi/agent/models.json"
+      mkdir -p "$(dirname "$target")"
+      install -m 600 ${pi-coding-agent}/share/pi/default-config.json "$target"
     '';
   };
 }
