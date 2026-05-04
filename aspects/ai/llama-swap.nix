@@ -25,7 +25,7 @@ in {
                           -b 512 \
                           -t 8 \
                           -fa on \
-                          --port \${toString config.services.llama-swap.port}'';
+                          --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
         "qwen3.6-27b" = {
@@ -42,7 +42,7 @@ in {
                           -b 512 \
                           -t 8 \
                           -fa on \
-                          --port \${toString config.services.llama-swap.port}'';
+                          --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
       };
