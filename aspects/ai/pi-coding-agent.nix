@@ -58,18 +58,6 @@
 
           find "$nm" -type l -lname '*/packages/*' -delete
           find "$nm/.bin" -xtype l -delete
-
-          for pipkg in @a5c-ai/babysitter-pi \
-                    pi-subagents \
-                    pi-total-recall \
-                    pi-web-access \
-                    taskplane \
-                    pi-lens \
-                    pi-markdown-preview \
-                    pi-powerline-footer \
-                    pi-mcp-adapter; do
-            pi install npm:$pipkgs
-          done
         '';
 
         postFixup = ''
@@ -108,5 +96,19 @@
 in {
   home-manager.users.${username} = {
     home.packages = [pi-coding-agent];
+
+    home.activation.installPiPackages = ''
+      for pipkg in @a5c-ai/babysitter-pi \
+                  pi-subagents \
+                  pi-total-recall \
+                  pi-web-access \
+                  taskplane \
+                  pi-lens \
+                  pi-markdown-preview \
+                  pi-powerline-footer \
+                  pi-mcp-adapter; do
+        $DRY_RUN_CMD pi install npm:$pipkg
+      done
+    '';
   };
 }
