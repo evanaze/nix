@@ -20,11 +20,11 @@ in {
           cmd = ''
             ${llama-server} \
                           -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
-                          -ngl 30
-                          -c 8192
-                          -b 512
-                          -t 8
-                          -fa on
+                          -ngl 30 \
+                          -c 8192 \
+                          -b 512 \
+                          -t 8 \
+                          -fa on \
                           --port \${toString config.services.llama-swap.port}'';
           healthCheckTimeout = 180;
         };
@@ -32,11 +32,16 @@ in {
           cmd = ''
             ${llama-server} \
                           -m /var/lib/llama-cpp/models/Qwen3.6-27B-UD-Q4_K_M.gguf \
-                          -ngl 30
-                          -c 8192
-                          -b 512
-                          -t 8
-                          -fa on
+                          --temp 1.0 \
+                          --top-p 0.95 \
+                          --min-p 0.00 \
+                          --top-k 20 \
+                          --presence-penalty 1.5 \
+                          -ngl 30 \
+                          -c 8192 \
+                          -b 512 \
+                          -t 8 \
+                          -fa on \
                           --port \${toString config.services.llama-swap.port}'';
           healthCheckTimeout = 180;
         };
