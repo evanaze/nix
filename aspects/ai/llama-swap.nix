@@ -21,7 +21,7 @@ in {
             ${llama-server} \
                           -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
                           -ngl 24 \
-                          -c 4096 \
+                          -c 32768 \
                           -b 256 \
                           -t 6 \
                           -fa on \
