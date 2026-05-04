@@ -37,13 +37,13 @@ in {
                           --min-p 0.00 \
                           --top-k 20 \
                           --presence-penalty 1.5 \
-                          -ngl 30 \
-                          -c 8192 \
-                          -b 512 \
-                          -t 8 \
+                          -ngl 22 \
+                          -c 4096 \
+                          -b 256 \
+                          -t 6 \
                           -fa on \
                           --port ''${PORT}'';
-          healthCheckTimeout = 180;
+          healthCheckTimeout = 300;
         };
       };
     };
