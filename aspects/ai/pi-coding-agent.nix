@@ -101,6 +101,7 @@ in {
     home.activation.installPiPackages = inputs.home-manager.lib.hm.dag.entryAfter ["writeBoundary"] ''
       for pipkg in @a5c-ai/babysitter-pi \
                   pi-subagents \
+                  pi-autoskills \
                   pi-total-recall \
                   pi-web-access \
                   taskplane \
