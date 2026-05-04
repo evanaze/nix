@@ -92,10 +92,8 @@
           sshnas = "tailscale ssh evanaze@jupiter.spitz-pickerel.ts.net";
           update = "pushd $HOME/.config/nix && git pull && nix flake update && epush updating flake inputs && popd";
           unpack = "fd . $1/ -x mv {} .";
-          updnvim = "pushd $HOME/.config/nix && nix flake update nixvim && epush updating nixvim && popd";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
-          # Host-specific rebuild alias
-          rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#${hostname}";
+          rebuild = "sudo nh os switch $HOME/.config/nix";
         };
       };
 
