@@ -17,7 +17,27 @@ in {
     settings = {
       models = {
         "qwen3.6-35b-a3b" = {
-          cmd = "${llama-server} --port \${PORT} -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf -ngl 30 -c 8192 -b 512 -t 8 -fa on";
+          cmd = ''
+            ${llama-server} \
+                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
+                          -ngl 30
+                          -c 8192
+                          -b 512
+                          -t 8
+                          -fa on
+                          --port \${toString config.services.llama-swap.port}'';
+          healthCheckTimeout = 180;
+        };
+        "qwen3.6-27b" = {
+          cmd = ''
+            ${llama-server} \
+                          -m /var/lib/llama-cpp/models/Qwen3.6-27B-UD-Q4_K_M.gguf \
+                          -ngl 30
+                          -c 8192
+                          -b 512
+                          -t 8
+                          -fa on
+                          --port \${toString config.services.llama-swap.port}'';
           healthCheckTimeout = 180;
         };
       };
