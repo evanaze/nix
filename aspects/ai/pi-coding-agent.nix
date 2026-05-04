@@ -57,8 +57,18 @@
           done
 
           find "$nm" -type l -lname '*/packages/*' -delete
-
           find "$nm/.bin" -xtype l -delete
+
+          for pipkg in @a5c-ai/babysitter-pi \
+                    pi-subagents \
+                    pi-total-recall \
+                    pi-web-access \
+                    taskplane \
+                    pi-lens \
+                    pi-markdown-preview \
+                    pi-powerline-footer \
+                    pi-mcp-adapter; do
+          pi install npm:$pipkgs
         '';
 
         postFixup = ''
