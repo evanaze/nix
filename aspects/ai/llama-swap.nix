@@ -30,7 +30,7 @@ in {
     StateDirectory = "llama-cpp";
   };
 
-  systemd.services.llama-swap-tsserve = {
+  systemd.services.llm-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
       "llama-swap.service"
@@ -45,6 +45,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.llama-swap.port} ${toString config.services.llama-swap.port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:llm --https=${toString config.services.llama-swap.port} ${toString config.services.llama-swap.port}";
   };
 }
