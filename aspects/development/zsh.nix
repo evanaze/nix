@@ -94,6 +94,7 @@
           unpack = "fd . $1/ -x mv {} .";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
           rebuild = "nh os switch $HOME/.config/nix";
+          nclean = "nh clean all --keep-since 7d --keep 3";
         };
       };
 
