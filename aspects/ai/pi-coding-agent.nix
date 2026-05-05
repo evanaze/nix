@@ -127,7 +127,7 @@ in {
     home.packages = [pi-coding-agent];
 
     home.activation.installPiPackages = inputs.home-manager.lib.hm.dag.entryAfter ["writeBoundary"] ''
-      for pipkg in @a5c-ai/babysitter-pi \
+      for pipkg in @sinamtz/pi-mempalace \
                   pi-subagents \
                   pi-autoskills \
                   pi-mempalace \
