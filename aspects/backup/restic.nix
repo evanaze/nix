@@ -23,6 +23,7 @@
     paths = [
       "/home/${username}/Documents"
       "/home/${username}/Downloads"
+      "/var/lib/actual"
     ];
     pruneOpts = [
       "--keep-hourly 24"
