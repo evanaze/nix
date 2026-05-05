@@ -5,11 +5,9 @@
   ...
 }: {
   imports = [
-    ./apps.nix
     ./email.nix
     ./fonts.nix
     ./gnome.nix
-    ./jellyfin-client.nix
     ./printing.nix
     ./sound.nix
     ./xserver.nix
