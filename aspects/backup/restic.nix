@@ -26,6 +26,7 @@
       "/var/lib/actual"
       "/var/lib/immich"
       "/var/lib/jellyfin"
+      "/mnt/eye"
     ];
     pruneOpts = [
       "--keep-hourly 24"
