@@ -130,7 +130,6 @@ in {
       for pipkg in @sinamtz/pi-mempalace \
                   pi-subagents \
                   pi-autoskills \
-                  pi-mempalace \
                   pi-web-access \
                   taskplane \
                   pi-lens \
