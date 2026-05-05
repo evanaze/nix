@@ -28,6 +28,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.open-webui.port} http://127.0.0.1:${toString config.services.open-webui.port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.open-webui.port} http://127.0.0.1:4434";
   };
 }
