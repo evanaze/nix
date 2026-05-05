@@ -130,7 +130,7 @@ in {
       for pipkg in @a5c-ai/babysitter-pi \
                   pi-subagents \
                   pi-autoskills \
-                  pi-total-recall \
+                  pi-mempalace \
                   pi-web-access \
                   taskplane \
                   pi-lens \
