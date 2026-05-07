@@ -8,13 +8,17 @@
     enable = true;
     env.PORT = 8725;
     credentials = {
-      CREDS_KEY = "run/secrets/librechat_creds_key";
+      CREDS_KEY = "/run/secrets/librechat/creds/key";
+      CREDS_IV = "/run/secrets/librechat/creds/iv";
+      JWT_SECRET = "/run/secrets/librechat/jwt/secret";
+      JWT_REFRESH_SECRET = "/run/secrets/librechat/jwt/refresh_secret";
+      # MEILI_MASTER_KEY = "run/secrets/librechat/meili/master_key";
     };
     enableLocalDB = true;
     meilisearch.enable = true;
   };
 
-  services.meilisearch.masterKeyFile = "/run/secrets/meili_master_key";
+  services.meilisearch.masterKeyFile = "/run/secrets/librechat/meili/master_key";
 
   systemd.services.ai-tsserve = {
     after = [
