@@ -2,7 +2,7 @@
 {...}: {
   imports = [
     ./actual.nix
-    ./open-webui.nix
+    ./librechat.nix
   ];
 
   services.tailscale = {

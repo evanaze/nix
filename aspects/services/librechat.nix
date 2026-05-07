@@ -4,11 +4,12 @@
   pkgs,
   ...
 }: {
-  services.open-webui = {
+  services.librechat = {
     enable = true;
-    port = 8725;
+    env.PORT = 8725;
+    enableLocalDB = true;
+    meilisearch.enable = true;
     environment = {
-      ENABLE_SIGNUP = "False";
       OPENAI_API_BASE_URL = "http://ai.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1";
     };
   };
@@ -28,6 +29,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.open-webui.port} http://127.0.0.1:4434";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.librechat.env.PORT} http://127.0.0.1:4434";
   };
 }
