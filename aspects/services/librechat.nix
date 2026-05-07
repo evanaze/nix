@@ -9,9 +9,6 @@
     env.PORT = 8725;
     enableLocalDB = true;
     meilisearch.enable = true;
-    environment = {
-      OPENAI_API_BASE_URL = "http://ai.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1";
-    };
   };
 
   systemd.services.ai-tsserve = {
