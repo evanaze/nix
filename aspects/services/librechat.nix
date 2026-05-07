@@ -7,9 +7,14 @@
   services.librechat = {
     enable = true;
     env.PORT = 8725;
+    credentials = {
+      CREDS_KEY = "run/secrets/librechat_creds_key";
+    };
     enableLocalDB = true;
     meilisearch.enable = true;
   };
+
+  services.meilisearch.masterKeyFile = "/run/secrets/meili_master_key";
 
   systemd.services.ai-tsserve = {
     after = [
