@@ -28,6 +28,11 @@
       grafana = {};
       actual = {};
       "nut/ups-passwd" = {};
+      "librechat/creds/key" = {};
+      "librechat/creds/iv" = {};
+      "librechat/jwt/secret" = {};
+      "librechat/jwt/refresh_secret" = {};
+      "librechat/meili/master_key" = {};
       "syncthing/earth/key" = {};
       "syncthing/earth/cert" = {};
       "syncthing/mars/key" = {};
