@@ -36,6 +36,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
@@ -140,6 +144,7 @@
             homeStateVersion = "23.11";
             useRaspberryPi = true;
             aspects = [
+              ./aspects/ai/hermes-agent.nix
               ./aspects/core/rpi.nix
               ./aspects/hardware/raspberry-pi.nix
               ./aspects/monitoring/node-exporter.nix
@@ -150,6 +155,13 @@
               inputs.disko.nixosModules.disko
               ./aspects/hardware/rpi-disko.nix
               {networking.hostId = "8821e309";}
+              inputs.hermes-agent.nixosModules.default
+              {
+                services.hermes-agent = {
+                  enable = true;
+                  addToSystemPackages = true;
+                };
+              }
             ];
           };
         };

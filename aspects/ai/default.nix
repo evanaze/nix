@@ -1,3 +1,6 @@
 {
-  imports = [./pi-coding-agent.nix];
+  imports = [
+    ./pi-coding-agent.nix
+    ./hermes-agent.nix
+  ];
 }
