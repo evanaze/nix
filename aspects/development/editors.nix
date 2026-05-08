@@ -53,8 +53,8 @@ in {
                 baseURL = "http://ai.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}";
               };
               models = {
-                "unsloth/Qwen3.5-27B-GGUF" = {
-                  name = "Qwen3.5-27B Q4_K_XL";
+                "gemma-4-e4b-q8" = {
+                  name = "gemma-4-e4b-q8";
                 };
               };
             };
