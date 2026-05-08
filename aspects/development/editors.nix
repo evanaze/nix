@@ -45,12 +45,13 @@ in {
         tui.theme = "catppuccin";
         settings = {
           autoupdate = true;
+          lsp = true;
           provider = {
             llama-local = {
               name = "Llama Swap";
               npm = "@ai-sdk/openai-compatible";
               options = {
-                baseURL = "http://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}";
+                baseURL = "https://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1";
               };
               models = {
                 "gemma-4-e4b-q8" = {
@@ -59,7 +60,6 @@ in {
               };
             };
           };
-          lsp = true;
         };
       };
     };
