@@ -6,7 +6,11 @@
 }: {
   services.librechat = {
     enable = true;
-    env.PORT = 8725;
+    env = {
+      PORT = 8725;
+      ALLOW_PASSWORD_RESET = "true";
+      ALLOW_REGISTRATION = "true";
+    };
     credentials = {
       CREDS_KEY = "/run/secrets/librechat/creds/key";
       CREDS_IV = "/run/secrets/librechat/creds/iv";
