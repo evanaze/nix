@@ -25,7 +25,6 @@ in {
                           --top-k 20 \
                           --min-p 0.00 \
                           --presence-penalty 1.5 \
-                          --repetition-penalty 1.0 \
                           -ngl 24 \
                           -c 32768 \
                           -b 256 \
