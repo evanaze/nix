@@ -153,9 +153,6 @@
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.raspberry-pi-5
-              inputs.disko.nixosModules.disko
-              ./aspects/hardware/rpi-disko.nix
-              {networking.hostId = "8821e309";}
               inputs.hermes-agent.nixosModules.default
               {
                 services.hermes-agent = {

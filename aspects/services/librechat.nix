@@ -12,7 +12,7 @@
       CREDS_IV = "/run/secrets/librechat/creds/iv";
       JWT_SECRET = "/run/secrets/librechat/jwt/secret";
       JWT_REFRESH_SECRET = "/run/secrets/librechat/jwt/refresh_secret";
-      # MEILI_MASTER_KEY = "run/secrets/librechat/meili/master_key";
+      OPENROUTER_KEY = "/run/secrets/openrouter-api-key";
     };
     enableLocalDB = true;
     meilisearch.enable = true;
