@@ -35,6 +35,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=${toString config.services.librechat.env.PORT} http://127.0.0.1:4434";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai https=4434 ${toString config.services.librechat.env.PORT}";
   };
 }
