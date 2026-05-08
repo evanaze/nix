@@ -23,11 +23,11 @@
   systemd.services.ai-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
-      "open-webui.service"
+      "librechat.service"
     ];
     wants = [
       "tailscaled-autoconnect.service"
-      "open-webui.service"
+      "librechat.service"
     ];
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish LibreChat";
