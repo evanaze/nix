@@ -6,17 +6,50 @@
 }: {
   services.librechat = {
     enable = true;
-    env = {
-      PORT = 8725;
-      ALLOW_PASSWORD_RESET = "true";
-      ALLOW_REGISTRATION = "true";
-    };
     credentials = {
       CREDS_KEY = "/run/secrets/librechat/creds/key";
       CREDS_IV = "/run/secrets/librechat/creds/iv";
       JWT_SECRET = "/run/secrets/librechat/jwt/secret";
       JWT_REFRESH_SECRET = "/run/secrets/librechat/jwt/refresh_secret";
       OPENROUTER_KEY = "/run/secrets/openrouter-api-key";
+    };
+    env = {
+      PORT = 8725;
+      ALLOW_PASSWORD_RESET = "true";
+      ALLOW_REGISTRATION = "true";
+    };
+    settings = {
+      cache = true;
+      endpoints = {
+        custom = [
+          {
+            apiKey = "\${OPENROUTER_KEY}";
+            baseURL = "https://openrouter.ai/api/v1";
+            dropParams = ["stop"];
+            modelDisplayLabel = "OpenRouter";
+            models = {
+              default = ["qwen/qwen3.6-27b"];
+              fetch = true;
+            };
+            name = "OpenRouter";
+            titleConvo = true;
+            titleModule = "";
+          }
+          {
+            apiKey = "boo";
+            baseURL = "https://llm.spitz-pickerel.ts-net/v1";
+            dropParams = ["stop"];
+            modelDisplayLabel = "Llama-Swap";
+            models = {
+              default = ["qwen/qwen3.6-27b"];
+              fetch = true;
+            };
+            name = "Llama-Swap";
+            titleConvo = true;
+            titleModule = "";
+          }
+        ];
+      };
     };
     enableLocalDB = true;
     meilisearch.enable = true;
