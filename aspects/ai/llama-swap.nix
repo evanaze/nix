@@ -16,19 +16,34 @@ in {
     port = 8724;
     settings = {
       models = {
-        "gemma-4-e4b-8q" = {
+        "gemma-4-e4b-q8" = {
           cmd = ''
             ${llama-server} \
                           -m /var/lib/llama-cpp/models/gemma-4-E4B-it-Q8_0.gguf \
                           --temp 1.0 \
                           --top-p 0.95 \
-                          --top-k 20 \
+                          --top-k 64 \
                           --min-p 0.00 \
-                          --presence-penalty 1.5 \
-                          -ngl 24 \
+                          -ngl 42 \
                           -c 32768 \
                           -b 256 \
-                          -t 6 \
+                          -t 12 \
+                          -fa on \
+                          --port ''${PORT}'';
+          healthCheckTimeout = 180;
+        };
+        "gemma-4-e4b-q4" = {
+          cmd = ''
+            ${llama-server} \
+                          -m /var/lib/llama-cpp/models/gemma-4-E4B-it-Q4_K_M.gguf \
+                          --temp 1.0 \
+                          --top-p 0.95 \
+                          --top-k 64 \
+                          --min-p 0.00 \
+                          -ngl 42 \
+                          -c 32768 \
+                          -b 256 \
+                          -t 12 \
                           -fa on \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
