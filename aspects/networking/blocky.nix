@@ -45,7 +45,10 @@
       clientLookup = {
         # iPhone configuration - replace with actual IP
         clients = {
-          iphone = ["192.168.1.100"];
+          iphone = [
+            "192.168.1.100"
+            "100.74.29.10"
+          ];
         };
       };
     };
