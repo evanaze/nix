@@ -123,13 +123,14 @@
               ./aspects/ai
               ./aspects/backup
               # ./aspects/business
-              ./aspects/core
-              ./aspects/development
-              ./aspects/hardware
-              ./aspects/hardware/jupiter
-              ./aspects/media
-              ./aspects/monitoring
-              ./aspects/services
+               ./aspects/core
+               ./aspects/development
+               ./aspects/hardware
+               ./aspects/hardware/jupiter
+               ./aspects/media
+               ./aspects/monitoring
+               ./aspects/networking
+               ./aspects/services
             ];
             extraModules = [
               inputs.disko.nixosModules.disko

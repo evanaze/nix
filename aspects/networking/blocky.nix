@@ -3,34 +3,55 @@
   services.blocky = {
     enable = true;
     settings = {
-      ports.dns = 53; # Port for incoming DNS queries
-      upstreams.groups.default = [
-        "https://1.1.1.1/dns-query" # Using Cloudflare's DNS over HTTPS server for resolving queries.
-      ];
+      ports.dns = 53;
+      upstreams.groups.default = ["https://1.1.1.1/dns-query"];
       # For initially solving DoH/DoT Requests when no system Resolver is available.
       bootstrapDns = {
         upstream = "https://1.1.1.1/dns-query";
-        ips = ["1.1.1.1" "1.0.0.1"];
+        ips = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
       };
       blocking = {
         denylists = {
           #Adblocking
           ads = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"];
+          # Custom blocklist for Reddit
+          reddit = [
+            "reddit.com"
+            "www.reddit.com"
+            "i.redd.it"
+            "redditstatic.com"
+          ];
         };
         clientGroupsBlock = {
           default = ["ads"];
+          # Create a group for iPhone
+          iphone = [
+            "ads"
+            "reddit"
+          ];
         };
       };
-      # Enabling caching and prefetching
+
       caching = {
         minTime = "5m";
         maxTime = "30m";
         prefetching = true;
       };
+
+      # Client-specific configuration
+      clientLookup = {
+        # iPhone configuration - replace with actual IP
+        clients = {
+          iphone = ["192.168.1.100"];
+        };
+      };
     };
   };
 
-  networking.firewall = {
+  services.networking.firewall = {
     allowedTCPPorts = [53];
     allowedUDPPorts = [53];
   };

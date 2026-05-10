@@ -2,6 +2,6 @@
 {...}: {
   imports = [
     ./networkmanager.nix
-    # ./blocky.nix  # Enable for DNS servers
+    ./blocky.nix  # Enable for DNS servers
   ];
 }
