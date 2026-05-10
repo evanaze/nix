@@ -8,6 +8,7 @@
   services.tailscale = {
     extraSetFlags = [
       "--advertise-exit-node"
+      "--accept-dns=false"
     ];
   };
 }

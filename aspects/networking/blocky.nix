@@ -46,6 +46,14 @@
         };
       };
 
+      conditional = {
+        mapping = {
+          "ts.net" = "100.100.100.100";
+          "168.192.in-addr.arpa" = "100.100.100.100";
+          "100.100.in-addr.arpa" = "100.100.100.100";
+        };
+      };
+
       caching = {
         minTime = "5m";
         maxTime = "30m";
@@ -54,8 +62,11 @@
     };
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [53];
-    allowedUDPPorts = [53];
+  networking = {
+    nameservers = ["127.0.0.1"];
+    firewall = {
+      allowedTCPPorts = [53];
+      allowedUDPPorts = [53];
+    };
   };
 }
