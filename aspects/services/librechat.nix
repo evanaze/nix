@@ -18,39 +18,26 @@
       ALLOW_PASSWORD_RESET = "true";
       ALLOW_REGISTRATION = "true";
     };
-    settings = {
-      cache = true;
-      endpoints = {
-        custom = [
-          {
-            apiKey = "\${OPENROUTER_KEY}";
-            baseURL = "https://openrouter.ai/api/v1";
-            dropParams = ["stop"];
-            modelDisplayLabel = "OpenRouter";
-            models = {
-              default = ["qwen/qwen3.6-27b"];
-              fetch = true;
-            };
-            name = "OpenRouter";
-            titleConvo = true;
-            titleModule = "";
-          }
-          {
-            apiKey = "boo";
-            baseURL = "https://llm.spitz-pickerel.ts-net/v1";
-            dropParams = ["stop"];
-            modelDisplayLabel = "Llama-Swap";
-            models = {
-              default = ["qwen/qwen3.6-27b"];
-              fetch = true;
-            };
-            name = "Llama-Swap";
-            titleConvo = true;
-            titleModule = "";
-          }
-        ];
-      };
-    };
+    #  settings = {
+    #    cache = true;
+    # endpoints = {
+    #   custom = [
+    #     {
+    #       apiKey = "boo";
+    #       baseURL = "https://llm.spitz-pickerel.ts-net/v1";
+    #       dropParams = ["stop"];
+    #       modelDisplayLabel = "Llama-Swap";
+    #       models = {
+    #         default = ["qwen/qwen3.6-27b"];
+    #         fetch = true;
+    #       };
+    #       name = "Llama-Swap";
+    #       titleConvo = true;
+    #       titleModule = "";
+    #     }
+    #   ];
+    # };
+    # };
     enableLocalDB = true;
     meilisearch.enable = true;
   };
