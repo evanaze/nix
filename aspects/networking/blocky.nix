@@ -3,7 +3,10 @@
   services.blocky = {
     enable = true;
     settings = {
-      ports.dns = 53;
+      ports = {
+        dns = 53;
+        http = 4000;
+      };
       upstreams.groups.default = ["https://1.1.1.1/dns-query"];
       # For initially solving DoH/DoT Requests when no system Resolver is available.
       bootstrapDns = {
@@ -15,22 +18,30 @@
       };
       blocking = {
         denylists = {
-          #Adblocking
           ads = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"];
-          # Custom blocklist for Reddit
           reddit = [
-            "reddit.com"
-            "www.reddit.com"
-            "i.redd.it"
-            "redditstatic.com"
+            ''
+              reddit.com
+              www.reddit.com
+              i.redd.it
+              redditstatic.com
+            ''
           ];
         };
         clientGroupsBlock = {
           default = ["ads"];
-          # Create a group for iPhone
           iphone = [
             "ads"
             "reddit"
+          ];
+        };
+      };
+
+      clientLookup = {
+        clients = {
+          iphone = [
+            "192.168.1.100"
+            "100.74.29.10"
           ];
         };
       };
@@ -39,17 +50,6 @@
         minTime = "5m";
         maxTime = "30m";
         prefetching = true;
-      };
-
-      # Client-specific configuration
-      clientLookup = {
-        # iPhone configuration - replace with actual IP
-        clients = {
-          iphone = [
-            "192.168.1.100"
-            "100.74.29.10"
-          ];
-        };
       };
     };
   };
