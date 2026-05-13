@@ -25,8 +25,4 @@
       ];
     };
   };
-
-  services.prometheus.alertmanagerGotify = {
-    enable = true;
-  };
 }
