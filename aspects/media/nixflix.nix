@@ -116,7 +116,7 @@
         admin = {
           mutable = false;
           policy.isAdministrator = true;
-          password._secret = config.sops.secrets."jellyfin/alice_password".path;
+          password._secret = config.sops.secrets."jellyfin/admin_password".path;
         };
       };
     };
