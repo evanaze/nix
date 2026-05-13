@@ -7,8 +7,8 @@
     };
   };
 
-  services.prometheus.alertmanagerGotify = {
-    enable = true;
-    metrics.username = "admin";
-  };
+  # services.prometheus.alertmanagerGotify = {
+  #   enable = true;
+  #   metrics.username = "admin";
+  # };
 }
