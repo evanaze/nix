@@ -18,26 +18,26 @@
       ALLOW_PASSWORD_RESET = "true";
       ALLOW_REGISTRATION = "true";
     };
-    #  settings = {
-    #    cache = true;
-    # endpoints = {
-    #   custom = [
-    #     {
-    #       apiKey = "boo";
-    #       baseURL = "https://llm.spitz-pickerel.ts-net/v1";
-    #       dropParams = ["stop"];
-    #       modelDisplayLabel = "Llama-Swap";
-    #       models = {
-    #         default = ["qwen/qwen3.6-27b"];
-    #         fetch = true;
-    #       };
-    #       name = "Llama-Swap";
-    #       titleConvo = true;
-    #       titleModule = "";
-    #     }
-    #   ];
-    # };
-    # };
+    settings = {
+      cache = true;
+      endpoints = {
+        custom = [
+          {
+            apiKey = "boo";
+            baseURL = "https://llm.spitz-pickerel.ts-net:8724/v1";
+            dropParams = ["stop"];
+            modelDisplayLabel = "Llama-Swap";
+            models = {
+              default = ["qwen3.6-35b-a3b"];
+              fetch = false;
+            };
+            name = "Llama-Swap";
+            titleConvo = true;
+            titleModule = "";
+          }
+        ];
+      };
+    };
     enableLocalDB = true;
     meilisearch.enable = true;
   };
