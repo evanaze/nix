@@ -1,8 +1,19 @@
 {
   config,
+  pkgs,
   username,
   ...
 }: {
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      rocmPackages.clr.icd
+      libva-utils
+      libva-vdpau-driver
+      libvdpau-va-gl
+    ];
+  };
+
   nixflix = {
     enable = true;
     mediaDir = "/mnt/eye/media";
@@ -14,10 +25,10 @@
       name = "overseerr";
     };
 
-    caddy = {
-      enable = true;
-      addHostsEntries = false;
-    };
+    # caddy = {
+    #   enable = true;
+    #   addHostsEntries = false;
+    # };
 
     postgres.enable = true;
 
