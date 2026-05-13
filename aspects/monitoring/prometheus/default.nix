@@ -1,9 +1,5 @@
 # aspects/monitoring/prometheus.nix - Prometheus monitoring
 {config, ...}: {
-  imports = [
-    ./node-exporter.nix
-  ];
-
   services.prometheus = {
     enable = true;
     port = 9001;

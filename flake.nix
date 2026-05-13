@@ -72,8 +72,7 @@
               ./aspects/hardware
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
-              ./aspects/monitoring/node-exporter.nix
-              ./aspects/monitoring/alloy.nix
+              ./aspects/monitoring
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
@@ -105,8 +104,7 @@
               ./aspects/hardware/mars.nix
               ./aspects/hardware/usb-tethering.nix
               ./aspects/networking/vpn.nix
-              ./aspects/monitoring/node-exporter.nix
-              ./aspects/monitoring/alloy.nix
+              ./aspects/monitoring
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -150,8 +148,7 @@
               ./aspects/ai/hermes-agent.nix
               ./aspects/core/rpi.nix
               ./aspects/hardware/raspberry-pi.nix
-              ./aspects/monitoring/node-exporter.nix
-              ./aspects/monitoring/alloy.nix
+              ./aspects/monitoring
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.raspberry-pi-5
