@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   services.gotify = {
     enable = true;
     environment = {
@@ -7,8 +7,10 @@
     };
   };
 
-  # services.prometheus.alertmanagerGotify = {
-  #   enable = true;
-  #   metrics.username = "admin";
-  # };
+  services.prometheus.alertmanagerGotify = {
+    enable = true;
+    port = config.services.gotify.environment.GOTIFY_SERVER_PORT;
+    metrics.username = "admin";
+    messageAnnotation = "description";
+  };
 }

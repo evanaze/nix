@@ -39,6 +39,27 @@
       "syncthing/mars/cert" = {};
       "syncthing/jupiter/key" = {};
       "syncthing/jupiter/cert" = {};
+      # Media
+      "sonarr/api_key" = {};
+      "sonarr/password" = {};
+      "radarr/api_key" = {};
+      "radarr/password" = {};
+      "lidarr/api_key" = {};
+      "lidarr/password" = {};
+      "prowlarr/api_key" = {};
+      "prowlarr/password" = {};
+      "indexer-api-keys/DrunkenSlug" = {};
+      "indexer-api-keys/NZBFinder" = {};
+      "indexer-api-keys/NzbPlanet" = {};
+      "jellyfin/alice_password" = {};
+      "seerr/api_key" = {};
+      "wireguard/conf" = {};
+      "sabnzbd/api_key" = {};
+      "sabnzbd/nzb_key" = {};
+      "usenet/eweka/username" = {};
+      "usenet/eweka/password" = {};
+      "usenet/newsgroupdirect/username" = {};
+      "usenet/newsgroupdirect/password" = {};
     };
   };
 }
