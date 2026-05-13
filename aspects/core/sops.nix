@@ -51,7 +51,8 @@
       "indexer-api-keys/DrunkenSlug" = {};
       "indexer-api-keys/NZBFinder" = {};
       "indexer-api-keys/NzbPlanet" = {};
-      "jellyfin/alice_password" = {};
+      "jellyfin/api_key" = {};
+      "jellyfin/admin_password" = {};
       "seerr/api_key" = {};
       "wireguard/conf" = {};
       "sabnzbd/api_key" = {};

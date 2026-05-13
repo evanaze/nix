@@ -137,6 +137,7 @@
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
+              inputs.nixflix.nixosModules.default
             ];
           };
 
