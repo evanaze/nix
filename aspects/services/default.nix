@@ -2,6 +2,7 @@
 {...}: {
   imports = [
     ./actual.nix
+    ./donetick.nix
     ./librechat.nix
   ];
 
