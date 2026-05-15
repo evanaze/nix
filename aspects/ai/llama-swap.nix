@@ -32,10 +32,11 @@ in {
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
+        # -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
-                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
+                          -hf unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-IQ2_XXS \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 20 \
