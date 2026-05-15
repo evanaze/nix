@@ -12,8 +12,9 @@
       owner = "donetick";
       repo = "frontend";
       rev = "develop";
-      hash = lib.fakeHash;
+      hash = "sha256-qtyNat6mJdeNcdaJHnjABofTNojwNOxlngJ5DF6tUyE=";
     };
+    npmDepsFetcherVersion = 2;
     npmDepsHash = lib.fakeHash;
     dontNpmBuild = true;
     buildPhase = ''
@@ -36,9 +37,9 @@
       owner = "donetick";
       repo = "donetick";
       rev = "v${version}";
-      hash = lib.fakeHash;
+      hash = "sha256-UbL/bvh0tSxtYKIL83zsZs/PVLwlAaGqiMKy7/hQD/s=";
     };
-    vendorHash = lib.fakeHash;
+    vendorHash = "";
     preBuild = ''
       export CGO_ENABLED=0
       rm -rf frontend/dist
