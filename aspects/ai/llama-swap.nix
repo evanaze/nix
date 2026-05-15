@@ -41,9 +41,7 @@ in {
                           --top-k 20 \
                           --min-p 0.00 \
                           --presence-penalty 1.5 \
-                          --repetition-penalty 1.0 \
                           -c 8724 \
-                          --fit \
                           --fit-target 256 \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;

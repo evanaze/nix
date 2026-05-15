@@ -57,6 +57,9 @@ in {
                 "gemma-4-e4b-q8" = {
                   name = "gemma-4-e4b-q8";
                 };
+                "qwen3.6-35b-a3b" = {
+                  name = "qwen3.6-35b-a3b";
+                };
               };
             };
           };
