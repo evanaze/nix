@@ -32,22 +32,6 @@ in {
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
-        "gemma-4-e4b-q4" = {
-          cmd = ''
-            ${llama-server} \
-                          -m /var/lib/llama-cpp/models/gemma-4-E4B-it-Q4_K_M.gguf \
-                          --temp 1.0 \
-                          --top-p 0.95 \
-                          --top-k 64 \
-                          --min-p 0.00 \
-                          -ngl 42 \
-                          -c 32768 \
-                          -b 256 \
-                          -t 12 \
-                          -fa on \
-                          --port ''${PORT}'';
-          healthCheckTimeout = 180;
-        };
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
@@ -58,11 +42,9 @@ in {
                           --min-p 0.00 \
                           --presence-penalty 1.5 \
                           --repetition-penalty 1.0 \
-                          -ngl 24 \
-                          -c 28000 \
-                          -b 256 \
-                          -t 6 \
-                          -fa on \
+                          -c 8724 \
+                          --fit \
+                          --fit-target 256 \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
