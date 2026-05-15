@@ -39,7 +39,7 @@ in {
         ${pkgs.writeText "selfhosted.yaml" ''
         name: "selfhosted"
         is_done_tick_dot_com: false
-        is_user_creation_disabled: false
+        is_user_creation_disabled: true
         database:
           type: "sqlite"
           migration: true
@@ -75,7 +75,7 @@ in {
           sse_enabled: true
           heartbeat_interval: 60s
           connection_timeout: 120s
-          max_connections: 1000
+          max_connections: 1001
           max_connections_per_user: 5
           event_queue_size: 2048
           cleanup_interval: 2m
@@ -99,5 +99,23 @@ in {
 
   sops.secrets.donetick-jwt = {
     owner = username;
+  };
+
+  systemd.services.donetick-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "donetick.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "donetick.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish Donetick";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 2021";
   };
 }
