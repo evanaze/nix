@@ -35,7 +35,7 @@ in {
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
-                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
+                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 20 \
