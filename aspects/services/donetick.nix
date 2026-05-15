@@ -116,6 +116,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 2021";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --http=4435 2021";
   };
 }
