@@ -44,6 +44,14 @@
 
   services.meilisearch.masterKeyFile = "/run/secrets/librechat/meili/master_key";
 
+  sops.secrets = {
+    "librechat/creds/key" = {};
+    "librechat/creds/iv" = {};
+    "librechat/jwt/secret" = {};
+    "librechat/jwt/refresh_secret" = {};
+    "librechat/meili/master_key" = {};
+  };
+
   systemd.services.ai-tsserve = {
     after = [
       "tailscaled-autoconnect.service"

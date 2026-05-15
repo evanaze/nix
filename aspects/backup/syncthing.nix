@@ -60,4 +60,13 @@
       };
     };
   };
+
+  sops.secrets = {
+    "syncthing/earth/key" = {};
+    "syncthing/earth/cert" = {};
+    "syncthing/mars/key" = {};
+    "syncthing/mars/cert" = {};
+    "syncthing/jupiter/key" = {};
+    "syncthing/jupiter/cert" = {};
+  };
 }

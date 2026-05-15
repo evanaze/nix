@@ -47,4 +47,6 @@
     passwordFile = "/run/secrets/restic-password";
     user = "root";
   };
+
+  sops.secrets.restic-password = {};
 }

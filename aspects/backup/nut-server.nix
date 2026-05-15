@@ -1,4 +1,8 @@
-{config, pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   power.ups = {
     enable = true;
     ups."UPS-1" = {
@@ -192,5 +196,4 @@
       DefaultDependencies = "no";
     };
   };
-
 }

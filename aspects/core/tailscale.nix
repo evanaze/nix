@@ -8,4 +8,6 @@
       "--ssh"
     ];
   };
+
+  sops.secrets.ts-server-key = {};
 }
