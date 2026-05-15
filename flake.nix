@@ -77,7 +77,6 @@
               ./aspects/hardware/nvidia.nix
               ./aspects/hardware/earth.nix
               ./aspects/monitoring
-              ./aspects/services/donetick.nix
             ];
             extraModules = [
               inputs.nixos-hardware.nixosModules.common-pc
