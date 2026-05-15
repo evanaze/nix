@@ -34,6 +34,7 @@ in {
       DT_SQLITE_PATH = "/var/lib/donetick/donetick.db";
     };
     preStart = ''
+      mkdir -p /var/lib/donetick/config
       sed "s/JWT_SECRET_PLACEHOLDER/$(cat ${config.sops.secrets.donetick-jwt.path})/" \
         ${pkgs.writeText "selfhosted.yaml" ''
         name: "selfhosted"
@@ -96,5 +97,7 @@ in {
     };
   };
 
-  sops.secrets.donetick-jwt = {};
+  sops.secrets.donetick-jwt = {
+    owner = username;
+  };
 }
