@@ -5,53 +5,22 @@
   username,
   ...
 }: let
-  donetick-fe = pkgs.buildNpmPackage {
-    pname = "donetick-frontend";
-    version = "1.2.2";
-    src = pkgs.fetchFromGitHub {
-      owner = "donetick";
-      repo = "frontend";
-      rev = "develop";
-      hash = "sha256-qtyNat6mJdeNcdaJHnjABofTNojwNOxlngJ5DF6tUyE=";
-    };
-    npmDepsFetcherVersion = 2;
-    npmDepsHash = lib.fakeHash;
-    dontNpmBuild = true;
-    buildPhase = ''
-      runHook preBuild
-      vite build --mode selfhosted
-      runHook postBuild
-    '';
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out
-      cp -r dist $out/
-      runHook postInstall
-    '';
-  };
-
-  donetick = pkgs.buildGoModule rec {
+  version = "0.1.75";
+  donetick = pkgs.stdenv.mkDerivation {
     pname = "donetick";
-    version = "0.1.75";
-    src = pkgs.fetchFromGitHub {
-      owner = "donetick";
-      repo = "donetick";
-      rev = "v${version}";
-      hash = "sha256-UbL/bvh0tSxtYKIL83zsZs/PVLwlAaGqiMKy7/hQD/s=";
+    inherit version;
+    src = pkgs.fetchurl {
+      url = "https://github.com/donetick/donetick/releases/download/v${version}/donetick_Linux_x86_64.tar.gz";
+      hash = "sha256-uCWAeLGxeR6+rrUSQATdFWsA78V69KLb6u3iRGMSnso=";
     };
-    vendorHash = "";
-    preBuild = ''
-      export CGO_ENABLED=0
-      rm -rf frontend/dist
-      cp -r ${donetick-fe}/dist frontend/dist
+    sourceRoot = ".";
+    installPhase = ''
+      mkdir -p $out/bin
+      install -m 755 donetick $out/bin/
     '';
-    ldflags = [
-      "-X donetick.com/core/config.Version=${version}"
-      "-X donetick.com/core/config.Commit=v${version}"
-    ];
     meta = {
-      mainProgram = "nix";
-      platforms = lib.platforms.unix;
+      mainProgram = "donetick";
+      platforms = lib.platforms.linux;
     };
   };
 in {
