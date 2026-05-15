@@ -32,18 +32,15 @@ in {
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
-        # -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
-                          -hf unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-IQ2_XXS \
+                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 20 \
                           --min-p 0.00 \
                           --presence-penalty 1.5 \
-                          --spec-type draft-mtp \
-                          --spec-draft-n-max 2 \
                           -c  32768 \
                           --fit-target 256 \
                           --port ''${PORT}'';
