@@ -35,33 +35,18 @@ in {
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
-                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q3_K_S.gguf \
+                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-IQ2_XXS.gguf \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 20 \
                           --min-p 0.00 \
                           --presence-penalty 1.5 \
-                          -c 8724 \
+                          --spec-type draft-mtp \
+                          --spec-draft-n-max 2 \
+                          -c  32768 \
                           --fit-target 256 \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
-        };
-        "qwen3.6-27b" = {
-          cmd = ''
-            ${llama-server} \
-                          -m /var/lib/llama-cpp/models/Qwen3.6-27B-Q4_K_M.gguf \
-                          --temp 1.0 \
-                          --top-p 0.95 \
-                          --min-p 0.00 \
-                          --top-k 20 \
-                          --presence-penalty 1.5 \
-                          -ngl 22 \
-                          -c 4096 \
-                          -b 256 \
-                          -t 6 \
-                          -fa on \
-                          --port ''${PORT}'';
-          healthCheckTimeout = 300;
         };
       };
     };
