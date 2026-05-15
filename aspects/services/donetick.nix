@@ -39,7 +39,7 @@ in {
         ${pkgs.writeText "selfhosted.yaml" ''
         name: "selfhosted"
         is_done_tick_dot_com: false
-        is_user_creation_disabled: true
+        is_user_creation_disabled: false
         database:
           type: "sqlite"
           migration: true
