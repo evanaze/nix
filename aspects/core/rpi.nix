@@ -5,7 +5,6 @@
     ./locale.nix
     ./maintenance.nix
     ./nix.nix
-    ./packages.nix
     ./sops.nix
     ./tailscale.nix
     ./user.nix
