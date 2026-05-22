@@ -152,7 +152,7 @@
               ./aspects/ai
               ./aspects/ai/hermes-agent.nix
               ./aspects/core/rpi.nix
-              ./aspects/hardware/raspberry-pi.nix
+              ./aspects/hardware/mercury
               ./aspects/monitoring
             ];
             extraModules = [

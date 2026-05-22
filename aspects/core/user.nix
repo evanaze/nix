@@ -1,7 +1,6 @@
 # aspects/core/user.nix - User account configuration
 {
   username,
-  config,
   pkgs,
   ...
 }: {
