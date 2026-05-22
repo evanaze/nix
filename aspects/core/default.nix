@@ -6,7 +6,6 @@
     ./maintenance.nix
     ./networking.nix
     ./nix.nix
-    ./packages.nix
     ./sops.nix
     ./ssh.nix
     ./tailscale.nix
@@ -14,6 +13,19 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    cachix
+    cron
+    devenv
+    dig
+    expect
+    git
+    htop
+    lsof
+    meslo-lgs-nf
+    nmap
     nixos-anywhere
+    tree
+    unzip
+    wget
   ];
 }
