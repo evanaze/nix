@@ -19,6 +19,7 @@
       ALLOW_REGISTRATION = "true";
     };
     settings = {
+      version = "1.2.0";
       cache = true;
       endpoints = {
         custom = [
