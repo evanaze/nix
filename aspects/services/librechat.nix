@@ -50,6 +50,7 @@
     "librechat/jwt/secret" = {};
     "librechat/jwt/refresh_secret" = {};
     "librechat/meili/master_key" = {};
+    "openrouter-api-key" = {};
   };
 
   systemd.services.ai-tsserve = {
