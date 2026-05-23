@@ -6,6 +6,7 @@
     ./editors.nix
     ./git.nix
     ./languages.nix
+    ./opencode.nix
     ./zsh.nix
   ];
 
