@@ -29,7 +29,7 @@
             dropParams = ["stop"];
             modelDisplayLabel = "Llama-Swap";
             models = {
-              default = ["qwen3.6-35b-a3b"];
+              default = ["gemma-4-e4b-q8"];
               fetch = false;
             };
             name = "Llama-Swap";
