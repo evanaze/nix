@@ -131,7 +131,6 @@
               ./aspects/hardware/jupiter
               ./aspects/media
               ./aspects/monitoring
-              ./aspects/monitoring/gotify.nix
               ./aspects/networking
               ./aspects/services
             ];
