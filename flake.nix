@@ -16,19 +16,22 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixos-raspberrypi/nixpkgs";
     };
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixflix = {
       url = "github:kiriwalawren/nixflix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    openviking = {
+      url = "github:Daaboulex/openviking-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     slippi = {
@@ -139,6 +142,7 @@
             extraModules = [
               inputs.disko.nixosModules.disko
               inputs.nixflix.nixosModules.default
+              inputs.openviking.nixosModules.default
               {
                 services.hermes-agent = {
                   enable = true;
