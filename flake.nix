@@ -123,6 +123,7 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/ai
+              ./aspects/ai/hermes-agent.nix
               ./aspects/backup
               # ./aspects/business
               ./aspects/core
@@ -131,12 +132,19 @@
               ./aspects/hardware/jupiter
               ./aspects/media
               ./aspects/monitoring
+              ./aspects/monitoring/smartctl-exporter.nix
               ./aspects/networking
               ./aspects/services
             ];
             extraModules = [
               inputs.disko.nixosModules.disko
               inputs.nixflix.nixosModules.default
+              {
+                services.hermes-agent = {
+                  enable = true;
+                  addToSystemPackages = true;
+                };
+              }
             ];
           };
 
