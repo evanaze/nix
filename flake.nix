@@ -16,10 +16,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixos-raspberrypi/nixpkgs";
-    };
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixvim = {
@@ -143,32 +139,6 @@
               inputs.disko.nixosModules.disko
               inputs.nixflix.nixosModules.default
               inputs.openviking.nixosModules.default
-              {
-                services.hermes-agent = {
-                  enable = true;
-                  addToSystemPackages = true;
-                };
-              }
-            ];
-          };
-
-          # Raspberry Pi 5
-          mercury = mkHost {
-            system = "aarch64-linux";
-            hostname = "mercury";
-            stateVersion = "24.11";
-            homeStateVersion = "23.11";
-            useRaspberryPi = true;
-            aspects = [
-              ./aspects/ai
-              ./aspects/ai/hermes-agent.nix
-              ./aspects/core/rpi.nix
-              ./aspects/hardware/mercury
-              ./aspects/monitoring
-            ];
-            extraModules = [
-              inputs.nixos-hardware.nixosModules.raspberry-pi-5
-              inputs.hermes-agent.nixosModules.default
               {
                 services.hermes-agent = {
                   enable = true;
