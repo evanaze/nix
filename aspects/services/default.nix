@@ -3,8 +3,10 @@
   imports = [
     ./actual.nix
     ./donetick.nix
+    # ./hermes-agent.nix
     ./grafana
     # ./librechat.nix
+    ./openviking.nix
   ];
 
   services.tailscale = {
