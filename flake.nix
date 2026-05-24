@@ -136,15 +136,8 @@
               ./aspects/services
             ];
             extraModules = [
-              inputs.disko.nixosModules.disko
               inputs.nixflix.nixosModules.default
               inputs.openviking.nixosModules.default
-              {
-                services.hermes-agent = {
-                  enable = true;
-                  addToSystemPackages = true;
-                };
-              }
             ];
           };
         };
