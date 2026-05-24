@@ -3,6 +3,7 @@
   imports = [
     ./actual.nix
     ./donetick.nix
+    ./grafana
     ./librechat.nix
   ];
 

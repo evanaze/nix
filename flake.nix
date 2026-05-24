@@ -132,7 +132,7 @@
               ./aspects/hardware/jupiter
               ./aspects/media
               ./aspects/monitoring
-              ./aspects/monitoring/smartctl-exporter.nix
+              ./aspects/monitoring/prometheus/smartctl-exporter.nix
               ./aspects/networking
               ./aspects/services
             ];
