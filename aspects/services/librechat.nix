@@ -25,11 +25,14 @@
         custom = [
           {
             apiKey = "boo";
-            baseURL = "https://llm.spitz-pickerel.ts-net:8724/v1";
+            baseURL = "https://llm.spitz-pickerel.ts.net:8724/v1";
             dropParams = ["stop"];
             modelDisplayLabel = "Llama-Swap";
             models = {
-              default = ["gemma-4-e4b-q8"];
+              default = [
+                "gemma-4-e4b-q8"
+                "qwen3.6-35b-a3b"
+              ];
               fetch = false;
             };
             name = "Llama-Swap";
