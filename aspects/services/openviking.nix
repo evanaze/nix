@@ -1,9 +1,7 @@
 {...}: {
   services.openviking = {
     enable = true;
-    user = "user"; # Run as primary user to solve all permission issues for local indexing
-    group = "users";
-    readOnlyPaths = ["/home/user/Documents/my-project"];
+    readOnlyPaths = [];
     settings = {
       embedding.dense = {
         provider = "openai";
