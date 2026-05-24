@@ -43,10 +43,10 @@
       };
     };
     enableLocalDB = true;
-    meilisearch.enable = false;
+    meilisearch.enable = true;
   };
 
-  # services.meilisearch.masterKeyFile = "/run/secrets/librechat/meili/master_key";
+  services.meilisearch.masterKeyFile = "/run/secrets/librechat/meili/master_key";
 
   sops.secrets = {
     "librechat/creds/key" = {};
