@@ -6,6 +6,7 @@
     # ./hermes-agent.nix
     ./grafana
     # ./librechat.nix
+    ./nix-cache.nix
     ./openviking.nix
   ];
 

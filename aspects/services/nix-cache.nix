@@ -24,6 +24,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=4436 ${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=4436 ${toString config.services.nix-serve.port}";
   };
 }
