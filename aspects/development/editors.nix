@@ -13,6 +13,8 @@
     module = ./nixvim;
   };
 in {
+  nixpkgs.overlays = [inputs.ghostty.overlays.default];
+
   # Home-manager editor configuration
   home-manager.users.${username} = {
     home.packages = [
