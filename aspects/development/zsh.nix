@@ -93,7 +93,7 @@
           update = "pushd $HOME/.config/nix && git pull && nix flake update && epush updating flake inputs && popd";
           unpack = "fd . $1/ -x mv {} .";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
-          rebuild = "nh os switch $HOME/.config/nix";
+          rebuild = "nh os boot $HOME/.config/nix";
           nclean = "nh clean all --keep-since 7d --keep 3";
         };
       };
