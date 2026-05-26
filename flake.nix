@@ -138,6 +138,7 @@
               ./aspects/services
             ];
             extraModules = [
+              inputs.hermes-agent.nixosModules.default
               inputs.nixflix.nixosModules.default
               inputs.openviking.nixosModules.default
             ];
