@@ -86,7 +86,6 @@
           jls = "journalctl -l --no-pager -n 50 -u $1";
           dup = "devenv up";
           showsvcs = "systemctl --type=service --state=running";
-          svc-stat = "journalctl -xe -u $1";
           sshpi = "tailscale ssh evanaze@mercury.spitz-pickerel.ts.net";
           sshdt = "tailscale ssh evanaze@earth.spitz-pickerel.ts.net";
           sshlt = "tailscale ssh evanaze@mars.spitz-pickerel.ts.net";
@@ -94,7 +93,7 @@
           update = "pushd $HOME/.config/nix && git pull && nix flake update && epush updating flake inputs && popd";
           unpack = "fd . $1/ -x mv {} .";
           npush = "pushd $HOME/.config/nix && epush $@ && popd";
-          rebuild = "nh os boot $HOME/.config/nix";
+          rebuild = "nh os switch $HOME/.config/nix";
           nclean = "nh clean all --keep-since 7d --keep 3";
         };
       };
