@@ -14,6 +14,9 @@
     enable = true;
     settings = {
       model.default = "deepseek/deepseek-v4-flash";
+      memory = {
+        provider = "openviking";
+      };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
     };

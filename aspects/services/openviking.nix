@@ -21,5 +21,7 @@
 
   sops.secrets."openviking/conf" = {
     owner = "openviking";
+    group = "users";
+    mode = "0440";
   };
 }
