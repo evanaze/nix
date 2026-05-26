@@ -4,6 +4,8 @@
   pkgs,
   ...
 }: {
+  sops.secrets.cache-private-key = {};
+
   services.nix-serve = {
     enable = true;
     secretKeyFile = config.sops.secrets.cache-private-key.path;

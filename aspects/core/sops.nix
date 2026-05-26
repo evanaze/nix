@@ -18,7 +18,6 @@
       generateKey = true;
     };
     secrets = {
-      cache-private-key = {};
       openrouter-api-key = {
         owner = username;
       };

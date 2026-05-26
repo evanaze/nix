@@ -12,8 +12,10 @@
 
   services.openviking = {
     enable = true;
-    configFile = config.sops.secrets.openviking-conf.path;
+    configFile = config.sops.secrets."openviking/conf".path;
   };
 
-  sops.secrets.openviking-conf = {owner="openviking"};
+  sops.secrets."openviking/conf" = {
+    owner = "openviking";
+  };
 }
