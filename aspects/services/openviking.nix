@@ -15,5 +15,5 @@
     configFile = config.sops.secrets.openviking-conf.path;
   };
 
-  sops.secrets.openviking-conf = {};
+  sops.secrets.openviking-conf = {owner="openviking"};
 }
