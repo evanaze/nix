@@ -83,6 +83,7 @@
           cd = "z";
           n = "nvim .";
           t = "tree -L 2";
+          jls = "journalctl -l --no-pager -n 50 -u $1";
           dup = "devenv up";
           showsvcs = "systemctl --type=service --state=running";
           svc-stat = "journalctl -xe -u $1";
