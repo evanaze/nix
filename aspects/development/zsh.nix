@@ -81,7 +81,7 @@
           gsmupd = "git submodule update --remote --recursive";
           ll = "ls -al";
           cd = "z";
-          n = "nvim .";
+          n = "nvim";
           t = "tree -L 2";
           jls = "journalctl -l --no-pager -n 50 -u $1";
           dup = "devenv up";
