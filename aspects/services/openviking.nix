@@ -6,12 +6,14 @@
 }: {
   nixpkgs.overlays = [inputs.openviking.overlays.default];
 
+  environment.systemPackages = with pkgs; [
+    openviking
+  ];
+
   services.openviking = {
     enable = true;
     configFile = config.sops.secrets.openviking-conf.path;
   };
 
-  environment.systemPackages = with pkgs; [
-    openviking
-  ];
+  sops.secrets.openviking-conf = {};
 }
