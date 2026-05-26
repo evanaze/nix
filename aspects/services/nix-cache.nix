@@ -6,7 +6,7 @@
 }: {
   services.nix-serve = {
     enable = true;
-    secretKeyFile = "/var/secrets/cache-private-key.pem";
+    secretKeyFile = config.sops.secrets.cache-private-key.path;
   };
 
   systemd.services.nix-cache-tsserve = {
@@ -16,7 +16,7 @@
     ];
     wants = [
       "tailscaled-autoconnect.service"
-      "actual.service"
+      "nix-serve.service"
     ];
     wantedBy = ["multi-user.target"];
     description = "Using Tailscale Serve to publish Actual";
@@ -24,6 +24,6 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:cache --http=${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=4436 ${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
   };
 }

@@ -2,10 +2,8 @@
   description = "NixOS configuration - Dendritic Pattern";
 
   nixConfig = {
-    extra-substituters = ["https://nixos-raspberrypi.cachix.org"];
-    extra-trusted-public-keys = [
-      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
-    ];
+    extra-substituters = ["https://cache.spitz-pickerel.ts.net:4436"];
+    extra-trusted-public-keys = ["cache:+h9wYaxp+qMa0hHTTnh3cAPmn1DmvlPDj27dfEh+6kA="];
     connect-timeout = 5;
   };
 
