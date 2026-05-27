@@ -124,7 +124,6 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/ai
-              ./aspects/ai/hermes-agent.nix
               ./aspects/backup
               # ./aspects/business
               ./aspects/core
