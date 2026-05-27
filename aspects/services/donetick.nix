@@ -110,8 +110,6 @@ in {
     enable = true;
     virtualHosts."localhost:${toString caddyPort}" = {
       extraConfig = ''
-        tls off
-
         reverse_proxy localhost:${toString donetickPort} {
           header_up X-Forwarded-Proto https
           header_up X-Forwarded-For {remote_host}
@@ -142,3 +140,4 @@ in {
     script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 ${toString caddyPort}";
   };
 }
+
