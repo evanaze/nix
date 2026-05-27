@@ -23,6 +23,9 @@
       platforms = lib.platforms.linux;
     };
   };
+
+  donetickPort = 2021;
+  caddyPort = 2022;
 in {
   systemd.services.donetick = {
     after = ["network.target"];
@@ -48,7 +51,7 @@ in {
           session_time: 168h
           max_refresh: 1440h
         server:
-          port: 2021
+          port: ${toString donetickPort}
           read_timeout: 10s
           write_timeout: 10s
           rate_period: 60s
@@ -101,21 +104,41 @@ in {
     owner = username;
   };
 
+  # Caddy reverse proxy in front of Donetick, serving on :2022
+  # Handles proxy headers so Donetick knows it's behind HTTPS
+  services.caddy = {
+    enable = true;
+    virtualHosts."localhost:${toString caddyPort}" = {
+      extraConfig = ''
+        tls off
+
+        reverse_proxy localhost:${toString donetickPort} {
+          header_up X-Forwarded-Proto https
+          header_up X-Forwarded-For {remote_host}
+          header_up X-Forwarded-Host {host}
+        }
+      '';
+    };
+  };
+
+  # Tailscale Serve now points to Caddy instead of Donetick directly
   systemd.services.donetick-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
+      "caddy.service"
       "donetick.service"
     ];
     wants = [
       "tailscaled-autoconnect.service"
+      "caddy.service"
       "donetick.service"
     ];
     wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Donetick";
+    description = "Using Tailscale Serve to publish Donetick (via Caddy)";
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 2021";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 ${toString caddyPort}";
   };
 }
