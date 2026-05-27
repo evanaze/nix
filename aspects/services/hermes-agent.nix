@@ -13,7 +13,7 @@
 
   services.hermes-agent = {
     enable = true;
-    documents = ["$HOME/.config/nix"];
+    # documents = ["$HOME/.config/nix"];
     settings = {
       model.default = "deepseek/deepseek-v4-flash";
       memory = {
