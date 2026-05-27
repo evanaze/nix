@@ -47,11 +47,11 @@
 
   systemd.services.hermes-tsserve = {
     after = [
-      "tailscaled-autoconnect.service"
+      "tailscaled.service"
       "hermes-dashboard.service"
     ];
     wants = [
-      "tailscaled-autoconnect.service"
+      "tailscaled.service"
       "hermes-dashboard.service"
     ];
     wantedBy = ["multi-user.target"];
