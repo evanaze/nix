@@ -42,7 +42,7 @@
       Restart = "on-failure";
       RestartSec = "5s";
     };
-    script = "${lib.getExe pkgs.hermes-agent} dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build";
+    script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port 9119 --tui --no-open --skip-build --insecure";
   };
 
   systemd.services.hermes-tsserve = {

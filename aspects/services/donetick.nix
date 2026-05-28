@@ -108,7 +108,7 @@ in {
   # Handles proxy headers so Donetick knows it's behind HTTPS
   services.caddy = {
     enable = true;
-    virtualHosts."localhost:${toString caddyPort}" = {
+    virtualHosts."http://localhost:${toString caddyPort}" = {
       extraConfig = ''
         reverse_proxy localhost:${toString donetickPort} {
           header_up X-Forwarded-Proto https
@@ -137,7 +137,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 ${toString caddyPort}";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:todo || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 http://127.0.0.1:${toString caddyPort}
+    '';
   };
 }
 
