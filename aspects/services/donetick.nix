@@ -108,7 +108,7 @@ in {
   # Handles proxy headers so Donetick knows it's behind HTTPS
   services.caddy = {
     enable = true;
-    virtualHosts."http://localhost:${toString caddyPort}" = {
+    virtualHosts.":${toString caddyPort}" = {
       extraConfig = ''
         reverse_proxy localhost:${toString donetickPort} {
           header_up X-Forwarded-Proto https

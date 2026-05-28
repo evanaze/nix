@@ -7,6 +7,7 @@
     ./grafana
     # ./librechat.nix
     ./nix-cache.nix
+    ./opencode-server.nix
     ./openviking.nix
   ];
 
