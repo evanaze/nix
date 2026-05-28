@@ -16,7 +16,7 @@
       flake = inputs.self.outPath;
       flags = ["--commit-lock-file"];
       allowReboot = true;
-      dates = "daily MST"; # Daily around 00:00
+      dates = "daily";
       randomizedDelaySec = "45min";
     };
   };
