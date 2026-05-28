@@ -69,7 +69,6 @@
                   opencode
               fi
           }
-          }
 
           autoload -U promptinit; promptinit
 
