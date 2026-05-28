@@ -4,6 +4,8 @@
   username,
   ...
 }: {
+  home-manager.users.${username}.programs.opencode.settings.plugin = ["openviking-opencode"];
+
   systemd.services.opencode-server = {
     after = ["network-online.target"];
     wantedBy = ["multi-user.target"];
