@@ -3,6 +3,7 @@
   lib,
   pkgs,
   config,
+  username,
   ...
 }: {
   # Apply upstream overlay, then patch the dashboard_auth missing subpackage
@@ -57,6 +58,18 @@
       });
     })
   ];
+
+  # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
+  # This lets the dashboard see CLI sessions and vice versa.
+  environment.variables = {
+    HERMES_HOME = "/var/lib/hermes/.hermes";
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/hermes/.hermes 2770 hermes hermes -"
+  ];
+
+  users.users.${username}.extraGroups = ["hermes"];
 
   environment.systemPackages = with pkgs; [
     hermes-agent
