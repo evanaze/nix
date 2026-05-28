@@ -83,9 +83,9 @@
       memory = {
         provider = "openviking";
       };
-      environmentFiles = [config.sops.secrets."hermes/env".path];
-      addToSystemPackages = true;
     };
+    environmentFiles = [config.sops.secrets."hermes/env".path];
+    addToSystemPackages = true;
   };
 
   sops.secrets."hermes/env" = {
