@@ -62,6 +62,15 @@
               git branch -D $bname
           }
 
+          function oc() {
+              if curl -sf --max-time 1 https://opencode.spitz-pickerel.ts.net:4437/global/health > /dev/null 2>&1; then
+                  opencode attach https://opencode.spitz-pickerel.ts.net:4437
+              else
+                  opencode
+              fi
+          }
+          }
+
           autoload -U promptinit; promptinit
 
           # Style Prompt
