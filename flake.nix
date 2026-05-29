@@ -66,7 +66,6 @@
             stateVersion = "23.11";
             homeStateVersion = "23.11";
             aspects = [
-              ./aspects/ai
               ./aspects/ai/server.nix
               ./aspects/backup/nut-client.nix
               ./aspects/backup/syncthing.nix
