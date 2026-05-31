@@ -54,11 +54,14 @@ in
       print('Kept workspaces:', data['workspaces']['packages'])
       "
 
-          echo "=== Remove dev deps that need registry resolution ==="
+          echo "=== Remove dev deps that need registry cache ==="
           python3 -c "
       import json
       deps_to_remove = {
           'danger', 'danger-plugin-todos',
+          '@genql/cli', '@genql/runtime',
+          '@typescript/native-preview',
+          'esbuild',
       }
       affected = [
           'packages/twenty-utils/package.json',
@@ -67,6 +70,9 @@ in
           'packages/twenty-emails/package.json',
           'packages/twenty-front-component-renderer/package.json',
           'packages/twenty-shared/package.json',
+          'packages/twenty-server/package.json',
+          'packages/twenty-ui/package.json',
+          'packages/twenty-front/package.json',
       ]
       for pkg_json in affected:
           with open(pkg_json) as f:
@@ -79,32 +85,48 @@ in
           print('Cleaned deps from', pkg_json)
       "
 
-          echo "=== Add lockfile aliases for exact-version resolution ==="
+          echo "=== Add missing esbuild lockfile entries ==="
           cat > /tmp/patch-lockfile.py << 'PYEOF'
       import re
+
       with open('yarn.lock') as f:
           content = f.read()
 
-      needed = ['esbuild@npm:0.25.8', 'esbuild@npm:0.27.7']
-      for exact in needed:
-          if f'"{exact}":' in content:
-              print(exact, 'already in lockfile')
+      # esbuild 0.25.8 and 0.27.7 have resolution entries from ranges like
+      #   "esbuild@npm:^0.25.0":
+      #     version: 0.25.8
+      #     resolution: "esbuild@npm:0.25.8"
+      # but no actual package entry with dependencies. Yarn needs the full entry.
+      # Copy from an existing version and substitute the version number.
+      versions = {
+          '0.25.8': '0.25.4',  # copy from 0.25.4 entry
+          '0.27.7': '0.27.3',  # copy from 0.27.3 entry
+      }
+
+      for new_ver, src_ver in versions.items():
+          exact = f'"esbuild@npm:{new_ver}":'
+          if exact in content:
+              print(f'esbuild {new_ver} already in lockfile')
               continue
-          name = exact.split('@npm:')[0]
-          ver = exact.split('@npm:')[1]
-          ver_re = ver.replace('.', r'\.')
-          pattern = f'"{name}@npm:\\\\^[\\\\d.]+":\n  version: {ver_re}\n  resolution: "{exact}"'
-          match = re.search(pattern, content)
-          if match:
-              start = match.start()
-              rest = content[start:]
-              end_m = re.search(r'\n\n(?=")', rest)
-              if end_m:
-                  entry = rest[:end_m.end()]
-                  newline_idx = entry.index('\n')
-                  alias = f'"{exact}":' + entry[newline_idx:] + '\n'
-                  content = content[:start] + alias + content[start:]
-                  print('Added', exact)
+
+          # Find the source entry
+          src_entry = f'"esbuild@npm:{src_ver}":'
+          start_idx = content.index(src_entry)
+          rest = content[start_idx:]
+          # Find end of this entry (double newline followed by quote)
+          end_m = re.search(r'\n\n(?=")', rest)
+          if not end_m:
+              print(f'Could not find end of esbuild {src_ver} entry')
+              continue
+          entry = rest[:end_m.start()]
+
+          # Create new entry by replacing version numbers
+          new_entry = entry.replace(src_ver, new_ver)
+          new_entry = f'{exact}{new_entry[len(src_entry):]}\n'
+
+          # Insert before the source entry
+          content = content[:start_idx] + new_entry + content[start_idx:]
+          print(f'Added esbuild {new_ver} entry (from {src_ver})')
 
       with open('yarn.lock', 'w') as f:
           f.write(content)
@@ -129,17 +151,18 @@ in
           export npm_config_nodedir="${lib.getDev nodejs}"
           export npm_config_node_gyp="${nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js"
 
-          sed -i '/^yarnPath:/d; /^enableHardenedMode:/d; /^enableConstraintsChecks:/d; /^npmPreapprovedPackages:/,/^[a-zA-Z]/d' .yarnrc.yml
-
-          cat >> .yarnrc.yml << 'YARNCFG'
-      enableInlineHunks: true
-      enableTransparentWorkspaces: false
-      enableOfflineMode: true
-      enableStrictSsl: false
-      httpRetry: 0
-      approvedGitRepositories:
-        - "**"
-      YARNCFG
+          # Set up offline-mode yarnrc (keep bundled yarnPath for version consistency)
+          cat > .yarnrc.yml << 'YARNCFG'
+enableInlineHunks: true
+enableScripts: false
+enableTransparentWorkspaces: false
+enableOfflineMode: true
+enableStrictSsl: false
+httpRetry: 0
+nodeLinker: node-modules
+approvedGitRepositories:
+  - "**"
+YARNCFG
 
           echo "=== .yarnrc.yml content ==="
           cat .yarnrc.yml
@@ -158,9 +181,14 @@ in
     configurePhase = ''
       runHook preConfigure
 
+      # Use the project's bundled yarn (4.13.0) with full offline setup
+      # The .yarnrc.yml has enableOfflineMode: true so it prefers cache
+      echo "=== Syncing lockfile with modified package.json ==="
+      yarnPkg="${lib.getExe nodejs} .yarn/releases/yarn-4.13.0.cjs"
+      $yarnPkg install --mode=update-lockfile --inline-builds 2>&1 || true
+
       echo "=== Running offline yarn install ==="
-      yarnPkg="${yarn-berry.passthru.yarn-berry-offline}/bin/yarn"
-      YARN_IGNORE_PATH=1 $yarnPkg install --mode=skip-build --inline-builds
+      $yarnPkg install --immutable --immutable-cache --mode=skip-build --inline-builds
 
       echo "=== Patch shebangs ==="
       patchShebangs node_modules
