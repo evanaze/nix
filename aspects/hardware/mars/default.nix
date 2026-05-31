@@ -4,13 +4,14 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ./auto-brightness.nix
   ];
+
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"

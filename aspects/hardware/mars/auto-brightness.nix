@@ -10,12 +10,12 @@
 
   systemd.services.illuminanced = {
     wantedBy = ["multi-user.target"];
-    description = "Automatic screen brightness setting";
+    description = "Service to set screen brightness automatically";
     serviceConfig = {
       Type = "simple";
       User = username;
-      ExecStart = lib.getExe pkgs.illuminanced;
       Restart = "on-failure";
     };
+    script = "${lib.getExe pkgs.illuminanced} -c /home/${username}/.config/nix/aspects/hardware/mars/illuminanced.toml";
   };
 }
