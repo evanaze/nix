@@ -11,11 +11,6 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
-
-  environment.systemPackages = with pkgs; [
-    illuminanced
-  ];
-
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
