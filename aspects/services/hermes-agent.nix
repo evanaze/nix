@@ -9,8 +9,8 @@
   # Apply upstream overlay, then patch the dashboard_auth missing subpackage
   nixpkgs.overlays = [
     inputs.hermes-agent.overlays.default
-    (final: prev:
-      let
+    (
+      final: prev: let
         oldVenv = prev.hermes-agent.hermesVenv;
 
         # Build a new venv that copies the old one and adds dashboard_auth.
@@ -39,24 +39,26 @@
           cp -r ${inputs.hermes-agent.outPath}/hermes_cli/dashboard_auth "$SITE_PKG/dashboard_auth"
           echo "hermes-agent: patched dashboard_auth into patched venv"
         '';
-      in
-    {
-      hermes-agent = prev.hermes-agent.overrideAttrs (old: {
-        installPhase = old.installPhase + ''
-          # Replace all venv path references in the wrapper scripts to point
-          # to the patched venv (which includes dashboard_auth).
-          echo "hermes-agent: substituting venv refs: ${oldVenv} -> ${patchedVenv}"
-          for f in "$out/bin/hermes" "$out/bin/.hermes-wrapped" \
-                   "$out/bin/hermes-agent" "$out/bin/hermes-acp"; do
-            if [ -f "$f" ]; then
-              # Use sed directly for precision — substituteInPlace just replaces strings
-              sed -i "s|${oldVenv}|${patchedVenv}|g" "$f"
-              echo "  patched: $f"
-            fi
-          done
-        '';
-      });
-    })
+      in {
+        hermes-agent = prev.hermes-agent.overrideAttrs (old: {
+          installPhase =
+            old.installPhase
+            + ''
+              # Replace all venv path references in the wrapper scripts to point
+              # to the patched venv (which includes dashboard_auth).
+              echo "hermes-agent: substituting venv refs: ${oldVenv} -> ${patchedVenv}"
+              for f in "$out/bin/hermes" "$out/bin/.hermes-wrapped" \
+                       "$out/bin/hermes-agent" "$out/bin/hermes-acp"; do
+                if [ -f "$f" ]; then
+                  # Use sed directly for precision — substituteInPlace just replaces strings
+                  sed -i "s|${oldVenv}|${patchedVenv}|g" "$f"
+                  echo "  patched: $f"
+                fi
+              done
+            '';
+        });
+      }
+    )
   ];
 
   # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
@@ -95,10 +97,7 @@
   };
 
   systemd.services.hermes-dashboard = {
-    after = [
-      "network-online.target"
-      "hermes-agent.service"
-    ];
+    after = ["hermes-agent.service"];
     wants = ["hermes-agent.service"];
     wantedBy = ["multi-user.target"];
     description = "Hermes Agent Web Dashboard";
