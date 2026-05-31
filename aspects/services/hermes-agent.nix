@@ -90,6 +90,8 @@
 
   sops.secrets."hermes/env" = {
     owner = "hermes";
+    group = "hermes";
+    mode = "0640";
   };
 
   systemd.services.hermes-dashboard = {
