@@ -97,7 +97,6 @@
             stateVersion = "25.05";
             homeStateVersion = "23.11";
             aspects = [
-              ./aspects/ai
               ./aspects/backup/syncthing.nix
               ./aspects/core
               ./aspects/desktop
@@ -122,7 +121,6 @@
             stateVersion = "25.11";
             homeStateVersion = "23.11";
             aspects = [
-              ./aspects/ai
               ./aspects/backup
               # ./aspects/business
               ./aspects/core
