@@ -104,7 +104,7 @@
               ./aspects/gaming/steam.nix
               ./aspects/hardware
               ./aspects/hardware/framework.nix
-              ./aspects/hardware/mars
+              ./aspects/hardware/mars.nix
               ./aspects/hardware/usb-tethering.nix
               ./aspects/networking/vpn.nix
               ./aspects/monitoring

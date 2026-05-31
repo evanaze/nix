@@ -10,7 +10,10 @@
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ./fprint.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    illuminanced
   ];
 
   boot.initrd.availableKernelModules = [
