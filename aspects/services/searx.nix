@@ -13,12 +13,12 @@ in {
     enable = true;
     environmentFile = config.sops.secrets."searxng/env".path;
     settings.server = {
-      bind_address = "::1";
+      bind_address = "127.0.0.1";
       port = searxngPort;
     };
   };
 
-  services.caddy.virtualHosts.":${toString caddyPort}" = {
+  services.caddy.virtualHosts."http://:${toString caddyPort}" = {
     extraConfig = ''
       reverse_proxy localhost:${toString searxngPort} {
         header_up X-Forwarded-Proto https
@@ -43,6 +43,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:search --https=4441 8312";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:search --https=4441 ${toString caddyPort}";
   };
 }
