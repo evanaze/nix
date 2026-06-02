@@ -107,7 +107,6 @@ in {
   # Caddy reverse proxy in front of Donetick, serving on :2022
   # Handles proxy headers so Donetick knows it's behind HTTPS
   services.caddy = {
-    enable = true;
     virtualHosts.":${toString caddyPort}" = {
       extraConfig = ''
         reverse_proxy localhost:${toString donetickPort} {

@@ -2,6 +2,7 @@
 {...}: {
   imports = [
     ./actual.nix
+    ./caddy.nix
     ./donetick.nix
     ./hermes-agent.nix
     ./grafana
@@ -9,6 +10,7 @@
     ./nix-cache.nix
     ./opencode-server.nix
     ./openviking.nix
+    ./searx.nix
   ];
 
   services.tailscale = {
