@@ -58,8 +58,9 @@
         lib = import ./lib {inherit inputs;};
         inherit (lib) mkHost username;
       in {
-        packages.x86_64-linux.twenty = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/twenty {};
-        packages.x86_64-linux.illuminanced = inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/illuminanced {};
+        packages.x86_64-linux.twenty =
+          inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/twenty
+          {};
         nixosConfigurations = {
           # Earth - Desktop with NVIDIA GPU, gaming, AI services
           earth = mkHost {
