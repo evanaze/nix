@@ -4,19 +4,18 @@
   username,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    illuminanced
-  ];
+  environment.systemPackages = [pkgs.illuminanced];
 
   systemd.services.illuminanced = {
     wantedBy = ["multi-user.target"];
     description = "Service to set screen brightness automatically";
     serviceConfig = {
-      Type = "simple";
+      Type = "forking";
       User = username;
       Restart = "on-failure";
+      PIDFile = "/run/illuminanced.pid";
     };
 
-    script = "${lib.getExe pkgs.illuminanced} -c /home/${username}/.config/nix/aspects/hardware/mars/illuminanced.toml";
+    script = "${lib.getExe pkgs.illuminanced} -c ${./illuminanced.toml}";
   };
 }
