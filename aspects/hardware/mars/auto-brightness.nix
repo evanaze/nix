@@ -11,7 +11,6 @@
     description = "Service to set screen brightness automatically";
     serviceConfig = {
       Type = "forking";
-      User = username;
       Restart = "on-failure";
       PIDFile = "/run/illuminanced.pid";
     };
