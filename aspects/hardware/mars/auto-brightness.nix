@@ -16,6 +16,7 @@
       User = username;
       Restart = "on-failure";
     };
+
     script = "${lib.getExe pkgs.illuminanced} -c /home/${username}/.config/nix/aspects/hardware/mars/illuminanced.toml";
   };
 }
