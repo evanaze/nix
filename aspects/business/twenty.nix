@@ -58,6 +58,8 @@ in {
     };
   };
 
+  services.postgres.ensureDatabases = ["twenty"];
+
   # Tailscale Serve publishes Twenty (via Caddy)
   systemd.services.twenty-tsserve = {
     after = [
