@@ -106,16 +106,14 @@ in {
 
   # Caddy reverse proxy in front of Donetick, serving on :2022
   # Handles proxy headers so Donetick knows it's behind HTTPS
-  services.caddy = {
-    virtualHosts.":${toString caddyPort}" = {
-      extraConfig = ''
-        reverse_proxy localhost:${toString donetickPort} {
-          header_up X-Forwarded-Proto https
-          header_up X-Forwarded-For {remote_host}
-          header_up X-Forwarded-Host {host}
-        }
-      '';
-    };
+  services.caddy.virtualHosts.":${toString caddyPort}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${toString donetickPort} {
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Host {host}
+      }
+    '';
   };
 
   # Tailscale Serve now points to Caddy instead of Donetick directly

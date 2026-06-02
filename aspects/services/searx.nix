@@ -3,7 +3,10 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  searxngPort = 8311;
+  caddyPort = 8312;
+in {
   sops.secrets."searxng/env" = {};
 
   services.searx = {
@@ -11,7 +14,18 @@
     environmentFile = config.sops.secrets."searxng/env".path;
     settings.server = {
       bind_address = "::1";
+      port = searxngPort;
     };
+  };
+
+  services.caddy.virtualHosts.":${toString caddyPort}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${toString searxngPort} {
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Host {host}
+      }
+    '';
   };
 
   systemd.services.searxng-tsserve = {
