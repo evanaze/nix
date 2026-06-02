@@ -46,7 +46,16 @@ in {
     };
   };
 
-  services.postgres.ensureDatabases = ["twenty"];
+  services.postgres = {
+    ensureDatabases = ["twenty"];
+    ensureUsers = [
+      {
+        name = "twenty";
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+    ];
+  };
 
   # Tailscale Serve publishes Twenty (via Caddy)
   systemd.services.twenty-tsserve = {
