@@ -1,10 +1,12 @@
 {
   pkgs,
   lib,
-  username,
   ...
 }: {
-  environment.systemPackages = [pkgs.illuminanced];
+  environment.systemPackages = with pkgs; [
+    gnomeExtensions.adaptive-brightness
+    illuminanced
+  ];
 
   systemd.services.illuminanced = {
     wantedBy = ["multi-user.target"];
