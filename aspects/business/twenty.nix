@@ -2,11 +2,13 @@
   lib,
   pkgs,
   username,
+  config,
   ...
 }: let
   twentyPkg = pkgs.callPackage ../../pkgs/twenty {};
   twentyPort = 8081;
   caddyPort = 8082;
+  sopsFile = ../../secrets/secrets.yaml;
 in {
   systemd.services.twenty = {
     after = [
@@ -21,7 +23,17 @@ in {
     wantedBy = ["multi-user.target"];
     description = "Twenty - CRM";
     path = [pkgs.gnused];
-    environment = {};
+    environment = {
+      NODE_ENV = "production";
+      PG_DATABASE_URL = "postgres://postgres@localhost:5432/twenty";
+      REDIS_URL = "redis://localhost:6379";
+      SERVER_URL = "http://localhost:${toString twentyPort}";
+      FRONT_BASE_URL = "http://localhost:${toString twentyPort}";
+      STORAGE_TYPE = "local";
+      ACCESS_TOKEN_SECRET = "${config.sops.secrets.\"twenty/ACCESS_TOKEN_SECRET\".path}";
+      LOGIN_TOKEN_SECRET = "${config.sops.secrets.\"twenty/LOGIN_TOKEN_SECRET\".path}";
+      ENCRYPTION_KEY = "${config.sops.secrets.\"twenty/ENCRYPTION_KEY\".path}";
+    };
     serviceConfig = {
       Type = "simple";
       User = username;

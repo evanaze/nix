@@ -25,6 +25,11 @@
       grafana = {};
       actual = {};
       "nut/ups-passwd" = {};
+      twenty = {
+        ACCESS_TOKEN_SECRET.owner = username;
+        LOGIN_TOKEN_SECRET.owner = username;
+        ENCRYPTION_KEY.owner = username;
+      };
     };
   };
 }

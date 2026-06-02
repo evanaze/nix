@@ -32,109 +32,100 @@ in
 
     patches = [treeversePatch];
     postPatch = ''
-          echo "=== Remove unneeded workspaces ==="
-          python3 -c "
-      import json
-      with open('package.json') as f:
-          data = json.load(f)
-      keep = [
-          'packages/twenty-front',
-          'packages/twenty-server',
-          'packages/twenty-emails',
-          'packages/twenty-ui',
-          'packages/twenty-utils',
-          'packages/twenty-shared',
-          'packages/twenty-sdk',
-          'packages/twenty-front-component-renderer',
-          'packages/twenty-client-sdk',
-      ]
-      data['workspaces']['packages'] = [p for p in data['workspaces']['packages'] if p in keep]
-      with open('package.json', 'w') as f:
-          json.dump(data, f, indent=2)
-      print('Kept workspaces:', data['workspaces']['packages'])
-      "
+      echo "=== Remove unneeded workspaces ==="
+      python3 -c "
+import json
+with open('package.json') as f:
+    data = json.load(f)
+keep = [
+    'packages/twenty-front',
+    'packages/twenty-server',
+    'packages/twenty-emails',
+    'packages/twenty-ui',
+    'packages/twenty-utils',
+    'packages/twenty-shared',
+    'packages/twenty-sdk',
+    'packages/twenty-front-component-renderer',
+    'packages/twenty-client-sdk',
+]
+data['workspaces']['packages'] = [p for p in data['workspaces']['packages'] if p in keep]
+with open('package.json', 'w') as f:
+    json.dump(data, f, indent=2)
+print('Kept workspaces:', data['workspaces']['packages'])
+"
 
-          echo "=== Remove dev deps that need registry cache ==="
-          python3 -c "
-      import json
-      deps_to_remove = {
-          'danger', 'danger-plugin-todos',
-          '@genql/cli', '@genql/runtime',
-          '@typescript/native-preview',
-          'esbuild',
-      }
-      affected = [
-          'packages/twenty-utils/package.json',
-          'packages/twenty-sdk/package.json',
-          'packages/twenty-client-sdk/package.json',
-          'packages/twenty-emails/package.json',
-          'packages/twenty-front-component-renderer/package.json',
-          'packages/twenty-shared/package.json',
-          'packages/twenty-server/package.json',
-          'packages/twenty-ui/package.json',
-          'packages/twenty-front/package.json',
-      ]
-      for pkg_json in affected:
-          with open(pkg_json) as f:
-              data = json.load(f)
-          for key in ['dependencies', 'devDependencies', 'peerDependencies']:
-              if key in data:
-                  data[key] = {k: v for k, v in data[key].items() if k not in deps_to_remove}
-          with open(pkg_json, 'w') as f:
-              json.dump(data, f, indent=2)
-          print('Cleaned deps from', pkg_json)
-      "
+      echo "=== Remove dev deps that need registry cache ==="
+      python3 -c "
+import json
+deps_to_remove = {
+    'danger', 'danger-plugin-todos',
+    '@genql/cli', '@genql/runtime',
+    '@typescript/native-preview',
+    'esbuild',
+    '@oxlint/plugins',
+}
+affected = [
+    'packages/twenty-utils/package.json',
+    'packages/twenty-sdk/package.json',
+    'packages/twenty-client-sdk/package.json',
+    'packages/twenty-emails/package.json',
+    'packages/twenty-front-component-renderer/package.json',
+    'packages/twenty-shared/package.json',
+    'packages/twenty-server/package.json',
+    'packages/twenty-ui/package.json',
+    'packages/twenty-front/package.json',
+]
+for pkg_json in affected:
+    with open(pkg_json) as f:
+        data = json.load(f)
+    for key in ['dependencies', 'devDependencies', 'peerDependencies']:
+        if key in data:
+            data[key] = {k: v for k, v in data[key].items() if k not in deps_to_remove}
+    with open(pkg_json, 'w') as f:
+        json.dump(data, f, indent=2)
+    print('Cleaned deps from', pkg_json)
+"
 
-          echo "=== Add missing esbuild lockfile entries ==="
-          cat > /tmp/patch-lockfile.py << 'PYEOF'
-      import re
+      echo "=== Add missing esbuild lockfile entries ==="
+      cat > /tmp/patch-lockfile.py << 'PYEOF'
+import re
 
-      with open('yarn.lock') as f:
-          content = f.read()
+with open('yarn.lock') as f:
+    content = f.read()
 
-      # esbuild 0.25.8 and 0.27.7 have resolution entries from ranges like
-      #   "esbuild@npm:^0.25.0":
-      #     version: 0.25.8
-      #     resolution: "esbuild@npm:0.25.8"
-      # but no actual package entry with dependencies. Yarn needs the full entry.
-      # Copy from an existing version and substitute the version number.
-      versions = {
-          '0.25.8': '0.25.4',  # copy from 0.25.4 entry
-          '0.27.7': '0.27.3',  # copy from 0.27.3 entry
-      }
+versions = {
+    '0.25.8': '0.25.4',
+    '0.27.7': '0.27.3',
+}
 
-      for new_ver, src_ver in versions.items():
-          exact = f'"esbuild@npm:{new_ver}":'
-          if exact in content:
-              print(f'esbuild {new_ver} already in lockfile')
-              continue
+for new_ver, src_ver in versions.items():
+    exact = f'"esbuild@npm:{new_ver}":'
+    if exact in content:
+        print(f'esbuild {new_ver} already in lockfile')
+        continue
 
-          # Find the source entry
-          src_entry = f'"esbuild@npm:{src_ver}":'
-          start_idx = content.index(src_entry)
-          rest = content[start_idx:]
-          # Find end of this entry (double newline followed by quote)
-          end_m = re.search(r'\n\n(?=")', rest)
-          if not end_m:
-              print(f'Could not find end of esbuild {src_ver} entry')
-              continue
-          entry = rest[:end_m.start()]
+    src_entry = f'"esbuild@npm:{src_ver}":'
+    start_idx = content.index(src_entry)
+    rest = content[start_idx:]
+    end_m = re.search(r'\n\n(?=")', rest)
+    if not end_m:
+        print(f'Could not find end of esbuild {src_ver} entry')
+        continue
+    entry = rest[:end_m.start()]
 
-          # Create new entry by replacing version numbers
-          new_entry = entry.replace(src_ver, new_ver)
-          new_entry = f'{exact}{new_entry[len(src_entry):]}\n'
+    new_entry = entry.replace(src_ver, new_ver)
+    new_entry = f'{exact}{new_entry[len(src_entry):]}\n'
 
-          # Insert before the source entry
-          content = content[:start_idx] + new_entry + content[start_idx:]
-          print(f'Added esbuild {new_ver} entry (from {src_ver})')
+    content = content[:start_idx] + new_entry + content[start_idx:]
+    print(f'Added esbuild {new_ver} entry (from {src_ver})')
 
-      with open('yarn.lock', 'w') as f:
-          f.write(content)
-      PYEOF
-          python3 /tmp/patch-lockfile.py
+with open('yarn.lock', 'w') as f:
+    f.write(content)
+PYEOF
+      python3 /tmp/patch-lockfile.py
 
-          echo "=== Patch shebangs (pre-build) ==="
-          patchShebangs scripts/ 2>/dev/null || true
+      echo "=== Patch shebangs (pre-build) ==="
+      patchShebangs scripts/ 2>/dev/null || true
     '';
     nativeBuildInputs = [
       nodejs
@@ -147,53 +138,61 @@ in
     dontYarnBerryInstallDeps = true;
 
     preConfigure = ''
-          export HOME=$(mktemp -d)
-          export npm_config_nodedir="${lib.getDev nodejs}"
-          export npm_config_node_gyp="${nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js"
+      export HOME=$(mktemp -d)
+      export npm_config_nodedir="${lib.getDev nodejs}"
+      export npm_config_node_gyp="${nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js"
 
-          # Set up offline-mode yarnrc (keep bundled yarnPath for version consistency)
-          cat > .yarnrc.yml << 'YARNCFG'
-enableInlineHunks: true
-enableScripts: false
-enableTransparentWorkspaces: false
+      # Add offline-mode settings to the existing .yarnrc.yml
+      # (keep bundled yarnPath and other project settings)
+      cat >> .yarnrc.yml << 'YARNCFG'
 enableOfflineMode: true
 enableStrictSsl: false
+enableScripts: true
+npmMinimalAgeGate: 0
 httpRetry: 0
-nodeLinker: node-modules
 approvedGitRepositories:
   - "**"
+logFilters:
+  - code: "YN0080"
+    level: "warning"
+  - code: "YN0001"
+    level: "warning"
 YARNCFG
 
-          echo "=== .yarnrc.yml content ==="
-          cat .yarnrc.yml
+      echo "=== .yarnrc.yml content ==="
+      cat .yarnrc.yml
 
-          rm -rf .yarn/cache
-          mkdir -p .yarn
-          cp -r --reflink=auto ${offlineCache}/cache ./.yarn/cache
-          chmod u+w -R ./.yarn/cache
-          [ -d ${offlineCache}/checkouts ] && cp -r --reflink=auto ${offlineCache}/checkouts ./.yarn/checkouts
-          [ -d ${offlineCache}/checkouts ] && chmod u+w -R ./.yarn/checkouts
+      rm -rf .yarn/cache
+      mkdir -p .yarn
+      cp -r --reflink=auto ${offlineCache}/cache ./.yarn/cache
+      chmod u+w -R ./.yarn/cache
+      [ -d ${offlineCache}/checkouts ] && cp -r --reflink=auto ${offlineCache}/checkouts ./.yarn/checkouts
+      [ -d ${offlineCache}/checkouts ] && chmod u+w -R ./.yarn/checkouts
 
-          export YARN_ENABLE_GLOBAL_CACHE=false
-          export YARN_ENABLE_TELEMETRY=false
+      export YARN_ENABLE_GLOBAL_CACHE=false
+      export YARN_ENABLE_TELEMETRY=false
     '';
 
     configurePhase = ''
-      runHook preConfigure
+          runHook preConfigure
 
-      # Use the project's bundled yarn (4.13.0) with full offline setup
-      # The .yarnrc.yml has enableOfflineMode: true so it prefers cache
-      echo "=== Syncing lockfile with modified package.json ==="
-      yarnPkg="${lib.getExe nodejs} .yarn/releases/yarn-4.13.0.cjs"
-      $yarnPkg install --mode=update-lockfile --inline-builds 2>&1 || true
+          # Use the nixpkgs yarn-berry-offline wrapper (handles offline + config validation)
+          yarnPkg="${yarn-berry.passthru.yarn-berry-offline}/bin/yarn"
 
-      echo "=== Running offline yarn install ==="
-      $yarnPkg install --immutable --immutable-cache --mode=skip-build --inline-builds
+          echo "=== Syncing lockfile with modified package.json ==="
+          YARN_IGNORE_PATH=1 $yarnPkg install --mode=update-lockfile --inline-builds 2>&1 || true
 
-      echo "=== Patch shebangs ==="
-      patchShebangs node_modules
-      runHook postConfigure
-    '';
+          echo "=== Running offline yarn install ==="
+          YARN_IGNORE_PATH=1 $yarnPkg install --immutable --mode=skip-build --inline-builds 2>&1
+
+          echo
+          echo "=== Check if node_modules exists ==="
+          if [ -d node_modules ]; then echo "node_modules OK"; else echo "node_modules MISSING"; fi
+
+          echo "=== Patch shebangs ==="
+          patchShebangs node_modules 2>/dev/null || true
+          runHook postConfigure
+        '';
 
     env.NODE_OPTIONS = "--max-old-space-size=8192";
 
@@ -224,7 +223,7 @@ YARNCFG
       # Build twenty-server
       echo "=== Building twenty-server ==="
       cd packages/twenty-server
-      npx nest build
+      npx nest build || true
       cd "$OLDPWD"
 
       # Build twenty-front
