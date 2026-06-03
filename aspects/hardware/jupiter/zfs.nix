@@ -15,6 +15,7 @@
   # Create ZFS datasets for app state on the redundant pool
   systemd.services.create-appdata-datasets = {
     description = "Create appdata datasets on eye pool";
+    after = ["zfs-import.target"];
     before = ["zfs-mount.service"];
     wantedBy = ["zfs-mount.service"];
     serviceConfig = {
@@ -22,6 +23,9 @@
       RemainAfterExit = true;
     };
     script = ''
+      if ! ${pkgs.zfs}/bin/zfs list eye/appdata >/dev/null 2>&1; then
+        ${pkgs.zfs}/bin/zfs create -o mountpoint=/mnt/eye/appdata eye/appdata
+      fi
       for ds in actual donetick grafana hermes jellyfin; do
         if ! ${pkgs.zfs}/bin/zfs list eye/appdata/$ds >/dev/null 2>&1; then
           ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
