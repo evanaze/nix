@@ -61,6 +61,31 @@
     fsType = "zfs";
   };
 
+  fileSystems."/mnt/eye/appdata/actual" = {
+    device = "eye/appdata/actual";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/appdata/donetick" = {
+    device = "eye/appdata/donetick";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/appdata/grafana" = {
+    device = "eye/appdata/grafana";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/appdata/hermes" = {
+    device = "eye/appdata/hermes";
+    fsType = "zfs";
+  };
+
+  fileSystems."/mnt/eye/appdata/jellyfin" = {
+    device = "eye/appdata/jellyfin";
+    fsType = "zfs";
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/30b26b23-04fd-4645-b72a-da5c240c030e";}
   ];

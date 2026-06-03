@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.forceImportRoot = false;
-  networking.hostId = "e8a69b01"; # head -c4 /dev/urandom | od -A none -t x4
+  networking.hostId = "e8a69b01";
 
   environment.systemPackages = with pkgs; [
     zfs
@@ -12,7 +12,31 @@
     autoSnapshot.enable = true;
   };
 
+  # Create ZFS datasets for app state on the redundant pool
+  systemd.services.create-appdata-datasets = {
+    description = "Create appdata datasets on eye pool";
+    before = ["zfs-mount.service"];
+    wantedBy = ["zfs-mount.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      for ds in actual donetick grafana hermes jellyfin; do
+        if ! ${pkgs.zfs}/bin/zfs list eye/appdata/$ds >/dev/null 2>&1; then
+          ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
+        fi
+      done
+    '';
+  };
+
   systemd.tmpfiles.rules = [
+    "d /mnt/eye/appdata 0755 root root -"
+    "d /mnt/eye/appdata/actual 0750 actual actual -"
+    "d /mnt/eye/appdata/donetick 0755 evanaze users -"
+    "d /mnt/eye/appdata/grafana 0750 grafana grafana -"
+    "d /mnt/eye/appdata/hermes 0750 hermes hermes -"
+    "d /mnt/eye/appdata/jellyfin 0750 jellyfin jellyfin -"
     "d /mnt/eye/documents 0755 evanaze users -"
     "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
     "d /mnt/eye/downloads 0755 evanaze users -"
@@ -36,6 +60,21 @@
   };
 
   systemd.services.jellyfin = {
+    after = ["zfs-mount.service"];
+    requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.grafana = {
+    after = ["zfs-mount.service"];
+    requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.donetick = {
+    after = ["zfs-mount.service"];
+    requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.hermes-agent = {
     after = ["zfs-mount.service"];
     requires = ["zfs-mount.service"];
   };

@@ -7,6 +7,7 @@
 }: {
   services.grafana = {
     enable = true;
+    dataDir = "/mnt/eye/appdata/grafana";
     settings = {
       server = {
         http_port = 2342;

@@ -42,6 +42,7 @@ in {
     user = username;
     settings = {
       port = 5006;
+      dataDir = "/mnt/eye/appdata/actual";
     };
   };
 

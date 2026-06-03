@@ -24,7 +24,7 @@
   services.jellyfin = {
     enable = true;
     user = username;
-    dataDir = "/var/lib/jellyfin";
+    dataDir = "/mnt/eye/appdata/jellyfin";
   };
 
   users.users.${username}.extraGroups = [

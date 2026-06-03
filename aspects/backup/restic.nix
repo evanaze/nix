@@ -16,22 +16,18 @@
     ];
   };
 
-  services.restic.backups.harddrive = {
+  services.restic.backups.files = {
     initialize = true;
     passwordFile = "/run/secrets/restic-password";
     repository = "/mnt/drive/backup";
     paths = [
-      "/home/${username}/Documents"
-      "/home/${username}/Downloads"
-      "/var/lib/actual"
-      "/var/lib/donetick"
-      "/var/lib/grafana"
-      "/var/lib/hermes"
       "/var/lib/immich"
-      "/var/lib/jellyfin"
       "/var/lib/tailscale"
       "/var/lib/postgresql-dump.sql"
       "/mnt/eye"
+    ];
+    exclude = [
+      "/mnt/eye/media"
     ];
     backupPrepareCommand = ''
       ${pkgs.postgresql}/bin/pg_dumpall -U postgres -f /var/lib/postgresql-dump.sql
@@ -49,6 +45,25 @@
     };
   };
 
+  services.restic.backups.media = {
+    initialize = true;
+    passwordFile = "/run/secrets/restic-password";
+    repository = "/mnt/drive/backup";
+    paths = [
+      "/mnt/eye/media"
+    ];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+      "--keep-yearly 75"
+    ];
+  };
+
   services.prometheus.exporters.restic = {
     enable = true;
     repository = "/mnt/drive/backup";
@@ -58,3 +73,4 @@
 
   sops.secrets.restic-password = {};
 }
+

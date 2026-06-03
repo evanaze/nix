@@ -34,10 +34,10 @@ in {
     path = [pkgs.gnused];
     environment = {
       DT_ENV = "selfhosted";
-      DT_SQLITE_PATH = "/var/lib/donetick/donetick.db";
+      DT_SQLITE_PATH = "/mnt/eye/appdata/donetick/donetick.db";
     };
     preStart = ''
-      mkdir -p /var/lib/donetick/config
+      mkdir -p /mnt/eye/appdata/donetick/config
       sed "s/JWT_SECRET_PLACEHOLDER/$(cat ${config.sops.secrets.donetick-jwt.path})/" \
         ${pkgs.writeText "selfhosted.yaml" ''
         name: "selfhosted"
@@ -87,12 +87,12 @@ in {
           enable_stats: true
           allowed_origins:
             - "*"
-      ''} > /var/lib/donetick/config/selfhosted.yaml
+      ''} > /mnt/eye/appdata/donetick/config/selfhosted.yaml
     '';
     serviceConfig = {
       Type = "simple";
       User = username;
-      WorkingDirectory = "/var/lib/donetick";
+      WorkingDirectory = "/mnt/eye/appdata/donetick";
       StateDirectory = "donetick";
       ExecStart = lib.getExe donetick;
       Restart = "on-failure";

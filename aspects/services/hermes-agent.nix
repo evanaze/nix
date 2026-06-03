@@ -63,12 +63,13 @@
 
   # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
   # This lets the dashboard see CLI sessions and vice versa.
+  # Use mkForce to override the upstream module's default
   environment.variables = {
-    HERMES_HOME = "/var/lib/hermes/.hermes";
+    HERMES_HOME = lib.mkForce "/mnt/eye/appdata/hermes/.hermes";
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/hermes/.hermes 2770 hermes hermes -"
+    "d /mnt/eye/appdata/hermes/.hermes 2770 hermes hermes -"
   ];
 
   users.users.${username}.extraGroups = ["hermes"];
