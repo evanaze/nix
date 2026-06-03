@@ -55,9 +55,8 @@ in {
                           --top-k 64 \
                           --min-p 0.00 \
                           -ngl 48 \
-                          -c 131072 \
+                          -c 32768 \
                           -fa on \
-                          --no-kv-offload \
                           --cache-type-k q8_0 \
                           --cache-type-v q8_0 \
                           -b 256 \
