@@ -82,7 +82,7 @@
     enable = true;
     settings = {
       model = {
-        default = "local/gemma-4-12b-q5";
+        default = "gemma-4-12b-q5";
         provider = "local";
       };
       memory = {
