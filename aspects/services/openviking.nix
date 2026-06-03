@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   inputs,
   ...
@@ -23,5 +24,23 @@
     owner = "openviking";
     group = "users";
     mode = "0440";
+  };
+
+  systemd.services.openviking-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "openviking.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "openviking.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish Openviking";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:memory --https=4438 http://localhost:1933";
   };
 }
