@@ -81,14 +81,20 @@
   services.hermes-agent = {
     enable = true;
     settings = {
-      model.default = "deepseek/deepseek-v4-flash";
+      model.default = "local/gemma-4-12b-q5";
       memory = {
         provider = "openviking";
       };
-      custom_providers = {
+      providers = {
         local = {
           base_url = "https://llm.spitz-pickerel.ts.net:8724/v1";
           api_key = "none";
+          model = "gemma-4-12b-q5";
+          models = [
+            "gemma-4-12b-q5"
+            "gemma-4-e4b-q8"
+            "qwen3.6-35b-a3b"
+          ];
         };
       };
     };
