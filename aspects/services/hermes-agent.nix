@@ -81,7 +81,10 @@
   services.hermes-agent = {
     enable = true;
     settings = {
-      model.default = "local/gemma-4-12b-q5";
+      model = {
+        default = "local/gemma-4-12b-q5";
+        provider = "local";
+      };
       memory = {
         provider = "openviking";
       };
