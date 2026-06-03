@@ -46,6 +46,25 @@ in {
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
+        "gemma-4-12b-q5" = {
+          cmd = ''
+            ${llama-server} \
+                          -m /var/lib/llama-cpp/models/gemma-4-12b-it-UD-Q5_K_XL.gguf \
+                          --temp 1.0 \
+                          --top-p 0.95 \
+                          --top-k 64 \
+                          --min-p 0.00 \
+                          -ngl 48 \
+                          -c 131072 \
+                          -fa on \
+                          --no-kv-offload \
+                          --cache-type-k q8_0 \
+                          --cache-type-v q8_0 \
+                          -b 256 \
+                          -t 12 \
+                          --port ''${PORT}'';
+          healthCheckTimeout = 180;
+        };
       };
     };
   };

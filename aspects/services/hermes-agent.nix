@@ -80,11 +80,16 @@
 
   services.hermes-agent = {
     enable = true;
-    # documents = ["$HOME/.config/nix"];
     settings = {
       model.default = "deepseek/deepseek-v4-flash";
       memory = {
         provider = "openviking";
+      };
+      custom_providers = {
+        local = {
+          base_url = "https://llm.spitz-pickerel.ts.net:8724/v1";
+          api_key = "none";
+        };
       };
     };
     environmentFiles = [config.sops.secrets."hermes/env".path];
