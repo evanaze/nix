@@ -33,8 +33,7 @@
       "/var/lib/postgresql-dump.sql"
       "/mnt/eye"
     ];
-    # Postgres dump before backup for consistency
-    preCommand = ''
+    backupPrepareCommand = ''
       ${pkgs.postgresql}/bin/pg_dumpall -U postgres -f /var/lib/postgresql-dump.sql
     '';
     pruneOpts = [
