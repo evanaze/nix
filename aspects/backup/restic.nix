@@ -24,10 +24,19 @@
       "/home/${username}/Documents"
       "/home/${username}/Downloads"
       "/var/lib/actual"
+      "/var/lib/donetick"
+      "/var/lib/grafana"
+      "/var/lib/hermes"
       "/var/lib/immich"
       "/var/lib/jellyfin"
+      "/var/lib/tailscale"
+      "/var/lib/postgresql-dump.sql"
       "/mnt/eye"
     ];
+    # Postgres dump before backup for consistency
+    preCommand = ''
+      ${pkgs.postgresql}/bin/pg_dumpall -U postgres -f /var/lib/postgresql-dump.sql
+    '';
     pruneOpts = [
       "--keep-hourly 24"
       "--keep-daily 7"
