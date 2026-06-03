@@ -12,12 +12,13 @@
     autoSnapshot.enable = true;
   };
 
-  # Create ZFS datasets for app state on the redundant pool
+  # Create ZFS datasets for app state on the redundant pool and fix ownership
   systemd.services.create-appdata-datasets = {
     description = "Create appdata datasets on eye pool";
-    after = ["zfs-import.target"];
-    before = ["zfs-mount.service"];
-    wantedBy = ["zfs-mount.service"];
+    after = ["zfs-mount.service"];
+    before = ["grafana.service", "jellyfin.service", "hermes-agent.service", "donetick.service"];
+    wants = ["zfs-mount.service"];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -31,6 +32,11 @@
           ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
         fi
       done
+      chown actual:actual /mnt/eye/appdata/actual || true
+      chown evanaze:users /mnt/eye/appdata/donetick || true
+      chown grafana:grafana /mnt/eye/appdata/grafana || true
+      chown hermes:hermes /mnt/eye/appdata/hermes || true
+      chown jellyfin:jellyfin /mnt/eye/appdata/jellyfin || true
     '';
   };
 
