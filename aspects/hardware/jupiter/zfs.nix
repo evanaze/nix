@@ -16,7 +16,7 @@
   systemd.services.create-appdata-datasets = {
     description = "Create appdata datasets on eye pool";
     after = ["zfs-mount.service"];
-    before = ["grafana.service", "jellyfin.service", "hermes-agent.service", "donetick.service"];
+    before = ["grafana.service" "jellyfin.service" "hermes-agent.service" "donetick.service"];
     wants = ["zfs-mount.service"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
@@ -32,21 +32,21 @@
           ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
         fi
       done
-      chown actual:actual /mnt/eye/appdata/actual || true
+      chown evanaze:users /mnt/eye/appdata/actual || true
       chown evanaze:users /mnt/eye/appdata/donetick || true
       chown grafana:grafana /mnt/eye/appdata/grafana || true
       chown hermes:hermes /mnt/eye/appdata/hermes || true
-      chown jellyfin:jellyfin /mnt/eye/appdata/jellyfin || true
+      chown evanaze:jellyfin /mnt/eye/appdata/jellyfin || true
     '';
   };
 
   systemd.tmpfiles.rules = [
     "d /mnt/eye/appdata 0755 root root -"
-    "d /mnt/eye/appdata/actual 0750 actual actual -"
+    "d /mnt/eye/appdata/actual 0750 evanaze users -"
     "d /mnt/eye/appdata/donetick 0755 evanaze users -"
     "d /mnt/eye/appdata/grafana 0750 grafana grafana -"
     "d /mnt/eye/appdata/hermes 0750 hermes hermes -"
-    "d /mnt/eye/appdata/jellyfin 0750 jellyfin jellyfin -"
+    "d /mnt/eye/appdata/jellyfin 0750 evanaze jellyfin -"
     "d /mnt/eye/documents 0755 evanaze users -"
     "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
     "d /mnt/eye/downloads 0755 evanaze users -"
