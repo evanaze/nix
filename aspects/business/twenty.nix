@@ -2,13 +2,11 @@
   lib,
   pkgs,
   username,
-  config,
   ...
 }: let
   twentyPkg = pkgs.callPackage ../../pkgs/twenty {};
   twentyPort = 8081;
   caddyPort = 8082;
-  sopsFile = ../../secrets/secrets.yaml;
 in {
   systemd.services.twenty = {
     after = [
@@ -30,9 +28,6 @@ in {
       SERVER_URL = "http://localhost:${toString twentyPort}";
       FRONT_BASE_URL = "http://localhost:${toString twentyPort}";
       STORAGE_TYPE = "local";
-      ACCESS_TOKEN_SECRET = "${config.sops.secrets.\"twenty/ACCESS_TOKEN_SECRET\".path}";
-      LOGIN_TOKEN_SECRET = "${config.sops.secrets.\"twenty/LOGIN_TOKEN_SECRET\".path}";
-      ENCRYPTION_KEY = "${config.sops.secrets.\"twenty/ENCRYPTION_KEY\".path}";
     };
     serviceConfig = {
       Type = "simple";
