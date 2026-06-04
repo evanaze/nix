@@ -70,6 +70,8 @@
 
   systemd.tmpfiles.rules = [
     "d /mnt/eye/appdata/hermes/.hermes 2770 hermes hermes -"
+    "z /mnt/eye/appdata/hermes/.hermes/memories 2770 hermes hermes -"
+    "z /mnt/eye/appdata/hermes/.hermes/memories/* 0640 hermes hermes -"
   ];
 
   users.users.${username}.extraGroups = ["hermes"];
@@ -98,6 +100,14 @@
             "gemma-4-e4b-q8"
             "qwen3.6-35b-a3b"
           ];
+        };
+      };
+      platforms = {
+        api_server = {
+          enabled = true;
+          extra = {
+            key = "d156d12d681eb34356045688a43ba9487764e8731b946ce68d65aebb899324e6";
+          };
         };
       };
     };
