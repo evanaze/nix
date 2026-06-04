@@ -101,6 +101,22 @@
         };
       };
     };
+    mcpServers = {
+      actual = {
+        command = "npx";
+        args = [
+          "-y"
+          "actual-mcp"
+          "--enable-write"
+        ];
+        env = {
+          ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net:4432";
+          ACTUAL_PASSWORD = "${config.sops.secrets.actual.path}";
+        };
+        timeout = 60;
+        connect_timeout = 30;
+      };
+    };
     environmentFiles = [config.sops.secrets."hermes/env".path];
     addToSystemPackages = true;
   };
