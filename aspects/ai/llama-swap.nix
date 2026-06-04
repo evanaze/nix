@@ -54,11 +54,11 @@ in {
                           --top-p 0.95 \
                           --top-k 64 \
                           --min-p 0.00 \
-                          -ngl 48 \
-                          -c 32768 \
+                          -ngl 32 \
+                          -c 65536 \
                           -fa on \
-                          --cache-type-k q8_0 \
-                          --cache-type-v q8_0 \
+                          --cache-type-k q4_0 \
+                          --cache-type-v q4_0 \
                           -b 256 \
                           -t 12 \
                           --port ''${PORT}'';
