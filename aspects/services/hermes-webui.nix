@@ -42,6 +42,7 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:webui --https=4430 8787";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=4430 8787";
   };
 }
+
