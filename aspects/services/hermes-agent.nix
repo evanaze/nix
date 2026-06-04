@@ -140,22 +140,4 @@
     };
     script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port 9119 --tui --no-open --skip-build --insecure";
   };
-
-  systemd.services.hermes-tsserve = {
-    after = [
-      "tailscaled.service"
-      "hermes-dashboard.service"
-    ];
-    wants = [
-      "tailscaled.service"
-      "hermes-dashboard.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Hermes Agent Dashboard";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=4430 9119";
-  };
 }

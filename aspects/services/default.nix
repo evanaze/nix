@@ -5,6 +5,7 @@
     ./caddy.nix
     ./donetick.nix
     ./hermes-agent.nix
+    ./hermes-webui.nix
     ./grafana
     # ./librechat.nix
     ./nix-cache.nix
