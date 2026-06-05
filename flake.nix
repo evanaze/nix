@@ -62,16 +62,18 @@
         lib = import ./lib {inherit inputs;};
         inherit (lib) mkHost username;
 
-        eachSystem = f: builtins.foldl' (acc: system: acc // { ${system} = f system; }) {} [
-          "x86_64-linux" "aarch64-linux"
-        ];
+        eachSystem = f:
+          builtins.foldl' (acc: system: acc // {${system} = f system;}) {} [
+            "x86_64-linux"
+            "aarch64-linux"
+          ];
       in {
         packages = eachSystem (system: {
           twenty = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/twenty {};
           hermes-webui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/hermes-webui {};
-          duck-ui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/duck-ui {
-            bun2nix = inputs.bun2nix.packages.${system}.default;
-          };
+          # duck-ui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/duck-ui {
+          #   bun2nix = inputs.bun2nix.packages.${system}.default;
+          # };
         });
         nixosConfigurations = {
           # Earth - Desktop with NVIDIA GPU, gaming, AI services

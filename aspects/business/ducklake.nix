@@ -41,9 +41,7 @@
       {
         name = "ducklake";
         ensureDBOwnership = true;
-        ensureClauses = {
-          login = true;
-        };
+        ensureClauses = {login = true;};
       }
     ];
     authentication = lib.mkAfter ''
@@ -52,3 +50,4 @@
     '';
   };
 }
+
