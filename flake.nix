@@ -45,6 +45,10 @@
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bun2nix = {
+      url = "github:nix-community/bun2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
@@ -57,13 +61,18 @@
       flake = let
         lib = import ./lib {inherit inputs;};
         inherit (lib) mkHost username;
+
+        eachSystem = f: builtins.foldl' (acc: system: acc // { ${system} = f system; }) {} [
+          "x86_64-linux" "aarch64-linux"
+        ];
       in {
-        packages.x86_64-linux.twenty =
-          inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/twenty
-          {};
-        packages.x86_64-linux.hermes-webui =
-          inputs.nixpkgs.legacyPackages.x86_64-linux.callPackage ./pkgs/hermes-webui
-          {};
+        packages = eachSystem (system: {
+          twenty = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/twenty {};
+          hermes-webui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/hermes-webui {};
+          duck-ui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/duck-ui {
+            bun2nix = inputs.bun2nix.packages.${system}.default;
+          };
+        });
         nixosConfigurations = {
           # Earth - Desktop with NVIDIA GPU, gaming, AI services
           earth = mkHost {

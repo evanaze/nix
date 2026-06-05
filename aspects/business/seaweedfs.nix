@@ -17,7 +17,7 @@ in {
   ];
 
   systemd.services.seaweedfs = {
-    after = ["network.target" "zfs-mount.service"];
+    after = ["network.target" "zfs-mount.service" "sops-secrets.target"];
     requires = ["zfs-mount.service"];
     wantedBy = ["multi-user.target"];
     description = "SeaweedFS - S3-compatible object store for DuckLake";

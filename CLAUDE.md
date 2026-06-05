@@ -159,7 +159,6 @@ nix flake check
 │       ├── hardware-configuration.nix
 │       └── pi5-configtxt.nix
 ├── pkgs/                        # Custom package definitions
-│   └── air.nix
 └── secrets/
     ├── secrets.yaml             # sops-encrypted secrets
     └── .sops.yaml               # sops configuration
