@@ -5,18 +5,7 @@
   ...
 }: {
   home-manager.users.${username} = {
-    programs.rclone = {
-      enable = true;
-      remotes = {
-        iclouddrive = {
-          config = {
-            type = "iclouddrive";
-            apple_id = "me@evanazevedo.com";
-          };
-          secrets.password = "test";
-        };
-      };
-    };
+    programs.rclone.enable = true;
 
     systemd.user.services."rclone-knowledge-base-sync" = {
       Unit = {
