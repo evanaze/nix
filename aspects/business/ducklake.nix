@@ -97,6 +97,10 @@ in {
 
   services.caddy.virtualHosts."http://:${toString caddyPort}" = {
     extraConfig = ''
+      header {
+        Cross-Origin-Opener-Policy "same-origin"
+        Cross-Origin-Embedder-Policy "credentialless"
+      }
       reverse_proxy localhost:${toString duckDbPort} {
         header_up X-Forwarded-Proto https
         header_up X-Forwarded-For {remote_host}
