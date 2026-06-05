@@ -7,6 +7,8 @@
   duckdbUser = "duckdb";
   dataDir = "/mnt/eye/appdata/ducklake";
   dbFile = "${dataDir}/ducklake.db";
+  duckDbPort = 4213;
+  caddyPort = 4214;
 in {
   sops.secrets = {
     "ducklake/db-password" = {
@@ -80,10 +82,23 @@ in {
             cat > "$INIT_FILE" << EOF
       INSTALL quack FROM core_nightly;
       LOAD quack;
-      CALL quack_serve('quack:0.0.0.0:9494', token = '$TOKEN');
+      INSTALL ui;
+      LOAD ui;
+      CALL quack_serve('quack:localhost:9494', token = '$TOKEN');
       CALL start_ui_server();
       EOF
-            exec ${lib.getExe pkgs.duckdb} "${dbFile}" -init "$INIT_FILE"
+            ${lib.getExe pkgs.duckdb} "${dbFile}" -init "$INIT_FILE"
+            sleep infinity
+    '';
+  };
+
+  services.caddy.virtualHosts."http://:${toString caddyPort}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${toString duckDbPort} {
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Host {host}
+      }
     '';
   };
 
@@ -99,10 +114,10 @@ in {
     wantedBy = ["multi-user.target"];
     description = "Expose DuckDB UI via Tailscale Serve";
     serviceConfig = {
-      Type = "oneshot";
+      Type = "simple";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:duckdb --https=4439 http://127.0.0.1:4213";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:dwh --https=4439 http://127.0.0.1:${toString caddyPort}";
   };
 
   services.postgresql = {

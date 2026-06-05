@@ -17,7 +17,11 @@ in {
   ];
 
   systemd.services.seaweedfs = {
-    after = ["network.target" "zfs-mount.service" "sops-secrets.target"];
+    after = [
+      "network.target"
+      "zfs-mount.service"
+      "sops-secrets.target"
+    ];
     requires = ["zfs-mount.service"];
     wantedBy = ["multi-user.target"];
     description = "SeaweedFS - S3-compatible object store for DuckLake";
@@ -63,7 +67,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:dwh --https=4445 ${toString seaweedfsS3Port}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=4445 ${toString seaweedfsS3Port}";
   };
 }
-
