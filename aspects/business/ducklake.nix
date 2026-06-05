@@ -109,41 +109,41 @@ in {
     '';
   };
 
-  # systemd.services.duckdb-tsserve = {
-  #   after = [
-  #     "tailscaled.service"
-  #     "duckdb-server.service"
-  #   ];
-  #   wants = [
-  #     "tailscaled.service"
-  #     "duckdb-server.service"
-  #   ];
-  #   wantedBy = ["multi-user.target"];
-  #   description = "Expose DuckDB UI via Tailscale Serve";
-  #   serviceConfig = {
-  #     Type = "simple";
-  #     RemainAfterExit = true;
-  #   };
-  #   script = "${lib.getExe pkgs.tailscale} serve --service=svc:dwh --https=4439 http://127.0.0.1:${toString caddyPort}";
-  # };
+  systemd.services.duckdb-tsserve = {
+    after = [
+      "tailscaled.service"
+      "duckdb-server.service"
+    ];
+    wants = [
+      "tailscaled.service"
+      "duckdb-server.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Expose DuckDB UI via Tailscale Serve";
+    serviceConfig = {
+      Type = "simple";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:dwh --https=4439 http://127.0.0.1:${toString caddyPort}";
+  };
 
-  # services.postgresql = {
-  #   ensureDatabases = [
-  #     "ducklake"
-  #     "ducklake_catalog"
-  #   ];
-  #   ensureUsers = [
-  #     {
-  #       name = "ducklake";
-  #       ensureDBOwnership = true;
-  #       ensureClauses = {
-  #         login = true;
-  #       };
-  #     }
-  #   ];
-  #   authentication = lib.mkAfter ''
-  #     host ducklake_catalog ducklake 100.64.0.0/10 scram-sha-256
-  #     host ducklake_catalog ducklake fd7a:115c:a1e0::/48 scram-sha-256
-  #   '';
-  # };
+  services.postgresql = {
+    ensureDatabases = [
+      "ducklake"
+      "ducklake_catalog"
+    ];
+    ensureUsers = [
+      {
+        name = "ducklake";
+        ensureDBOwnership = true;
+        ensureClauses = {
+          login = true;
+        };
+      }
+    ];
+    authentication = lib.mkAfter ''
+      host ducklake_catalog ducklake 100.64.0.0/10 scram-sha-256
+      host ducklake_catalog ducklake fd7a:115c:a1e0::/48 scram-sha-256
+    '';
+  };
 }
