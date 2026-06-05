@@ -1,9 +1,11 @@
-{pkgs, lib, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_18;
-
-    settings.listen_addresses = lib.mkForce "*";
 
     identMap = ''
       # ArbitraryMapName systemUser DBUser
@@ -19,5 +21,23 @@
       host  all      postgres    127.0.0.1/32 trust
       host  all      postgres    ::1/128      trust
     '';
+  };
+
+  systemd.services.postgres-tsserve = {
+    after = [
+      "tailscaled.service"
+      "postgresql.service"
+    ];
+    wants = [
+      "tailscaled.service"
+      "postgresql.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Expose PostgreSQL via Tailscale Serve";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --tcp 5432 tcp://localhost:5432";
   };
 }

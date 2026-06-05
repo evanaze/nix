@@ -36,20 +36,20 @@
         trap 'rm -f "$INIT"' EXIT
 
         cat > "$INIT" << 'SQLEOF'
-        LOAD httpfs;
-        LOAD ui;
-        LOAD postgres;
+        INSTALL httpfs; LOAD httpfs;
+        INSTALL ui; LOAD ui;
+        INSTALL postgres; LOAD postgres;
         SET s3_region = 'us-east-1';
-        SET s3_endpoint = 'jupiter:8333';
+        SET s3_endpoint = 'swfs.spitz-pickerel.ts.net:8333';
         SET s3_url_style = 'path';
         SET s3_use_ssl = false;
-        CALL start_ui_server();
+        CALL start_ui();
         SQLEOF
 
         cat >> "$INIT" << EOF
         SET s3_access_key_id = '$S3_KEY';
         SET s3_secret_access_key = '$S3_SECRET';
-        ATTACH 'postgres://ducklake:$DB_PASS@jupiter:5432/ducklake_catalog' AS ducklake (TYPE postgres);
+        ATTACH 'postgres://ducklake:$DB_PASS@pg.spitz-pickerel.ts.net:5432/ducklake_catalog' AS ducklake (TYPE postgres);
         EOF
 
         exec duckdb -init "$INIT"
@@ -57,3 +57,4 @@
     };
   };
 }
+
