@@ -93,6 +93,7 @@
           t = "tree -L 2";
           jls = "journalctl -l --no-pager -n 50 -u $1";
           dup = "devenv up";
+          ducklake = "$HOME/.local/bin/ducklake";
           showsvcs = "systemctl --type=service --state=running";
           sshpi = "tailscale ssh evanaze@mercury.spitz-pickerel.ts.net";
           sshdt = "tailscale ssh evanaze@earth.spitz-pickerel.ts.net";
