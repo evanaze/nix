@@ -86,6 +86,7 @@
               ./aspects/ai/server.nix
               ./aspects/backup/nut-client.nix
               ./aspects/backup/syncthing.nix
+              ./aspects/business/duckdb-client.nix
               ./aspects/core
               ./aspects/desktop
               ./aspects/development
@@ -115,6 +116,7 @@
             homeStateVersion = "23.11";
             aspects = [
               ./aspects/backup/syncthing.nix
+              ./aspects/business/duckdb-client.nix
               ./aspects/core
               ./aspects/desktop
               ./aspects/development
