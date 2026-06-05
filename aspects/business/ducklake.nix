@@ -8,16 +8,17 @@
   dataDir = "/mnt/eye/appdata/ducklake";
   dbFile = "${dataDir}/ducklake.db";
 in {
-  sops.secrets."ducklake/db-password" = {
-    owner = "postgres";
-    group = "postgres";
-    mode = "0640";
-  };
-
-  sops.secrets."ducklake/quack-token" = {
-    owner = duckdbUser;
-    group = duckdbUser;
-    mode = "0400";
+  sops.secrets = {
+    "ducklake/db-password" = {
+      owner = "postgres";
+      group = "postgres";
+      mode = "0640";
+    };
+    "ducklake/quack-token" = {
+      owner = duckdbUser;
+      group = duckdbUser;
+      mode = "0400";
+    };
   };
 
   users.users.${duckdbUser} = {
