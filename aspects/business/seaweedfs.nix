@@ -51,22 +51,4 @@ in {
         -s3.config=${s3ConfigFile}
     '';
   };
-
-  systemd.services.seaweedfs-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "seaweedfs.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "seaweedfs.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Publish SeaweedFS S3 API via Tailscale Serve";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=4445 ${toString seaweedfsS3Port}";
-  };
 }

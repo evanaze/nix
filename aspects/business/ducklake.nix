@@ -76,6 +76,10 @@ in {
       RestartSec = "5s";
       WorkingDirectory = dataDir;
     };
+    environment = {
+      NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+    };
     script = ''
             TOKEN="$(cat ${config.sops.secrets."ducklake/quack-token".path})"
             INIT_FILE="$(mktemp)"
@@ -87,8 +91,7 @@ in {
       CALL quack_serve('quack:localhost:9494', token = '$TOKEN');
       CALL start_ui_server();
       EOF
-            ${lib.getExe pkgs.duckdb} "${dbFile}" -init "$INIT_FILE"
-            sleep infinity
+            ${lib.getExe pkgs.duckdb} "${dbFile}" -init "$INIT_FILE" < <(exec sleep infinity)
     '';
   };
 

@@ -4,6 +4,6 @@
     ./redis.nix
     # ./twenty.nix
     ./seaweedfs.nix
-    ./ducklake.nix
+    # ./ducklake.nix
   ];
 }
