@@ -148,6 +148,6 @@
       Restart = "on-failure";
       RestartSec = "5s";
     };
-    script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port 9119 --tui --no-open --skip-build --insecure";
+    script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port 9119 --no-open --skip-build --insecure";
   };
 }
