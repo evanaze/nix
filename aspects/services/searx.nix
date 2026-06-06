@@ -43,6 +43,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:search --https=4441 ${toString caddyPort}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:search --https=4441 http://127.0.0.1:${toString caddyPort}";
   };
 }

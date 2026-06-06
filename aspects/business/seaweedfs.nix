@@ -55,12 +55,10 @@ in {
   systemd.services.seaweedfs-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
-      "caddy.service"
       "seaweedfs.service"
     ];
     wants = [
       "tailscaled-autoconnect.service"
-      "caddy.service"
       "seaweedfs.service"
     ];
     wantedBy = ["multi-user.target"];
@@ -70,7 +68,7 @@ in {
       RemainAfterExit = true;
     };
     script = ''
-      ${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=4435 8333
+      ${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=4435 http://127.0.0.1:${toString seaweedfsS3Port}
     '';
   };
 }

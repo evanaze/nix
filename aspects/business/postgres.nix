@@ -5,7 +5,7 @@
 }: {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_18;
+    package = pkgs.postgresql;
 
     identMap = ''
       # ArbitraryMapName systemUser DBUser
@@ -35,8 +35,8 @@
     wantedBy = ["multi-user.target"];
     description = "Expose PostgreSQL via Tailscale Serve";
     serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
+      Type = "exec";
+      Restart = "on-failure";
     };
     script = "${lib.getExe pkgs.tailscale} serve --tcp 5432 tcp://localhost:5432";
   };
