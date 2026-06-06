@@ -301,11 +301,11 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1780717108,
-        "narHash": "sha256-xQqjNf3R9Z7UsVRHmm4Xs4dyYnHKlr53UeNv764q2dg=",
+        "lastModified": 1780766961,
+        "narHash": "sha256-SBr3xgSKat7sSYQNGFtOn7/gjcjDrjVFYyKfyCnP3UY=",
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "338c07433699569c24c32df4a2d1a8b9472400a8",
+        "rev": "7cf7300a070ad2975e2c46df321fa2de04738b88",
         "type": "github"
       },
       "original": {
