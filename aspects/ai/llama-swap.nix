@@ -43,12 +43,15 @@ in {
                           --spec-type draft-mtp \
                           --spec-draft-n-max 3 \
                           --flash-attn on \
-                          --fit on --fit-target 1536 \
+                          --fit on --fit-target 1536 --fit-ctx 32768 \
                           --parallel 1 \
-                          --ctx-size 131072 \
+                          --ctx-size 32768 \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 64 \
+                          --threads 10 --threads-batch 12 \
+                          --batch-size 512 --ubatch-size 256 \
+                          --mlock \
                           --jinja \
                           --chat-template-kwargs "{\"preserve_thinking\": true}" \
                           --port ''${PORT}'';
