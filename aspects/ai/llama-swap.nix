@@ -49,6 +49,8 @@ in {
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 64 \
+                          --jinja \
+                          --chat-template-kwargs "{\"preserve_thinking\": true}" \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
