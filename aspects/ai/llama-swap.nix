@@ -34,7 +34,7 @@ in {
                           --parallel 1 --prio 2 --no-warmup \
                           --spec-type draft-mtp --spec-draft-n-max 2 \
                           --jinja \
-                          --chat-template-kwargs "{\"preserve_thinking\": true}"
+                          --chat-template-kwargs "{\"preserve_thinking\": true}" \
                           --port ''${PORT}'';
           healthCheckTimeout = 180;
         };
