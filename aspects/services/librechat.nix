@@ -30,7 +30,7 @@
             modelDisplayLabel = "Llama-Swap";
             models = {
               default = [
-                "gemma-4-e4b-q8"
+                "gemma-4-12b-q4"
                 "qwen3.6-35b-a3b"
               ];
               fetch = false;

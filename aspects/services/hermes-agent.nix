@@ -84,7 +84,7 @@
     enable = true;
     settings = {
       model = {
-        default = "gemma-4-12b-q5";
+        default = "gemma-4-12b-q4";
         provider = "local";
       };
       memory = {
@@ -94,10 +94,9 @@
         local = {
           base_url = "https://llm.spitz-pickerel.ts.net:8724/v1";
           api_key = "none";
-          model = "gemma-4-12b-q5";
+          model = "gemma-4-12b-q4";
           models = [
-            "gemma-4-12b-q5"
-            "gemma-4-e4b-q8"
+            "gemma-4-12b-q4"
             "qwen3.6-35b-a3b"
           ];
         };

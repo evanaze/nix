@@ -33,11 +33,8 @@
               baseURL = "https://llm.spitz-pickerel.ts.net:${toString config.services.llama-swap.port}/v1";
             };
             models = {
-              "gemma-4-e4b-q8" = {
-                name = "gemma-4-e4b-q8";
-              };
-              "gemma-4-12b-q5" = {
-                name = "gemma-4-12b-q5";
+              "gemma-4-12b-q4" = {
+                name = "gemma-4-12b-q4";
               };
               "qwen3.6-35b-a3b" = {
                 name = "qwen3.6-35b-a3b";
