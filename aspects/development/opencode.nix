@@ -25,6 +25,11 @@
         autoupdate = true;
         lsp = true;
         plugin = ["openviking-opencode"];
+        compaction = {
+          auto = true;
+          prune = true;
+          reserved = 8000;
+        };
         provider = {
           llama-local = {
             name = "Llama Swap";

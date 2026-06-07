@@ -2,14 +2,11 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }: let
-  llama-cpp-cuda = pkgs.llama-cpp.override {
-    cudaSupport = true;
-    rocmSupport = false;
-    metalSupport = false;
-  };
-  llama-server = lib.getExe' llama-cpp-cuda "llama-server";
+  llama-cpp = inputs.llama-cpp.packages.${pkgs.system}.cuda;
+  llama-server = lib.getExe' llama-cpp "llama-server";
   model-dir = "/var/lib/llama-cpp/models";
 in {
   services.llama-swap = {

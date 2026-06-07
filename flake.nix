@@ -49,6 +49,9 @@
       url = "github:nix-community/bun2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llama-cpp = {
+      url = "github:ggml-org/llama.cpp/04eb4c446d22b63449d5dc41c038987d4d8cc3a6";
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:
