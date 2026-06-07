@@ -21,16 +21,16 @@ in {
           cmd = ''
             ${llama-server} \
                           -m ${model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
-                          -ctx-size 131072 \
-                          --n-predict 32768 \
-                          --fit on --fit-target 1536 --fit-ctx 131072 \
+                          --ctx-size 32768 \
+                          --n-predict 8192 \
+                          --fit on --fit-target 1536 --fit-ctx 32768 \
                           --temp 0.6 --top-p 0.95 --top-k 20 \
                           --presence-penalty 0.0 --repeat-penalty 1.0 \
                           -ctk q8_0 -ctv q8_0 \
                           --flash-attn on \
-                          --batch-size 1024 --ubatch-size 512 \
+                          --batch-size 512 --ubatch-size 256 \
                           --threads 10 --threads-batch 12 \
-                          --no-mmap --mlock \
+                          --mlock \
                           --parallel 1 --prio 2 --no-warmup \
                           --spec-type draft-mtp --spec-draft-n-max 2 \
                           --jinja \
