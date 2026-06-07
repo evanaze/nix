@@ -10,6 +10,7 @@
     metalSupport = false;
   };
   llama-server = lib.getExe' llama-cpp-cuda "llama-server";
+  model-dir = "/var/lib/llama-cpp/models";
 in {
   services.llama-swap = {
     enable = true;
@@ -19,7 +20,7 @@ in {
         "qwen3.6-35b-a3b" = {
           cmd = ''
             ${llama-server} \
-                          -m /var/lib/llama-cpp/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
+                          -m ${model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
                           -ctx-size 131072 \
                           --n-predict 32768 \
                           --fit on --fit-target 1536 --fit-ctx 131072 \
@@ -40,8 +41,8 @@ in {
         "gemma-4-12b-q4" = {
           cmd = ''
             ${llama-server} \
-                          -m /var/lib/llama-cpp/models/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf \
-                          -model-draft /var/lib/llama-cpp/models/gemma-4-12B-it-assistant-Q8_0.gguf \
+                          -m ${model-dir}/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf \
+                          --spec-draft-model ${model-dir}/gemma-4-12B-it-assistant-Q8_0.gguf \
                           --spec-type draft-mtp \
                           --spec-draft-n-max 3 \
                           --flash-attn on \
