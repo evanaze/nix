@@ -5,7 +5,10 @@
   config,
   username,
   ...
-}: {
+}: let
+  state-dir = "/mnt/eye/appdata/hermes";
+  hermes-home = "${state-dir}/.hermes";
+in {
   nixpkgs.overlays = [
     inputs.hermes-agent.overlays.default
   ];
@@ -14,12 +17,12 @@
   # This lets the dashboard see CLI sessions and vice versa.
   # Use mkForce to override the upstream module's default
   environment.variables = {
-    HERMES_HOME = lib.mkForce "/mnt/eye/appdata/hermes/.hermes";
+    HERMES_HOME = lib.mkForce "${hermes-home}";
   };
 
   systemd.tmpfiles.rules = [
-    "d /mnt/eye/appdata/hermes/.hermes 2770 hermes hermes -"
-    "z /mnt/eye/appdata/hermes/.hermes/memories 2770 hermes hermes -"
+    "d ${hermes-home} 2770 hermes hermes -"
+    "z ${hermes-home}/memories 2770 hermes hermes -"
   ];
 
   users.users.${username}.extraGroups = ["hermes"];
@@ -30,6 +33,8 @@
 
   services.hermes-agent = {
     enable = true;
+    createUser = true;
+    stateDir = "${state-dir}";
     settings = {
       model = {
         default = "gemma-4-12b-q4";
