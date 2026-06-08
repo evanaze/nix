@@ -39,9 +39,11 @@
             models = {
               "gemma-4-12b-q4" = {
                 name = "gemma-4-12b-q4";
+                limit.context = 32768;
               };
               "qwen3.6-35b-a3b" = {
                 name = "qwen3.6-35b-a3b";
+                limit.context = 32768;
               };
             };
           };

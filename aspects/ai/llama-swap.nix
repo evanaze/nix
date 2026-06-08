@@ -8,6 +8,7 @@
   llama-cpp = inputs.llama-cpp.packages.${pkgs.system}.cuda;
   llama-server = lib.getExe' llama-cpp "llama-server";
   model-dir = "/var/lib/llama-cpp/models";
+  ctx-size = 32768;
 in {
   services.llama-swap = {
     enable = true;
@@ -18,7 +19,7 @@ in {
           cmd = ''
             ${llama-server} \
                           -m ${model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
-                          --ctx-size 32768 \
+                          --ctx-size ${toString ctx-size} \
                           --n-predict 8192 \
                           --fit on --fit-target 1536 --fit-ctx 32768 \
                           --temp 0.6 --top-p 0.95 --top-k 20 \
@@ -43,9 +44,9 @@ in {
                           --spec-type draft-mtp \
                           --spec-draft-n-max 3 \
                           --flash-attn on \
-                          --fit on --fit-target 1536 --fit-ctx 32768 \
+                          --fit on --fit-target 1536 --fit-ctx ${toString ctx-size} \
                           --parallel 1 \
-                          --ctx-size 32768 \
+                          --ctx-size ${toString ctx-size} \
                           --temp 1.0 \
                           --top-p 0.95 \
                           --top-k 64 \
