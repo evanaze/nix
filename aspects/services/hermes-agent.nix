@@ -39,7 +39,7 @@ in {
       model = {
         default = "gemma-4-12b-q4";
         provider = "local";
-        context_length = 32768;
+        context_length = 64000;
       };
       memory.provider = "openviking";
       file_read_max_chars = 30000;

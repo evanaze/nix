@@ -40,15 +40,15 @@
               "gemma-4-12b-q4" = {
                 name = "gemma-4-12b-q4";
                 limit = {
-                  context = 32768;
-                  output = 32768;
+                  context = 64000;
+                  output = 64000;
                 };
               };
               "qwen3.6-35b-a3b" = {
                 name = "qwen3.6-35b-a3b";
                 limit = {
-                  context = 32768;
-                  output = 32768;
+                  context = 64000;
+                  output = 64000;
                 };
               };
             };
