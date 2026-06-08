@@ -39,9 +39,18 @@ in {
       model = {
         default = "gemma-4-12b-q4";
         provider = "local";
+        context_length = 32768;
       };
-      memory = {
-        provider = "openviking";
+      memory.provider = "openviking";
+      file_read_max_chars = 30000;
+      tool_output = {
+        max_bytes = 20000;
+        max_lines = 500;
+      };
+      compression = {
+        enabled = true;
+        threshold = 0.8;
+        target_ratio = 0.2;
       };
       providers = {
         local = {
