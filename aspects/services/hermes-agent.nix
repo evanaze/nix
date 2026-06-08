@@ -71,8 +71,6 @@
   systemd.tmpfiles.rules = [
     "d /mnt/eye/appdata/hermes/.hermes 2770 hermes hermes -"
     "z /mnt/eye/appdata/hermes/.hermes/memories 2770 hermes hermes -"
-    "z /mnt/eye/appdata/hermes/.hermes/memories/* 0640 hermes hermes -"
-    "z /mnt/eye/appdata/hermes/.hermes/.env 0640 hermes hermes -"
   ];
 
   users.users.${username}.extraGroups = ["hermes"];
