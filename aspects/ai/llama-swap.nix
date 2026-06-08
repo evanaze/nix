@@ -8,7 +8,7 @@
   llama-cpp = inputs.llama-cpp.packages.${pkgs.system}.cuda;
   llama-server = lib.getExe' llama-cpp "llama-server";
   model-dir = "/var/lib/llama-cpp/models";
-  ctx-size = 32768;
+  ctx-size = 64000;
 in {
   services.llama-swap = {
     enable = true;
