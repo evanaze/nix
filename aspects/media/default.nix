@@ -2,7 +2,7 @@
 {...}: {
   imports = [
     ./immich.nix
-    ./jellyfin.nix
-    # ./nixflix.nix
+    # ./jellyfin.nix
+    ./nixflix.nix
   ];
 }

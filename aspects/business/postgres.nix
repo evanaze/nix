@@ -15,11 +15,13 @@
          superuser_map      /^(.*)$   \1
     '';
     authentication = pkgs.lib.mkOverride 10 ''
-      #type database  DBuser      auth-method optional_ident_map
-      local all      postgres    peer        map=superuser_map
-      local sameuser all         peer        map=superuser_map
-      host  all      postgres    127.0.0.1/32 trust
-      host  all      postgres    ::1/128      trust
+      #type database    DBuser                   auth-method optional_ident_map
+      local all         postgres                 peer        map=superuser_map
+      local sameuser    all                      peer        map=superuser_map
+      host  all         postgres                 127.0.0.1/32 trust
+      host  all         postgres                 ::1/128      trust
+      # Allow *arr services to connect via local socket (nixflix)
+      local all         sonarr,radarr,lidarr,prowlarr,seerr  trust
     '';
   };
 

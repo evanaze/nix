@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   username,
   ...
@@ -25,9 +26,24 @@
       name = "overseerr";
     };
 
-    # caddy = {
-    #   enable = true;
-    #   addHostsEntries = false;
+    caddy = {
+      enable = true;
+      domain = "nixflix";
+      addHostsEntries = true;
+      tls = {
+        enable = true;
+        internal = true;
+      };
+    };
+
+    # services.caddy.virtualHosts."http://:${toString caddyPort}" = {
+    #   extraConfig = ''
+    #     reverse_proxy localhost:${toString searxngPort} {
+    #       header_up X-Forwarded-Proto https
+    #       header_up X-Forwarded-For {remote_host}
+    #       header_up X-Forwarded-Host {host}
+    #     }
+    #   '';
     # };
 
     postgres.enable = true;
@@ -141,6 +157,31 @@
       wgConfFile = config.sops.secrets."wireguard/conf".path;
       accessibleFrom = ["192.168.1.0/24"];
     };
+  };
+
+  # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
+
+  services.caddy.package = lib.mkForce (pkgs.caddy.withPlugins {
+    plugins = ["github.com/caddyserver/replace-response@v0.0.0-20250618171559-80962887e4c6"];
+    hash = "sha256-bNvQuD8eq5kzRxP96yl1tfE7ro1gW26UEHJeU3TyahU=";
+  });
+
+  systemd.services.jellyfin-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "jellyfin.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "jellyfin.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish Jellyfin";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 8096";
   };
 
   sops.secrets = {
