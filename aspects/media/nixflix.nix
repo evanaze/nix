@@ -31,8 +31,6 @@ in {
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       libva-utils
-      libva-vdpau-gl
-
     ];
   };
 
