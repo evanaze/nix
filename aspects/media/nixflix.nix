@@ -4,7 +4,28 @@
   pkgs,
   username,
   ...
-}: {
+}: let
+  ports = {
+    sonarr = 8989;
+    "sonarr-anime" = 8990;
+    radarr = 7878;
+    lidarr = 8686;
+    prowlarr = 9696;
+    sabnzbd = 8080;
+    jellyfin = 8096;
+    seerr = 5055;
+  };
+  caddyPorts = {
+    sonarr = 8300;
+    "sonarr-anime" = 8301;
+    radarr = 8302;
+    lidarr = 8303;
+    prowlarr = 8304;
+    sabnzbd = 8305;
+    jellyfin = 8307;
+    seerr = 8308;
+  };
+in {
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
@@ -25,26 +46,6 @@
       enable = true;
       name = "overseerr";
     };
-
-    caddy = {
-      enable = true;
-      domain = "nixflix";
-      addHostsEntries = true;
-      tls = {
-        enable = true;
-        internal = true;
-      };
-    };
-
-    # services.caddy.virtualHosts."http://:${toString caddyPort}" = {
-    #   extraConfig = ''
-    #     reverse_proxy localhost:${toString searxngPort} {
-    #       header_up X-Forwarded-Proto https
-    #       header_up X-Forwarded-For {remote_host}
-    #       header_up X-Forwarded-Host {host}
-    #     }
-    #   '';
-    # };
 
     postgres.enable = true;
 
@@ -161,10 +162,18 @@
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
-  services.caddy.package = lib.mkForce (pkgs.caddy.withPlugins {
-    plugins = ["github.com/caddyserver/replace-response@v0.0.0-20250618171559-80962887e4c6"];
-    hash = "sha256-bNvQuD8eq5kzRxP96yl1tfE7ro1gW26UEHJeU3TyahU=";
-  });
+  services.caddy.virtualHosts = builtins.listToAttrs (map (name: {
+    name = "http://:${toString caddyPorts.${name}}";
+    value = {
+      extraConfig = ''
+        reverse_proxy localhost:${toString ports.${name}} {
+          header_up X-Forwarded-Proto https
+          header_up X-Forwarded-For {remote_host}
+          header_up X-Forwarded-Host {host}
+        }
+      '';
+    };
+  }) (builtins.attrNames caddyPorts));
 
   systemd.services.jellyfin-tsserve = {
     after = [
@@ -181,7 +190,7 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 8096";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 http://127.0.0.1:${toString caddyPorts.jellyfin}";
   };
 
   sops.secrets = {
