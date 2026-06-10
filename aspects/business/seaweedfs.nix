@@ -35,13 +35,15 @@ in {
       ${lib.getExe pkgs.jq} -n \
         --arg key "$(cat ${config.sops.secrets."seaweedfs/s3-access-key".path})" \
         --arg secret "$(cat ${config.sops.secrets."seaweedfs/s3-secret-key".path})" \
-        '[
-          {
-            name: "ducklake",
-            actions: ["Read", "Write", "Admin"],
-            credentials: [{accessKey: $key, secretKey: $secret}]
-          }
-        ]' > ${s3ConfigFile}
+        '{
+          identities: [
+            {
+              name: "ducklake",
+              credentials: [{accessKey: $key, secretKey: $secret}],
+              actions: ["Read", "Write", "Admin"]
+            }
+          ]
+        }' > ${s3ConfigFile}
     '';
     script = ''
       ${lib.getExe pkgs.seaweedfs} server \

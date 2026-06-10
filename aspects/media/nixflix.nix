@@ -31,10 +31,16 @@ in {
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       libva-utils
-      libva-vdpau-driver
-      libvdpau-va-gl
+      libva-vdpau-gl
+
     ];
   };
+
+  # nixflix hardcodes MetadataPath to /var/lib/jellyfin/metadata but runs with
+  # --datadir /mnt/eye/media/.state/jellyfin — ensure the path is traversable
+  systemd.tmpfiles.rules = [
+    "d /var/lib/jellyfin 0750 ${username} media -"
+  ];
 
   nixflix = {
     enable = true;

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  nocodbPort = 8080;
+  nocodbPort = 8082;
   caddyPort = 8083;
   redisPort = 6380;
   tsServePort = 4432;
@@ -31,6 +31,7 @@ in {
       environment = {
         NC_DB = "pg://127.0.0.1:5432?u=postgres&d=nocodb";
         NC_REDIS_URL = "redis://127.0.0.1:${toString redisPort}";
+        PORT = toString nocodbPort;
       };
     };
   };
