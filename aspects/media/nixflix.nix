@@ -51,8 +51,6 @@ in {
       name = "overseerr";
     };
 
-    postgres.enable = true;
-
     sonarr = {
       enable = true;
       config = {
@@ -195,6 +193,24 @@ in {
       RemainAfterExit = true;
     };
     script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 http://127.0.0.1:${toString caddyPorts.jellyfin}";
+  };
+
+  systemd.services.lidarr-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "lidarr.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "lidarr.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish Lidarr";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4434 http://127.0.0.1:${toString caddyPorts.lidarr}";
   };
 
   sops.secrets = {
