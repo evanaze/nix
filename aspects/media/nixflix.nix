@@ -163,33 +163,53 @@ in {
   };
 
   systemd.services.seerr-setup.wantedBy = lib.mkForce [];
-  systemd.services.seerr-setup.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-setup.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.seerr-user-settings.wantedBy = lib.mkForce [];
-  systemd.services.seerr-user-settings.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-user-settings.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.seerr-jellyfin.wantedBy = lib.mkForce [];
-  systemd.services.seerr-jellyfin.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-jellyfin.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.seerr-radarr.wantedBy = lib.mkForce [];
-  systemd.services.seerr-radarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-radarr.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.seerr-sonarr.wantedBy = lib.mkForce [];
-  systemd.services.seerr-sonarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-sonarr.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.seerr-libraries.wantedBy = lib.mkForce [];
-  systemd.services.seerr-libraries.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-libraries.serviceConfig.SuccessExitStatus = [
+    "0"
+    "1"
+  ];
   systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
-  services.caddy.virtualHosts = builtins.listToAttrs (map (name: {
-    name = "http://:${toString caddyPorts.${name}}";
-    value = {
-      extraConfig = ''
-        reverse_proxy localhost:${toString ports.${name}} {
-          header_up X-Forwarded-Proto https
-          header_up X-Forwarded-For {remote_host}
-          header_up X-Forwarded-Host {host}
-        }
-      '';
-    };
-  }) (builtins.attrNames caddyPorts));
+  services.caddy.virtualHosts = builtins.listToAttrs (
+    map (name: {
+      name = "http://:${toString caddyPorts.${name}}";
+      value = {
+        extraConfig = ''
+          reverse_proxy localhost:${toString ports.${name}} {
+            header_up X-Forwarded-Proto https
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Host {host}
+          }
+        '';
+      };
+    }) (builtins.attrNames caddyPorts)
+  );
 
   systemd.services.jellyfin-tsserve = {
     after = [
@@ -224,7 +244,7 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4434 http://127.0.0.1:${toString caddyPorts.lidarr}";
+    script = "${lib.getExe pkgs.tailscale} serve --service=svc:lidarr --https=4434 http://127.0.0.1:${toString caddyPorts.lidarr}";
   };
 
   sops.secrets = {

@@ -16,6 +16,8 @@ The configuration uses flake-parts, home-manager for user configuration, sops-ni
 
 ## Build and Deployment Commands
 
+> **Check hostname first** with `hostname` to confirm which machine you're on. If you're on the target host, run the deploy command directly instead of asking the user to do it.
+
 ### Building Configurations
 ```bash
 # Build a specific system configuration
