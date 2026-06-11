@@ -172,6 +172,8 @@ in {
   systemd.services.seerr-radarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
   systemd.services.seerr-sonarr.wantedBy = lib.mkForce [];
   systemd.services.seerr-sonarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-libraries.wantedBy = lib.mkForce [];
+  systemd.services.seerr-libraries.serviceConfig.SuccessExitStatus = [ "0" "1" ];
   systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
