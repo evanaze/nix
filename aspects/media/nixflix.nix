@@ -162,6 +162,18 @@ in {
     };
   };
 
+  systemd.services.seerr-setup.wantedBy = lib.mkForce [];
+  systemd.services.seerr-setup.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-user-settings.wantedBy = lib.mkForce [];
+  systemd.services.seerr-user-settings.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-jellyfin.wantedBy = lib.mkForce [];
+  systemd.services.seerr-jellyfin.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-radarr.wantedBy = lib.mkForce [];
+  systemd.services.seerr-radarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.seerr-sonarr.wantedBy = lib.mkForce [];
+  systemd.services.seerr-sonarr.serviceConfig.SuccessExitStatus = [ "0" "1" ];
+  systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
+
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
   services.caddy.virtualHosts = builtins.listToAttrs (map (name: {

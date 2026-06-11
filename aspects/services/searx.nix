@@ -31,10 +31,12 @@ in {
   systemd.services.searxng-tsserve = {
     after = [
       "tailscaled-autoconnect.service"
+      "tailscaled.service"
       "searx.service"
     ];
     wants = [
       "tailscaled-autoconnect.service"
+      "tailscaled.service"
       "searx.service"
     ];
     wantedBy = ["multi-user.target"];
