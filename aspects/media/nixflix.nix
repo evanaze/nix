@@ -192,7 +192,7 @@ in {
     "0"
     "1"
   ];
-  systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
+  # systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
