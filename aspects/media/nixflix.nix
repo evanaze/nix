@@ -186,7 +186,20 @@ in {
   ];
   # systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
-  systemd.services.lidarr.serviceConfig.Type = lib.mkForce "exec";
+  systemd.services.lidarr = {
+    serviceConfig.Type = lib.mkForce "exec";
+    after = ["blocky.service"];
+    wants = ["blocky.service"];
+    environment.DOTNET_SYSTEM_NET_DISABLEIPV6 = "1";
+  };
+
+  # Apply same DNS ordering to other *arr services
+  systemd.services.sonarr.after = ["blocky.service"];
+  systemd.services.sonarr.wants = ["blocky.service"];
+  systemd.services.radarr.after = ["blocky.service"];
+  systemd.services.radarr.wants = ["blocky.service"];
+  systemd.services.prowlarr.after = ["blocky.service"];
+  systemd.services.prowlarr.wants = ["blocky.service"];
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
@@ -198,7 +211,7 @@ in {
           reverse_proxy localhost:${toString ports.${name}} {
             header_up X-Forwarded-Proto https
             header_up X-Forwarded-For {remote_host}
-            header_up X-Forwarded-Host {host}
+            header_up X-Forwarded-Host {hostport}
           }
         '';
       };
