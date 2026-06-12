@@ -86,16 +86,8 @@ in {
         hostConfig.password._secret = config.sops.secrets."prowlarr/password".path;
         indexers = [
           {
-            name = "DrunkenSlug";
-            apiKey._secret = config.sops.secrets."indexer-api-keys/DrunkenSlug".path;
-          }
-          {
             name = "NZBFinder";
             apiKey._secret = config.sops.secrets."indexer-api-keys/NZBFinder".path;
-          }
-          {
-            name = "NzbPlanet";
-            apiKey._secret = config.sops.secrets."indexer-api-keys/NzbPlanet".path;
           }
         ];
       };
@@ -256,9 +248,7 @@ in {
     "lidarr/password" = {};
     "prowlarr/api_key" = {};
     "prowlarr/password" = {};
-    "indexer-api-keys/DrunkenSlug" = {};
     "indexer-api-keys/NZBFinder" = {};
-    "indexer-api-keys/NzbPlanet" = {};
     "jellyfin/api_key" = {};
     "jellyfin/admin_password" = {};
     "seerr/api_key" = {};
