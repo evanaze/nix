@@ -186,6 +186,8 @@ in {
   ];
   # systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
+  systemd.services.lidarr.serviceConfig.Type = lib.mkForce "exec";
+
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 
   services.caddy.virtualHosts = builtins.listToAttrs (
