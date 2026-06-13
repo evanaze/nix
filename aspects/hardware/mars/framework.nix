@@ -39,7 +39,7 @@
         script = pkgs.writeShellScript "set-framework-volume" ''
           for i in $(seq 1 10); do
             id=$(${pkgs.pipewire}/bin/pw-cli list-objects 2>/dev/null \
-              | ${pkgs.gnugrep}/bin/grep -B1 'node.name = "audio_effect.laptop-convolver"' \
+              | ${pkgs.gnugrep}/bin/grep -B10 'node.name = "audio_effect.laptop-convolver"' \
               | ${pkgs.gnused}/bin/sed -n 's/.*id \([0-9]*\).*/\1/p')
             if [ -n "$id" ]; then
               ${pkgs.pipewire}/bin/wpctl set-volume "$id" 1.0
