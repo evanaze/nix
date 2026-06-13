@@ -1,5 +1,5 @@
 # aspects/core/nix.nix - Nix settings, flakes, unfree packages, cache pushing
-{config, pkgs, lib, username, ...}: let
+{config, pkgs, lib, username, hostname, ...}: let
   cacheHost = "evanaze@jupiter.spitz-pickerel.ts.net";
 in {
   nix = {
@@ -7,6 +7,9 @@ in {
       trusted-users = root ${username}
       post-build-hook = ${pkgs.writeShellScript "nix-post-build-hook" ''
         set -eu
+        if [ "$(hostname)" = "jupiter" ]; then
+          exit 0
+        fi
         for p in "$@"; do
           exec sudo -u ${username} nix copy --to ssh://${cacheHost} "$p"
         done

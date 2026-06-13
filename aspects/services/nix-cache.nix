@@ -9,6 +9,7 @@
   services.nix-serve = {
     enable = true;
     secretKeyFile = config.sops.secrets.cache-private-key.path;
+    package = pkgs.nix-serve-ng;
   };
 
   systemd.services.nix-cache-tsserve = {
