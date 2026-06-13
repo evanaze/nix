@@ -21,7 +21,7 @@
     enableKmod = true;
     laptop13.audioEnhancement = {
       enable = true;
-      hideRawDevice = false;
+      hideRawDevice = true;
     };
   };
 }

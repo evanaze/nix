@@ -10,6 +10,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./auto-brightness.nix
+    ./framework.nix
   ];
 
   boot.initrd.availableKernelModules = [
