@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   username,
   ...
@@ -9,11 +8,11 @@
 
     systemd.user.services."rclone-knowledge-base-sync" = {
       Unit = {
-        Description = "Sync Knowledge Base to iCloud Drive";
+        Description = "Bi-directional sync Knowledge Base with iCloud Drive";
       };
       Service = {
         Type = "oneshot";
-        ExecStart = "${pkgs.rclone}/bin/rclone sync '%h/Documents/Knowledge Base' 'iclouddrive:Obsidian/Knowledge Base'";
+        ExecStart = "${pkgs.rclone}/bin/rclone bisync '%h/Documents/Knowledge Base' 'iclouddrive:Obsidian/Knowledge Base' --resilient --recover --conflict-resolve newer --max-delete 10 --create-empty-src-dirs";
       };
       Install = {
         WantedBy = ["default.target"];
@@ -22,7 +21,7 @@
 
     systemd.user.timers."rclone-knowledge-base-sync" = {
       Unit = {
-        Description = "Sync Knowledge Base to iCloud Drive every 5 minutes";
+        Description = "Bi-directional sync Knowledge Base every 5 minutes";
       };
       Timer = {
         OnCalendar = "*:0/5";
