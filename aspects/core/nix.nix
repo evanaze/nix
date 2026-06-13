@@ -1,5 +1,9 @@
 # aspects/core/nix.nix - Nix settings, flakes, unfree packages, cache pushing
-{config, pkgs, lib, username, hostname, ...}: let
+{
+  pkgs,
+  username,
+  ...
+}: let
   cacheHost = "evanaze@jupiter.spitz-pickerel.ts.net";
 in {
   nix = {

@@ -9,15 +9,4 @@
       extraArgs = "--keep-since 7d --keep 3";
     };
   };
-
-  system = {
-    autoUpgrade = {
-      enable = true;
-      flake = inputs.self.outPath;
-      flags = ["--commit-lock-file"];
-      allowReboot = false;
-      dates = "daily";
-      randomizedDelaySec = "45min";
-    };
-  };
 }

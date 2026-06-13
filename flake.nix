@@ -145,6 +145,7 @@
               ./aspects/backup
               ./aspects/business
               ./aspects/core
+              ./aspects/core/flake-update.nix
               ./aspects/development
               ./aspects/hardware
               ./aspects/hardware/jupiter
