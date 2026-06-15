@@ -1,13 +1,13 @@
 {
-  flake.modules.nixos.coreFlakeUpdate = # aspects/core/flake-update.nix - Flake auto-update with boot loop protection
-{pkgs, username, ...}: {
+flake.modules.nixos.coreFlakeUpdate = # aspects/core/flake-update.nix - Flake auto-update with boot loop protection
+{pkgs, hostname, username, ...}: {
   systemd.services.flake-update = {
     description = "Update flake inputs, rebuild system, and reboot";
     after = ["network-online.target"];
     wants = ["network-online.target"];
     serviceConfig.Type = "oneshot";
     serviceConfig.User = username;
-    path = with pkgs; [nh git openssh nix coreutils];
+    path = with pkgs; [git openssh nix coreutils];
     script = ''
       set -euo pipefail
       cd /home/${username}/.config/nix
@@ -17,7 +17,7 @@
       git commit -m "auto: update flake inputs" || true
       git pull
       git push
-      /run/wrappers/bin/sudo -n nh os boot /home/${username}/.config/nix
+      /run/wrappers/bin/sudo -n /run/current-system/sw/bin/nixos-rebuild boot --flake /home/${username}/.config/nix#${hostname}
       /run/wrappers/bin/sudo -n mkdir -p /var/lib/flake-update
       date +%s | /run/wrappers/bin/sudo -n tee /var/lib/flake-update/sentinel > /dev/null
       /run/wrappers/bin/sudo -n reboot
