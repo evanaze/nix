@@ -7,7 +7,7 @@
     wants = ["network-online.target"];
     serviceConfig.Type = "oneshot";
     serviceConfig.User = username;
-    path = with pkgs; [nh git openssh sudo nix coreutils];
+    path = with pkgs; [nh git openssh nix coreutils];
     script = ''
       set -euo pipefail
       cd /home/${username}/.config/nix
@@ -17,10 +17,10 @@
       git commit -m "auto: update flake inputs" || true
       git pull
       git push
-      sudo -n nh os boot /home/${username}/.config/nix
-      sudo -n mkdir -p /var/lib/flake-update
-      date +%s | sudo -n tee /var/lib/flake-update/sentinel > /dev/null
-      sudo -n reboot
+      /run/wrappers/bin/sudo -n nh os boot /home/${username}/.config/nix
+      /run/wrappers/bin/sudo -n mkdir -p /var/lib/flake-update
+      date +%s | /run/wrappers/bin/sudo -n tee /var/lib/flake-update/sentinel > /dev/null
+      /run/wrappers/bin/sudo -n reboot
     '';
   };
 
