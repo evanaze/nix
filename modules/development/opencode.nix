@@ -18,6 +18,12 @@ let
       '';
     };
 
+    home.file.".openviking/ovcli.settings.conf" = {
+      text = ''
+        {"language": "en"}
+      '';
+    };
+
     programs.opencode = {
       enable = true;
       tui.theme = "catppuccin";
