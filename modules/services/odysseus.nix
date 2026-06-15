@@ -153,8 +153,8 @@ let
           RestartSec = "10s";
         };
         script = ''
-          ${lib.getExe pkgs.tailscale} serve clear svc:odysseus || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:odysseus --https=443 http://127.0.0.1:${toString odysseusCaddyPort}
+          ${lib.getExe pkgs.tailscale} serve clear svc:ai || true
+          ${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=443 http://127.0.0.1:${toString odysseusCaddyPort}
         '';
       };
     };
