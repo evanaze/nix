@@ -29,42 +29,66 @@ let
       home.file.".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
         "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
         agents = {
-          sisyphus.model = "opencode/claude-sonnet-4-5";
+          sisyphus = {
+            model = "openai/gpt-5.2";
+            variant = "high";
+          };
           oracle = {
             model = "openai/gpt-5.2";
             variant = "high";
           };
-          librarian.model = "zai-coding-plan/glm-4.7";
-          explore.model = "opencode/claude-haiku-4-5";
-          multimodal-looker.model = "opencode/gemini-3-flash";
+          librarian = {
+            model = "opencode/big-pickle";
+          };
+          explore = {
+            model = "opencode/gpt-5-nano";
+          };
+          "multimodal-looker" = {
+            model = "openai/gpt-5.2";
+          };
           prometheus = {
-            model = "opencode/claude-opus-4-5";
-            variant = "max";
+            model = "openai/gpt-5.2";
+            variant = "high";
           };
           metis = {
-            model = "opencode/claude-opus-4-5";
-            variant = "max";
+            model = "openai/gpt-5.2";
+            variant = "high";
           };
           momus = {
             model = "openai/gpt-5.2";
             variant = "medium";
           };
-          atlas.model = "opencode/claude-sonnet-4-5";
+          atlas = {
+            model = "openai/gpt-5.2";
+          };
         };
         categories = {
-          visual-engineering.model = "opencode/gemini-3-pro";
+          "visual-engineering" = {
+            model = "openai/gpt-5.2";
+            variant = "high";
+          };
           ultrabrain = {
             model = "openai/gpt-5.2-codex";
             variant = "xhigh";
           };
           artistry = {
-            model = "opencode/gemini-3-pro";
+            model = "openai/gpt-5.2";
             variant = "max";
           };
-          quick.model = "opencode/claude-haiku-4-5";
-          unspecified-low.model = "opencode/claude-sonnet-4-5";
-          unspecified-high.model = "opencode/claude-sonnet-4-5";
-          writing.model = "opencode/gemini-3-flash";
+          quick = {
+            model = "opencode/big-pickle";
+          };
+          "unspecified-low" = {
+            model = "openai/gpt-5.2-codex";
+            variant = "medium";
+          };
+          "unspecified-high" = {
+            model = "openai/gpt-5.2-codex";
+            variant = "medium";
+          };
+          writing = {
+            model = "openai/gpt-5.2";
+          };
         };
       };
 
