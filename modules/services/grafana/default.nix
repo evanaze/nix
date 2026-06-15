@@ -1,5 +1,5 @@
-{
-  flake.modules.nixos.servicesGrafana = {
+let
+  module = {
     config,
     lib,
     pkgs,
@@ -43,5 +43,10 @@
       };
       script = "${lib.getExe pkgs.tailscale} serve --service=svc:monitoring --https=4431 http://127.0.0.1:2342";
     };
+  };
+in {
+  flake.modules.nixos = {
+    servicesGrafana = module;
+    services = module;
   };
 }
