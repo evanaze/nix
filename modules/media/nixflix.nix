@@ -188,6 +188,17 @@ in {
   ];
   # systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
+  systemd.services.nixflix-setup-dirs.script = lib.mkForce ''
+    ${pkgs.systemd}/bin/systemd-tmpfiles --create \
+      /etc/tmpfiles.d/10-nixflix.conf \
+      /etc/tmpfiles.d/10-jellyfin.conf \
+      /etc/tmpfiles.d/10-lidarr.conf \
+      /etc/tmpfiles.d/10-prowlarr.conf \
+      /etc/tmpfiles.d/10-radarr.conf \
+      /etc/tmpfiles.d/10-seerr.conf \
+      /etc/tmpfiles.d/10-sonarr.conf
+  '';
+
   systemd.services.lidarr = {
     serviceConfig.Type = lib.mkForce "exec";
     after = ["blocky.service"];

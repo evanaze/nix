@@ -7,7 +7,7 @@
     wants = ["network-online.target"];
     serviceConfig.Type = "oneshot";
     serviceConfig.User = username;
-    path = with pkgs; [nh git nix coreutils];
+    path = with pkgs; [nh git openssh nix coreutils];
     script = ''
       set -euo pipefail
       cd /home/${username}/.config/nix
