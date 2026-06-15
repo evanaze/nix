@@ -7,12 +7,13 @@
     connect-timeout = 5;
   };
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+    inputs = {
+      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+      flake-parts.url = "github:hercules-ci/flake-parts";
+      import-tree.url = "github:vic/import-tree";
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -51,118 +52,9 @@
     };
     llama-cpp = {
       url = "github:ggml-org/llama.cpp/04eb4c446d22b63449d5dc41c038987d4d8cc3a6";
-    };
-  };
-
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-
-      flake = let
-        lib = import ./lib {inherit inputs;};
-        inherit (lib) mkHost username;
-
-        eachSystem = f:
-          builtins.foldl' (acc: system: acc // {${system} = f system;}) {} [
-            "x86_64-linux"
-            "aarch64-linux"
-          ];
-      in {
-        packages = eachSystem (system: {
-          twenty = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/twenty {};
-          hermes-webui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/hermes-webui {};
-          # duck-ui = inputs.nixpkgs.legacyPackages.${system}.callPackage ./pkgs/duck-ui {
-          #   bun2nix = inputs.bun2nix.packages.${system}.default;
-          # };
-        });
-        nixosConfigurations = {
-          # Earth - Desktop with NVIDIA GPU, gaming, AI services
-          earth = mkHost {
-            system = "x86_64-linux";
-            hostname = "earth";
-            stateVersion = "23.11";
-            homeStateVersion = "23.11";
-            aspects = [
-              ./aspects/ai/server.nix
-              ./aspects/backup/nut-client.nix
-              ./aspects/backup/syncthing.nix
-              ./aspects/business/duckdb-client.nix
-              ./aspects/core
-              ./aspects/desktop
-              ./aspects/development
-              ./aspects/gaming
-              ./aspects/hardware
-              ./aspects/hardware/nvidia.nix
-              ./aspects/hardware/earth.nix
-              ./aspects/monitoring
-            ];
-            extraModules = [
-              inputs.nixos-hardware.nixosModules.common-pc
-              inputs.nixos-hardware.nixosModules.common-pc-ssd
-              inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-
-              inputs.slippi.nixosModules.default
-            ];
-            homeModules = [
-              inputs.slippi.homeManagerModules.default
-            ];
-          };
-
-          # Mars - Framework 13 laptop
-          mars = mkHost {
-            system = "x86_64-linux";
-            hostname = "mars";
-            stateVersion = "25.05";
-            homeStateVersion = "23.11";
-            aspects = [
-              ./aspects/backup/syncthing.nix
-              ./aspects/business/duckdb-client.nix
-              ./aspects/core
-              ./aspects/desktop
-              ./aspects/development
-              ./aspects/gaming/steam.nix
-              ./aspects/hardware
-              ./aspects/hardware/mars
-              ./aspects/hardware/usb-tethering.nix
-              ./aspects/networking/vpn.nix
-              ./aspects/monitoring
-            ];
-            extraModules = [
-              inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-            ];
-          };
-
-          # Jupiter - Aoostar NAS Server
-          jupiter = mkHost {
-            system = "x86_64-linux";
-            hostname = "jupiter";
-            stateVersion = "25.11";
-            homeStateVersion = "23.11";
-            aspects = [
-              ./aspects/backup
-              ./aspects/business
-              ./aspects/core
-              ./aspects/core/flake-update.nix
-              ./aspects/development
-              ./aspects/hardware
-              ./aspects/hardware/jupiter
-              ./aspects/media
-              ./aspects/monitoring
-              ./aspects/monitoring/prometheus/default.nix
-              ./aspects/monitoring/prometheus/smartctl-exporter.nix
-              ./aspects/networking
-              ./aspects/services
-            ];
-            extraModules = [
-              inputs.hermes-agent.nixosModules.default
-              inputs.nixflix.nixosModules.default
-              inputs.openviking.nixosModules.default
-            ];
-          };
-        };
       };
     };
+
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }

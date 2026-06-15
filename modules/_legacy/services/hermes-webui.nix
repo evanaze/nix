@@ -4,7 +4,7 @@
   inputs,
   ...
 }: let
-  hermes-webui = pkgs.callPackage ../../pkgs/hermes-webui {};
+  hermes-webui = pkgs.callPackage ../../../pkgs/hermes-webui {};
 in {
   users.users.hermes.extraGroups = ["evanaze"];
 

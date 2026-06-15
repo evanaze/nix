@@ -4,15 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a NixOS flake configuration using the **dendritic pattern** - an aspect-oriented architecture where each `.nix` file provides config for the same feature across NixOS and home-manager.
+This is a NixOS flake configuration using the **dendritic pattern**. Public feature composition is exposed through flake-parts modules under `modules/`, primarily via `flake.modules.nixos.<name>`.
 
 **Managed systems:**
 - **earth**: x86_64-linux desktop with NVIDIA GPU, gaming, AI services
 - **mars**: x86_64-linux Framework 13 laptop with AMD 7040 CPU
 - **jupiter**: x86_64-linux server
-- **rpi** (mercury): aarch64-linux Raspberry Pi 5 server
 
-The configuration uses flake-parts, home-manager for user configuration, sops-nix for secrets, and includes a custom nixvim configuration.
+The configuration uses flake-parts, import-tree, home-manager, sops-nix, and a custom nixvim configuration.
 
 ## Build and Deployment Commands
 
@@ -24,11 +23,11 @@ The configuration uses flake-parts, home-manager for user configuration, sops-ni
 nix build .#nixosConfigurations.earth.config.system.build.toplevel
 nix build .#nixosConfigurations.mars.config.system.build.toplevel
 nix build .#nixosConfigurations.jupiter.config.system.build.toplevel
-nix build .#nixosConfigurations.rpi.config.system.build.toplevel
 
 # Test build without deploying
 nixos-rebuild build --flake .#earth
 nixos-rebuild build --flake .#mars
+nixos-rebuild build --flake .#jupiter
 ```
 
 ### Deploying Changes
@@ -56,7 +55,7 @@ nix flake update home-manager
 nix flake check
 ```
 
-### Useful Aliases (from zsh aspect)
+### Useful Aliases
 - `econf` - Navigate to config directory and open nvim
 - `update` - Update all flake inputs and commit changes
 - `updnvim` - Update only nixvim input and commit
@@ -65,173 +64,66 @@ nix flake check
 
 ## Architecture
 
-### Dendritic Configuration Structure
+### Dendritic Structure
 
 ```
 .
-├── flake.nix                    # Minimal: inputs + flake-parts + host definitions
-├── lib/
-│   ├── default.nix              # Library entry point
-│   └── mkHost.nix               # Host builder function
-├── aspects/                     # Feature-oriented modules (NixOS + home-manager combined)
-│   ├── core/
-│   │   ├── default.nix          # Aggregator
-│   │   ├── bootloader.nix       # systemd-boot
-│   │   ├── locale.nix           # Timezone, i18n
-│   │   ├── maintenance.nix      # Auto-upgrade, GC
-│   │   ├── networking.nix       # NetworkManager
-│   │   ├── nix.nix              # Flakes, unfree, experimental
-│   │   ├── packages.nix         # CLI tools
-│   │   ├── rpi.nix              # Core for Raspberry Pi (no bootloader/networking)
-│   │   ├── sops.nix             # Secrets management
-│   │   ├── ssh.nix              # OpenSSH
-│   │   ├── tailscale.nix        # VPN service
-│   │   └── user.nix             # User account
-│   ├── shell/
-│   │   ├── default.nix
-│   │   ├── packages.nix         # Shell utilities
-│   │   └── zsh.nix              # System + home-manager zsh combined
-│   ├── desktop/
-│   │   ├── default.nix
-│   │   ├── apps.nix             # Desktop applications
-│   │   ├── fonts.nix
-│   │   ├── gnome.nix            # GNOME + GDM
-│   │   ├── printing.nix         # CUPS
-│   │   ├── sound.nix            # PipeWire
-│   │   └── xserver.nix          # X11
-│   ├── development/
-│   │   ├── default.nix
-│   │   ├── direnv.nix
-│   │   ├── docker.nix
-│   │   ├── editors.nix          # Builds nixvim from local config, ghostty, zellij
-│   │   ├── git.nix              # System + home-manager git
-│   │   ├── languages.nix        # Programming languages
-│   │   └── nixvim/              # Local nixvim configuration (built using nix-community/nixvim)
-│   │       ├── default.nix      # Main imports
-│   │       ├── settings.nix     # General vim settings
-│   │       ├── keymaps.nix      # Keybindings
-│   │       ├── auto_cmds.nix    # Autocommands
-│   │       ├── file_types.nix   # Filetype settings
-│   │       ├── cmp/             # Completion
-│   │       ├── editor/          # Editor plugins
-│   │       ├── git/             # Git integrations
-│   │       ├── lsp/             # LSP and formatting
-│   │       ├── snippets/        # Code snippets
-│   │       ├── themes/          # Color schemes
-│   │       ├── ui/              # UI plugins
-│   │       └── utils/           # Utility plugins
-│   ├── gaming/
-│   │   ├── default.nix
-│   │   ├── slippi.nix           # Super Smash Bros Melee
-│   │   └── steam.nix
-│   ├── media/
-│   │   ├── default.nix
-│   │   ├── ipfs.nix             # Kubo IPFS node
-│   │   └── jellyfin.nix         # Media server
-│   ├── ai/
-│   │   ├── default.nix
-│   │   ├── aider.nix            # AI coding assistant
-│   │   └── ollama.nix           # CUDA-aware LLM server
-│   ├── monitoring/
-│   │   ├── default.nix
-│   │   ├── grafana.nix
-│   │   └── prometheus.nix
-│   ├── networking/
-│   │   ├── default.nix
-│   │   ├── blocky.nix           # DNS ad-blocking
-│   │   └── networkmanager.nix
-│   └── hardware/
-│       ├── default.nix
-│       ├── framework.nix        # Framework + power management
-│       ├── nvidia.nix           # NVIDIA GPU
-│       └── raspberry-pi.nix     # RPi 5 configuration
-├── hosts/                       # Host-specific overrides only
-│   ├── earth/
-│   │   ├── default.nix          # Host-specific config + overrides
-│   │   └── hardware-configuration.nix
-│   ├── mars/
-│   │   ├── default.nix
-│   │   └── hardware-configuration.nix
-│   ├── jupiter/
-│   │   ├── default.nix
-│   │   └── hardware-configuration.nix
-│   └── rpi/
-│       ├── default.nix
-│       ├── disko-nvme-zfs.nix
-│       ├── hardware-configuration.nix
-│       └── pi5-configtxt.nix
+├── flake.nix                    # Minimal: inputs + flake-parts + import-tree
+├── modules/                     # Auto-imported flake-parts modules
+│   ├── hosts.nix                # nixosConfigurations and host composition
+│   ├── nixos.nix                # Public flake.modules.nixos feature names
+│   ├── packages.nix             # perSystem packages
+│   ├── systems.nix              # Supported systems
+│   └── _legacy/                 # Ignored by import-tree; direct NixOS/HM modules
 ├── pkgs/                        # Custom package definitions
-└── secrets/
-    ├── secrets.yaml             # sops-encrypted secrets
-    └── .sops.yaml               # sops configuration
+└── secrets/                     # sops-encrypted secrets
 ```
 
-### Key Architecture Principles
+`import-tree ./modules` loads flake-parts modules recursively. Paths containing `/_` are ignored, so `modules/_legacy` contains direct NixOS/Home Manager modules that are imported only through public `flake.modules.nixos` definitions.
 
-1. **Aspect-oriented**: Files organized by feature, not host
-2. **Combined configs**: Each aspect file contains both NixOS and home-manager config
-3. **Host composition**: Hosts select which aspects to apply
-4. **No specialArgs**: Uses `_module.args` for shared values (username, inputs, hostname)
-5. **flake-parts** as foundation
+### Key Principles
 
-### Host-to-Aspect Mapping
+1. **Feature-oriented modules**: Hosts compose named features, not raw file paths.
+2. **Simple flake**: `flake.nix` is a dependency manifest and entrypoint only.
+3. **Public module interface**: Add host-consumable NixOS modules in `modules/nixos.nix` as `flake.modules.nixos.<name>`.
+4. **Host composition lives outside flake.nix**: Edit `modules/hosts.nix` for host lists and state versions.
+5. **No standalone mkHost library**: Any host helper stays local to `modules/hosts.nix`.
 
-| Host    | Aspects |
-|---------|---------|
-| earth   | core, shell, desktop, development, gaming, media, ai, monitoring, hardware/nvidia |
-| mars    | core, shell, desktop, development, gaming, hardware/framework |
-| jupiter | core, shell, development |
-| rpi     | core/rpi, shell, networking/blocky, hardware/raspberry-pi |
+### Host Composition
 
-### Aspect Pattern Example
-
-Each aspect file follows this structure:
-
-```nix
-# aspects/shell/zsh.nix
-{pkgs, username, hostname, ...}: {
-  # NixOS System Configuration
-  programs.zsh.enable = true;
-  environment.systemPackages = with pkgs; [fzf ripgrep zoxide];
-
-  # Home-Manager Configuration
-  home-manager.users.${username} = {
-    programs.zsh = {
-      enable = true;
-      shellAliases = {
-        rebuild = "sudo nixos-rebuild switch --flake $HOME/.config/nix#${hostname}";
-      };
-    };
-  };
-}
-```
+| Host    | Main modules |
+|---------|--------------|
+| earth   | core, desktop, development, gaming, aiServer, monitoring, NVIDIA/hardware |
+| mars    | core, desktop, development, steam, monitoring, Framework/hardware |
+| jupiter | core, development, backup, business, media, monitoring, networking, services |
 
 ## Development Workflow
 
 ### Making Configuration Changes
 
-1. Identify which aspect the change belongs to
-2. Edit the relevant aspect file in `aspects/`
-3. For host-specific overrides, edit `hosts/<hostname>/default.nix`
-4. Test build: `nixos-rebuild build --flake .#<hostname>`
-5. If successful, deploy: `sudo nixos-rebuild switch --flake .#<hostname>`
+1. Identify which feature module the change belongs to.
+2. Edit the relevant direct module under `modules/_legacy/`.
+3. If the feature needs a public name for host composition, add it to `modules/nixos.nix`.
+4. If host composition changes, edit `modules/hosts.nix`.
+5. Test build: `nixos-rebuild build --flake .#<hostname>`.
+6. If successful, deploy: `sudo nixos-rebuild switch --flake .#<hostname>`.
 
 ### Adding New Packages
 
-**System-wide (all hosts):** Add to `aspects/core/packages.nix`
+**Flake packages:** Add to `modules/packages.nix`.
 
-**Desktop/laptop:** Add to `aspects/desktop/apps.nix`
+**System-wide packages:** Add to the relevant module under `modules/_legacy/core/` or another feature directory.
 
-**Development tools:** Add to `aspects/development/` (appropriate file)
+**Desktop/laptop packages:** Add to `modules/_legacy/desktop/`.
 
-**Host-specific:** Add to `hosts/<hostname>/default.nix`
+**Development tools:** Add to `modules/_legacy/development/`.
 
-### Creating New Aspects
+### Creating New Modules
 
-1. Create a new `.nix` file in the appropriate category under `aspects/`
-2. Follow the aspect pattern (system config + home-manager config)
-3. Import in the category's `default.nix` aggregator
-4. Add to host aspect lists in `flake.nix` as needed
+1. Create the direct NixOS/Home Manager implementation under `modules/_legacy/<category>/<name>.nix`.
+2. Expose it from `modules/nixos.nix` as `flake.modules.nixos.<name>`.
+3. Add that public module name to the relevant host in `modules/hosts.nix`.
+4. Run `nix flake show` and build affected hosts.
 
 ### Working with Secrets
 
@@ -245,22 +137,21 @@ sops secrets/secrets.yaml
 
 ## Important Notes
 
-- Username is hardcoded as "evanaze" in `lib/default.nix`
-- `hostname` variable is passed to all modules and available for host-specific logic
-- Editor is set to nvim globally via `aspects/core/nix.nix`
-- All systems use zsh as default shell
-- Flakes and nix-command are enabled on all systems
-- Unfree packages are allowed globally
-- Desktop/laptop systems use systemd-boot
-- Time zone: America/Denver (all systems)
-- Tailscale enabled on all systems for VPN access
+- Username is currently set to `evanaze` in `modules/hosts.nix`.
+- `hostname`, `username`, `inputs`, and `system` are still passed through `_module.args` for legacy modules.
+- Editor is set to nvim globally via `modules/_legacy/core/nix.nix`.
+- All systems use zsh as default shell.
+- Flakes and nix-command are enabled on all systems.
+- Unfree packages are allowed globally.
+- Desktop/laptop systems use systemd-boot.
+- Time zone: America/Denver.
+- Tailscale is enabled on all systems for VPN access.
 
 ### External Dependencies
 
 - **flake-parts**: Flake structure management
-- **nixvim**: Neovim configuration framework (`github:nix-community/nixvim`), config stored locally in `aspects/development/nixvim/`
-- **nixos-hardware**: Hardware optimizations (Framework 13 7040 AMD, RPi 5)
-- **nixos-raspberrypi**: Raspberry Pi 5 support
+- **import-tree**: Recursive loading of flake-parts modules under `modules/`
+- **nixvim**: Neovim configuration framework, config stored under `modules/_legacy/development/nixvim/`
+- **nixos-hardware**: Hardware optimizations
 - **slippi**: Super Smash Bros Melee netplay
 - **sops-nix**: Secrets management with age encryption
-- **disko**: Declarative disk partitioning (RPI, Jupiter)

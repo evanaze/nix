@@ -4,7 +4,7 @@
   username,
   ...
 }: let
-  twentyPkg = pkgs.callPackage ../../pkgs/twenty {};
+  twentyPkg = pkgs.callPackage ../../../pkgs/twenty {};
   twentyPort = 8081;
   caddyPort = 8082;
 in {
