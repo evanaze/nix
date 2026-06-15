@@ -3,6 +3,7 @@ let
     username,
     inputs,
     pkgs,
+    system,
     ...
   }: {
     nixpkgs.overlays = [inputs.openviking.overlays.default];
@@ -25,13 +26,58 @@ let
         '';
       };
 
+      home.file.".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
+        "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
+        agents = {
+          sisyphus.model = "opencode/claude-sonnet-4-5";
+          oracle = {
+            model = "openai/gpt-5.2";
+            variant = "high";
+          };
+          librarian.model = "zai-coding-plan/glm-4.7";
+          explore.model = "opencode/claude-haiku-4-5";
+          multimodal-looker.model = "opencode/gemini-3-flash";
+          prometheus = {
+            model = "opencode/claude-opus-4-5";
+            variant = "max";
+          };
+          metis = {
+            model = "opencode/claude-opus-4-5";
+            variant = "max";
+          };
+          momus = {
+            model = "openai/gpt-5.2";
+            variant = "medium";
+          };
+          atlas.model = "opencode/claude-sonnet-4-5";
+        };
+        categories = {
+          visual-engineering.model = "opencode/gemini-3-pro";
+          ultrabrain = {
+            model = "openai/gpt-5.2-codex";
+            variant = "xhigh";
+          };
+          artistry = {
+            model = "opencode/gemini-3-pro";
+            variant = "max";
+          };
+          quick.model = "opencode/claude-haiku-4-5";
+          unspecified-low.model = "opencode/claude-sonnet-4-5";
+          unspecified-high.model = "opencode/claude-sonnet-4-5";
+          writing.model = "opencode/gemini-3-flash";
+        };
+      };
+
       programs.opencode = {
         enable = true;
         tui.theme = "catppuccin";
         settings = {
           autoupdate = true;
           lsp = true;
-          plugin = ["openviking-opencode"];
+          plugin = [
+            "openviking-opencode"
+            "oh-my-opencode@3.0.1"
+          ];
           compaction = {
             auto = true;
             prune = true;
