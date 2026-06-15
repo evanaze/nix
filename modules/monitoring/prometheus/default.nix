@@ -98,6 +98,24 @@
                 annotations:
                   summary: "{{ $labels.host }} SMART health check failed"
                   description: "SMART health status is unhealthy for {{ $labels.device }} on {{ $labels.host }}."
+
+              - alert: ZfsPoolUnhealthy
+                expr: zfs_pools_healthy{host="jupiter"} == 0
+                for: 5m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: "jupiter ZFS pool health check failed"
+                  description: "zpool status -x reports that one or more imported ZFS pools on jupiter are not healthy."
+
+              - alert: ZfsPoolHealthMissing
+                expr: absent(zfs_pools_healthy{host="jupiter"})
+                for: 10m
+                labels:
+                  severity: warning
+                annotations:
+                  summary: "jupiter ZFS pool health metric is missing"
+                  description: "Prometheus is not receiving the zfs_pools_healthy metric from jupiter."
       ''
     ];
   };

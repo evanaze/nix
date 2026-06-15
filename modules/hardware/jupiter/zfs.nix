@@ -1,4 +1,5 @@
 let
+  textfileDirectory = "/var/lib/node_exporter/textfile_collector";
   module = {pkgs, ...}: {
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.forceImportRoot = false;
@@ -11,6 +12,42 @@ let
   services.zfs = {
     autoScrub.enable = true;
     autoSnapshot.enable = true;
+  };
+
+  systemd.services.zfs-health-metrics = {
+    description = "Export ZFS pool health metrics for Prometheus";
+    after = ["zfs-import.target"];
+    wants = ["zfs-import.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+    script = ''
+      set -eu
+      mkdir -p ${textfileDirectory}
+      tmp=$(mktemp ${textfileDirectory}/zfs_health.prom.XXXXXX)
+      if ${pkgs.zfs}/bin/zpool status -x | ${pkgs.gnugrep}/bin/grep -q "all pools are healthy"; then
+        status=1
+      else
+        status=0
+      fi
+      {
+        echo '# HELP zfs_pools_healthy Whether all imported ZFS pools are healthy according to zpool status -x.'
+        echo '# TYPE zfs_pools_healthy gauge'
+        echo "zfs_pools_healthy $status"
+      } > "$tmp"
+      chmod 0644 "$tmp"
+      mv "$tmp" ${textfileDirectory}/zfs_health.prom
+    '';
+  };
+
+  systemd.timers.zfs-health-metrics = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnBootSec = "2m";
+      OnUnitActiveSec = "1m";
+      Unit = "zfs-health-metrics.service";
+    };
   };
 
   # Create ZFS datasets for app state on the redundant pool and fix ownership
