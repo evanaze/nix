@@ -30,7 +30,7 @@ let
   # This service sets it to 100% after pipewire starts.
   systemd.user.services.framework-speakers-volume = {
     enable = true;
-    description = "Set Framework Speakers volume to 100%";
+    description = "Set Framework Speakers as default at 100% volume";
     after = ["pipewire.service"];
     bindsTo = ["pipewire.service"];
     serviceConfig = {
@@ -38,15 +38,44 @@ let
       RemainAfterExit = true;
       ExecStart = let
         script = pkgs.writeShellScript "set-framework-volume" ''
-          for i in $(seq 1 10); do
-            id=$(${pkgs.pipewire}/bin/pw-cli list-objects 2>/dev/null \
-              | ${pkgs.gnugrep}/bin/grep -B10 'node.name = "audio_effect.laptop-convolver"' \
-              | ${pkgs.gnused}/bin/sed -n 's/.*id \([0-9]*\).*/\1/p')
+          set -euo pipefail
+
+          for i in $(${pkgs.coreutils}/bin/seq 1 10); do
+            id=$(${pkgs.pipewire}/bin/pw-cli list-objects Node 2>/dev/null \
+              | ${pkgs.gawk}/bin/awk '
+                function maybe_print() {
+                  if (id != "" && has_name && is_sink) {
+                    print id
+                    found = 1
+                    exit
+                  }
+                }
+
+                /^[[:space:]]*id [0-9]+, type PipeWire:Interface:Node/ {
+                  maybe_print()
+                  id = $2
+                  sub(/,/, "", id)
+                  has_name = 0
+                  is_sink = 0
+                  next
+                }
+
+                /node\.name = "audio_effect\.laptop-convolver"/ { has_name = 1 }
+                /media\.class = "Audio\/Sink"/ { is_sink = 1 }
+
+                END {
+                  if (!found) {
+                    maybe_print()
+                  }
+                }
+            ')
             if [ -n "$id" ]; then
-              ${pkgs.pipewire}/bin/wpctl set-volume "$id" 1.0
+              ${pkgs.wireplumber}/bin/wpctl set-default "$id"
+              ${pkgs.wireplumber}/bin/wpctl set-volume "$id" 1.0
+              ${pkgs.wireplumber}/bin/wpctl set-mute "$id" 0
               exit 0
             fi
-            sleep 0.5
+            ${pkgs.coreutils}/bin/sleep 0.5
           done
           exit 1
         '';
