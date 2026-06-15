@@ -34,7 +34,10 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:opencode --https=4437 4096";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:opencode || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:opencode --https=443 4096
+    '';
   };
 };
 }

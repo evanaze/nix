@@ -8,7 +8,7 @@ let
   nocodbPort = 8082;
   caddyPort = 8083;
   redisPort = 6380;
-  tsServePort = 4432;
+  tsServePort = 443;
 in {
   services.caddy = {
     enable = true;

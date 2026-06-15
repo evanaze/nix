@@ -73,7 +73,10 @@
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=4434 http://localhost:${toString config.services.librechat.env.PORT}";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:ai || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:ai --https=443 http://localhost:${toString config.services.librechat.env.PORT}
+    '';
   };
 };
 }

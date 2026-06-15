@@ -23,7 +23,23 @@ in {
 
   systemd.tmpfiles.rules = [
     "d ${hermes-home} 2770 hermes hermes -"
+    "z ${hermes-home}/.hermes_history 0660 - hermes -"
+    "z ${hermes-home}/.managed 0640 - hermes -"
+    "z ${hermes-home}/.scratch_tip_shown 0660 - hermes -"
+    "z ${hermes-home}/.skills_prompt_snapshot.json 0640 - hermes -"
+    "z ${hermes-home}/.update_check 0660 - hermes -"
+    "z ${hermes-home}/auth.lock 0660 - hermes -"
     "z ${hermes-home}/memories 2770 hermes hermes -"
+    "z ${hermes-home}/auth.json 0660 - hermes -"
+    "z ${hermes-home}/channel_directory.json 0660 - hermes -"
+    "z ${hermes-home}/config.yaml 0660 - hermes -"
+    "z ${hermes-home}/config.yaml.bak 0640 - hermes -"
+    "z ${hermes-home}/models_dev_cache.json 0640 - hermes -"
+    "z ${hermes-home}/ollama_cloud_models_cache.json 0640 - hermes -"
+    "z ${hermes-home}/processes.json 0640 - hermes -"
+    "z ${hermes-home}/provider_models_cache.json 0640 - hermes -"
+    "z ${hermes-home}/skills/.usage.json 0660 - hermes -"
+    "z ${hermes-home}/skills/.usage.json.lock 0660 - hermes -"
   ];
 
   users.users.${username}.extraGroups = ["hermes"];
@@ -82,7 +98,7 @@ in {
           "--enable-write"
         ];
         env = {
-          ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net:4432";
+          ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
         };
         timeout = 60;
         connect_timeout = 30;

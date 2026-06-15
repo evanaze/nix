@@ -39,7 +39,10 @@ let
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://localhost:2283";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:photos || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://localhost:2283
+    '';
   };
 };
 in {

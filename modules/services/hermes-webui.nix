@@ -19,6 +19,7 @@ in {
     description = "Hermes WebUI - browser interface for Hermes Agent";
     environment = {
       HERMES_HOME = "/mnt/eye/appdata/hermes/.hermes";
+      HERMES_HOME_MODE = "0770";
       HERMES_WEBUI_CHAT_BACKEND = "gateway";
       HERMES_WEBUI_GATEWAY_BASE_URL = "http://127.0.0.1:8642";
       HERMES_WEBUI_GATEWAY_API_KEY = "d156d12d681eb34356045688a43ba9487764e8731b946ce68d65aebb899324e6";
@@ -48,7 +49,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=4430 8787";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 8787
+    '';
   };
 };
 in {

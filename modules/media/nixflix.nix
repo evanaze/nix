@@ -235,7 +235,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 http://127.0.0.1:${toString caddyPorts.jellyfin}";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:media || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:media --https=443 http://127.0.0.1:${toString caddyPorts.jellyfin}
+    '';
   };
 
   systemd.services.lidarr-tsserve = {
@@ -253,7 +256,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:lidarr --https=4434 http://127.0.0.1:${toString caddyPorts.lidarr}";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:lidarr || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:lidarr --https=443 http://127.0.0.1:${toString caddyPorts.lidarr}
+    '';
   };
 
   sops.secrets = {
