@@ -6,7 +6,9 @@ let
   username,
   ...
 }: let
-  hermes-webui = pkgs.callPackage ../../pkgs/hermes-webui {};
+  hermes-webui = pkgs.callPackage ../../pkgs/hermes-webui {
+    hermes-agent = pkgs.hermes-agent;
+  };
   user-home = "/home/${username}";
   hermes-workspaces = [
     "${user-home}/.config/nix"

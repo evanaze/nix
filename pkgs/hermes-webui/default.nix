@@ -4,6 +4,7 @@
   fetchFromGitHub,
   python3,
   makeWrapper,
+  hermes-agent ? null,
 }:
 let
   version = "0.51.253";
@@ -15,7 +16,10 @@ let
     hash = "sha256-khx7TJfP6pZBXHKH3cz2yqbr0CH4vnU3vMNeCNMZ6xI=";
   };
 
-  pythonEnv = python3.withPackages (ps: with ps; [ pyyaml cryptography ]);
+  pythonEnv =
+    if hermes-agent != null && hermes-agent ? hermesVenv
+    then hermes-agent.hermesVenv
+    else python3.withPackages (ps: with ps; [ pyyaml cryptography ]);
 in
 stdenv.mkDerivation {
   pname = "hermes-webui";
