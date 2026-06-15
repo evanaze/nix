@@ -69,9 +69,12 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
-      ${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=4435 http://127.0.0.1:${toString seaweedfsS3Port}
+      ${lib.getExe pkgs.tailscale} serve clear svc:swfs || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=443 http://127.0.0.1:${toString seaweedfsS3Port}
     '';
   };
 };

@@ -64,8 +64,8 @@ let
           }
 
           function oc() {
-              if curl -sf --max-time 1 https://opencode.spitz-pickerel.ts.net:4437/global/health > /dev/null 2>&1; then
-                  opencode attach https://opencode.spitz-pickerel.ts.net:4437
+              if curl -sf --max-time 1 https://opencode.spitz-pickerel.ts.net/global/health > /dev/null 2>&1; then
+                  opencode attach https://opencode.spitz-pickerel.ts.net
               else
                   opencode
               fi

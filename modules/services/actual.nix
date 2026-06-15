@@ -86,8 +86,13 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=4432 5006";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:budget || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=443 5006
+    '';
   };
 };
 in {

@@ -47,8 +47,13 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:media --https=4433 8096";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:media || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:media --https=443 8096
+    '';
   };
 };
 }

@@ -8,7 +8,7 @@ let
   nocodbPort = 8082;
   caddyPort = 8083;
   redisPort = 6380;
-  tsServePort = 4432;
+  tsServePort = 443;
 in {
   services.caddy = {
     enable = true;
@@ -73,6 +73,8 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
       ${lib.getExe pkgs.tailscale} serve clear svc:nocodb || true

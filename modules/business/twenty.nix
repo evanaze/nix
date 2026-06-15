@@ -73,10 +73,12 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
       ${lib.getExe pkgs.tailscale} serve clear svc:crm || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:crm --https=4440 http://127.0.0.1:${toString caddyPort}
+      ${lib.getExe pkgs.tailscale} serve --service=svc:crm --https=443 http://127.0.0.1:${toString caddyPort}
     '';
   };
 };

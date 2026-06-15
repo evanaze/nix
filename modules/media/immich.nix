@@ -38,8 +38,13 @@ let
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://localhost:2283";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:photos || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://localhost:2283
+    '';
   };
 };
 in {

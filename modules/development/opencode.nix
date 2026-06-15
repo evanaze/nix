@@ -16,7 +16,7 @@ let
     home-manager.users.${username} = {
       home.file.".openviking/ovcli.conf" = {
         text = ''
-          {"url": "https://memory.spitz-pickerel.ts.net:4438"}
+          {"url": "https://memory.spitz-pickerel.ts.net"}
         '';
       };
 

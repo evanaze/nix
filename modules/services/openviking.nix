@@ -41,8 +41,13 @@ let
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:memory --https=4438 http://localhost:1933";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:memory || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:memory --https=443 http://localhost:1933
+    '';
   };
 };
 in {

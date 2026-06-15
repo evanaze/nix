@@ -27,8 +27,13 @@ let
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
-    script = "${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=4436 ${toString config.services.nix-serve.port}";
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:cache || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=443 ${toString config.services.nix-serve.port}
+    '';
   };
 };
 in {

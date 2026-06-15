@@ -134,10 +134,12 @@ in {
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
       ${lib.getExe pkgs.tailscale} serve clear svc:todo || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=4435 http://127.0.0.1:${toString caddyPort}
+      ${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=443 http://127.0.0.1:${toString caddyPort}
     '';
   };
 };
