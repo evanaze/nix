@@ -3,11 +3,44 @@ let
   lib,
   pkgs,
   inputs,
+  username,
   ...
 }: let
   hermes-webui = pkgs.callPackage ../../pkgs/hermes-webui {};
+  user-home = "/home/${username}";
+  hermes-workspaces = [
+    "${user-home}/.config/nix"
+    "${user-home}/workspace"
+  ];
 in {
-  users.users.hermes.extraGroups = ["evanaze"];
+  users.users.hermes.extraGroups = [username];
+
+  system.activationScripts.hermesWorkspaceAcl = {
+    deps = ["users"];
+    text = ''
+      setfacl=${pkgs.acl}/bin/setfacl
+      find=${pkgs.findutils}/bin/find
+      install=${pkgs.coreutils}/bin/install
+
+      grant_workspace_acl() {
+        workspace="$1"
+
+        if [ ! -d "$workspace" ]; then
+          "$install" -d -m 0750 -o ${username} -g users "$workspace"
+        fi
+
+        "$setfacl" -m u:hermes:rwx "$workspace"
+        "$find" "$workspace" -type d -exec "$setfacl" -m u:hermes:rwx,d:u:hermes:rwx {} +
+        "$find" "$workspace" -type f -perm /111 -exec "$setfacl" -m u:hermes:rwx {} +
+        "$find" "$workspace" -type f ! -perm /111 -exec "$setfacl" -m u:hermes:rw {} +
+      }
+
+      "$setfacl" -m u:hermes:--x ${user-home}
+      "$setfacl" -m u:hermes:--x ${user-home}/.config
+
+      ${lib.concatMapStringsSep "\n" (path: ''grant_workspace_acl ${lib.escapeShellArg path}'') hermes-workspaces}
+    '';
+  };
 
   systemd.services.hermes-webui = {
     after = [
@@ -20,9 +53,7 @@ in {
     environment = {
       HERMES_HOME = "/mnt/eye/appdata/hermes/.hermes";
       HERMES_HOME_MODE = "0770";
-      HERMES_WEBUI_CHAT_BACKEND = "gateway";
-      HERMES_WEBUI_GATEWAY_BASE_URL = "http://127.0.0.1:8642";
-      HERMES_WEBUI_GATEWAY_API_KEY = "d156d12d681eb34356045688a43ba9487764e8731b946ce68d65aebb899324e6";
+      HERMES_WEBUI_CHAT_BACKEND = "legacy";
       HERMES_WEBUI_AGENT_DIR = "${inputs.hermes-agent.outPath}";
     };
     serviceConfig = {
