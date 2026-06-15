@@ -71,21 +71,24 @@ nix flake check
 ├── flake.nix                    # Minimal: inputs + flake-parts + import-tree
 ├── modules/                     # Auto-imported flake-parts modules
 │   ├── hosts.nix                # nixosConfigurations and host composition
-│   ├── nixos.nix                # Public flake.modules.nixos feature names
+│   ├── module-options.nix       # Enables mergeable flake.modules outputs
 │   ├── packages.nix             # perSystem packages
 │   ├── systems.nix              # Supported systems
-│   └── _legacy/                 # Ignored by import-tree; direct NixOS/HM modules
+│   ├── core/                    # Feature modules publishing flake.modules.nixos.*
+│   ├── desktop/
+│   ├── development/
+│   └── services/
 ├── pkgs/                        # Custom package definitions
 └── secrets/                     # sops-encrypted secrets
 ```
 
-`import-tree ./modules` loads flake-parts modules recursively. Paths containing `/_` are ignored, so `modules/_legacy` contains direct NixOS/Home Manager modules that are imported only through public `flake.modules.nixos` definitions.
+`import-tree ./modules` loads flake-parts modules recursively. Paths containing `/_` are ignored, so internal non-flake-parts trees such as `modules/development/_nixvim` can be imported by feature modules without being auto-loaded as flake-parts modules.
 
 ### Key Principles
 
 1. **Feature-oriented modules**: Hosts compose named features, not raw file paths.
 2. **Simple flake**: `flake.nix` is a dependency manifest and entrypoint only.
-3. **Public module interface**: Add host-consumable NixOS modules in `modules/nixos.nix` as `flake.modules.nixos.<name>`.
+3. **Public module interface**: Each feature file publishes host-consumable modules as `flake.modules.nixos.<name>`.
 4. **Host composition lives outside flake.nix**: Edit `modules/hosts.nix` for host lists and state versions.
 5. **No standalone mkHost library**: Any host helper stays local to `modules/hosts.nix`.
 
@@ -102,8 +105,8 @@ nix flake check
 ### Making Configuration Changes
 
 1. Identify which feature module the change belongs to.
-2. Edit the relevant direct module under `modules/_legacy/`.
-3. If the feature needs a public name for host composition, add it to `modules/nixos.nix`.
+2. Edit the relevant flake-parts module under `modules/<category>/`.
+3. If the feature needs a public name for host composition, publish it as `flake.modules.nixos.<name>` from that file.
 4. If host composition changes, edit `modules/hosts.nix`.
 5. Test build: `nixos-rebuild build --flake .#<hostname>`.
 6. If successful, deploy: `sudo nixos-rebuild switch --flake .#<hostname>`.
@@ -112,16 +115,16 @@ nix flake check
 
 **Flake packages:** Add to `modules/packages.nix`.
 
-**System-wide packages:** Add to the relevant module under `modules/_legacy/core/` or another feature directory.
+**System-wide packages:** Add to the relevant module under `modules/core/` or another feature directory.
 
-**Desktop/laptop packages:** Add to `modules/_legacy/desktop/`.
+**Desktop/laptop packages:** Add to `modules/desktop/`.
 
-**Development tools:** Add to `modules/_legacy/development/`.
+**Development tools:** Add to `modules/development/`.
 
 ### Creating New Modules
 
-1. Create the direct NixOS/Home Manager implementation under `modules/_legacy/<category>/<name>.nix`.
-2. Expose it from `modules/nixos.nix` as `flake.modules.nixos.<name>`.
+1. Create a flake-parts module under `modules/<category>/<name>.nix`.
+2. Expose any NixOS implementation as `flake.modules.nixos.<name>`.
 3. Add that public module name to the relevant host in `modules/hosts.nix`.
 4. Run `nix flake show` and build affected hosts.
 
@@ -138,8 +141,8 @@ sops secrets/secrets.yaml
 ## Important Notes
 
 - Username is currently set to `evanaze` in `modules/hosts.nix`.
-- `hostname`, `username`, `inputs`, and `system` are still passed through `_module.args` for legacy modules.
-- Editor is set to nvim globally via `modules/_legacy/core/nix.nix`.
+- `hostname`, `username`, `inputs`, and `system` are still passed through `_module.args` for modules that use those values.
+- Editor is set to nvim globally via `modules/core/nix.nix`.
 - All systems use zsh as default shell.
 - Flakes and nix-command are enabled on all systems.
 - Unfree packages are allowed globally.
@@ -151,7 +154,7 @@ sops secrets/secrets.yaml
 
 - **flake-parts**: Flake structure management
 - **import-tree**: Recursive loading of flake-parts modules under `modules/`
-- **nixvim**: Neovim configuration framework, config stored under `modules/_legacy/development/nixvim/`
+- **nixvim**: Neovim configuration framework, config stored under `modules/development/_nixvim/`
 - **nixos-hardware**: Hardware optimizations
 - **slippi**: Super Smash Bros Melee netplay
 - **sops-nix**: Secrets management with age encryption

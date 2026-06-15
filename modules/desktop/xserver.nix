@@ -1,0 +1,19 @@
+let
+  module = # aspects/desktop/xserver.nix - X11 windowing system
+{...}: {
+  # Enable the X11 windowing system
+  services.xserver = {
+    enable = true;
+    # Configure keymap in X11
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+  };
+};
+in {
+  flake.modules.nixos = {
+    desktopXserver = module;
+    desktop = module;
+  };
+}

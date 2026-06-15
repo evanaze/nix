@@ -1,0 +1,47 @@
+{
+  flake.modules.nixos.servicesGrafana = {
+    config,
+    lib,
+    pkgs,
+    ...
+  }: {
+    services.grafana = {
+      enable = true;
+      dataDir = "/mnt/eye/appdata/grafana";
+      settings = {
+        server = {
+          http_port = 2342;
+          http_addr = "127.0.0.1";
+          domain = "monitoring.spitz-pickerel.ts.net";
+        };
+        security.secret_key = "/run/secrets/grafana";
+      };
+
+      provision.datasources.settings.datasources = [
+        {
+          name = "Prometheus";
+          type = "prometheus";
+          url = "http://localhost:${toString config.services.prometheus.port}";
+        }
+      ];
+    };
+
+    systemd.services.grafana-tsserve = {
+      after = [
+        "tailscaled-autoconnect.service"
+        "grafana.service"
+      ];
+      wants = [
+        "tailscaled-autoconnect.service"
+        "grafana.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Using Tailscale Serve to publish Grafana";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = "${lib.getExe pkgs.tailscale} serve --service=svc:monitoring --https=4431 http://127.0.0.1:2342";
+    };
+  };
+}
