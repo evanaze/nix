@@ -41,6 +41,8 @@ let
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
       ${lib.getExe pkgs.tailscale} serve clear svc:memory || true

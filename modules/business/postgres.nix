@@ -40,6 +40,7 @@ let
     serviceConfig = {
       Type = "exec";
       Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = "${lib.getExe pkgs.tailscale} serve --tcp 5432 tcp://localhost:5432";
   };

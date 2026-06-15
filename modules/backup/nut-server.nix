@@ -193,6 +193,8 @@ let
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
     };
     script = ''
       ${lib.getExe pkgs.tailscale} serve --service=svc:nut --tcp 3493 tcp://127.0.0.1:3493
