@@ -30,64 +30,64 @@ let
         "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
         agents = {
           sisyphus = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "high";
           };
           oracle = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "high";
           };
           librarian = {
-            model = "opencode/big-pickle";
+            model = "openai/gpt-5.5-fast";
           };
           explore = {
-            model = "opencode/gpt-5-nano";
+            model = "openai/gpt-5.4-mini-fast";
           };
           "multimodal-looker" = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
           };
           prometheus = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "high";
           };
           metis = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "high";
           };
           momus = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "medium";
           };
           atlas = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5-fast";
           };
         };
         categories = {
           "visual-engineering" = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
             variant = "high";
           };
           ultrabrain = {
-            model = "openai/gpt-5.2-codex";
+            model = "openai/gpt-5.3-codex-spark";
             variant = "xhigh";
           };
           artistry = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5-pro";
             variant = "max";
           };
           quick = {
-            model = "opencode/big-pickle";
+            model = "openai/gpt-5.5-fast";
           };
           "unspecified-low" = {
-            model = "openai/gpt-5.2-codex";
+            model = "openai/gpt-5.3-codex-spark";
             variant = "medium";
           };
           "unspecified-high" = {
-            model = "openai/gpt-5.2-codex";
+            model = "openai/gpt-5.3-codex-spark";
             variant = "medium";
           };
           writing = {
-            model = "openai/gpt-5.2";
+            model = "openai/gpt-5.5";
           };
         };
       };
