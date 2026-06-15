@@ -1,6 +1,7 @@
 {
   perSystem = {pkgs, ...}: {
     packages = {
+      odysseus = pkgs.callPackage ../pkgs/odysseus {};
       twenty = pkgs.callPackage ../pkgs/twenty {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
       oh-my-opencode = pkgs.callPackage ../pkgs/oh-my-opencode {};

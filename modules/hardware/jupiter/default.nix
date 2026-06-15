@@ -37,6 +37,8 @@
     fileSystems."/mnt/eye/appdata/actual" = { device = "eye/appdata/actual"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/donetick" = { device = "eye/appdata/donetick"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/grafana" = { device = "eye/appdata/grafana"; fsType = "zfs"; };
+    fileSystems."/mnt/eye/appdata/chromadb" = { device = "eye/appdata/chromadb"; fsType = "zfs"; };
+    fileSystems."/mnt/eye/appdata/odysseus" = { device = "eye/appdata/odysseus"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/hermes" = { device = "eye/appdata/hermes"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/jellyfin" = { device = "eye/appdata/jellyfin"; fsType = "zfs"; };
 

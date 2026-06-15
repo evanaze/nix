@@ -121,6 +121,7 @@ in {
         smartctlExporter
         networking
         services
+        servicesOdysseus
       ];
       extraModules = [
         inputs.hermes-agent.nixosModules.default
