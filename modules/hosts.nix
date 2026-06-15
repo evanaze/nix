@@ -116,6 +116,8 @@ in {
         media
         monitoring
         prometheus
+        prometheusAlertmanager
+        monitoringNtfy
         smartctlExporter
         networking
         services
