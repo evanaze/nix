@@ -1,6 +1,7 @@
 {
   flake.modules.nixos.core = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
+      busybox
       cachix
       cron
       devenv
