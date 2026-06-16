@@ -10,23 +10,24 @@ let
     openvikingOpencodePlugin = pkgs.writeText "openviking-opencode.mjs" (
       builtins.replaceStrings
       [
-        ''  // installed but no config file — cannot start''
+        "// installed but no config file — cannot start"
       ]
       [
-        ''  // If the CLI is configured for a remote server, do not try to
-  // auto-start a local server or require local server credentials. The
-  // remote may simply be offline, and `~/.openviking/ov.conf` is only needed
-  // for local server startup.
-  const cliConfig = join(homedir(), ".openviking", "ovcli.conf")
-  if (existsSync(cliConfig)) {
-    try {
-      const url = JSON.parse(readFileSync(cliConfig, "utf8"))?.url
-      const host = url ? new URL(url).hostname : null
-      if (host && !["localhost", "127.0.0.1", "::1"].includes(host)) return false
-    } catch {}
-  }
+        ''
+          // If the CLI is configured for a remote server, do not try to
+          // auto-start a local server or require local server credentials. The
+          // remote may simply be offline, and `~/.openviking/ov.conf` is only needed
+          // for local server startup.
+          const cliConfig = join(homedir(), ".openviking", "ovcli.conf")
+          if (existsSync(cliConfig)) {
+            try {
+              const url = JSON.parse(readFileSync(cliConfig, "utf8"))?.url
+              const host = url ? new URL(url).hostname : null
+              if (host && !["localhost", "127.0.0.1", "::1"].includes(host)) return false
+            } catch {}
+          }
 
-  // installed but no config file — cannot start''
+          // installed but no config file — cannot start''
       ]
       (builtins.readFile "${openvikingSource}/examples/opencode/plugin/index.mjs")
     );
@@ -53,8 +54,7 @@ let
 
       home.file.".config/opencode/plugins/openviking-opencode.mjs".source = openvikingOpencodePlugin;
 
-      home.file.".config/opencode/plugins/skills/openviking/SKILL.md".source =
-        "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
+      home.file.".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
 
       home.file.".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
         "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
