@@ -44,11 +44,15 @@ let
         ".openviking/ovcli.conf".text = ''
           {"url": "https://memory.spitz-pickerel.ts.net"}
         '';
+
         ".openviking/ovcli.settings.conf".text = ''
           {"language": "en"}
         '';
+
         ".config/opencode/plugins/openviking-opencode.mjs".source = openvikingOpencodePlugin;
+
         ".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
+
         ".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
           "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
           agents = {
@@ -77,33 +81,29 @@ let
             };
             atlas.model = "openai/gpt-5.5-fast";
           };
-        };
-        categories = {
-          "visual-engineering" = {
-            model = "openai/gpt-5.5";
-            variant = "high";
-          };
-          ultrabrain = {
-            model = "openai/gpt-5.3-codex-spark";
-            variant = "xhigh";
-          };
-          artistry = {
-            model = "openai/gpt-5.5-pro";
-            variant = "max";
-          };
-          quick = {
-            model = "openai/gpt-5.5-fast";
-          };
-          "unspecified-low" = {
-            model = "openai/gpt-5.3-codex-spark";
-            variant = "medium";
-          };
-          "unspecified-high" = {
-            model = "openai/gpt-5.3-codex-spark";
-            variant = "medium";
-          };
-          writing = {
-            model = "openai/gpt-5.5";
+          categories = {
+            "visual-engineering" = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            ultrabrain = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "xhigh";
+            };
+            artistry = {
+              model = "openai/gpt-5.5-pro";
+              variant = "max";
+            };
+            quick.model = "openai/gpt-5.5-fast";
+            "unspecified-low" = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "medium";
+            };
+            "unspecified-high" = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "medium";
+            };
+            writing.model = "openai/gpt-5.5";
           };
         };
       };
