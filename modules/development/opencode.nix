@@ -40,56 +40,42 @@ let
     ];
 
     home-manager.users.${username} = {
-      home.file.".openviking/ovcli.conf" = {
-        text = ''
+      home.file = {
+        ".openviking/ovcli.conf".text = ''
           {"url": "https://memory.spitz-pickerel.ts.net"}
         '';
-      };
-
-      home.file.".openviking/ovcli.settings.conf" = {
-        text = ''
+        ".openviking/ovcli.settings.conf".text = ''
           {"language": "en"}
         '';
-      };
-
-      home.file.".config/opencode/plugins/openviking-opencode.mjs".source = openvikingOpencodePlugin;
-
-      home.file.".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
-
-      home.file.".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
-        "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
-        agents = {
-          sisyphus = {
-            model = "openai/gpt-5.5";
-            variant = "high";
-          };
-          oracle = {
-            model = "openai/gpt-5.5";
-            variant = "high";
-          };
-          librarian = {
-            model = "openai/gpt-5.5-fast";
-          };
-          explore = {
-            model = "openai/gpt-5.4-mini-fast";
-          };
-          "multimodal-looker" = {
-            model = "openai/gpt-5.5";
-          };
-          prometheus = {
-            model = "openai/gpt-5.5";
-            variant = "high";
-          };
-          metis = {
-            model = "openai/gpt-5.5";
-            variant = "high";
-          };
-          momus = {
-            model = "openai/gpt-5.5";
-            variant = "medium";
-          };
-          atlas = {
-            model = "openai/gpt-5.5-fast";
+        ".config/opencode/plugins/openviking-opencode.mjs".source = openvikingOpencodePlugin;
+        ".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
+        ".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
+          "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
+          agents = {
+            sisyphus = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            oracle = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            librarian.model = "openai/gpt-5.5-fast";
+            explore.model = "openai/gpt-5.4-mini-fast";
+            "multimodal-looker".model = "openai/gpt-5.5";
+            prometheus = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            metis = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            momus = {
+              model = "openai/gpt-5.5";
+              variant = "medium";
+            };
+            atlas.model = "openai/gpt-5.5-fast";
           };
         };
         categories = {
@@ -122,8 +108,19 @@ let
         };
       };
 
+      programs.mcp = {
+        enable = true;
+        servers = {
+          nixos = {
+            command = "mcp-nixos";
+          };
+        };
+      };
+
       programs.opencode = {
         enable = true;
+        enableMcpIntegration = true;
+        extraPackages = [pkgs.mcp-nixos];
         tui.theme = "catppuccin";
         settings = {
           autoupdate = true;
