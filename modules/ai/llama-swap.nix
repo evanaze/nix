@@ -18,6 +18,11 @@ let
       STAGE_ROOT="${staging-root}"
       STAGE_DIR=""
 
+      log_msg() {
+        /run/current-system/sw/bin/logger -t llama-swap-launch "$*" || true
+        echo "$*"
+      }
+
       cleanup() {
         if [ -n "$STAGE_DIR" ] && [ -d "$STAGE_DIR" ]; then
           /run/current-system/sw/bin/rm -rf -- "$STAGE_DIR"
@@ -68,14 +73,15 @@ let
         fi
 
         local log_file="$STAGE_DIR/.llama-server.$port.log"
-        printf '[llama-swap] launching on %s\n' "$(/run/current-system/sw/bin/date '+%Y-%m-%dT%H:%M:%S%:z')"
-        printf '[llama-swap] stage=%s port=%s command:' "$STAGE_DIR" "$port"
+        log_msg "[llama-swap] launching on $(/run/current-system/sw/bin/date '+%Y-%m-%dT%H:%M:%S%:z')"
+        log_msg "[llama-swap] stage=$STAGE_DIR port=$port"
+        printf '[llama-swap] command:'
         printf ' %q' "$@"
-        printf '\n'
+        printf '\n' | /run/current-system/sw/bin/logger -t llama-swap-launch || true
 
         if ! "$@" >"$log_file" 2>&1; then
           local status=$?
-          echo "[llama-swap] upstream command exited with status $status" >&2
+          log_msg "[llama-swap] upstream command exited with status $status"
           /run/current-system/sw/bin/tail -n 200 "$log_file" >&2 || true
           return "$status"
         fi
