@@ -15,7 +15,7 @@ let
           enable = true;
           isoPath = "/home/${username}/Games/melee_patched.iso";
           launchMeleeOnPlay = false;
-          useNetplayBeta = true;
+          useNetplayBeta = false;
         };
       };
 
