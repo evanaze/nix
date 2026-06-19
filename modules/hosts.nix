@@ -113,6 +113,7 @@ in {
         development
         hardware
         hardwareJupiter
+        hardwareJupiterLlamaModels
         media
         monitoring
         prometheus
