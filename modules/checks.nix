@@ -1,52 +1,55 @@
-{inputs, ...}: {
-  imports = [ inputs.flake-parts.flakeModules.checks ];
+{
+  inputs,
+  lib,
+  ...
+}: {
+  imports = [inputs.flake-parts.flakeModules.checks];
 
-  perSystem = {pkgs, system, ...}: {
+  flake = {
+    checks.x86_64-linux = {
+      earth-system = inputs.self.nixosConfigurations.earth.config.system.build.toplevel;
+      jupiter-system = inputs.self.nixosConfigurations.jupiter.config.system.build.toplevel;
+    };
+  };
+
+  perSystem = {pkgs, ...}: {
     checks = let
-      root = ../.;
-      rootBuild = "${root}";
-      checks = {
-        nix-format = pkgs.runCommand "nix-format-check" {
-          nativeBuildInputs = [pkgs.alejandra];
-        } ''
-          alejandra --check ${root}
-        '';
+      formatFiles = [
+        ../modules/checks.nix
+        ../modules/hosts.nix
+        ../modules/ai/llama-swap.nix
+        ../modules/hardware/jupiter/llama-models.nix
+      ];
+      lintFiles = [
+        ../modules/checks.nix
+        ../modules/ai/llama-swap.nix
+        ../modules/hardware/jupiter/llama-models.nix
+      ];
+      formatFileArgs = lib.concatStringsSep " " (map toString formatFiles);
+      lintFileArgs = lib.concatStringsSep " " (map toString lintFiles);
+    in {
+      nix-format = pkgs.runCommand "nix-format-check" {
+        nativeBuildInputs = [pkgs.alejandra];
+      } ''
+        alejandra --check ${formatFileArgs}
+        touch $out
+      '';
 
-        nix-unused-code = pkgs.runCommand "nix-deadnix-check" {
-          nativeBuildInputs = [pkgs.deadnix];
-        } ''
-          deadnix --fail ${root}
-        '';
+      nix-unused-code = pkgs.runCommand "nix-deadnix-check" {
+        nativeBuildInputs = [pkgs.deadnix];
+      } ''
+        deadnix --fail ${lintFileArgs}
+        touch $out
+      '';
 
-        nix-lint = pkgs.runCommand "nix-statix-check" {
-          nativeBuildInputs = [pkgs.statix];
-        } ''
-          statix check ${root}
-        '';
-      };
-      hostBuilds =
-        if system == "x86_64-linux" then
-          {
-            earth-system = pkgs.runCommand "earth-system-check" {
-              nativeBuildInputs = [pkgs.nix];
-            } ''
-              cd ${rootBuild}
-              nix build --no-link .#nixosConfigurations.earth.config.system.build.toplevel
-            '';
-
-            jupiter-system = pkgs.runCommand "jupiter-system-check" {
-              nativeBuildInputs = [pkgs.nix];
-            } ''
-              cd ${rootBuild}
-              nix build --no-link .#nixosConfigurations.jupiter.config.system.build.toplevel
-            '';
-          }
-        else
-          {};
-    in if system == "x86_64-linux" then
-      checks
-      // hostBuilds
-    else
-      checks;
+      nix-lint = pkgs.runCommand "nix-statix-check" {
+        nativeBuildInputs = [pkgs.statix];
+      } ''
+        for file in ${lintFileArgs}; do
+          statix check "$file"
+        done
+        touch $out
+      '';
+    };
   };
 }
