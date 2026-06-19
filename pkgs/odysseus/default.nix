@@ -74,6 +74,7 @@ stdenvNoCC.mkDerivation {
     cp -r . $out/share/odysseus/
 
     makeWrapper ${pythonEnv}/bin/python $out/bin/odysseus \
+      --chdir $out/share/odysseus \
       --add-flags "-m uvicorn app:app --app-dir $out/share/odysseus" \
       --prefix PATH : ${runtimePath}
 

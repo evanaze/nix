@@ -37,26 +37,49 @@ flake.modules.nixos.coreFlakeUpdate = # aspects/core/flake-update.nix - Flake au
     description = "Verify flake update boot success and handle rollback";
     wantedBy = ["multi-user.target"];
     after = ["basic.target"];
-    serviceConfig.Type = "oneshot";
+    restartIfChanged = false;
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
     path = with pkgs; [nix coreutils];
     script = ''
       sentinel="/var/lib/flake-update/sentinel"
+      cleanup_sentinel() {
+        rm -f "$sentinel"
+        rmdir /var/lib/flake-update 2>/dev/null || true
+      }
+
       if [ ! -f "$sentinel" ]; then
         exit 0
       fi
 
       sentinel_time=$(cat "$sentinel")
+      case "$sentinel_time" in
+        ""|*[!0-9]*)
+          echo "Ignoring malformed flake-update sentinel: $sentinel_time"
+          cleanup_sentinel
+          exit 0
+          ;;
+      esac
+
       current_time=$(date +%s)
       age=$((current_time - sentinel_time))
 
-      if [ "$age" -lt 900 ]; then
-        rm -f "$sentinel"
-        rmdir /var/lib/flake-update 2>/dev/null || true
-      else
-        nixos-rebuild switch --rollback
-        rm -rf /var/lib/flake-update
-        reboot
+      if [ "$age" -lt 0 ]; then
+        echo "Ignoring future flake-update sentinel timestamp: $sentinel_time"
+        cleanup_sentinel
+        exit 0
       fi
+
+      if [ "$age" -ge 900 ]; then
+        echo "Ignoring stale flake-update sentinel age: $age seconds"
+        cleanup_sentinel
+        exit 0
+      fi
+
+      echo "Flake update boot check succeeded; clearing sentinel"
+      cleanup_sentinel
     '';
   };
 };
