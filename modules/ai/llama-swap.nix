@@ -34,42 +34,6 @@ let
       STAGE_DIR="$(/run/current-system/sw/bin/mktemp -d "$STAGE_ROOT"/llama-swap-launch.XXXXXXXX)"
       log_msg "[llama-swap] prepared staging directory $STAGE_DIR"
 
-      stage_model() {
-        local src_file="$1"
-        local staged_file="$2"
-        local tmp_file
-        local src_size=0
-        local staged_size=0
-
-        if [ ! -r "$src_file" ]; then
-          log_msg "llama-swap: source model file not readable: $src_file"
-          exit 1
-        fi
-
-        src_size=$(/run/current-system/sw/bin/stat -c '%s' "$src_file")
-        if [ "$src_size" -le 0 ]; then
-          log_msg "llama-swap: source model file is empty: $src_file"
-          exit 1
-        fi
-        log_msg "llama-swap: staging source model $src_file ($src_size bytes)"
-
-        tmp_file="$STAGE_DIR/.tmp.$$.$(/run/current-system/sw/bin/basename "$src_file")"
-        log_msg "llama-swap: copying model to temporary staging file $tmp_file"
-        /run/current-system/sw/bin/cp -- "$src_file" "$tmp_file"
-        log_msg "llama-swap: completed copy for $src_file"
-        staged_size=$(/run/current-system/sw/bin/stat -c '%s' "$tmp_file")
-        if [ "$staged_size" -le 0 ] || [ "$staged_size" -ne "$src_size" ]; then
-          log_msg "llama-swap: staged model is invalid or incomplete: $src_file"
-          /run/current-system/sw/bin/ls -l "$tmp_file" 2>/dev/null || true
-          exit 1
-        fi
-        log_msg "llama-swap: staged model OK $staged_file"
-
-        log_msg "llama-swap: moving staged file to final path $staged_file"
-        /run/current-system/sw/bin/mv -- "$tmp_file" "$staged_file"
-        log_msg "llama-swap: moved staged file $staged_file"
-      }
-
       run_llama_server() {
         local port="$1"
         shift
@@ -101,14 +65,15 @@ let
       pkgs.writeShellScript "llama-swap-${name}" ''
         ${stage-helper}
 
+        PORT="''${1:-}"
+
         ${script-body}
       '';
 
     launchScriptQwen = mk-launch-script "qwen3.6-35b-a3b" ''
-      stage_model "${source-model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" "$STAGE_DIR/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf"
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "$STAGE_DIR/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
+        -m "${source-model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
         --ctx-size ${toString ctx-size} \
         --n-predict 8192 \
         --fit on --fit-target 1536 --fit-ctx 32768 \
@@ -119,6 +84,7 @@ let
         --batch-size 512 --ubatch-size 256 \
         --threads 10 --threads-batch 12 \
         --mlock \
+        --no-mmap \
         --parallel 1 --prio 2 --no-warmup \
         --spec-type draft-mtp --spec-draft-n-max 2 \
         --jinja \
@@ -127,17 +93,16 @@ let
     '';
 
     launchScriptGemma = mk-launch-script "gemma-4-12b-q4" ''
-      stage_model "${source-model-dir}/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" "$STAGE_DIR/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf"
-      stage_model "${source-model-dir}/gemma-4-12B-it-assistant-Q8_0.gguf" "$STAGE_DIR/gemma-4-12B-it-assistant-Q8_0.gguf"
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "$STAGE_DIR/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" \
-        --spec-draft-model "$STAGE_DIR/gemma-4-12B-it-assistant-Q8_0.gguf" \
+        -m "${source-model-dir}/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" \
+        --spec-draft-model "${source-model-dir}/gemma-4-12B-it-assistant-Q8_0.gguf" \
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx ${toString ctx-size} \
         --parallel 1 \
+        --no-mmap \
         --ctx-size ${toString ctx-size} \
         --temp 1.0 \
         --top-p 0.95 \
@@ -150,6 +115,9 @@ let
         --port "$PORT"
     '';
   in {
+    environment.systemPackages = with pkgs; [
+      tmux
+    ];
     # Earth uses a read-only NFS mount from Jupiter as the llama.cpp model source.
     fileSystems."/mnt/jupiter-llama-models" = {
       device = "192.168.50.80:/mnt/eye/llama-models";
