@@ -8,6 +8,7 @@ let
   }: let
     llama-cpp = inputs.llama-cpp.packages.${pkgs.system}.cuda;
     llama-server = lib.getExe' llama-cpp "llama-server";
+    systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";
     staging-root = "/var/tmp/llama-cpp";
     ctx-size = 64000;
@@ -52,7 +53,11 @@ let
         done
         log_msg "[llama-swap] command:$command"
 
-        if ! "$@" >"$log_file" 2>&1; then
+        if ! "${systemd-inhibit}" \
+          --what=sleep \
+          --mode=block \
+          --why="llama-swap model on port $port is loaded" \
+          "$@" >"$log_file" 2>&1; then
           local status=$?
           log_msg "[llama-swap] upstream command exited with status $status"
           /run/current-system/sw/bin/tail -n 200 "$log_file" >&2 || true
