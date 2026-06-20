@@ -16,7 +16,12 @@
         [
           {
             _module.args = {
-              inherit inputs username hostname system;
+              inherit
+                inputs
+                username
+                hostname
+                system
+                ;
             };
 
             networking.hostName = hostname;
@@ -65,6 +70,7 @@ in {
         hardwareNvidia
         hardwareEarth
         monitoring
+        tools
       ];
       extraModules = [
         inputs.nixos-hardware.nixosModules.common-pc
@@ -94,6 +100,7 @@ in {
         hardwareUsbTethering
         networkingVpn
         monitoring
+        tools
       ];
       extraModules = [
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -124,6 +131,7 @@ in {
         services
         servicesGlance
         servicesOdysseus
+        tools
       ];
       extraModules = [
         inputs.hermes-agent.nixosModules.default
