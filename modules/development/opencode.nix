@@ -138,7 +138,7 @@ let
               name = "Llama Swap";
               npm = "@ai-sdk/openai-compatible";
               options = {
-                baseURL = "https://llm.spitz-pickerel.ts.net:8724/v1";
+                baseURL = "https://llm.spitz-pickerel.ts.net/v1";
               };
               models = {
                 "gemma-4-12b-q4" = {
