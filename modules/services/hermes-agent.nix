@@ -44,6 +44,7 @@ let
           context_length = 64000;
         };
         memory.provider = "openviking";
+        web.search_backend = "searxng";
         file_read_max_chars = 30000;
         tool_output = {
           max_bytes = 20000;
@@ -88,6 +89,9 @@ let
           timeout = 60;
           connect_timeout = 30;
         };
+      };
+      environment = {
+        SEARXNG_URL = "http://127.0.0.1:8311";
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
