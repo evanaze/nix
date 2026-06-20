@@ -32,6 +32,7 @@ let
 
       /run/current-system/sw/bin/mkdir -p "$STAGE_ROOT"
       STAGE_DIR="$(/run/current-system/sw/bin/mktemp -d "$STAGE_ROOT"/llama-swap-launch.XXXXXXXX)"
+      log_msg "[llama-swap] prepared staging directory $STAGE_DIR"
 
       stage_model() {
         local src_file="$1"
@@ -41,26 +42,32 @@ let
         local staged_size=0
 
         if [ ! -r "$src_file" ]; then
-          echo "llama-swap: source model file not readable: $src_file" >&2
+          log_msg "llama-swap: source model file not readable: $src_file"
           exit 1
         fi
 
         src_size=$(/run/current-system/sw/bin/stat -c '%s' "$src_file")
         if [ "$src_size" -le 0 ]; then
-          echo "llama-swap: source model file is empty: $src_file" >&2
+          log_msg "llama-swap: source model file is empty: $src_file"
           exit 1
         fi
+        log_msg "llama-swap: staging source model $src_file ($src_size bytes)"
 
         tmp_file="$STAGE_DIR/.tmp.$$.$(/run/current-system/sw/bin/basename "$src_file")"
+        log_msg "llama-swap: copying model to temporary staging file $tmp_file"
         /run/current-system/sw/bin/cp -- "$src_file" "$tmp_file"
+        log_msg "llama-swap: completed copy for $src_file"
         staged_size=$(/run/current-system/sw/bin/stat -c '%s' "$tmp_file")
         if [ "$staged_size" -le 0 ] || [ "$staged_size" -ne "$src_size" ]; then
-          echo "llama-swap: staged model is invalid or incomplete: $src_file" >&2
+          log_msg "llama-swap: staged model is invalid or incomplete: $src_file"
           /run/current-system/sw/bin/ls -l "$tmp_file" 2>/dev/null || true
           exit 1
         fi
+        log_msg "llama-swap: staged model OK $staged_file"
 
+        log_msg "llama-swap: moving staged file to final path $staged_file"
         /run/current-system/sw/bin/mv -- "$tmp_file" "$staged_file"
+        log_msg "llama-swap: moved staged file $staged_file"
       }
 
       run_llama_server() {
@@ -68,16 +75,18 @@ let
         shift
 
         if [ -z "$port" ]; then
-          echo "llama-swap: missing PORT for launch" >&2
+          log_msg "llama-swap: missing PORT for launch"
           exit 1
         fi
 
         local log_file="$STAGE_DIR/.llama-server.$port.log"
         log_msg "[llama-swap] launching on $(/run/current-system/sw/bin/date '+%Y-%m-%dT%H:%M:%S%:z')"
         log_msg "[llama-swap] stage=$STAGE_DIR port=$port"
-        printf '[llama-swap] command:'
-        printf ' %q' "$@"
-        printf '\n' | /run/current-system/sw/bin/logger -t llama-swap-launch || true
+        command=""
+        for arg in "$@"; do
+          command="$command $(printf '%q' "$arg")"
+        done
+        log_msg "[llama-swap] command:$command"
 
         if ! "$@" >"$log_file" 2>&1; then
           local status=$?
