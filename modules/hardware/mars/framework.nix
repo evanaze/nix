@@ -17,6 +17,25 @@ let
 
   hardware.bluetooth.enable = true;
 
+  # The Framework 13 AMD ALS can come up stuck at 0 lux until the HID sensor
+  # stack is reloaded. Reset it before iio-sensor-proxy claims the device.
+  systemd.services.iio-sensor-proxy = {
+    after = ["framework-als-reset.service"];
+    requires = ["framework-als-reset.service"];
+  };
+
+  systemd.services.framework-als-reset = {
+    description = "Reset Framework ambient light sensor";
+    before = ["iio-sensor-proxy.service"];
+    serviceConfig.Type = "oneshot";
+    path = [pkgs.kmod];
+    script = ''
+      modprobe -r hid_sensor_als hid_sensor_trigger hid_sensor_iio_common hid_sensor_hub || true
+      modprobe hid_sensor_hub
+      modprobe hid_sensor_als
+    '';
+  };
+
   # Enable hardware settings
   hardware.framework = {
     enableKmod = true;
