@@ -13,9 +13,11 @@ let
     services.searx = {
       enable = true;
       environmentFile = config.sops.secrets."searxng/env".path;
-      settings.server = {
-        bind_address = "127.0.0.1";
-        port = searxngPort;
+      settings = {
+        server = {
+          bind_address = "127.0.0.1";
+          port = searxngPort;
+        };
         search.formats = [
           "html"
           "json"
