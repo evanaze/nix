@@ -122,6 +122,7 @@ in {
         smartctlExporter
         networking
         services
+        servicesGlance
         servicesOdysseus
       ];
       extraModules = [
