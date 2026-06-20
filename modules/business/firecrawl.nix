@@ -7,6 +7,7 @@ let
   }: let
     firecrawlSrc = pkgs.callPackage ../../pkgs/firecrawl-source {};
     firecrawlRev = "44a6a1665e6ecb565c16a05b25719b377c45c0c5";
+    prepareStamp = "7";
 
     appDir = "/var/lib/firecrawl";
     releaseDir = "${appDir}/releases/${firecrawlRev}";
@@ -55,7 +56,9 @@ let
         path = with pkgs; [
           bash
           cargo
+          cmake
           coreutils
+          findutils
           gcc
           git
           go
@@ -66,6 +69,7 @@ let
           pkg-config
           pnpm
           postgresql
+          prelink
           python3
           rustc
           which
@@ -77,7 +81,11 @@ let
           HOME = "${appDir}/home";
           HUSKY = "0";
           npm_config_cache = "${appDir}/cache/npm";
+          npm_config_nodedir = "${lib.getDev nodejs}";
+          npm_config_node_gyp = "${nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js";
+          npm_config_python = lib.getExe pkgs.python3;
           PNPM_HOME = "${appDir}/pnpm";
+          PYTHON = lib.getExe pkgs.python3;
           XDG_CACHE_HOME = "${appDir}/cache";
         };
         serviceConfig = {
@@ -91,7 +99,7 @@ let
         script = ''
           set -euo pipefail
 
-          if [ -f ${releaseDir}/.built-ok ]; then
+          if [ -f ${releaseDir}/.built-ok-${prepareStamp} ]; then
             exit 0
           fi
 
@@ -112,6 +120,24 @@ let
           cd "$release_tmp/apps/api"
           pnpm install --frozen-lockfile
 
+          koffi_dir=$(find node_modules/.pnpm -path '*/node_modules/koffi' -type d -print -quit)
+          if [ -n "$koffi_dir" ]; then
+            koffi_dir=$(readlink -f "$koffi_dir")
+          fi
+          if [ -n "$koffi_dir" ] && [ -d "$koffi_dir/build/koffi" ]; then
+            mkdir -p "$koffi_dir/../build"
+            ln -sfn ../koffi/build/koffi "$koffi_dir/../build/koffi"
+
+            find "$koffi_dir/build/koffi" \
+              -path '*/linux_x64/*.node' \
+              -type f \
+              -print0 \
+              | while IFS= read -r -d "" addon; do
+                execstack -c "$addon"
+                execstack -q "$addon"
+              done
+          fi
+
           cd sharedLibs/go-html-to-md
           go mod download
           go build -o libhtml-to-markdown.so -buildmode=c-shared html-to-markdown.go
@@ -119,7 +145,7 @@ let
           cd "$release_tmp/apps/api"
           pnpm build
 
-          touch "$release_tmp/.built-ok"
+          touch "$release_tmp/.built-ok-${prepareStamp}"
           rm -rf ${releaseDir}
           mv "$release_tmp" ${releaseDir}
         '';
@@ -187,15 +213,24 @@ let
         ];
         wantedBy = ["multi-user.target"];
         path = [
+          pkgs.bash
           nodejs
           pnpm
           pkgs.coreutils
+          pkgs.gcc
+          pkgs.git
+          pkgs.go
+          pkgs.gnumake
         ];
         environment = {
           BULL_AUTH_KEY = "@";
+          CARGO_HOME = "${appDir}/cargo";
           FIRECRAWL_APP_HOST = "127.0.0.1";
           FIRECRAWL_APP_PORT = toString firecrawlPort;
           FIRECRAWL_APP_SCHEME = "http";
+          GOCACHE = "${appDir}/cache/go-build";
+          GOMODCACHE = "${appDir}/go/pkg/mod";
+          HOME = "${appDir}/home";
           HOST = "127.0.0.1";
           NODE_ENV = "production";
           NUQ_DATABASE_URL = "postgresql://postgres@127.0.0.1:5432/${databaseName}";
