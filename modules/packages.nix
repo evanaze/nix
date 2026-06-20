@@ -2,6 +2,7 @@
   perSystem = {pkgs, ...}: {
     packages = {
       odysseus = pkgs.callPackage ../pkgs/odysseus {};
+      firecrawl-source = pkgs.callPackage ../pkgs/firecrawl-source {};
       twenty = pkgs.callPackage ../pkgs/twenty {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
       oh-my-opencode = pkgs.callPackage ../pkgs/oh-my-opencode {};
