@@ -16,11 +16,11 @@ let
       settings.server = {
         bind_address = "127.0.0.1";
         port = searxngPort;
+        search.formats = [
+          "html"
+          "json"
+        ];
       };
-      search.formats = [
-        "html"
-        "json"
-      ];
     };
 
     services.caddy.virtualHosts."http://:${toString caddyPort}" = {
