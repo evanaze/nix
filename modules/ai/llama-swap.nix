@@ -157,6 +157,17 @@ let
       };
     };
 
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          action.id === "org.freedesktop.login1.inhibit-block-sleep" &&
+          subject.system_unit === "llama-swap.service"
+        ) {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+
     systemd.services.llama-swap.serviceConfig = {
       MemoryDenyWriteExecute = lib.mkForce false;
       ProtectSystem = lib.mkForce "full";
