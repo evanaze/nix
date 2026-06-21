@@ -49,9 +49,8 @@ let
       stateDir = "${state-dir}";
       settings = {
         model = {
-          default = "gemma-4-12b-q4";
-          provider = "local";
-          context_length = 64000;
+          default = "gpt-5.5";
+          provider = "openai-codex";
         };
         memory.provider = "openviking";
         web = {
