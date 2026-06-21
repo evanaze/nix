@@ -29,7 +29,8 @@ let
       script = ''
         PSQL="${lib.getExe' pkgs.postgresql_18 "psql"}"
         PASSWORD="$(cat ${config.sops.secrets."ducklake/db-password".path})"
-        "$PSQL" -c "ALTER ROLE ducklake PASSWORD '$PASSWORD';"
+        "$PSQL" -c "ALTER ROLE stackmagic PASSWORD '$PASSWORD';"
+        "$PSQL" -c "ALTER ROLE de_rec PASSWORD '$PASSWORD';"
       '';
     };
 
@@ -40,14 +41,14 @@ let
       ];
       ensureUsers = [
         {
-          name = "stackmagic_catalog";
+          name = "stackmagic";
           ensureDBOwnership = true;
           ensureClauses = {
             login = true;
           };
         }
         {
-          name = "de_rec_catalog";
+          name = "de_rec";
           ensureDBOwnership = true;
           ensureClauses = {
             login = true;
@@ -57,8 +58,8 @@ let
       authentication = lib.mkOverride 10 (
         lib.mkAfter ''
           # Tailscale Serve forwards svc:pg to PostgreSQL over loopback.
-          host stackmagic_catalog de_rec_catalog 127.0.0.1/32 scram-sha-256
-          host stackmagic_catalog de_rec_catalog ::1/128 scram-sha-256
+          host stackmagic_catalog stackmagic 127.0.0.1/32 scram-sha-256
+          host de_rec_catalog de_rec ::1/128 scram-sha-256
         ''
       );
     };
