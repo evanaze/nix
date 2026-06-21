@@ -47,10 +47,11 @@ let
           };
         }
       ];
-      authentication = lib.mkAfter ''
-        host ducklake_catalog ducklake 100.64.0.0/10 scram-sha-256
-        host ducklake_catalog ducklake fd7a:115c:a1e0::/48 scram-sha-256
-      '';
+      authentication = lib.mkOverride 10 (lib.mkAfter ''
+        # Tailscale Serve forwards svc:pg to PostgreSQL over loopback.
+        host ducklake_catalog ducklake 127.0.0.1/32 scram-sha-256
+        host ducklake_catalog ducklake ::1/128 scram-sha-256
+      '');
     };
   };
 in {

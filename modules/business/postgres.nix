@@ -28,21 +28,24 @@ let
 
     systemd.services.postgres-tsserve = {
       after = [
-        "tailscaled.service"
+        "tailscaled-autoconnect.service"
         "postgresql.service"
       ];
       wants = [
-        "tailscaled.service"
+        "tailscaled-autoconnect.service"
         "postgresql.service"
       ];
       wantedBy = ["multi-user.target"];
-      description = "Expose PostgreSQL via Tailscale Serve";
+      description = "Using Tailscale Serve to publish PostgreSQL";
       serviceConfig = {
-        Type = "exec";
+        Type = "oneshot";
+        RemainAfterExit = true;
         Restart = "on-failure";
         RestartSec = "10s";
       };
-      script = "${lib.getExe pkgs.tailscale} serve --service=svc:pg --tcp 5432 tcp://localhost:5432";
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve --service=svc:pg --tcp 5432 tcp://127.0.0.1:5432
+      '';
     };
   };
 in {
