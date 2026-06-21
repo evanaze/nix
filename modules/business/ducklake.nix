@@ -29,8 +29,8 @@ let
       script = ''
         PSQL="${lib.getExe' pkgs.postgresql_18 "psql"}"
         PASSWORD="$(cat ${config.sops.secrets."ducklake/db-password".path})"
-        "$PSQL" -c "ALTER ROLE stackmagic PASSWORD '$PASSWORD';"
-        "$PSQL" -c "ALTER ROLE de_rec PASSWORD '$PASSWORD';"
+        "$PSQL" -c "ALTER ROLE stackmagic_catalog PASSWORD '$PASSWORD';"
+        "$PSQL" -c "ALTER ROLE de_rec_catalog PASSWORD '$PASSWORD';"
       '';
     };
 
