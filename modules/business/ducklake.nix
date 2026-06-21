@@ -35,8 +35,8 @@ let
 
     services.postgresql = {
       ensureDatabases = [
-        "ducklake"
-        "ducklake_catalog"
+        "stackmagic_catalog"
+        "de_rec_catalog"
       ];
       ensureUsers = [
         {
@@ -47,11 +47,13 @@ let
           };
         }
       ];
-      authentication = lib.mkOverride 10 (lib.mkAfter ''
-        # Tailscale Serve forwards svc:pg to PostgreSQL over loopback.
-        host ducklake_catalog ducklake 127.0.0.1/32 scram-sha-256
-        host ducklake_catalog ducklake ::1/128 scram-sha-256
-      '');
+      authentication = lib.mkOverride 10 (
+        lib.mkAfter ''
+          # Tailscale Serve forwards svc:pg to PostgreSQL over loopback.
+          host stackmagic_catalog de_rec_catalog 127.0.0.1/32 scram-sha-256
+          host stackmagic_catalog de_rec_catalog ::1/128 scram-sha-256
+        ''
+      );
     };
   };
 in {
