@@ -1,12 +1,31 @@
 let
   module = {
+    config,
     username,
     inputs,
+    lib,
     pkgs,
     system,
     ...
   }: let
     openvikingSource = inputs.openviking.packages.${system}.openviking.src;
+    nocodbEnvFile = config.sops.secrets."nocodb/env".path;
+    opencodeWithNocodbEnv = pkgs.symlinkJoin {
+      inherit (pkgs.opencode) meta;
+      name = "${lib.getName pkgs.opencode}-with-nocodb-env-${lib.getVersion pkgs.opencode}";
+      paths = [pkgs.opencode];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/opencode \
+          --run ${lib.escapeShellArg ''
+          if [ -f ${lib.escapeShellArg nocodbEnvFile} ]; then
+            set -a
+            . ${lib.escapeShellArg nocodbEnvFile}
+            set +a
+          fi
+        ''}
+      '';
+    };
     openvikingOpencodePlugin = pkgs.writeText "openviking-opencode.mjs" (
       builtins.replaceStrings
       [
@@ -33,6 +52,11 @@ let
     );
   in {
     nixpkgs.overlays = [inputs.openviking.overlays.default];
+
+    sops.secrets."nocodb/env" = {
+      owner = username;
+      mode = "0400";
+    };
 
     environment.systemPackages = with pkgs; [
       ov-cli
@@ -114,13 +138,19 @@ let
           nixos = {
             command = "mcp-nixos";
           };
+          nocodb-leads = {
+            url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
+            headers."xc-mcp-token" = "{env:NOCODB_LEADS_MCP_TOKEN}";
+          };
         };
       };
 
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
+        package = opencodeWithNocodbEnv;
         extraPackages = [pkgs.mcp-nixos];
+        web.environmentFile = nocodbEnvFile;
         tui.theme = "catppuccin";
         settings = {
           autoupdate = true;
