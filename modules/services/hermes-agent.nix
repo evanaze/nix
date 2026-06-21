@@ -3,6 +3,7 @@ let
     inputs,
     lib,
     pkgs,
+    python313packages,
     config,
     username,
     ...
@@ -29,8 +30,8 @@ let
 
     users.users.${username}.extraGroups = ["hermes"];
 
-    environment.systemPackages = with pkgs; [
-      hermes-agent
+    environment.systemPackages = [
+      pkgs.hermes-agent
       python313packages.firecrawl-py
     ];
 
