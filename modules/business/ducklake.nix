@@ -40,7 +40,14 @@ let
       ];
       ensureUsers = [
         {
-          name = "ducklake";
+          name = "stackmagic_catalog";
+          ensureDBOwnership = true;
+          ensureClauses = {
+            login = true;
+          };
+        }
+        {
+          name = "de_rec_catalog";
           ensureDBOwnership = true;
           ensureClauses = {
             login = true;
