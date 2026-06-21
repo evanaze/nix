@@ -44,7 +44,10 @@ let
           context_length = 64000;
         };
         memory.provider = "openviking";
-        web.search_backend = "searxng";
+        web = {
+          search_backend = "searxng";
+          extract_backend = "firecrawl";
+        };
         file_read_max_chars = 30000;
         tool_output = {
           max_bytes = 20000;
@@ -91,6 +94,7 @@ let
         };
       };
       environment = {
+        FIRECRAWL_API_URL = "http://127.0.0.1:3002";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
