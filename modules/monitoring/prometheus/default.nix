@@ -48,6 +48,15 @@
               }
             ];
           }
+          {
+            job_name = "postgres";
+            static_configs = [
+              {
+                targets = ["127.0.0.1:${toString config.services.prometheus.exporters.postgres.port}"];
+                labels.host = "jupiter";
+              }
+            ];
+          }
         ];
 
         rules = [

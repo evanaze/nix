@@ -12,6 +12,7 @@
       keymapp
       libreoffice-fresh
       picard
+      postgresql
       python314
       slack
       xclip

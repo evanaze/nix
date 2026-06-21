@@ -26,6 +26,13 @@ let
       '';
     };
 
+    services.prometheus.exporters.postgres = {
+      enable = true;
+      listenAddress = "0.0.0.0";
+      port = 5432;
+      runAsLocalSuperUser = true;
+    };
+
     systemd.services.postgres-tsserve = {
       after = [
         "tailscaled-autoconnect.service"
