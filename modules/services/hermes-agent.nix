@@ -30,9 +30,9 @@ let
 
     users.users.${username}.extraGroups = ["hermes"];
 
-    environment.systemPackages = [
-      pkgs.hermes-agent
-      python313packages.firecrawl-py
+    environment.systemPackages = with pkgs; [
+      hermes-agent
+      python313Packages.firecrawl-py
     ];
 
     services.hermes-agent = {
