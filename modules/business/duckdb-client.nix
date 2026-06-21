@@ -33,6 +33,9 @@
         S3_SECRET="$(cat ${config.sops.secrets."seaweedfs/s3-secret-key".path})"
         DB_PASS="$(cat ${config.sops.secrets."ducklake/db-password".path})"
 
+        export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+        export SSL_CERT_DIR="/etc/ssl/certs"
+
         INIT="$(mktemp)"
         trap 'rm -f "$INIT"' EXIT
 
