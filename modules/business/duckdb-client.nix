@@ -54,8 +54,8 @@
           cat >> "$INIT" << EOF
           SET s3_access_key_id = '$S3_KEY';
           SET s3_secret_access_key = '$S3_SECRET';
-          ATTACH 'postgres://ducklake:$DB_PASS@pg.spitz-pickerel.ts.net:5432/stackmagic_catalog' AS stackmagic (TYPE postgres);
-          ATTACH 'postgres://ducklake:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec (TYPE postgres);
+          ATTACH 'postgres://stackmagic_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/stackmagic_catalog' AS stackmagic (TYPE postgres);
+          ATTACH 'postgres://de_rec_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec (TYPE postgres);
           EOF
 
           exec duckdb -init "$INIT"
