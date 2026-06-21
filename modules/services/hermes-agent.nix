@@ -3,7 +3,6 @@ let
     inputs,
     lib,
     pkgs,
-    python313packages,
     config,
     username,
     ...
@@ -13,6 +12,16 @@ let
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
+      (final: prev: {
+        hermes-agent = prev.hermes-agent.override {
+          extraDependencyGroups = ["firecrawl"];
+          # The web_extract Firecrawl backend lazy-installs firecrawl-py when it
+          # is missing. In a Nix-built Hermes env pip/ensurepip is unavailable,
+          # so make the dependency available to the wrapped Hermes process
+          # explicitly as well as through the optional uv2nix group.
+          extraPythonPackages = [final.python313Packages.firecrawl-py];
+        };
+      })
     ];
 
     # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
@@ -32,7 +41,6 @@ let
 
     environment.systemPackages = with pkgs; [
       hermes-agent
-      python313Packages.firecrawl-py
     ];
 
     services.hermes-agent = {
