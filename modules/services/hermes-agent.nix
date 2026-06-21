@@ -31,6 +31,7 @@ let
 
     environment.systemPackages = with pkgs; [
       hermes-agent
+      python313packages.firecrawl-py
     ];
 
     services.hermes-agent = {
