@@ -80,14 +80,7 @@ let
             ];
           };
         };
-        platforms = {
-          api_server = {
-            enabled = true;
-            extra = {
-              key = "d156d12d681eb34356045688a43ba9487764e8731b946ce68d65aebb899324e6";
-            };
-          };
-        };
+        platforms.api_server.enabled = true;
       };
       mcpServers = {
         actual = {
