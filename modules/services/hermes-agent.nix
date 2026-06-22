@@ -127,20 +127,28 @@ let
       wants = ["hermes-agent.service"];
       wantedBy = ["multi-user.target"];
       description = "Hermes Agent Web Dashboard";
+      environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+        HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
+        FIRECRAWL_API_URL = "http://127.0.0.1:3002";
+        SEARXNG_URL = "http://127.0.0.1:8311";
+      };
       serviceConfig = {
         Type = "simple";
         User = "hermes";
+        EnvironmentFile = config.sops.secrets."hermes/env".path;
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build --insecure";
+      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
     };
 
     services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:${toString dashboardPort} {
-          header_up Host 127.0.0.1:${toString dashboardPort}
-          header_up -Origin
+          header_up Host {host}
           header_up X-Forwarded-Proto https
           header_up X-Forwarded-For {remote_host}
           header_up X-Forwarded-Host {host}
