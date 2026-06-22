@@ -133,7 +133,7 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 127.0.0.1 --port ${toString dashboardPort} --no-open --skip-build --insecure";
+      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build --insecure";
     };
 
     services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
