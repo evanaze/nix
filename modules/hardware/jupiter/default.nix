@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.hardwareJupiter = {config, lib, pkgs, modulesPath, ...}: {
+  flake.modules.nixos.hardwareJupiter = {config, lib, modulesPath, ...}: {
     imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
@@ -38,7 +38,6 @@
     fileSystems."/mnt/eye/appdata/donetick" = { device = "eye/appdata/donetick"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/grafana" = { device = "eye/appdata/grafana"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/chromadb" = { device = "eye/appdata/chromadb"; fsType = "zfs"; };
-    fileSystems."/mnt/eye/appdata/odysseus" = { device = "eye/appdata/odysseus"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/hermes" = { device = "eye/appdata/hermes"; fsType = "zfs"; };
     fileSystems."/mnt/eye/appdata/jellyfin" = { device = "eye/appdata/jellyfin"; fsType = "zfs"; };
 

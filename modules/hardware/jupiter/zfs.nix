@@ -54,7 +54,7 @@ let
   systemd.services.create-appdata-datasets = {
     description = "Create appdata datasets on eye pool";
     after = ["zfs-mount.service"];
-    before = ["grafana.service" "jellyfin.service" "hermes-agent.service" "donetick.service" "odysseus.service" "chromadb.service"];
+    before = ["grafana.service" "jellyfin.service" "hermes-agent.service" "donetick.service" "chromadb.service"];
     wants = ["zfs-mount.service"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
@@ -65,7 +65,7 @@ let
       if ! ${pkgs.zfs}/bin/zfs list eye/appdata >/dev/null 2>&1; then
         ${pkgs.zfs}/bin/zfs create -o mountpoint=/mnt/eye/appdata eye/appdata
       fi
-      for ds in actual donetick grafana hermes jellyfin odysseus chromadb; do
+      for ds in actual donetick grafana hermes jellyfin chromadb; do
         if ! ${pkgs.zfs}/bin/zfs list eye/appdata/$ds >/dev/null 2>&1; then
           ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
         fi
@@ -73,8 +73,7 @@ let
       chown evanaze:users /mnt/eye/appdata/actual || true
       chown evanaze:users /mnt/eye/appdata/donetick || true
       chown grafana:grafana /mnt/eye/appdata/grafana || true
-      chown odysseus:odysseus /mnt/eye/appdata/odysseus || true
-      chown odysseus:odysseus /mnt/eye/appdata/chromadb || true
+      chown chromadb:chromadb /mnt/eye/appdata/chromadb || true
       chown hermes:hermes /mnt/eye/appdata/hermes || true
       chown evanaze:jellyfin /mnt/eye/appdata/jellyfin || true
     '';
@@ -86,8 +85,7 @@ let
     "d /mnt/eye/appdata/donetick 0755 evanaze users -"
     "d /mnt/eye/appdata/grafana 0750 grafana grafana -"
     "d /mnt/eye/appdata/hermes 0750 hermes hermes -"
-    "d /mnt/eye/appdata/chromadb 0750 odysseus odysseus -"
-    "d /mnt/eye/appdata/odysseus 0750 odysseus odysseus -"
+    "d /mnt/eye/appdata/chromadb 0750 chromadb chromadb -"
     "d /mnt/eye/documents 0755 evanaze users -"
     "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
     "d /mnt/eye/downloads 0755 evanaze users -"
@@ -126,11 +124,6 @@ let
   };
 
   systemd.services.hermes-agent = {
-    after = ["zfs-mount.service"];
-    requires = ["zfs-mount.service"];
-  };
-
-  systemd.services.odysseus = {
     after = ["zfs-mount.service"];
     requires = ["zfs-mount.service"];
   };
