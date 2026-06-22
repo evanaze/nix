@@ -132,7 +132,6 @@ in {
         networking
         services
         servicesGlance
-        servicesOdysseus
         tools
       ];
       extraModules = [

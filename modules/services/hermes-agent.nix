@@ -131,7 +131,30 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 0.0.0.0 --port 9119 --no-open --skip-build --insecure";
+      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build --insecure";
+    };
+
+    systemd.services.hermes-tsserve = {
+      after = [
+        "hermes-webui.service"
+        "tailscaled.service"
+      ];
+      wants = [
+        "hermes-webui.service"
+        "tailscaled.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Publish Hermes WebUI via Tailscale Serve";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 9119
+      '';
     };
   };
 in {
