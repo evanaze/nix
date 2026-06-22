@@ -14,16 +14,6 @@ let
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
-      (final: prev: {
-        hermes-agent = prev.hermes-agent.override {
-          extraDependencyGroups = ["firecrawl"];
-          # The web_extract Firecrawl backend lazy-installs firecrawl-py when it
-          # is missing. In a Nix-built Hermes env pip/ensurepip is unavailable,
-          # so make the dependency available to the wrapped Hermes process
-          # explicitly as well as through the optional uv2nix group.
-          extraPythonPackages = [final.python313Packages.firecrawl-py];
-        };
-      })
     ];
 
     # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
@@ -62,9 +52,15 @@ let
           provider = "openai-codex";
         };
         memory.provider = "openviking";
+        browser = {
+          cloud_provider = "local";
+          camofox = {
+            managed_persistence = true;
+            rewrite_loopback_urls = false;
+          };
+        };
         web = {
           search_backend = "searxng";
-          extract_backend = "firecrawl";
         };
         file_read_max_chars = 30000;
         tool_output = {
@@ -109,20 +105,25 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         MESSAGING_CWD = "${state-dir}/workspace";
-        FIRECRAWL_API_URL = "http://127.0.0.1:3002";
+        CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
     };
 
-    sops.secrets."hermes/env" = {
-      owner = "hermes";
-      group = "hermes";
-      mode = "0640";
-    };
+      sops.secrets."hermes/env" = {
+        owner = "hermes";
+        group = "hermes";
+        mode = "0640";
+      };
 
-    systemd.services.hermes-dashboard = {
+      systemd.services.hermes-agent = {
+        after = ["camofox.service"];
+        wants = ["camofox.service"];
+      };
+
+      systemd.services.hermes-dashboard = {
       after = ["hermes-agent.service"];
       wants = ["hermes-agent.service"];
       wantedBy = ["multi-user.target"];
@@ -132,7 +133,7 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
-        FIRECRAWL_API_URL = "http://127.0.0.1:3002";
+        CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
       serviceConfig = {

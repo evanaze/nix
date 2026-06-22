@@ -1,7 +1,6 @@
 {
   perSystem = {pkgs, ...}: {
     packages = {
-      firecrawl-source = pkgs.callPackage ../pkgs/firecrawl-source {};
       twenty = pkgs.callPackage ../pkgs/twenty {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
       kestra = pkgs.callPackage ../pkgs/kestra {};
