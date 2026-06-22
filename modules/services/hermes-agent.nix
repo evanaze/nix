@@ -63,6 +63,10 @@ let
         web = {
           search_backend = "searxng";
         };
+        plugins.enabled = [
+          "web-searxng"
+          "ntfy-platform"
+        ];
         file_read_max_chars = 30000;
         tool_output = {
           max_bytes = 20000;
