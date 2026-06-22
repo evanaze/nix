@@ -11,16 +11,16 @@ let
       name = "hermes-agent-with-desktop-command";
       paths = [hermes.default];
       postBuild = ''
-        rm -f "$out/bin/hermes"
-        cat > "$out/bin/hermes" <<'EOF'
-#!${pkgs.runtimeShell}
-if [ "$#" -gt 0 ] && { [ "$1" = "desktop" ] || [ "$1" = "gui" ]; }; then
-  shift
-  exec ${lib.getExe hermes.desktop} "$@"
-fi
-exec ${lib.getExe hermes.default} "$@"
-EOF
-        chmod +x "$out/bin/hermes"
+                rm -f "$out/bin/hermes"
+                cat > "$out/bin/hermes" <<'EOF'
+        #!${pkgs.runtimeShell}
+        if [ "$#" -gt 0 ] && { [ "$1" = "desktop" ] || [ "$1" = "gui" ]; }; then
+          shift
+          exec ${lib.getExe hermes.desktop} "$@"
+        fi
+        exec ${lib.getExe hermes.default} "$@"
+        EOF
+                chmod +x "$out/bin/hermes"
       '';
     };
   in {
