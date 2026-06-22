@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
 
   src = fetchurl {
     url = "https://github.com/kestra-io/kestra/releases/download/v${version}/kestra-${version}";
-    hash = "sha256-sEqtCn4mnP2frV8RskiSZLT9U9bEl2t/rzXtrM80=";
+    hash = "sha256-sEqtCn4mnP2frV8RskiSZLT9U9IP5bEl2t/rzXtrM80=";
   };
 
   dontUnpack = true;
@@ -29,6 +29,7 @@ stdenvNoCC.mkDerivation {
     cp $src $out/share/java/kestra.jar
 
     makeWrapper ${jre}/bin/java $out/bin/kestra \
+      --add-flags "-jar" \
       --add-flags "$out/share/java/kestra.jar"
 
     runHook postInstall
