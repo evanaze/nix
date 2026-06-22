@@ -9,6 +9,8 @@ let
   }: let
     state-dir = "/mnt/eye/appdata/hermes";
     hermes-home = "${state-dir}/.hermes";
+    dashboardPort = 9119;
+    dashboardProxyPort = 9120;
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
@@ -131,16 +133,30 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build --insecure";
+      script = "${lib.getExe pkgs.hermes-agent} dashboard --host 127.0.0.1 --port ${toString dashboardPort} --no-open --skip-build --insecure";
+    };
+
+    services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
+      extraConfig = ''
+        reverse_proxy 127.0.0.1:${toString dashboardPort} {
+          header_up Host 127.0.0.1:${toString dashboardPort}
+          header_up -Origin
+          header_up X-Forwarded-Proto https
+          header_up X-Forwarded-For {remote_host}
+          header_up X-Forwarded-Host {host}
+        }
+      '';
     };
 
     systemd.services.hermes-tsserve = {
       after = [
-        "hermes-webui.service"
+        "caddy.service"
+        "hermes-dashboard.service"
         "tailscaled.service"
       ];
       wants = [
-        "hermes-webui.service"
+        "caddy.service"
+        "hermes-dashboard.service"
         "tailscaled.service"
       ];
       wantedBy = ["multi-user.target"];
@@ -153,7 +169,7 @@ let
       };
       script = ''
         ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 9119
+        ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 http://127.0.0.1:${toString dashboardProxyPort}
       '';
     };
   };

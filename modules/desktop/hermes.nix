@@ -29,7 +29,7 @@ EOF
       hermes.desktop
     ];
 
-    environment.variables.HERMES_DESKTOP_REMOTE_URL = "http://jupiter.spitz-pickerel.ts.net:9119";
+    environment.variables.HERMES_DESKTOP_REMOTE_URL = "https://agent.spitz-pickerel.ts.net";
   };
 in {
   flake.modules.nixos.desktopHermes = module;
