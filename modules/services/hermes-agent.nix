@@ -37,6 +37,13 @@ let
       "d ${hermes-home} 2770 hermes hermes -"
       "z ${hermes-home}/memories 2770 hermes hermes -"
       "d ${hermes-home}/skills 2770 hermes hermes -"
+      # Existing files/dirs: grant hermes rwX recursively.
+      "A+ /home/${username}/.config/nix - - - - u:hermes:rwX"
+      "A+ /home/${username}/workspace - - - - u:hermes:rwX"
+
+      # Future files/dirs: make new children inherit hermes rwX.
+      "A+ /home/${username}/.config/nix - - - - d:u:hermes:rwX"
+      "A+ /home/${username}/workspace - - - - d:u:hermes:rwX"
     ];
 
     users.users.${username}.extraGroups = ["hermes"];
