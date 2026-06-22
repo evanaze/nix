@@ -162,6 +162,5 @@ let
 in {
   flake.modules.nixos = {
     servicesOdysseus = module;
-    services = module;
   };
 }
