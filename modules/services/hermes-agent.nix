@@ -103,6 +103,10 @@ let
         };
       };
       environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+        MESSAGING_CWD = "${state-dir}/workspace";
         FIRECRAWL_API_URL = "http://127.0.0.1:3002";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
