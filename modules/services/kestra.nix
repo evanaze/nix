@@ -25,6 +25,6 @@ let
   };
 in {
   flake.modules.nixos = {
-    servicesKestra = module;
+    services = module;
   };
 }
