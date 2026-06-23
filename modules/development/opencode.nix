@@ -60,7 +60,7 @@ let
 
     environment.systemPackages = with pkgs; [
       ov-cli
-      # inputs.self.packages.${system}.oh-my-opencode
+      inputs.self.packages.${system}.oh-my-openagent
     ];
 
     home-manager.users.${username} = {
@@ -77,59 +77,59 @@ let
 
         ".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
 
-        # ".config/opencode/oh-my-opencode.json".text = builtins.toJSON {
-        #   "$schema" = "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json";
-        #   agents = {
-        #     sisyphus = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "high";
-        #     };
-        #     oracle = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "high";
-        #     };
-        #     librarian.model = "openai/gpt-5.5-fast";
-        #     explore.model = "openai/gpt-5.4-mini-fast";
-        #     "multimodal-looker".model = "openai/gpt-5.5";
-        #     prometheus = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "high";
-        #     };
-        #     metis = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "high";
-        #     };
-        #     momus = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "medium";
-        #     };
-        #     atlas.model = "openai/gpt-5.5-fast";
-        #   };
-        #   categories = {
-        #     "visual-engineering" = {
-        #       model = "openai/gpt-5.5";
-        #       variant = "high";
-        #     };
-        #     ultrabrain = {
-        #       model = "openai/gpt-5.3-codex-spark";
-        #       variant = "xhigh";
-        #     };
-        #     artistry = {
-        #       model = "openai/gpt-5.5-pro";
-        #       variant = "max";
-        #     };
-        #     quick.model = "openai/gpt-5.5-fast";
-        #     "unspecified-low" = {
-        #       model = "openai/gpt-5.3-codex-spark";
-        #       variant = "medium";
-        #     };
-        #     "unspecified-high" = {
-        #       model = "openai/gpt-5.3-codex-spark";
-        #       variant = "medium";
-        #     };
-        #     writing.model = "openai/gpt-5.5";
-        #   };
-        # };
+        ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
+          "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
+          agents = {
+            sisyphus = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            oracle = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            librarian.model = "openai/gpt-5.5-fast";
+            explore.model = "openai/gpt-5.4-mini-fast";
+            "multimodal-looker".model = "openai/gpt-5.5";
+            prometheus = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            metis = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            momus = {
+              model = "openai/gpt-5.5";
+              variant = "medium";
+            };
+            atlas.model = "openai/gpt-5.5-fast";
+          };
+          categories = {
+            "visual-engineering" = {
+              model = "openai/gpt-5.5";
+              variant = "high";
+            };
+            ultrabrain = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "xhigh";
+            };
+            artistry = {
+              model = "openai/gpt-5.5-pro";
+              variant = "max";
+            };
+            quick.model = "openai/gpt-5.5-fast";
+            "unspecified-low" = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "medium";
+            };
+            "unspecified-high" = {
+              model = "openai/gpt-5.3-codex-spark";
+              variant = "medium";
+            };
+            writing.model = "openai/gpt-5.5";
+          };
+        };
       };
 
       programs.mcp = {
@@ -156,7 +156,7 @@ let
           autoupdate = true;
           lsp = true;
           plugin = [
-            # "oh-my-opencode@3.0.1"
+            "oh-my-openagent@4.13.0"
           ];
           compaction = {
             auto = true;
