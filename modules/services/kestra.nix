@@ -1,17 +1,27 @@
 let
   module = {
     config,
+    inputs,
     ...
   }: {
+    nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
+
     sops.secrets = {
-      "kestra/db-password" = {};
-      "kestra/encryption-secret-key" = {};
-      "kestra/jdbc-secret-key" = {};
+      "kestra/db-password" = {
+        owner = "kestra";
+      };
+      "kestra/encryption-secret-key" = {
+        owner = "kestra";
+      };
+      "kestra/jdbc-secret-key" = {
+        owner = "kestra";
+      };
     };
 
     services.kestra = {
       enable = true;
       database = {
+        createLocally = true;
         host = "pg.spitz-pickerel.ts.net";
         port = 5432;
         passwordFile = config.sops.secrets."kestra/db-password".path;
