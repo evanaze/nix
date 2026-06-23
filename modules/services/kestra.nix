@@ -2,9 +2,12 @@ let
   module = {
     config,
     inputs,
+    pkgs,
     ...
   }: {
     nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
+
+    environment.systemPackages = [pkgs.kestra];
 
     sops.secrets = {
       "kestra/db-password" = {
@@ -20,6 +23,7 @@ let
 
     services.kestra = {
       enable = true;
+      port = 7398;
       database = {
         createLocally = true;
         passwordFile = config.sops.secrets."kestra/db-password".path;
