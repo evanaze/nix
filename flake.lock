@@ -465,6 +465,26 @@
         "type": "github"
       }
     },
+    "kestra-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782228572,
+        "narHash": "sha256-U2e37RyLZnVOGxk+60nanP/0tEyogWFhI4IQiH4IRgs=",
+        "owner": "evanaze",
+        "repo": "kestra-nix",
+        "rev": "aef8ae8bfebd32831bdbed3336c6a1db201632af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "evanaze",
+        "repo": "kestra-nix",
+        "type": "github"
+      }
+    },
     "llama-cpp": {
       "inputs": {
         "flake-parts": "flake-parts_5",
@@ -943,6 +963,7 @@
         "hermes-agent": "hermes-agent",
         "home-manager": "home-manager_2",
         "import-tree": "import-tree",
+        "kestra-nix": "kestra-nix",
         "llama-cpp": "llama-cpp",
         "nixflix": "nixflix",
         "nixos-anywhere": "nixos-anywhere",

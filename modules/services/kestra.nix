@@ -6,7 +6,7 @@ let
     inputs,
     ...
   }: {
-    nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
+    # nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
 
     sops.secrets = {
       "kestra/db-password" = {};
