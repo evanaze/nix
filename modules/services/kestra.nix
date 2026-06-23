@@ -13,13 +13,16 @@ let
       "kestra/encryption-secret-key" = {};
       "kestra/jdbc-secret-key" = {};
     };
+
     services.kestra = {
       enable = true;
       database = {
         host = "pg.spitz-pickerel.ts.net";
         port = 5432;
-        passwordFile = "/run/secrets/ducklake/db-password";
+        passwordFile = config.sops.secrets."kestra/db-password".path;
       };
+      encryptionSecretKeyFile = config.sops.secrets."kestra/encryption-secret-key".path;
+      jdbcSecretKeyFile = config.sops.secrets."kestra/jdbc-secret-key".path;
     };
   };
 in {
