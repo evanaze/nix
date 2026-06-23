@@ -3,13 +3,10 @@ let
     config,
     lib,
     pkgs,
+    inputs,
     ...
-  }: let
-    kestraModule = config._module.args.inputs.kestra-nix.nixosModules.kestra;
-  in {
-    imports = [
-      kestraModule
-    ];
+  }: {
+    imports = [inputs.kestra-nix.nixosModules.kestra];
 
     sops.secrets = {
       "kestra/db-password" = {};
@@ -31,6 +28,5 @@ let
 in {
   flake.modules.nixos = {
     servicesKestra = module;
-    services = module;
   };
 }
