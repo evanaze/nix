@@ -136,6 +136,7 @@ in {
       ];
       extraModules = [
         inputs.hermes-agent.nixosModules.default
+        inputs.kestra-nix.nixosModules.kestra
         inputs.nixflix.nixosModules.default
         inputs.openviking.nixosModules.default
       ];

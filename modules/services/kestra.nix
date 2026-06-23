@@ -1,11 +1,8 @@
 let
   module = {
     config,
-    inputs,
     ...
   }: {
-    imports = [inputs.kestra-nix.nixosModules.kestra];
-
     sops.secrets = {
       "kestra/db-password" = {};
       "kestra/encryption-secret-key" = {};
