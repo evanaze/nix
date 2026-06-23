@@ -22,8 +22,6 @@ let
       enable = true;
       database = {
         createLocally = true;
-        host = "pg.spitz-pickerel.ts.net";
-        port = 5432;
         passwordFile = config.sops.secrets."kestra/db-password".path;
       };
       encryptionSecretKeyFile = config.sops.secrets."kestra/encryption-secret-key".path;
