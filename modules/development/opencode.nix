@@ -81,14 +81,14 @@ let
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
             sisyphus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            hephaestus.model = "openrouter/qwen/qwen3.6-35b-a3b";
             oracle.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            prometheus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            atlas.model = "openrouter/qwen/qwen3.6-35b-a3b";
             librarian.model = "openrouter/qwen/qwen3.6-35b-a3b";
             explore.model = "openrouter/qwen/qwen3.6-35b-a3b";
             "multimodal-looker".model = "openrouter/qwen/qwen3.6-35b-a3b";
-            prometheus.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            metis.model = "openrouter/qwen/qwen3.6-35b-a3b";
             momus.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            atlas.model = "openrouter/qwen/qwen3.6-35b-a3b";
           };
           categories = {
             "visual-engineering".model = "openrouter/qwen/qwen3.6-35b-a3b";
