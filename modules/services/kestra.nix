@@ -5,7 +5,10 @@ let
     pkgs,
     lib,
     ...
-  }: {
+  }: let
+    caddyPort = 7398;
+    kestraPort = 7399;
+  in {
     nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
 
     environment.systemPackages = [pkgs.kestra];
@@ -24,13 +27,23 @@ let
 
     services.kestra = {
       enable = true;
-      port = 7398;
+      port = kestraPort;
       database = {
         createLocally = true;
         passwordFile = config.sops.secrets."kestra/db-password".path;
       };
       encryptionSecretKeyFile = config.sops.secrets."kestra/encryption-secret-key".path;
       jdbcSecretKeyFile = config.sops.secrets."kestra/jdbc-secret-key".path;
+    };
+
+    services.caddy.virtualHosts."http://:${toString caddyPort}" = {
+      extraConfig = ''
+        reverse_proxy localhost:${toString kestraPort} {
+          header_up X-Forwarded-Proto https
+          header_up X-Forwarded-For {remote_host}
+          header_up X-Forwarded-Host {host}
+        }
+      '';
     };
 
     systemd.services.kestra-tsserve = {
@@ -52,7 +65,7 @@ let
       };
       script = ''
         ${lib.getExe pkgs.tailscale} serve clear svc:jobs || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:jobs --https=443 ${toString config.services.kestra.port}
+        ${lib.getExe pkgs.tailscale} serve --service=svc:jobs --https=443 ${toString caddyPort}
       '';
     };
   };
