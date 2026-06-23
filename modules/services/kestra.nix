@@ -52,7 +52,7 @@ let
       };
       script = ''
         ${lib.getExe pkgs.tailscale} serve clear svc:jobs || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:jobs --https=443 ${config.services.kestra.port}
+        ${lib.getExe pkgs.tailscale} serve --service=svc:jobs --https=443 ${toString config.services.kestra.port}
       '';
     };
   };
