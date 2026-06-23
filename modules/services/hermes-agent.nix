@@ -64,8 +64,9 @@ let
           search_backend = "searxng";
         };
         plugins.enabled = [
-          "web-searxng"
+          "disk-cleanup"
           "ntfy-platform"
+          "web-searxng"
         ];
         file_read_max_chars = 30000;
         tool_output = {
@@ -117,18 +118,18 @@ let
       addToSystemPackages = true;
     };
 
-      sops.secrets."hermes/env" = {
-        owner = "hermes";
-        group = "hermes";
-        mode = "0640";
-      };
+    sops.secrets."hermes/env" = {
+      owner = "hermes";
+      group = "hermes";
+      mode = "0640";
+    };
 
-      systemd.services.hermes-agent = {
-        after = ["camofox.service"];
-        wants = ["camofox.service"];
-      };
+    systemd.services.hermes-agent = {
+      after = ["camofox.service"];
+      wants = ["camofox.service"];
+    };
 
-      systemd.services.hermes-dashboard = {
+    systemd.services.hermes-dashboard = {
       after = ["hermes-agent.service"];
       wants = ["hermes-agent.service"];
       wantedBy = ["multi-user.target"];
