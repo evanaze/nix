@@ -55,13 +55,12 @@ let
           };
         }
       ];
-      authentication = lib.mkOverride 10 (
-        lib.mkAfter ''
-          # Tailscale Serve forwards svc:pg to PostgreSQL over loopback.
-          host stackmagic_catalog stackmagic_catalog 127.0.0.1/32 scram-sha-256
-          host de_rec_catalog de_rec_catalog ::1/128 scram-sha-256
-        ''
-      );
+      authentication = lib.mkAfter ''
+        # Append DuckLake loopback rules without replacing auth rules
+        # from other PostgreSQL consumers such as Kestra.
+        host stackmagic_catalog stackmagic_catalog 127.0.0.1/32 scram-sha-256
+        host de_rec_catalog de_rec_catalog ::1/128 scram-sha-256
+      '';
     };
   };
 in {
