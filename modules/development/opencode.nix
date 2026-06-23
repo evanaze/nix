@@ -80,54 +80,24 @@ let
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
-            sisyphus = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            oracle = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            librarian.model = "openai/gpt-5.5-fast";
-            explore.model = "openai/gpt-5.4-mini-fast";
-            "multimodal-looker".model = "openai/gpt-5.5";
-            prometheus = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            metis = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            momus = {
-              model = "openai/gpt-5.5";
-              variant = "medium";
-            };
-            atlas.model = "openai/gpt-5.5-fast";
+            sisyphus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            oracle.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            librarian.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            explore.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            "multimodal-looker".model = "openrouter/qwen/qwen3.6-35b-a3b";
+            prometheus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            metis.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            momus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            atlas.model = "openrouter/qwen/qwen3.6-35b-a3b";
           };
           categories = {
-            "visual-engineering" = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            ultrabrain = {
-              model = "openai/gpt-5.3-codex-spark";
-              variant = "xhigh";
-            };
-            artistry = {
-              model = "openai/gpt-5.5-pro";
-              variant = "max";
-            };
-            quick.model = "openai/gpt-5.5-fast";
-            "unspecified-low" = {
-              model = "openai/gpt-5.3-codex-spark";
-              variant = "medium";
-            };
-            "unspecified-high" = {
-              model = "openai/gpt-5.3-codex-spark";
-              variant = "medium";
-            };
-            writing.model = "openai/gpt-5.5";
+            "visual-engineering".model = "openrouter/qwen/qwen3.6-35b-a3b";
+            ultrabrain.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            artistry.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            quick.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            "unspecified-low".model = "openrouter/qwen/qwen3.6-35b-a3b";
+            "unspecified-high".model = "openrouter/qwen/qwen3.6-35b-a3b";
+            writing.model = "openrouter/qwen/qwen3.6-35b-a3b";
           };
         };
       };
