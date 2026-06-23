@@ -14,9 +14,11 @@ let
 
     services.kestra = {
       enable = true;
-      databaseHost = "pg.spitz-pickerel.ts.net";
-      databasePort = 5432;
-      databasePasswordFile = config.sops.secrets."kestra/db-password".path;
+      database = {
+        host = "pg.spitz-pickerel.ts.net";
+        port = 5432;
+        passwordFile = config.sops.secrets."kestra/db-password".path;
+      };
       encryptionSecretKeyFile = config.sops.secrets."kestra/encryption-secret-key".path;
       jdbcSecretKeyFile = config.sops.secrets."kestra/jdbc-secret-key".path;
     };
@@ -24,6 +26,5 @@ let
 in {
   flake.modules.nixos = {
     servicesKestra = module;
-    services = module;
   };
 }
