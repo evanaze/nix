@@ -1,10 +1,15 @@
 {
-  flake.modules.nixos.desktop = {pkgs, username, ...}: {
+  flake.modules.nixos.desktop = {
+    pkgs,
+    username,
+    ...
+  }: {
     environment.systemPackages = with pkgs; [
       bitwarden-desktop
       brave
       code-cursor
       google-chrome
+      gnomeExtensions.caffeine
       hunspell
       hunspellDicts.en-us
       inkscape
