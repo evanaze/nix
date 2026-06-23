@@ -15,7 +15,7 @@ let
            # Let other names login as themselves
            superuser_map      /^(.*)$   \1
       '';
-      authentication = pkgs.lib.mkOverride 10 ''
+      authentication = ''
         #type database    DBuser                   auth-method optional_ident_map
         local all         postgres                 peer        map=superuser_map
         local sameuser    all                      peer        map=superuser_map
