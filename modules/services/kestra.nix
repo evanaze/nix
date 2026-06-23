@@ -3,10 +3,13 @@ let
     config,
     lib,
     pkgs,
-    inputs,
     ...
-  }: {
-    # nixpkgs.overlays = [inputs.kestra-nix.overlays.default];
+  }: let
+    kestraModule = config._module.args.inputs.kestra-nix.nixosModules.kestra;
+  in {
+    imports = [
+      kestraModule
+    ];
 
     sops.secrets = {
       "kestra/db-password" = {};
