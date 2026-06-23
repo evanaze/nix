@@ -472,11 +472,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782232942,
-        "narHash": "sha256-2cjDoblOoQ5rvC7/CbhDE3jQEoDKG5HsX2c2K1BpC/s=",
+        "lastModified": 1782233984,
+        "narHash": "sha256-IvtWrbWgHtvCI85mMM/soUW8PwMz9pK0Q+QyZ4A5e7c=",
         "owner": "evanaze",
         "repo": "kestra-nix",
-        "rev": "095a95e0b1f6a5c90628548c8cdae69a8f3caedf",
+        "rev": "82c58fa0093fce3de4d0e2fb8273be48003b5f9b",
         "type": "github"
       },
       "original": {
