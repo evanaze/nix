@@ -80,24 +80,24 @@ let
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
-            sisyphus.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            hephaestus.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            oracle.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            prometheus.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            atlas.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            librarian.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            explore.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            "multimodal-looker".model = "openrouter/qwen/qwen3.6-35b-a3b";
-            momus.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            sisyphus.model = "openrouter/qwen/qwen3.6-27b";
+            hephaestus.model = "openrouter/qwen/qwen3.6-27b";
+            oracle.model = "openrouter/qwen/qwen3.6-27b";
+            prometheus.model = "openrouter/qwen/qwen3.6-27b";
+            atlas.model = "openrouter/qwen/qwen3.6-27b";
+            librarian.model = "openrouter/qwen/qwen3.6-27b";
+            explore.model = "openrouter/qwen/qwen3.6-27b";
+            "multimodal-looker".model = "openrouter/qwen/qwen3.6-27b";
+            momus.model = "openrouter/qwen/qwen3.6-27b";
           };
           categories = {
-            "visual-engineering".model = "openrouter/qwen/qwen3.6-35b-a3b";
-            ultrabrain.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            artistry.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            quick.model = "openrouter/qwen/qwen3.6-35b-a3b";
-            "unspecified-low".model = "openrouter/qwen/qwen3.6-35b-a3b";
-            "unspecified-high".model = "openrouter/qwen/qwen3.6-35b-a3b";
-            writing.model = "openrouter/qwen/qwen3.6-35b-a3b";
+            "visual-engineering".model = "openrouter/qwen/qwen3.6-27b";
+            ultrabrain.model = "openrouter/qwen/qwen3.6-27b";
+            artistry.model = "openrouter/qwen/qwen3.6-27b";
+            quick.model = "openrouter/qwen/qwen3.6-27b";
+            "unspecified-low".model = "openrouter/qwen/qwen3.6-27b";
+            "unspecified-high".model = "openrouter/qwen/qwen3.6-27b";
+            writing.model = "openrouter/qwen/qwen3.6-27b";
           };
         };
       };

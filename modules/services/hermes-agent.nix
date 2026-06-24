@@ -135,6 +135,10 @@ let
           timeout = 60;
           connect_timeout = 30;
         };
+        kestra = {
+          url = "https://api.kestra.io/v1/mcp";
+          timeout = 180;
+        };
       };
       environment = {
         HOME = state-dir;
