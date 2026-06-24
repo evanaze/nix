@@ -119,6 +119,7 @@ in {
         business
         core
         coreFlakeUpdate
+        corePrivateGit
         development
         hardware
         hardwareJupiter

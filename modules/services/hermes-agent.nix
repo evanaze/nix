@@ -31,6 +31,14 @@ let
       rev = "refs/heads/main";
       hash = "sha256-+43r25EpGq+wN2Rsj3+lBjccqogcuENN1luomawaMLg=";
     };
+
+    prospecting = pkgs.fetchFromGitHub {
+      owner = "evanaze";
+      repo = "prospecting";
+      rev = "refs/heads/main";
+      private = true;
+      hash = lib.fakeHash;
+    };
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
@@ -138,12 +146,9 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
-      extraPythonPackages = [
-        rtk-hermes
-      ];
-      extraPlugins = [
-        oh-my-hermers
-      ];
+      extraPackages = [prospecting];
+      extraPythonPackages = [rtk-hermes];
+      extraPlugins = [oh-my-hermers];
     };
 
     sops.secrets."hermes/env" = {
