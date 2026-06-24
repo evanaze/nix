@@ -123,13 +123,14 @@ let
       };
       mcpServers = {
         actual = {
-          command = "export ACTUAL_PASSWORD=$(cat ${config.sops.secrets.actual.path}) npx";
+          command = "npx";
           args = [
             "-y"
             "actual-mcp"
             "--enable-write"
           ];
           env = {
+            ACTUAL_PASSWORD = "{env:ACTUAL_PASSWORD}";
             ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
           };
           timeout = 60;
@@ -138,6 +139,13 @@ let
         kestra = {
           url = "https://api.kestra.io/v1/mcp";
           timeout = 180;
+        };
+        nixos = {
+          command = "mcp-nixos";
+        };
+        nocodb-leads = {
+          url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
+          headers."xc-mcp-token" = "{env:NOCODB_LEADS_MCP_TOKEN}";
         };
       };
       environment = {
@@ -150,7 +158,7 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
-      extraPackages = [prospecting];
+      extraPackages = [pkgs.mcp-nixos prospecting];
       extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
     };
