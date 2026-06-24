@@ -3,7 +3,6 @@
     packages = {
       twenty = pkgs.callPackage ../pkgs/twenty {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
-      kestra = pkgs.callPackage ../pkgs/kestra {};
       oh-my-openagent = pkgs.callPackage ../pkgs/oh-my-openagent {};
       svr-mgmt = pkgs.callPackage ../pkgs/svr-mgmt {};
       # duck-ui = pkgs.callPackage ../pkgs/duck-ui {
