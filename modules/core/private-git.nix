@@ -19,11 +19,6 @@ let
     systemd.services.nix-daemon.serviceConfig.EnvironmentFile = [
       config.sops.templates."nix-github-private.env".path
     ];
-
-    nix.settings.extra-sandbox-paths = [
-      config.sops.templates."nix-github-private.env".path
-      config.sops.secrets."github/token".path
-    ];
   };
 in {
   flake.modules.nixos = {
