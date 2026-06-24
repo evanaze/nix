@@ -11,6 +11,26 @@ let
     hermes-home = "${state-dir}/.hermes";
     dashboardPort = 9119;
     dashboardProxyPort = 9120;
+
+    rtk-hermes = pkgs.python312Packages.buildPythonPackage {
+      pname = "rtk-hermes";
+      version = "1.2.3";
+      src = pkgs.fetchFromGitHub {
+        owner = "ogallotti";
+        repo = "rtk-hermes";
+        rev = "v1.2.3";
+        hash = "sha256-7YRW6PODrCapfYLFn3DvgHAEME//RGC48GQt+s9ot0s=";
+      };
+      format = "pyproject";
+      build-system = [pkgs.python312Packages.setuptools];
+    };
+
+    oh-my-hermers = pkgs.fetchFromGitHub {
+      owner = "evanaze";
+      repo = "oh-my-hermers";
+      rev = "refs/heads/main";
+      hash = "sha256-+43r25EpGq+wN2Rsj3+lBjccqogcuENN1luomawaMLg=";
+    };
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
@@ -66,6 +86,8 @@ let
         plugins.enabled = [
           "disk-cleanup"
           "ntfy-platform"
+          "oh-my-hermes"
+          "rtk-rewrite"
           "web-searxng"
         ];
         file_read_max_chars = 30000;
@@ -116,6 +138,12 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
+      extraPythonPackages = [
+        rtk-hermes
+      ];
+      extraPlugins = [
+        oh-my-hermers
+      ];
     };
 
     sops.secrets."hermes/env" = {
