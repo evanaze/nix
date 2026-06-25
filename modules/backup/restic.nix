@@ -4,6 +4,22 @@ let
   username,
   ...
 }: {
+  nixpkgs.overlays = [
+    (final: prev: {
+      restic = prev.restic.overrideAttrs (old: {
+        version = "0.18.1";
+        src = prev.fetchFromGitHub {
+          owner = "restic";
+          repo = "restic";
+          rev = "v0.18.1";
+          sha256 = "0gxhknn022bwg2s8hababqg3vjkzflq59vr67y7r1c8fjnlsgf4l";
+        };
+        goModules = old.goModules // {
+          outputHash = "sha256-4GVhG1sjFiuKyDUAgmSmFww5bDKIoCjejkkoSqkvU4E=";
+        };
+      });
+    })
+  ];
   environment.systemPackages = with pkgs; [
     restic
   ];
