@@ -67,9 +67,7 @@ let
 
     users.users.${username}.extraGroups = ["hermes"];
 
-    environment.systemPackages = with pkgs; [
-      hermes-agent
-    ];
+    environment.systemPackages = [pkgs.hermes-agent];
 
     services.hermes-agent = {
       enable = true;
@@ -88,6 +86,7 @@ let
             rewrite_loopback_urls = false;
           };
         };
+        skills.external_dirs = "${prospecting}/prospecting-skill/SKILL.md";
         web = {
           search_backend = "searxng";
         };
@@ -158,7 +157,10 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
-      extraPackages = [pkgs.mcp-nixos prospecting];
+      extraPackages = [
+        pkgs.mcp-nixos
+        prospecting
+      ];
       extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
     };
