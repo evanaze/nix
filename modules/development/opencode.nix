@@ -80,24 +80,33 @@ let
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
-            sisyphus.model = "openrouter/qwen/qwen3.6-27b";
-            hephaestus.model = "openrouter/qwen/qwen3.6-27b";
-            oracle.model = "openrouter/qwen/qwen3.6-27b";
-            prometheus.model = "openrouter/qwen/qwen3.6-27b";
-            atlas.model = "openrouter/qwen/qwen3.6-27b";
-            librarian.model = "openrouter/qwen/qwen3.6-27b";
-            explore.model = "openrouter/qwen/qwen3.6-27b";
-            "multimodal-looker".model = "openrouter/qwen/qwen3.6-27b";
-            momus.model = "openrouter/qwen/qwen3.6-27b";
+            sisyphus = {
+              model = "openai-codex/chat-gpt-5.4";
+              variant = "high";
+            };
+            hephaestus.model = "openai-codex/chat-gpt-5.5";
+            oracle.model = "openai-codex/chat-gpt-5.5";
+            prometheus.model = "openai-codex/chat-gpt-5.5";
+            atlas.model = "openai-codex/chat-gpt-5.4";
+            librarian.model = "openai-codex/chat-gpt-5.4";
+            explore.model = "openai-codex/chat-gpt-5.4";
+            "multimodal-looker".model = "openai-codex/chat-gpt-5.4";
+            momus = {
+              model = "openai-codex/chat-gpt-5.5";
+              variant = "high";
+            };
           };
           categories = {
-            "visual-engineering".model = "openrouter/qwen/qwen3.6-27b";
-            ultrabrain.model = "openrouter/qwen/qwen3.6-27b";
-            artistry.model = "openrouter/qwen/qwen3.6-27b";
-            quick.model = "openrouter/qwen/qwen3.6-27b";
-            "unspecified-low".model = "openrouter/qwen/qwen3.6-27b";
-            "unspecified-high".model = "openrouter/qwen/qwen3.6-27b";
-            writing.model = "openrouter/qwen/qwen3.6-27b";
+            "visual-engineering".model = "openai-codex/chat-gpt-5.5";
+            ultrabrain = {
+              model = "openai-codex/chat-gpt-5.5";
+              variant = "high";
+            };
+            artistry.model = "openai-codex/chat-gpt-5.5";
+            quick.model = "openai-codex/chat-gpt-5.4-mini";
+            "unspecified-low".model = "openai-codex/chat-gpt-5.4-mini";
+            "unspecified-high".model = "openai-codex/chat-gpt-5.5";
+            writing.model = "openai-codex/chat-gpt-5.4";
           };
         };
       };
