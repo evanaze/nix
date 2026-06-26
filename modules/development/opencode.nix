@@ -81,32 +81,32 @@ let
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
             sisyphus = {
-              model = "openai/chat-gpt-5.4";
+              model = "openai/gpt-5.4";
               variant = "high";
             };
-            hephaestus.model = "openai/chat-gpt-5.5";
-            oracle.model = "openai/chat-gpt-5.5";
-            prometheus.model = "openai/chat-gpt-5.5";
-            atlas.model = "openai/chat-gpt-5.4";
-            librarian.model = "openai/chat-gpt-5.4";
-            explore.model = "openai/chat-gpt-5.4";
-            "multimodal-looker".model = "openai/chat-gpt-5.4";
+            hephaestus.model = "openai/gpt-5.5";
+            oracle.model = "openai/gpt-5.5";
+            prometheus.model = "openai/gpt-5.5";
+            atlas.model = "openai/gpt-5.4";
+            librarian.model = "openai/gpt-5.4";
+            explore.model = "openai/gpt-5.4";
+            "multimodal-looker".model = "openai/gpt-5.4";
             momus = {
-              model = "openai/chat-gpt-5.5";
+              model = "openai/gpt-5.5";
               variant = "high";
             };
           };
           categories = {
-            "visual-engineering".model = "openai/chat-gpt-5.5";
+            "visual-engineering".model = "openai/gpt-5.5";
             ultrabrain = {
-              model = "openai/chat-gpt-5.5";
+              model = "openai/gpt-5.5";
               variant = "high";
             };
-            artistry.model = "openai/chat-gpt-5.5";
-            quick.model = "openai/chat-gpt-5.4-mini";
-            "unspecified-low".model = "openai/chat-gpt-5.4-mini";
-            "unspecified-high".model = "openai/chat-gpt-5.5";
-            writing.model = "openai/chat-gpt-5.4";
+            artistry.model = "openai/gpt-5.5";
+            quick.model = "openai/gpt-5.4-mini";
+            "unspecified-low".model = "openai/gpt-5.4-mini";
+            "unspecified-high".model = "openai/gpt-5.5";
+            writing.model = "openai/gpt-5.4";
           };
         };
       };
