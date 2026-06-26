@@ -55,6 +55,8 @@ let
       "d ${hermes-home} 2770 hermes hermes -"
       "z ${hermes-home}/memories 2770 hermes hermes -"
       "d ${hermes-home}/skills 2770 hermes hermes -"
+      "d ${hermes-home}/skills/.hub 2770 hermes hermes -"
+      "Z ${hermes-home}/skills/.hub 2770 hermes hermes -"
       "a+ /home/${username} - - - - u:hermes:--x,m::--x"
       "a+ /home/${username}/.config - - - - u:hermes:--x,m::--x"
 
@@ -86,7 +88,7 @@ let
             rewrite_loopback_urls = false;
           };
         };
-        skills.external_dirs = "${prospecting}/prospecting-skill/SKILL.md";
+        skills.external_dirs = [prospecting];
         web = {
           search_backend = "searxng";
         };
