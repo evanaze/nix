@@ -199,8 +199,16 @@ let
 
     systemd.services.hermes-research-profile = {
       description = "Bootstrap Hermes research profile";
-      after = ["systemd-tmpfiles-setup.service"];
-      requires = ["systemd-tmpfiles-setup.service"];
+      after = [
+        "systemd-tmpfiles-setup.service"
+        "create-appdata-datasets.service"
+        "zfs-mount.service"
+      ];
+      requires = [
+        "systemd-tmpfiles-setup.service"
+        "create-appdata-datasets.service"
+        "zfs-mount.service"
+      ];
       before = [
         "hermes-agent.service"
         "hermes-dashboard.service"
