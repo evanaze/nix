@@ -81,32 +81,32 @@ let
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
             sisyphus = {
-              model = "openai-codex/chat-gpt-5.4";
+              model = "openai/chat-gpt-5.4";
               variant = "high";
             };
-            hephaestus.model = "openai-codex/chat-gpt-5.5";
-            oracle.model = "openai-codex/chat-gpt-5.5";
-            prometheus.model = "openai-codex/chat-gpt-5.5";
-            atlas.model = "openai-codex/chat-gpt-5.4";
-            librarian.model = "openai-codex/chat-gpt-5.4";
-            explore.model = "openai-codex/chat-gpt-5.4";
-            "multimodal-looker".model = "openai-codex/chat-gpt-5.4";
+            hephaestus.model = "openai/chat-gpt-5.5";
+            oracle.model = "openai/chat-gpt-5.5";
+            prometheus.model = "openai/chat-gpt-5.5";
+            atlas.model = "openai/chat-gpt-5.4";
+            librarian.model = "openai/chat-gpt-5.4";
+            explore.model = "openai/chat-gpt-5.4";
+            "multimodal-looker".model = "openai/chat-gpt-5.4";
             momus = {
-              model = "openai-codex/chat-gpt-5.5";
+              model = "openai/chat-gpt-5.5";
               variant = "high";
             };
           };
           categories = {
-            "visual-engineering".model = "openai-codex/chat-gpt-5.5";
+            "visual-engineering".model = "openai/chat-gpt-5.5";
             ultrabrain = {
-              model = "openai-codex/chat-gpt-5.5";
+              model = "openai/chat-gpt-5.5";
               variant = "high";
             };
-            artistry.model = "openai-codex/chat-gpt-5.5";
-            quick.model = "openai-codex/chat-gpt-5.4-mini";
-            "unspecified-low".model = "openai-codex/chat-gpt-5.4-mini";
-            "unspecified-high".model = "openai-codex/chat-gpt-5.5";
-            writing.model = "openai-codex/chat-gpt-5.4";
+            artistry.model = "openai/chat-gpt-5.5";
+            quick.model = "openai/chat-gpt-5.4-mini";
+            "unspecified-low".model = "openai/chat-gpt-5.4-mini";
+            "unspecified-high".model = "openai/chat-gpt-5.5";
+            writing.model = "openai/chat-gpt-5.4";
           };
         };
       };
