@@ -136,6 +136,7 @@ let
           lsp = true;
           plugin = [
             "oh-my-openagent@4.13.0"
+            "@openviking/opencode-plugin"
           ];
           compaction = {
             auto = true;
