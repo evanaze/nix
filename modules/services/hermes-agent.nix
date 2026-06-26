@@ -13,7 +13,6 @@ let
     dashboardProxyPort = 9120;
     research-profile = "research";
     research-profile-home = "${hermes-home}/profiles/${research-profile}";
-    research-workdir = "/home/${username}/.config/nix";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -95,7 +94,6 @@ let
 
     research-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.external_dirs = ["${prospecting}"];
-      terminal.cwd = research-workdir;
     };
 
     research-profile-config =
@@ -226,7 +224,6 @@ let
         User = "hermes";
         Group = "hermes";
         UMask = "0007";
-        WorkingDirectory = research-workdir;
         EnvironmentFile = config.sops.secrets."hermes/env".path;
       };
       script = ''
