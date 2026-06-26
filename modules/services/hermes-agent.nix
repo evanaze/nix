@@ -11,6 +11,9 @@ let
     hermes-home = "${state-dir}/.hermes";
     dashboardPort = 9119;
     dashboardProxyPort = 9120;
+    research-profile = "research";
+    research-profile-home = "${hermes-home}/profiles/${research-profile}";
+    research-workdir = "/home/${username}/.config/nix";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -39,6 +42,65 @@ let
       private = true;
       hash = "sha256-g14FXn2kiQsmVhhD6oIkeJKEld72xjvGuiTSp2GkEhI=";
     };
+
+    common-hermes-settings = {
+      model = {
+        default = "gpt-5.5";
+        provider = "openai-codex";
+      };
+      memory.provider = "openviking";
+      browser = {
+        cloud_provider = "local";
+        camofox = {
+          managed_persistence = true;
+          rewrite_loopback_urls = false;
+        };
+      };
+      web.search_backend = "searxng";
+      plugins.enabled = [
+        "oh-my-hermes"
+        "rtk-rewrite"
+        "web-searxng"
+      ];
+      file_read_max_chars = 30000;
+      tool_output = {
+        max_bytes = 20000;
+        max_lines = 500;
+      };
+      compression = {
+        enabled = true;
+        threshold = 0.8;
+        target_ratio = 0.2;
+      };
+      providers = {
+        local = {
+          base_url = "https://llm.spitz-pickerel.ts.net/v1";
+          api_key = "none";
+          model = "gemma-4-12b-q4";
+          models = [
+            "gemma-4-12b-q4"
+            "qwen3.6-35b-a3b"
+          ];
+        };
+      };
+      platforms.api_server.enabled = true;
+    };
+
+    default-profile-settings = lib.recursiveUpdate common-hermes-settings {
+      plugins.enabled = [
+        "disk-cleanup"
+        "ntfy-platform"
+      ];
+    };
+
+    research-profile-settings = lib.recursiveUpdate common-hermes-settings {
+      skills.external_dirs = ["${prospecting}"];
+      terminal.cwd = research-workdir;
+    };
+
+    research-profile-config =
+      (pkgs.formats.yaml {}).generate "hermes-research-profile-config.yaml"
+      research-profile-settings;
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
@@ -53,6 +115,7 @@ let
 
     systemd.tmpfiles.rules = [
       "d ${hermes-home} 2770 hermes hermes -"
+      "d ${hermes-home}/profiles 2770 hermes hermes -"
       "z ${hermes-home}/memories 2770 hermes hermes -"
       "d ${hermes-home}/skills 2770 hermes hermes -"
       "d ${hermes-home}/skills/.hub 2770 hermes hermes -"
@@ -75,53 +138,7 @@ let
       enable = true;
       createUser = true;
       stateDir = "${state-dir}";
-      settings = {
-        model = {
-          default = "gpt-5.5";
-          provider = "openai-codex";
-        };
-        memory.provider = "openviking";
-        browser = {
-          cloud_provider = "local";
-          camofox = {
-            managed_persistence = true;
-            rewrite_loopback_urls = false;
-          };
-        };
-        skills.external_dirs = [prospecting];
-        web = {
-          search_backend = "searxng";
-        };
-        plugins.enabled = [
-          "disk-cleanup"
-          "ntfy-platform"
-          "oh-my-hermes"
-          "rtk-rewrite"
-          "web-searxng"
-        ];
-        file_read_max_chars = 30000;
-        tool_output = {
-          max_bytes = 20000;
-          max_lines = 500;
-        };
-        compression = {
-          enabled = true;
-          threshold = 0.8;
-          target_ratio = 0.2;
-        };
-        providers = {
-          local = {
-            base_url = "https://llm.spitz-pickerel.ts.net/v1";
-            api_key = "none";
-            model = "gemma-4-12b-q4";
-            models = [
-              "gemma-4-12b-q4"
-              "qwen3.6-35b-a3b"
-            ];
-          };
-        };
-        platforms.api_server.enabled = true;
-      };
+      settings = default-profile-settings;
       mcpServers = {
         actual = {
           command = "npx";
@@ -141,9 +158,7 @@ let
           url = "https://api.kestra.io/v1/mcp";
           timeout = 180;
         };
-        nixos = {
-          command = "mcp-nixos";
-        };
+        nixos.command = "mcp-nixos";
         nocodb-leads = {
           url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
           headers."xc-mcp-token" = "{env:NOCODB_LEADS_MCP_TOKEN}";
@@ -174,13 +189,68 @@ let
     };
 
     systemd.services.hermes-agent = {
-      after = ["camofox.service"];
-      wants = ["camofox.service"];
+      after = [
+        "camofox.service"
+        "hermes-research-profile.service"
+      ];
+      wants = [
+        "camofox.service"
+        "hermes-research-profile.service"
+      ];
+    };
+
+    systemd.services.hermes-research-profile = {
+      description = "Bootstrap Hermes research profile";
+      after = ["systemd-tmpfiles-setup.service"];
+      requires = ["systemd-tmpfiles-setup.service"];
+      before = [
+        "hermes-agent.service"
+        "hermes-dashboard.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+        CAMOFOX_URL = "http://127.0.0.1:9377";
+        SEARXNG_URL = "http://127.0.0.1:8311";
+      };
+      path = [
+        pkgs.coreutils
+        pkgs.hermes-agent
+      ];
+      restartTriggers = [research-profile-config];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        User = "hermes";
+        Group = "hermes";
+        UMask = "0007";
+        WorkingDirectory = research-workdir;
+        EnvironmentFile = config.sops.secrets."hermes/env".path;
+      };
+      script = ''
+        set -euo pipefail
+
+        if [ ! -d "${research-profile-home}" ]; then
+          ${lib.getExe pkgs.hermes-agent} profile create ${research-profile} --no-skills
+        fi
+
+        touch "${research-profile-home}/.no-bundled-skills"
+        chmod 0640 "${research-profile-home}/.no-bundled-skills"
+        install -D -m 0640 ${research-profile-config} "${research-profile-home}/config.yaml"
+      '';
     };
 
     systemd.services.hermes-dashboard = {
-      after = ["hermes-agent.service"];
-      wants = ["hermes-agent.service"];
+      after = [
+        "hermes-agent.service"
+        "hermes-research-profile.service"
+      ];
+      wants = [
+        "hermes-agent.service"
+        "hermes-research-profile.service"
+      ];
       wantedBy = ["multi-user.target"];
       description = "Hermes Agent Web Dashboard";
       environment = {

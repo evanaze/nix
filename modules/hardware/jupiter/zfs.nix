@@ -54,7 +54,14 @@ let
   systemd.services.create-appdata-datasets = {
     description = "Create appdata datasets on eye pool";
     after = ["zfs-mount.service"];
-    before = ["grafana.service" "jellyfin.service" "hermes-agent.service" "donetick.service" "chromadb.service"];
+    before = [
+      "grafana.service"
+      "jellyfin.service"
+      "hermes-agent.service"
+      "hermes-research-profile.service"
+      "donetick.service"
+      "chromadb.service"
+    ];
     wants = ["zfs-mount.service"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
@@ -126,6 +133,17 @@ let
   systemd.services.hermes-agent = {
     after = ["zfs-mount.service"];
     requires = ["zfs-mount.service"];
+  };
+
+  systemd.services.hermes-research-profile = {
+    after = [
+      "create-appdata-datasets.service"
+      "zfs-mount.service"
+    ];
+    requires = [
+      "create-appdata-datasets.service"
+      "zfs-mount.service"
+    ];
   };
 
   systemd.services.chromadb = {
