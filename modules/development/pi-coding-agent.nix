@@ -27,6 +27,7 @@ let
             "npm:pi-intercom"
             "npm:@gotgenes/pi-permission-system"
             "npm:@hypabolic/pi-hypa"
+            "npm:@remnic/cli"
             "npm:@remnic/plugin-pi"
             "npm:@juicesharp/rpiv-ask-user-question"
             "npm:@juicesharp/rpiv-todo"
