@@ -2,8 +2,9 @@
   flake.modules.nixos.development = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
       bun
-      nixd
       codex
+      nixd
+      python313Packages.huggingface-hub
     ];
   };
 }
