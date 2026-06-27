@@ -15,14 +15,15 @@ let
         settings = {
           defaultProvider = "llama-local";
           defaultModel = "ornith-1.0-9b-q4";
+          defaultThinkingLevel = "medium";
           enabledModels = [
             "ornith-1.0-9b-q4"
             "qwen3.6-35b-a3b"
             "gemma-4-12b-q4"
-            "openai:gpt-5.5"
-            "openai:gpt-5.4"
-            "openai:gpt-5.4-mini"
-            "openai:gpt-5.3-codex-spark"
+            "openai/gpt-5.5"
+            "openai/gpt-5.4"
+            "openai/gpt-5.4-mini"
+            "openai/gpt-5.3-codex-spark"
           ];
           packages = [
             "npm:pi-subagents"
