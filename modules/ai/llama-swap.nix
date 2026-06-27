@@ -12,6 +12,7 @@ let
     source-model-dir = "/mnt/jupiter-llama-models";
     staging-root = "/var/tmp/llama-cpp";
     ctx-size = 64000;
+    ornithCtxSize = 128000;
 
     stage-helper = ''
       set -euo pipefail
@@ -119,6 +120,27 @@ let
         --chat-template-kwargs '{"preserve_thinking": true}' \
         --port "$PORT"
     '';
+
+    launchScriptOrnith = mk-launch-script "ornith-1.0-9b-q4" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/ornith-1.0-9b-Q4_K_M.gguf" \
+        --reasoning-format deepseek \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx ${toString ornithCtxSize} \
+        --parallel 1 \
+        --no-mmap \
+        --ctx-size ${toString ornithCtxSize} \
+        --temp 0.6 \
+        --top-p 0.95 \
+        --top-k 20 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --mlock \
+        --jinja \
+        --chat-template-kwargs '{"preserve_thinking": true}' \
+        --port "$PORT"
+    '';
   in {
     environment.systemPackages = with pkgs; [
       tmux
@@ -151,6 +173,10 @@ let
           };
           "gemma-4-12b-q4" = {
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "ornith-1.0-9b-q4" = {
+            cmd = "${launchScriptOrnith} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
         };
