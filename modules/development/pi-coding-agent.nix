@@ -25,6 +25,7 @@ let
             "npm:pi-lens"
             "npm:pi-mcp-adapter"
             "npm:pi-intercom"
+            "npm:pi-zentui"
             "npm:@gotgenes/pi-permission-system"
             "npm:@hypabolic/pi-hypa"
             "npm:@remnic/cli"

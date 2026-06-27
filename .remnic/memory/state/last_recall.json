@@ -1,0 +1,72 @@
+{
+  "pi:019f0795-8732-72d7-bb34-fd0e183c5e00": {
+    "sessionKey": "pi:019f0795-8732-72d7-bb34-fd0e183c5e00",
+    "recordedAt": "2026-06-27T05:37:49.322Z",
+    "queryHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "writeNonce": "28070446-9617-4606-922d-6c8c57077e3a",
+    "queryLen": 4,
+    "memoryIds": [],
+    "namespace": "default",
+    "recallNamespaces": [
+      "default"
+    ],
+    "traceId": "6106f925ffbdabfa",
+    "plannerMode": "full",
+    "source": "none",
+    "fallbackUsed": false,
+    "sourcesUsed": [],
+    "budgetsApplied": {
+      "requestedTopK": 8,
+      "appliedTopK": 8,
+      "recallBudgetChars": 9600,
+      "maxMemoryTokens": 2400,
+      "qmdFetchLimit": 24,
+      "qmdHybridFetchLimit": 56,
+      "finalContextChars": 0,
+      "truncated": false,
+      "includedSections": [],
+      "omittedSections": []
+    },
+    "latencyMs": 45,
+    "resultPaths": [],
+    "policyVersion": "8d5faf16d6ad",
+    "identityInjectionMode": "none",
+    "identityInjectedChars": 0,
+    "identityInjectionTruncated": false
+  },
+  "pi:019f0796-ab9c-7d45-b193-5553fe899247": {
+    "sessionKey": "pi:019f0796-ab9c-7d45-b193-5553fe899247",
+    "recordedAt": "2026-06-27T05:40:59.749Z",
+    "queryHash": "1da400ad98a5f40ee52efddd15dbd9af5954e05ed0ba4f757e9fe3bfaaf63edb",
+    "writeNonce": "9c881616-b33a-45b1-a432-bc8a552d8951",
+    "queryLen": 28,
+    "memoryIds": [],
+    "namespace": "default",
+    "recallNamespaces": [
+      "default"
+    ],
+    "traceId": "782ca43f79f24054",
+    "plannerMode": "full",
+    "source": "none",
+    "fallbackUsed": false,
+    "sourcesUsed": [],
+    "budgetsApplied": {
+      "requestedTopK": 8,
+      "appliedTopK": 8,
+      "recallBudgetChars": 9600,
+      "maxMemoryTokens": 2400,
+      "qmdFetchLimit": 24,
+      "qmdHybridFetchLimit": 56,
+      "finalContextChars": 0,
+      "truncated": false,
+      "includedSections": [],
+      "omittedSections": []
+    },
+    "latencyMs": 9,
+    "resultPaths": [],
+    "policyVersion": "8d5faf16d6ad",
+    "identityInjectionMode": "none",
+    "identityInjectedChars": 0,
+    "identityInjectionTruncated": false
+  }
+}
