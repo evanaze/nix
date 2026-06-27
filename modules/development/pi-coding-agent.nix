@@ -19,6 +19,10 @@ let
             "ornith-1.0-9b-q4"
             "qwen3.6-35b-a3b"
             "gemma-4-12b-q4"
+            "openai:gpt-5.5"
+            "openai:gpt-5.4"
+            "openai:gpt-5.4-mini"
+            "openai:gpt-5.3-codex-spark"
           ];
           packages = [
             "npm:pi-subagents"
@@ -64,6 +68,41 @@ let
                   name = "Gemma 4 12B Q4";
                   contextWindow = 64000;
                   maxTokens = 4096;
+                }
+              ];
+            };
+            "openai" = {
+              api = "openai-completions";
+              apiKey = "${username}@openai.com";
+              baseUrl = "https://api.openai.com/v1";
+              models = [
+                {
+                  id = "gpt-5.5";
+                  name = "GPT-5.5";
+                  reasoning = true;
+                  contextWindow = 400000;
+                  maxTokens = 128000;
+                }
+                {
+                  id = "gpt-5.4";
+                  name = "GPT-5.4";
+                  reasoning = true;
+                  contextWindow = 400000;
+                  maxTokens = 128000;
+                }
+                {
+                  id = "gpt-5.4-mini";
+                  name = "GPT-5.4 Mini";
+                  reasoning = true;
+                  contextWindow = 400000;
+                  maxTokens = 128000;
+                }
+                {
+                  id = "gpt-5.3-codex-spark";
+                  name = "GPT-5.3 Codex Spark";
+                  reasoning = false;
+                  contextWindow = 400000;
+                  maxTokens = 128000;
                 }
               ];
             };
