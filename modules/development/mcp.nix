@@ -11,6 +11,10 @@ let
             url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
             headers."xc-mcp-token" = "{env:NOCODB_LEADS_MCP_TOKEN}";
           };
+          nocodb-competitors = {
+            url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
+            headers."xc-mcp-token" = "{env:NOCODB_COMPETITORS_MCP_TOKEN}";
+          };
         };
       };
     };
