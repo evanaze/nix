@@ -1,9 +1,13 @@
 let
   llamaModelsDir = "/mnt/eye/llama-models";
-  module = {pkgs, lib, ...}: {
+  module = {
+    pkgs,
+    lib,
+    ...
+  }: {
     services.nfs.server = {
       enable = true;
-      hostName = "192.168.50.80";
+      hostName = "192.168.50.79";
       # NFSv4-only + TCP-only intent
       createMountPoints = false;
 
@@ -29,7 +33,10 @@ let
       description = "Create llama model export directory on mounted ZFS dataset";
       after = lib.mkForce ["zfs-mount.service"];
       requires = lib.mkForce ["zfs-mount.service"];
-      before = ["nfs-mountd.service" "nfs-server.service"];
+      before = [
+        "nfs-mountd.service"
+        "nfs-server.service"
+      ];
       wantedBy = ["multi-user.target"];
       serviceConfig = {
         Type = "oneshot";
@@ -43,18 +50,26 @@ let
     };
 
     systemd.services.nfs-mountd = {
-      after = lib.mkForce ["zfs-mount.service" "llama-models-export-directory.service"];
-      requires = lib.mkForce ["zfs-mount.service" "llama-models-export-directory.service"];
+      after = lib.mkForce [
+        "zfs-mount.service"
+        "llama-models-export-directory.service"
+      ];
+      requires = lib.mkForce [
+        "zfs-mount.service"
+        "llama-models-export-directory.service"
+      ];
     };
 
     systemd.services.nfs-server = {
-      after = lib.mkForce ["zfs-mount.service" "nfs-mountd.service"];
+      after = lib.mkForce [
+        "zfs-mount.service"
+        "nfs-mountd.service"
+      ];
       wants = lib.mkForce ["llama-models-export-directory.service"];
       requires = lib.mkForce ["llama-models-export-directory.service"];
     };
   };
-in
-{
+in {
   flake.modules.nixos = {
     # Note: do not expose as `hardwareJupiter` to avoid colliding with existing
     # Jupiter hardware feature modules using that key.
