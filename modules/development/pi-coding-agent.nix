@@ -5,6 +5,103 @@ let
     ...
   }: {
     home-manager.users.${username} = {
+      home.file.".pi/agent/extensions/pi-permission-system/config.json".text = builtins.toJSON {
+        "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-permission-system/main/schemas/permissions.schema.json";
+        permissionReviewLog = true;
+        yoloMode = false;
+        permission = {
+          "*" = "ask";
+          path = {
+            "*" = "allow";
+            "*.env" = "deny";
+            "*.env.*" = "deny";
+            "*.env.example" = "allow";
+            "~/.config/sops/age/*" = "deny";
+            "~/.config/sops/age/keys.txt" = "deny";
+            "~/.ssh/*" = "deny";
+            "~/.gnupg/*" = "deny";
+            "/var/lib/sops-nix/*" = "deny";
+          };
+          read = "allow";
+          grep = "allow";
+          find = "allow";
+          ls = "allow";
+          web_search = "allow";
+          web_fetch = "allow";
+          ast_grep_search = "allow";
+          hypa_grep = "allow";
+          edit = "ask";
+          write = "ask";
+          bash = {
+            "*" = "ask";
+            "pwd" = "allow";
+            "which *" = "allow";
+            "ls *" = "allow";
+            "cat *" = "allow";
+            "grep *" = "allow";
+            "git status*" = "allow";
+            "git diff*" = "allow";
+            "git branch*" = "allow";
+            "git log --oneline*" = "allow";
+            "git rev-parse*" = "allow";
+            "git remote -v*" = "allow";
+            "git show*" = "allow";
+            "nix flake show*" = "allow";
+            "nix flake metadata*" = "allow";
+            "nix eval --json*" = "allow";
+            "nix profile list*" = "allow";
+            "nix profile show*" = "allow";
+            "nix path-info*" = "allow";
+            "nix search*" = "allow";
+            "node2nix --help" = "allow";
+            "node2nix --version" = "allow";
+            "rm -rf *" = {
+              action = "deny";
+              reason = "Refusing destructive recursive deletion.";
+            };
+            "sudo *" = {
+              action = "deny";
+              reason = "Refusing privilege escalation from Pi.";
+            };
+            "git reset --hard*" = {
+              action = "deny";
+              reason = "Refusing destructive git history rewrites.";
+            };
+            "git clean -fd*" = {
+              action = "deny";
+              reason = "Refusing destructive git clean operations.";
+            };
+            "curl * | sh" = {
+              action = "deny";
+              reason = "Refusing piped shell installers.";
+            };
+            "wget * | sh" = {
+              action = "deny";
+              reason = "Refusing piped shell installers.";
+            };
+            "npm install -g *" = {
+              action = "deny";
+              reason = "Use the nix way to build npm packages: https://wiki.nixos.org/w/index.php?title=Node.js";
+            };
+          };
+          mcp = {
+            "*" = "ask";
+            mcp_status = "allow";
+            mcp_list = "allow";
+          };
+          skill = {
+            "*" = "ask";
+          };
+          external_directory = {
+            "*" = "ask";
+            "/nix/store/*" = "allow";
+            "/nix/var/nix/profiles/*" = "allow";
+            "~/.pi/agent/npm/node_modules/*" = "allow";
+            "~/.pi/agent/extensions/*" = "allow";
+          };
+        };
+      };
+
       programs.pi-coding-agent = {
         enable = true;
         extraPackages = with pkgs; [
