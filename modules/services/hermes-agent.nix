@@ -39,7 +39,7 @@ let
       repo = "prospecting";
       rev = "refs/heads/main";
       private = true;
-      hash = lib.fakeHash;
+      hash = "sha256-cCACbryrX6jRM5gS1jKEiD9SgHXhN5vAbsndDF9m+qo=";
     };
 
     common-hermes-settings = {
