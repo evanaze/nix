@@ -34,12 +34,12 @@ let
       hash = "sha256-+43r25EpGq+wN2Rsj3+lBjccqogcuENN1luomawaMLg=";
     };
 
-    prospecting = pkgs.fetchFromGitHub {
+    stackmagic-research = pkgs.fetchFromGitHub {
       owner = "evanaze";
-      repo = "prospecting";
+      repo = "stackmagic-research";
       rev = "refs/heads/main";
       private = true;
-      hash = "sha256-cCACbryrX6jRM5gS1jKEiD9SgHXhN5vAbsndDF9m+qo=";
+      hash = lib.fakeHash;
     };
 
     common-hermes-settings = {
@@ -93,7 +93,7 @@ let
     };
 
     research-profile-settings = lib.recursiveUpdate common-hermes-settings {
-      skills.external_dirs = ["${prospecting}"];
+      skills.external_dirs = ["${stackmagic-research}"];
     };
 
     research-profile-config =
@@ -174,7 +174,7 @@ let
       addToSystemPackages = true;
       extraPackages = [
         pkgs.mcp-nixos
-        prospecting
+        stackmagic-research
       ];
       extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
