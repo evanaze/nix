@@ -220,6 +220,7 @@ let
         HERMES_MANAGED = "true";
         CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
+        OBSIDIAN_VAULT_PATH = "/mnt/eye/documents/StackMagic";
       };
       path = [
         pkgs.coreutils
