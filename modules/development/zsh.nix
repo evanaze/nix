@@ -64,14 +64,6 @@ let
                   git branch -D $bname
               }
 
-              function oc() {
-                  if curl -sf --max-time 1 https://opencode.spitz-pickerel.ts.net/global/health > /dev/null 2>&1; then
-                      opencode attach https://opencode.spitz-pickerel.ts.net
-                  else
-                      opencode
-                  fi
-              }
-
               autoload -U promptinit; promptinit
 
               # Style Prompt
@@ -94,6 +86,7 @@ let
               n = "nvim";
               t = "tree -L 2";
               jls = "journalctl -l --no-pager -n 50 -u $1";
+              ggufdl = "dfget gguf://$1 -O /mnt/eye/llama-models/$1";
               dup = "devenv up";
               ducklake = "$HOME/.local/bin/ducklake";
               pgconn = "psql -h pg.spitz-pickerel.ts.net -p 5432 -U postgres";
