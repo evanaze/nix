@@ -64,6 +64,16 @@ let
                   git branch -D $bname
               }
 
+              function ggufdl() {
+                  local source_path="$1"
+                  if [ -z "$source_path" ]; then
+                      print -u2 "usage: ggufdl owner/repo/file.gguf"
+                      return 1
+                  fi
+
+                  dfget --output "''${source_path##*/}" "gguf://$source_path"
+              }
+
               autoload -U promptinit; promptinit
 
               # Style Prompt
@@ -86,7 +96,6 @@ let
               n = "nvim";
               t = "tree -L 2";
               jls = "journalctl -l --no-pager -n 50 -u $1";
-              ggufdl = "dfget --output $(echo '$1' | awk -F '/' '{print $NF}') gguf://$1";
               dup = "devenv up";
               ducklake = "$HOME/.local/bin/ducklake";
               pgconn = "psql -h pg.spitz-pickerel.ts.net -p 5432 -U postgres";

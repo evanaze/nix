@@ -19,6 +19,10 @@ rustPlatform.buildRustPackage {
     hash = "sha256-dB4+UEXLwJGeUcmkDF/PdQDnTWxKQZibIcnKJZLm9oA=";
   };
 
+  patches = [
+    ./dfget-no-daemon-gguf.patch
+  ];
+
   cargoHash = "sha256-MA7LWtCF84gCFvwzI6r9pbWdyr+VPuVe219TeewSp34=";
 
   nativeBuildInputs = [
