@@ -11,8 +11,11 @@ let
     hermes-home = "${state-dir}/.hermes";
     dashboardPort = 9119;
     dashboardProxyPort = 9120;
+    default-obsidian-vault-path = "/mnt/eye/documents/Knowledge Base";
     research-profile = "research";
     research-profile-home = "${hermes-home}/profiles/${research-profile}";
+    research-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
+    bundled-obsidian-skill = "${pkgs.hermes-agent}/share/hermes-agent/skills/note-taking/obsidian";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -167,6 +170,7 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         MESSAGING_CWD = "${state-dir}/workspace";
+        OBSIDIAN_VAULT_PATH = default-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
@@ -220,7 +224,7 @@ let
         HERMES_MANAGED = "true";
         CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
-        OBSIDIAN_VAULT_PATH = "/mnt/eye/documents/StackMagic";
+        OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
       };
       path = [
         pkgs.coreutils
@@ -244,6 +248,9 @@ let
 
         touch "${research-profile-home}/.no-bundled-skills"
         chmod 0640 "${research-profile-home}/.no-bundled-skills"
+        install -d -m 0750 "${research-profile-home}/skills/note-taking"
+        rm -rf "${research-profile-home}/skills/note-taking/obsidian"
+        cp -r "${bundled-obsidian-skill}" "${research-profile-home}/skills/note-taking/"
         install -D -m 0640 ${research-profile-config} "${research-profile-home}/config.yaml"
       '';
     };
@@ -264,6 +271,7 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
+        OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
         SEARXNG_URL = "http://127.0.0.1:8311";
       };
