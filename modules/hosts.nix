@@ -116,7 +116,6 @@ in {
       stateVersion = "25.11";
       homeStateVersion = "23.11";
       modules = with inputs.self.modules.nixos; [
-        aiDragonflyGgufClient
         backup
         business
         core
