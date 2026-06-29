@@ -86,7 +86,7 @@ let
               n = "nvim";
               t = "tree -L 2";
               jls = "journalctl -l --no-pager -n 50 -u $1";
-              ggufdl = "dfget gguf://$1 -O /mnt/eye/llama-models/$1";
+              ggufdl = "dfget --output $(echo '$1' | awk -F '/' '{print $NF}') gguf://$1";
               dup = "devenv up";
               ducklake = "$HOME/.local/bin/ducklake";
               pgconn = "psql -h pg.spitz-pickerel.ts.net -p 5432 -U postgres";
