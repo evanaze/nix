@@ -1,6 +1,7 @@
 {
   perSystem = {pkgs, ...}: {
     packages = {
+      dragonfly-gguf-client = pkgs.callPackage ../pkgs/dragonfly-gguf-client {};
       twenty = pkgs.callPackage ../pkgs/twenty {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
       oh-my-openagent = pkgs.callPackage ../pkgs/oh-my-openagent {};
