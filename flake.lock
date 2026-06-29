@@ -33,11 +33,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1778868826,
-        "narHash": "sha256-gRScZHuS+r/qH0YAaVM2MWC+rJri64W9yGbfE+OuaIA=",
+        "lastModified": 1782706326,
+        "narHash": "sha256-NUZZ84LvbEy6ooUq081IF46hJ7Kyl0oq8v7v4pis5aE=",
         "owner": "maximoffua",
         "repo": "camoufox-nix",
-        "rev": "8757c7af2abd77b37cd1214afa7be83e19b97a45",
+        "rev": "05944c9249a2b7e1fa79ac6fba76e6c5f66d52f0",
         "type": "github"
       },
       "original": {
@@ -396,11 +396,11 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1782626211,
-        "narHash": "sha256-O5SLpdU+skX3UBfLjLQIclvgQR7B9JVMGCmYwCSCSRI=",
+        "lastModified": 1782712436,
+        "narHash": "sha256-IEv2eoJ85XrD2XNoE3Tsy7mk2Dzv3cqEvTE8EnvMSF8=",
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "2c9b017696ff708d425710d49a913c00d45cbc5c",
+        "rev": "20b03d9aeeb0622f5a7e1bcfae05989dcc16aa03",
         "type": "github"
       },
       "original": {
@@ -437,11 +437,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782522538,
-        "narHash": "sha256-CvOaUvJ+mXlxU3m2cPWKcOAhtKETsPUYhq+Xa5ewBp4=",
+        "lastModified": 1782702263,
+        "narHash": "sha256-8/MG4Su7PhnynrmsVO61IeAfrK7GuUEu+E+gwbhy1QQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8d8a6cc50ddc60748791a14ee1163c865ec57635",
+        "rev": "789a35fbdeb3c46b260096daa0b321c11be527ea",
         "type": "github"
       },
       "original": {
@@ -809,11 +809,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1782254890,
-        "narHash": "sha256-kjsEECqhpPnJWqhooXp6tWh2qGQftCPAo2G1GvZtKdw=",
+        "lastModified": 1782706849,
+        "narHash": "sha256-b2ODGxKD3hgrwuesLtDomp2DKF3UiOn3+EBTDXpcqGo=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "dbf9550dba8448b03e11d58e5695d6c44a464554",
+        "rev": "c6a99bb41fb0f37e03ca38b1d81b006e98e3bf1a",
         "type": "github"
       },
       "original": {
@@ -853,11 +853,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1782031269,
-        "narHash": "sha256-/finB7ahdoCsygqSR23nt1NOSDiCk33lGd2Vc2pcqrE=",
+        "lastModified": 1782633782,
+        "narHash": "sha256-w8Q/GqXb3gm2XN+5xopCILVe1ItOCrslsEWpCvmPcw0=",
         "owner": "Daaboulex",
         "repo": "openviking-nix",
-        "rev": "58568b64ca59eca116f4e0c938278b7533a6561e",
+        "rev": "4bc000c1edb66fa07591fd7b9fc8614e5df167f8",
         "type": "github"
       },
       "original": {
