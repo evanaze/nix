@@ -1,0 +1,228 @@
+name: Update git packages
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-git-packages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-git-packages:
+    name: Prepare git package updater
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Define package update targets
+        run: |
+          set -euo pipefail
+
+          # Explicit target list only; do not discover every pkgs/* directory.
+          # Excluded: oh-my-openagent is npm/fetchurl-based, not git-source.
+          # Excluded: duck-ui is git-source but inactive/not exported in modules/packages.nix.
+          cat > "$RUNNER_TEMP/git-package-update-targets.json" <<'JSON'
+          [
+            { "attr": "hermes-webui", "mode": "stable" },
+            { "attr": "dragonfly-gguf-client", "mode": "branch" },
+            { "attr": "svr-mgmt", "mode": "branch" }
+          ]
+          JSON
+
+          python3 -m json.tool "$RUNNER_TEMP/git-package-update-targets.json"
+
+      - name: Run nix-update for git package targets
+        run: |
+          set -euo pipefail
+
+          while IFS=$'\t' read -r attr mode custom_dep version_regex; do
+            case "$mode" in
+              stable)
+                args=("$attr" --flake --format)
+                ;;
+              branch)
+                args=("$attr" --flake --version=branch --format)
+                ;;
+              *)
+                echo "Unsupported update mode '$mode' for $attr" >&2
+                exit 1
+                ;;
+            esac
+
+            if [ -n "$custom_dep" ]; then
+              args+=(--custom-dep "$custom_dep")
+            fi
+
+            if [ -n "$version_regex" ]; then
+              args+=(--version-regex "$version_regex")
+            fi
+
+            echo "Running: nix shell nixpkgs#nix-update nixpkgs#nixfmt -c nix-update ${args[*]}"
+            nix shell nixpkgs#nix-update nixpkgs#nixfmt -c nix-update "${args[@]}"
+          done < <(
+            python3 - "$RUNNER_TEMP/git-package-update-targets.json" <<'PY'
+          import json
+          import sys
+
+          with open(sys.argv[1]) as f:
+              targets = json.load(f)
+
+          for target in targets:
+              print("\t".join([
+                  target["attr"],
+                  target["mode"],
+                  target.get("customDep", ""),
+                  target.get("versionRegex", ""),
+              ]))
+          PY
+          )
+
+      - name: Detect changed package attrs
+        id: changed-packages
+        run: |
+          set -euo pipefail
+
+          artifact_dir="$RUNNER_TEMP/git-package-update"
+          mkdir -p "$artifact_dir"
+
+          changed_attrs_file="$artifact_dir/changed-attrs.txt"
+          changed_attrs_json="$artifact_dir/changed-attrs.json"
+          pr_body_fragment="$artifact_dir/pr-body-fragment.md"
+
+          : > "$changed_attrs_file"
+
+          if git diff --quiet; then
+            printf '[]\n' > "$changed_attrs_json"
+            {
+              echo 'No package source changes detected after updater execution.'
+            } > "$pr_body_fragment"
+            {
+              echo 'has_changes=false'
+              echo 'changed_attrs='
+              echo "changed_attrs_file=$changed_attrs_file"
+              echo "changed_attrs_json=$changed_attrs_json"
+              echo "pr_body_fragment=$pr_body_fragment"
+            } >> "$GITHUB_OUTPUT"
+            echo 'No diff after updater execution; skipping changed package builds.'
+            exit 0
+          fi
+
+          git diff --name-only -- \
+            pkgs/hermes-webui \
+            pkgs/dragonfly-gguf-client \
+            pkgs/svr-mgmt \
+            > "$artifact_dir/changed-package-paths.txt"
+
+          python3 - "$artifact_dir/changed-package-paths.txt" "$changed_attrs_file" "$changed_attrs_json" "$pr_body_fragment" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          paths_file = Path(sys.argv[1])
+          attrs_file = Path(sys.argv[2])
+          attrs_json = Path(sys.argv[3])
+          pr_body_fragment = Path(sys.argv[4])
+
+          path_to_attr = [
+              ("pkgs/hermes-webui/", "hermes-webui"),
+              ("pkgs/dragonfly-gguf-client/", "dragonfly-gguf-client"),
+              ("pkgs/svr-mgmt/", "svr-mgmt"),
+          ]
+
+          changed_paths = [line.strip() for line in paths_file.read_text().splitlines() if line.strip()]
+          changed_attrs = []
+          for prefix, attr in path_to_attr:
+              if any(path.startswith(prefix) for path in changed_paths):
+                  changed_attrs.append(attr)
+
+          attrs_file.write_text("\n".join(changed_attrs) + ("\n" if changed_attrs else ""))
+          attrs_json.write_text(json.dumps(changed_attrs, indent=2) + "\n")
+
+          if changed_attrs:
+              pr_body_fragment.write_text(
+                  "Changed package attrs built by this workflow:\n"
+                  + "\n".join(f"- `{attr}`" for attr in changed_attrs)
+                  + "\n"
+              )
+          else:
+              pr_body_fragment.write_text(
+                  "Repository diff exists, but none of the exported git package paths changed.\n"
+              )
+          PY
+
+          changed_attrs=$(paste -sd, "$changed_attrs_file")
+          {
+            echo 'has_changes=true'
+            echo "changed_attrs=$changed_attrs"
+            echo "changed_attrs_file=$changed_attrs_file"
+            echo "changed_attrs_json=$changed_attrs_json"
+            echo "pr_body_fragment=$pr_body_fragment"
+          } >> "$GITHUB_OUTPUT"
+
+          if [ -z "$changed_attrs" ]; then
+            echo 'Diff detected, but no exported package attrs changed; skipping changed package builds.'
+          else
+            echo "Changed package attrs: $changed_attrs"
+          fi
+
+      - name: Upload changed package metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: changed-package-metadata
+          path: ${{ runner.temp }}/git-package-update/
+
+      - name: Build changed package attrs
+        if: steps.changed-packages.outputs.changed_attrs != ''
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r attr; do
+            case "$attr" in
+              hermes-webui)
+                nix build .#hermes-webui
+                ;;
+              dragonfly-gguf-client)
+                nix build .#dragonfly-gguf-client
+                ;;
+              svr-mgmt)
+                nix build .#svr-mgmt
+                ;;
+              *)
+                echo "Refusing to build unexpected package attr: $attr" >&2
+                exit 1
+                ;;
+            esac
+          done < "${{ steps.changed-packages.outputs.changed_attrs_file }}"
+
+      - name: Create or update package update pull request
+        if: steps.changed-packages.outputs.changed_attrs != ''
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/update-git-packages
+          delete-branch: true
+          title: "auto: update git package sources"
+          commit-message: "ci(packages): update git package sources"
+          body: |
+            Automated git package source update.
+
+            Changed package attrs: `${{ steps.changed-packages.outputs.changed_attrs }}`
+
+            Build verification passed for each changed attr in the previous step with the matching `nix build .#<attr>` command.
+          add-paths: |
+            pkgs/hermes-webui/**
+            pkgs/dragonfly-gguf-client/**
+            pkgs/svr-mgmt/**
