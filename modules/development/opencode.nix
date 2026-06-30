@@ -8,7 +8,7 @@ let
     system,
     ...
   }: let
-    openvikingSource = inputs.openviking.packages.${system}.openviking.src;
+    openvikingEndpoint = "https://memory.spitz-pickerel.ts.net";
     nocodbEnvFile = config.sops.secrets."nocodb/env".path;
     opencodeWithNocodbEnv = pkgs.symlinkJoin {
       inherit (pkgs.opencode) meta;
@@ -26,30 +26,6 @@ let
         ''}
       '';
     };
-    openvikingOpencodePlugin = pkgs.writeText "openviking-opencode.mjs" (
-      builtins.replaceStrings
-      [
-        "// installed but no config file — cannot start"
-      ]
-      [
-        ''
-          // If the CLI is configured for a remote server, do not try to
-          // auto-start a local server or require local server credentials. The
-          // remote may simply be offline, and `~/.openviking/ov.conf` is only needed
-          // for local server startup.
-          const cliConfig = join(homedir(), ".openviking", "ovcli.conf")
-          if (existsSync(cliConfig)) {
-            try {
-              const url = JSON.parse(readFileSync(cliConfig, "utf8"))?.url
-              const host = url ? new URL(url).hostname : null
-              if (host && !["localhost", "127.0.0.1", "::1"].includes(host)) return false
-            } catch {}
-          }
-
-          // installed but no config file — cannot start''
-      ]
-      (builtins.readFile "${openvikingSource}/examples/opencode/plugin/index.mjs")
-    );
   in {
     nixpkgs.overlays = [inputs.openviking.overlays.default];
 
@@ -66,16 +42,16 @@ let
     home-manager.users.${username} = {
       home.file = {
         ".openviking/ovcli.conf".text = ''
-          {"url": "https://memory.spitz-pickerel.ts.net"}
+          {"url": "${openvikingEndpoint}"}
         '';
 
         ".openviking/ovcli.settings.conf".text = ''
           {"language": "en"}
         '';
 
-        ".config/opencode/plugins/openviking-opencode.mjs".source = openvikingOpencodePlugin;
-
-        ".config/opencode/plugins/skills/openviking/SKILL.md".source = "${openvikingSource}/examples/opencode/plugin/skills/openviking/SKILL.md";
+        ".config/opencode/openviking-config.json".text = builtins.toJSON {
+          endpoint = openvikingEndpoint;
+        };
 
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
