@@ -3,6 +3,7 @@ let
     home-manager.users.${username} = {
       programs.vicinae = {
         enable = true;
+        systemd.enable = true;
       };
     };
   };
