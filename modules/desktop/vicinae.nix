@@ -1,5 +1,13 @@
 let
-  module = {username, ...}: {
+  module = {
+    pkgs,
+    username,
+    ...
+  }: {
+    environment.systemPackages = with pkgs; [
+      gnomeExtensions.vicinae
+    ];
+
     home-manager.users.${username} = {
       programs.vicinae = {
         enable = true;
