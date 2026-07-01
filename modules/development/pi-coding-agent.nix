@@ -214,6 +214,7 @@ let
           hypa_read = "allow";
           hypa_find = "allow";
           hypa_ls = "allow";
+          "remnic_*" = "allow";
           # Keep hypa_shell gated like bash: it can execute arbitrary commands.
           todo = "allow";
           lens_diagnostics = "allow";
