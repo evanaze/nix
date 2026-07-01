@@ -1,7 +1,7 @@
 let
   remnicHost = "127.0.0.1";
   remnicPort = 4318;
-  remnicDaemonUrl = "http://${remnicHost}:${toString remnicPort}";
+  # remnicDaemonUrl = "http://${remnicHost}:${toString remnicPort}";
 
   module = {
     pkgs,
@@ -18,77 +18,7 @@ let
       ];
     };
 
-    home-manager.users.${username} = let
-      remnicServerScript = pkgs.writeShellScript "start-remnic-server" ''
-        set -eu
-
-        remnic_server="$HOME/.pi/agent/npm/node_modules/@remnic/server/bin/remnic-server.js"
-        if [ ! -f "$remnic_server" ]; then
-          echo "remnic-server entrypoint not found at $remnic_server; Pi packages may not be installed yet." >&2
-          exit 1
-        fi
-
-        ${pkgs.coreutils}/bin/mkdir -p "$HOME/.local/share/remnic"
-
-        exec ${pkgs.nodejs}/bin/node "$remnic_server"
-      '';
-
-      remnicPiInstallScript = pkgs.writeShellScript "install-remnic-pi-connector" ''
-        set -eu
-
-        remnic_cli="$HOME/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs"
-        remnic_extension_dir="$HOME/.pi/agent/extensions/remnic"
-        remnic_extension_config="$remnic_extension_dir/remnic.config.json"
-        remnic_connector_record="$HOME/.config/engram/.engram-connectors/connectors/pi.json"
-        remnic_share_dir="$HOME/.local/share/remnic"
-        remnic_state_dir="$HOME/.local/state/remnic"
-        remnic_install_stamp="$remnic_state_dir/pi-connector-installed-v1"
-
-        if [ -f "$remnic_install_stamp" ]; then
-          exit 0
-        fi
-
-        if [ ! -f "$remnic_cli" ]; then
-          echo "remnic CLI entrypoint not found at $remnic_cli; Pi packages may not be installed yet." >&2
-          exit 1
-        fi
-
-        ${pkgs.coreutils}/bin/mkdir -p "$remnic_share_dir" "$remnic_state_dir"
-
-        ${pkgs.coreutils}/bin/rm -f \
-          "$remnic_share_dir/pi-auth-token" \
-          "$remnic_extension_dir/remnic.config.json" \
-          "$remnic_extension_dir/index.ts" \
-          "$remnic_extension_dir/README.md"
-
-        PI_CODING_AGENT_DIR="$HOME/.pi/agent" \
-          ${pkgs.nodejs}/bin/node "$remnic_cli" connectors install pi --force \
-          --config remnicDaemonUrl=${remnicDaemonUrl}
-
-        if [ ! -f "$remnic_extension_config" ]; then
-          echo "Remnic Pi connector install did not write $remnic_extension_config." >&2
-          exit 1
-        fi
-
-        if [ ! -f "$remnic_connector_record" ]; then
-          echo "Remnic Pi connector install did not write $remnic_connector_record." >&2
-          exit 1
-        fi
-
-        REMNIC_EXTENSION_CONFIG="$remnic_extension_config" ${pkgs.python3}/bin/python - <<'PY'
-        import json
-        import os
-        from pathlib import Path
-
-        config = json.loads(Path(os.environ["REMNIC_EXTENSION_CONFIG"]).read_text())
-        auth_token = config.get("authToken")
-        if not isinstance(auth_token, str) or not auth_token.strip():
-            raise SystemExit("Remnic Pi connector config is missing a non-empty authToken.")
-        PY
-
-        ${pkgs.coreutils}/bin/touch "$remnic_install_stamp"
-      '';
-    in {
+    home-manager.users.${username} = {
       home.file.".pi/agent/extensions/pi-permission-system/config.json".text = builtins.toJSON {
         "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-permission-system/main/schemas/permissions.schema.json";
         permissionReviewLog = true;
@@ -192,7 +122,7 @@ let
         };
         Service = {
           Type = "simple";
-          ExecStart = "${remnicServerScript}";
+          ExecStart = "%h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs daemon install";
           Environment = [
             "REMNIC_HOST=${remnicHost}"
             "REMNIC_PORT=${toString remnicPort}"
@@ -215,7 +145,7 @@ let
         Service = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = "${remnicPiInstallScript}";
+          ExecStart = "%h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
           Restart = "on-failure";
           RestartSec = 3;
         };
