@@ -8,15 +8,15 @@ let
     username,
     ...
   }: {
-    programs.nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        stdenv.cc.cc
-        zlib
-        zstd
-        openssl
-      ];
-    };
+    # programs.nix-ld = {
+    #   enable = true;
+    #   libraries = with pkgs; [
+    #     stdenv.cc.cc
+    #     zlib
+    #     zstd
+    #     openssl
+    #   ];
+    # };
 
     home-manager.users.${username} = {
       programs.pi-coding-agent = {
@@ -299,23 +299,23 @@ let
         };
       };
 
-      systemd.user.services.remnic-pi-install = {
-        Unit = {
-          Description = "Install Remnic Pi connector once";
-          After = ["remnic.service"];
-          Wants = ["remnic.service"];
-        };
-        Service = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
-          Restart = "on-failure";
-          RestartSec = 3;
-        };
-        Install = {
-          WantedBy = ["default.target"];
-        };
-      };
+      # systemd.user.services.remnic-pi-install = {
+      #   Unit = {
+      #     Description = "Install Remnic Pi connector once";
+      #     After = ["remnic.service"];
+      #     Wants = ["remnic.service"];
+      #   };
+      #   Service = {
+      #     Type = "oneshot";
+      #     RemainAfterExit = true;
+      #     ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
+      #     Restart = "on-failure";
+      #     RestartSec = 3;
+      #   };
+      #   Install = {
+      #     WantedBy = ["default.target"];
+      #   };
+      # };
     };
   };
 in {
