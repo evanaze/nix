@@ -231,7 +231,7 @@ let
         };
         Service = {
           Type = "simple";
-          ExecStart = "%h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs daemon install";
+          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs daemon start";
           Environment = [
             "REMNIC_HOST=${remnicHost}"
             "REMNIC_PORT=${toString remnicPort}"
@@ -254,7 +254,7 @@ let
         Service = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = "%h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
+          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
           Restart = "on-failure";
           RestartSec = 3;
         };
