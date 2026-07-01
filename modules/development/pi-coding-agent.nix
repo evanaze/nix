@@ -37,7 +37,6 @@ let
             "openai/gpt-5.5"
             "openai/gpt-5.4"
             "openai/gpt-5.4-mini"
-            "openai/gpt-5.3-codex-spark"
           ];
           packages = [
             "npm:pi-subagents"
@@ -108,13 +107,6 @@ let
                   id = "gpt-5.4-mini";
                   name = "GPT-5.4 Mini";
                   reasoning = true;
-                  contextWindow = 400000;
-                  maxTokens = 128000;
-                }
-                {
-                  id = "gpt-5.3-codex-spark";
-                  name = "GPT-5.3 Codex Spark";
-                  reasoning = false;
                   contextWindow = 400000;
                   maxTokens = 128000;
                 }
@@ -271,6 +263,22 @@ let
         };
       };
 
+      # Remnic Pi extension - native memory integration for Pi Coding Agent
+      # home.file.".pi/agent/extensions/remnic/index.ts".text = "import { createRemnicPiExtension } from \"@remnic/plugin-pi\";\n\nexport default createRemnicPiExtension({\n  configPath: \"./remnic.config.json\",\n});\n";
+      # home.file.".pi/agent/extensions/remnic/remnic.config.json".text = builtins.toJSON {
+      #   remnicDaemonUrl = "http://127.0.0.1:4318";
+      #   recallMode = "auto";
+      #   recallTopK = 8;
+      #   recallBudgetChars = 12000;
+      #   recallEnabled = true;
+      #   observeEnabled = true;
+      #   compactionEnabled = true;
+      #   mcpToolsEnabled = true;
+      #   statusEnabled = true;
+      #   requestTimeoutMs = 60000;
+      #   startupRequestTimeoutMs = 1000;
+      # };
+
       home.file.".config/remnic/config.json".text = builtins.toJSON {
         remnic = {
           memoryDir = "~/.local/share/remnic";
@@ -299,23 +307,23 @@ let
         };
       };
 
-      # systemd.user.services.remnic-pi-install = {
-      #   Unit = {
-      #     Description = "Install Remnic Pi connector once";
-      #     After = ["remnic.service"];
-      #     Wants = ["remnic.service"];
-      #   };
-      #   Service = {
-      #     Type = "oneshot";
-      #     RemainAfterExit = true;
-      #     ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
-      #     Restart = "on-failure";
-      #     RestartSec = 3;
-      #   };
-      #   Install = {
-      #     WantedBy = ["default.target"];
-      #   };
-      # };
+      systemd.user.services.remnic-pi-install = {
+        Unit = {
+          Description = "Install Remnic Pi connector once";
+          After = ["remnic.service"];
+          Wants = ["remnic.service"];
+        };
+        Service = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs connectors install pi";
+          Restart = "on-failure";
+          RestartSec = 3;
+        };
+        Install = {
+          WantedBy = ["default.target"];
+        };
+      };
     };
   };
 in {
