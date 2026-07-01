@@ -243,7 +243,7 @@ let
         set -euo pipefail
 
         if [ ! -d "${research-profile-home}" ]; then
-          ${lib.getExe pkgs.hermes-agent} profile create ${research-profile} --no-skills
+          ${lib.getExe pkgs.hermes-agent} profile create ${research-profile}
         fi
 
         touch "${research-profile-home}/.no-bundled-skills"
