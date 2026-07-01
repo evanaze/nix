@@ -190,6 +190,8 @@ let
         "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-permission-system/main/schemas/permissions.schema.json";
         permissionReviewLog = true;
         yoloMode = false;
+        toolInputPreviewMaxLength = 800;
+        toolTextSummaryMaxLength = 160;
         permission = {
           "*" = "ask";
           path = {
@@ -214,9 +216,9 @@ let
           hypa_read = "allow";
           hypa_find = "allow";
           hypa_ls = "allow";
+          hypa_shell = "ask";
           remnic."*" = "allow";
           ask_user_question = "allow";
-          # Keep hypa_shell gated like bash: it can execute arbitrary commands.
           todo = "allow";
           lens_diagnostics = "allow";
           lsp_diagnostics = "allow";
@@ -261,6 +263,10 @@ let
             "git rev-parse*" = "allow";
             "git remote -v*" = "allow";
             "git show*" = "allow";
+            "git blame*" = "allow";
+            "git describe*" = "allow";
+            "git grep*" = "allow";
+            "git ls-files*" = "allow";
             "nix flake show*" = "allow";
             "nix flake metadata*" = "allow";
             "nix eval --json*" = "allow";
@@ -268,6 +274,8 @@ let
             "nix profile show*" = "allow";
             "nix path-info*" = "allow";
             "nix search*" = "allow";
+            "nix-instantiate --eval*" = "allow";
+            "nix show-config*" = "allow";
             "node --version" = "allow";
             "systemctl --user status*" = "allow";
             "systemctl --user is-enabled*" = "allow";
@@ -279,6 +287,14 @@ let
             "journalctl --user *" = "allow";
             "pgrep -a -f *" = "allow";
             "ss -ltnp*" = "allow";
+            "rm -r *" = {
+              action = "deny";
+              reason = "Refusing destructive recursive deletion.";
+            };
+            "rm -fr *" = {
+              action = "deny";
+              reason = "Refusing destructive recursive deletion.";
+            };
             "rm -rf *" = {
               action = "deny";
               reason = "Refusing destructive recursive deletion.";
@@ -299,7 +315,15 @@ let
               action = "deny";
               reason = "Refusing piped shell installers.";
             };
+            "curl * | bash" = {
+              action = "deny";
+              reason = "Refusing piped shell installers.";
+            };
             "wget * | sh" = {
+              action = "deny";
+              reason = "Refusing piped shell installers.";
+            };
+            "wget * | bash" = {
               action = "deny";
               reason = "Refusing piped shell installers.";
             };
