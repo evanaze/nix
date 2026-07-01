@@ -126,9 +126,10 @@ let
             "ornith-1.0-9b-q4"
             "qwen3.6-35b-a3b"
             "gemma-4-12b-q4"
-            "openai/gpt-5.5"
-            "openai/gpt-5.4"
-            "openai/gpt-5.4-mini"
+            "gpt-5.5"
+            "gpt-5.4"
+            "gpt-5.4-mini"
+            "gpt-5.3-codex-spark"
           ];
           packages = [
             "npm:pi-subagents"
