@@ -95,12 +95,12 @@ let
       postBuild = ''
         wrapProgram $out/bin/pi \
           --run ${lib.escapeShellArg ''
-            if [ -f ${lib.escapeShellArg nocodbEnvFile} ]; then
-              set -a
-              . ${lib.escapeShellArg nocodbEnvFile}
-              set +a
-            fi
-          ''}
+          if [ -f ${lib.escapeShellArg nocodbEnvFile} ]; then
+            set -a
+            . ${lib.escapeShellArg nocodbEnvFile}
+            set +a
+          fi
+        ''}
       '';
     };
   in {
@@ -300,6 +300,7 @@ let
             "nix profile show*" = "allow";
             "nix path-info*" = "allow";
             "nix search*" = "allow";
+            "nix build*" = "allow";
             "nix-instantiate --eval*" = "allow";
             "nix show-config*" = "allow";
             "node --version" = "allow";
