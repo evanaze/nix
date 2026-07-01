@@ -249,8 +249,14 @@ let
         touch "${research-profile-home}/.no-bundled-skills"
         chmod 0640 "${research-profile-home}/.no-bundled-skills"
         install -d -m 0750 "${research-profile-home}/skills/note-taking"
-        rm -rf "${research-profile-home}/skills/note-taking/obsidian"
-        cp -r "${bundled-obsidian-skill}" "${research-profile-home}/skills/note-taking/"
+
+        if [ -e "${research-profile-home}/skills/note-taking/obsidian" ]; then
+          chmod -R u+w "${research-profile-home}/skills/note-taking/obsidian" || true
+          rm -rf "${research-profile-home}/skills/note-taking/obsidian"
+        fi
+
+        cp -r --no-preserve=mode "${bundled-obsidian-skill}" "${research-profile-home}/skills/note-taking/"
+        chmod -R u+rwX "${research-profile-home}/skills/note-taking/obsidian"
         install -D -m 0640 ${research-profile-config} "${research-profile-home}/config.yaml"
       '';
     };
