@@ -82,11 +82,37 @@ let
   module = {
     pkgs,
     username,
+    config,
+    lib,
     ...
-  }: {
+  }: let
+    nocodbEnvFile = config.sops.secrets."nocodb/env".path;
+    piWithNocodbEnv = pkgs.symlinkJoin {
+      inherit (pkgs.pi-coding-agent) meta;
+      name = "${lib.getName pkgs.pi-coding-agent}-with-nocodb-env-${lib.getVersion pkgs.pi-coding-agent}";
+      paths = [pkgs.pi-coding-agent];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/pi \
+          --run ${lib.escapeShellArg ''
+            if [ -f ${lib.escapeShellArg nocodbEnvFile} ]; then
+              set -a
+              . ${lib.escapeShellArg nocodbEnvFile}
+              set +a
+            fi
+          ''}
+      '';
+    };
+  in {
+    sops.secrets."nocodb/env" = {
+      owner = username;
+      mode = "0400";
+    };
+
     home-manager.users.${username} = {
       programs.pi-coding-agent = {
         enable = true;
+        package = piWithNocodbEnv;
         extraPackages = with pkgs; [
           bun
           nodejs
@@ -368,7 +394,7 @@ let
       };
 
       home.file.".pi/IDENTITY.md".text = ''
-                  # Identity
+        # Identity
 
         ## Name
         Evan
