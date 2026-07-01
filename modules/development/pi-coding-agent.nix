@@ -271,20 +271,28 @@ let
         };
       };
 
+      home.file.".config/remnic/config.json".text = builtins.toJSON {
+        remnic = {
+          memoryDir = "~/.local/share/remnic";
+        };
+        server = {
+          host = remnicHost;
+          port = remnicPort;
+        };
+      };
+
       systemd.user.services.remnic = {
         Unit = {
           Description = "Remnic local memory server for Pi";
         };
         Service = {
           Type = "simple";
-          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs daemon start";
+          ExecStart = "${pkgs.nodejs}/bin/node %h/.pi/agent/npm/node_modules/@remnic/server/bin/remnic-server.js";
           Environment = [
-            "REMNIC_HOST=${remnicHost}"
-            "REMNIC_PORT=${toString remnicPort}"
-            "REMNIC_MEMORY_DIR=%h/.local/share/remnic"
+            "REMNIC_CONFIG_PATH=%h/.config/remnic/config.json"
           ];
           Restart = "on-failure";
-          RestartSec = 10;
+          RestartSec = 5;
         };
         Install = {
           WantedBy = ["default.target"];
