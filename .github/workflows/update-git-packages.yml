@@ -35,10 +35,10 @@ jobs:
           # Explicit target list only; do not discover every pkgs/* directory.
           # Excluded: oh-my-openagent is npm/fetchurl-based, not git-source.
           # Excluded: duck-ui is git-source but inactive/not exported in modules/packages.nix.
+          # Excluded: dragonfly-gguf-client is not maintained.
           cat > "$RUNNER_TEMP/git-package-update-targets.json" <<'JSON'
           [
             { "attr": "hermes-webui", "mode": "stable" },
-            { "attr": "dragonfly-gguf-client", "mode": "branch" },
             { "attr": "svr-mgmt", "mode": "branch" }
           ]
           JSON
@@ -123,7 +123,6 @@ jobs:
 
           git diff --name-only -- \
             pkgs/hermes-webui \
-            pkgs/dragonfly-gguf-client \
             pkgs/svr-mgmt \
             > "$artifact_dir/changed-package-paths.txt"
 
@@ -139,7 +138,6 @@ jobs:
 
           path_to_attr = [
               ("pkgs/hermes-webui/", "hermes-webui"),
-              ("pkgs/dragonfly-gguf-client/", "dragonfly-gguf-client"),
               ("pkgs/svr-mgmt/", "svr-mgmt"),
           ]
 
@@ -195,9 +193,6 @@ jobs:
               hermes-webui)
                 nix build .#hermes-webui
                 ;;
-              dragonfly-gguf-client)
-                nix build .#dragonfly-gguf-client
-                ;;
               svr-mgmt)
                 nix build .#svr-mgmt
                 ;;
@@ -224,5 +219,4 @@ jobs:
             Build verification passed for each changed attr in the previous step with the matching `nix build .#<attr>` command.
           add-paths: |
             pkgs/hermes-webui/**
-            pkgs/dragonfly-gguf-client/**
             pkgs/svr-mgmt/**
