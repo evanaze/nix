@@ -214,7 +214,8 @@ let
           hypa_read = "allow";
           hypa_find = "allow";
           hypa_ls = "allow";
-          "remnic_*" = "allow";
+          remnic."*" = "allow";
+          ask_user_question = "allow";
           # Keep hypa_shell gated like bash: it can execute arbitrary commands.
           todo = "allow";
           lens_diagnostics = "allow";
@@ -317,6 +318,7 @@ let
           };
           external_directory = {
             "*" = "ask";
+            write = "allow";
             "/nix/store/*" = "allow";
             "/nix/var/nix/profiles/*" = "allow";
             "/run/current-system/sw/bin/*" = "allow";
@@ -333,12 +335,46 @@ let
       home.file.".config/remnic/config.json".text = builtins.toJSON {
         remnic = {
           memoryDir = "~/.local/share/remnic";
+          identityContinuityEnabled = true;
         };
         server = {
           host = remnicHost;
           port = remnicPort;
         };
       };
+
+      home.file.".pi/IDENTITY.md".text = ''
+                  # Identity
+
+        ## Name
+        Evan
+
+        ## Communication Preferences
+        - Address me by name
+        - Be direct and concise
+        - Use clear, actionable language
+
+        ## Coding Preferences
+        - **Test-first**: Write tests before implementation
+        - **Clean code**: Prefer minimal, readable solutions
+        - **Structure**: Clear organization with good separation of concerns
+        - **Documentation**: Include comments for complex logic
+
+        ## Work Style
+        - Value efficiency and correctness
+        - Prefer working in small, testable increments
+        - Like clear feedback loops
+
+        ## Interests & Context
+        - Working with Nix configuration management
+        - AI coding assistants and memory systems
+        - Software development and automation
+
+        ## Notes
+        - This identity file was created on 2026-07-01
+        - Remnic is configured and active
+        - Identity continuity is enabled
+      '';
 
       systemd.user.services.remnic = {
         Unit = {
