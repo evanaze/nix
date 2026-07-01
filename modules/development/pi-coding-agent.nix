@@ -5,30 +5,88 @@ let
 
   module = {
     pkgs,
-    inputs,
     username,
     ...
   }: {
+    programs.nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        stdenv.cc.cc
+        zlib
+        zstd
+        openssl
+      ];
+    };
+
     home-manager.users.${username} = let
       remnicServerScript = pkgs.writeShellScript "start-remnic-server" ''
         set -eu
 
         remnic_server="$HOME/.pi/agent/npm/node_modules/@remnic/server/bin/remnic-server.js"
-        remnic_token_file="$HOME/.local/share/remnic/pi-auth-token"
         if [ ! -f "$remnic_server" ]; then
           echo "remnic-server entrypoint not found at $remnic_server; Pi packages may not be installed yet." >&2
-          exit 1
-        fi
-        if [ ! -f "$remnic_token_file" ]; then
-          echo "Remnic auth token not found at $remnic_token_file; home-manager activation may not have run yet." >&2
           exit 1
         fi
 
         ${pkgs.coreutils}/bin/mkdir -p "$HOME/.local/share/remnic"
 
-        export REMNIC_AUTH_TOKEN="$(${pkgs.coreutils}/bin/cat "$remnic_token_file")"
-
         exec ${pkgs.nodejs}/bin/node "$remnic_server"
+      '';
+
+      remnicPiInstallScript = pkgs.writeShellScript "install-remnic-pi-connector" ''
+        set -eu
+
+        remnic_cli="$HOME/.pi/agent/npm/node_modules/@remnic/cli/bin/remnic.cjs"
+        remnic_extension_dir="$HOME/.pi/agent/extensions/remnic"
+        remnic_extension_config="$remnic_extension_dir/remnic.config.json"
+        remnic_connector_record="$HOME/.config/engram/.engram-connectors/connectors/pi.json"
+        remnic_share_dir="$HOME/.local/share/remnic"
+        remnic_state_dir="$HOME/.local/state/remnic"
+        remnic_install_stamp="$remnic_state_dir/pi-connector-installed-v1"
+
+        if [ -f "$remnic_install_stamp" ]; then
+          exit 0
+        fi
+
+        if [ ! -f "$remnic_cli" ]; then
+          echo "remnic CLI entrypoint not found at $remnic_cli; Pi packages may not be installed yet." >&2
+          exit 1
+        fi
+
+        ${pkgs.coreutils}/bin/mkdir -p "$remnic_share_dir" "$remnic_state_dir"
+
+        ${pkgs.coreutils}/bin/rm -f \
+          "$remnic_share_dir/pi-auth-token" \
+          "$remnic_extension_dir/remnic.config.json" \
+          "$remnic_extension_dir/index.ts" \
+          "$remnic_extension_dir/README.md"
+
+        PI_CODING_AGENT_DIR="$HOME/.pi/agent" \
+          ${pkgs.nodejs}/bin/node "$remnic_cli" connectors install pi --force \
+          --config remnicDaemonUrl=${remnicDaemonUrl}
+
+        if [ ! -f "$remnic_extension_config" ]; then
+          echo "Remnic Pi connector install did not write $remnic_extension_config." >&2
+          exit 1
+        fi
+
+        if [ ! -f "$remnic_connector_record" ]; then
+          echo "Remnic Pi connector install did not write $remnic_connector_record." >&2
+          exit 1
+        fi
+
+        REMNIC_EXTENSION_CONFIG="$remnic_extension_config" ${pkgs.python3}/bin/python - <<'PY'
+        import json
+        import os
+        from pathlib import Path
+
+        config = json.loads(Path(os.environ["REMNIC_EXTENSION_CONFIG"]).read_text())
+        auth_token = config.get("authToken")
+        if not isinstance(auth_token, str) or not auth_token.strip():
+            raise SystemExit("Remnic Pi connector config is missing a non-empty authToken.")
+        PY
+
+        ${pkgs.coreutils}/bin/touch "$remnic_install_stamp"
       '';
     in {
       home.file.".pi/agent/extensions/pi-permission-system/config.json".text = builtins.toJSON {
@@ -128,42 +186,6 @@ let
         };
       };
 
-      home.activation.remnicPiConfig = inputs.home-manager.lib.hm.dag.entryAfter ["writeBoundary"] ''
-        remnic_config_dir="$HOME/.pi/agent/extensions/remnic"
-        remnic_config_file="$remnic_config_dir/remnic.config.json"
-        remnic_state_dir="$HOME/.local/share/remnic"
-        remnic_token_file="$remnic_state_dir/pi-auth-token"
-
-        ${pkgs.coreutils}/bin/mkdir -p "$remnic_config_dir" "$remnic_state_dir"
-        ${pkgs.coreutils}/bin/chmod 700 "$remnic_state_dir"
-
-        if [ ! -s "$remnic_token_file" ]; then
-          ( umask 077; ${pkgs.openssl}/bin/openssl rand -hex 32 > "$remnic_token_file" )
-        fi
-
-        remnic_token="$(${pkgs.coreutils}/bin/cat "$remnic_token_file")"
-
-        REMNIC_DAEMON_URL="${remnicDaemonUrl}" REMNIC_TOKEN="$remnic_token" ${pkgs.python3}/bin/python - <<'PY'
-        import json
-        import os
-        from pathlib import Path
-
-        config_path = Path.home() / ".pi/agent/extensions/remnic/remnic.config.json"
-        config = {}
-        if config_path.exists():
-            config = json.loads(config_path.read_text())
-            if not isinstance(config, dict):
-                raise SystemExit(f"Expected {config_path} to contain a JSON object")
-
-        config["remnicDaemonUrl"] = os.environ["REMNIC_DAEMON_URL"]
-        config["authToken"] = os.environ["REMNIC_TOKEN"]
-
-        config_path.write_text(json.dumps(config, indent=2) + "\n")
-        PY
-
-        ${pkgs.coreutils}/bin/chmod 600 "$remnic_token_file" "$remnic_config_file"
-      '';
-
       systemd.user.services.remnic = {
         Unit = {
           Description = "Remnic local memory server for Pi";
@@ -178,6 +200,24 @@ let
           ];
           Restart = "on-failure";
           RestartSec = 10;
+        };
+        Install = {
+          WantedBy = ["default.target"];
+        };
+      };
+
+      systemd.user.services.remnic-pi-install = {
+        Unit = {
+          Description = "Install Remnic Pi connector once";
+          After = ["remnic.service"];
+          Wants = ["remnic.service"];
+        };
+        Service = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${remnicPiInstallScript}";
+          Restart = "on-failure";
+          RestartSec = 3;
         };
         Install = {
           WantedBy = ["default.target"];
