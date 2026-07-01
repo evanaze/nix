@@ -1,10 +1,36 @@
 let
+  remnicHost = "127.0.0.1";
+  remnicPort = 4318;
+  remnicDaemonUrl = "http://${remnicHost}:${toString remnicPort}";
+
   module = {
     pkgs,
+    inputs,
     username,
     ...
   }: {
-    home-manager.users.${username} = {
+    home-manager.users.${username} = let
+      remnicServerScript = pkgs.writeShellScript "start-remnic-server" ''
+        set -eu
+
+        remnic_server="$HOME/.pi/agent/npm/node_modules/@remnic/server/bin/remnic-server.js"
+        remnic_token_file="$HOME/.local/share/remnic/pi-auth-token"
+        if [ ! -f "$remnic_server" ]; then
+          echo "remnic-server entrypoint not found at $remnic_server; Pi packages may not be installed yet." >&2
+          exit 1
+        fi
+        if [ ! -f "$remnic_token_file" ]; then
+          echo "Remnic auth token not found at $remnic_token_file; home-manager activation may not have run yet." >&2
+          exit 1
+        fi
+
+        ${pkgs.coreutils}/bin/mkdir -p "$HOME/.local/share/remnic"
+
+        export REMNIC_AUTH_TOKEN="$(${pkgs.coreutils}/bin/cat "$remnic_token_file")"
+
+        exec ${pkgs.nodejs}/bin/node "$remnic_server"
+      '';
+    in {
       home.file.".pi/agent/extensions/pi-permission-system/config.json".text = builtins.toJSON {
         "$schema" = "https://raw.githubusercontent.com/gotgenes/pi-permission-system/main/schemas/permissions.schema.json";
         permissionReviewLog = true;
@@ -102,6 +128,62 @@ let
         };
       };
 
+      home.activation.remnicPiConfig = inputs.home-manager.lib.hm.dag.entryAfter ["writeBoundary"] ''
+        remnic_config_dir="$HOME/.pi/agent/extensions/remnic"
+        remnic_config_file="$remnic_config_dir/remnic.config.json"
+        remnic_state_dir="$HOME/.local/share/remnic"
+        remnic_token_file="$remnic_state_dir/pi-auth-token"
+
+        ${pkgs.coreutils}/bin/mkdir -p "$remnic_config_dir" "$remnic_state_dir"
+        ${pkgs.coreutils}/bin/chmod 700 "$remnic_state_dir"
+
+        if [ ! -s "$remnic_token_file" ]; then
+          ( umask 077; ${pkgs.openssl}/bin/openssl rand -hex 32 > "$remnic_token_file" )
+        fi
+
+        remnic_token="$(${pkgs.coreutils}/bin/cat "$remnic_token_file")"
+
+        REMNIC_DAEMON_URL="${remnicDaemonUrl}" REMNIC_TOKEN="$remnic_token" ${pkgs.python3}/bin/python - <<'PY'
+        import json
+        import os
+        from pathlib import Path
+
+        config_path = Path.home() / ".pi/agent/extensions/remnic/remnic.config.json"
+        config = {}
+        if config_path.exists():
+            config = json.loads(config_path.read_text())
+            if not isinstance(config, dict):
+                raise SystemExit(f"Expected {config_path} to contain a JSON object")
+
+        config["remnicDaemonUrl"] = os.environ["REMNIC_DAEMON_URL"]
+        config["authToken"] = os.environ["REMNIC_TOKEN"]
+
+        config_path.write_text(json.dumps(config, indent=2) + "\n")
+        PY
+
+        ${pkgs.coreutils}/bin/chmod 600 "$remnic_token_file" "$remnic_config_file"
+      '';
+
+      systemd.user.services.remnic = {
+        Unit = {
+          Description = "Remnic local memory server for Pi";
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${remnicServerScript}";
+          Environment = [
+            "REMNIC_HOST=${remnicHost}"
+            "REMNIC_PORT=${toString remnicPort}"
+            "REMNIC_MEMORY_DIR=%h/.local/share/remnic"
+          ];
+          Restart = "on-failure";
+          RestartSec = 10;
+        };
+        Install = {
+          WantedBy = ["default.target"];
+        };
+      };
+
       programs.pi-coding-agent = {
         enable = true;
         extraPackages = with pkgs; [
@@ -171,7 +253,6 @@ let
             };
             "openai" = {
               api = "openai-completions";
-              apiKey = "${username}@openai.com";
               baseUrl = "https://api.openai.com/v1";
               models = [
                 {
