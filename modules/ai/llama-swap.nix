@@ -171,6 +171,10 @@ let
         --port "$PORT"
     '';
   in {
+    environment.systemPackages = with pkgs; [
+      lact
+    ];
+
     services.llama-swap = {
       enable = true;
       port = 8724;
