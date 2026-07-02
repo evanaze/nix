@@ -11,8 +11,6 @@ let
     systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";
     staging-root = "/var/tmp/llama-cpp";
-    default-ctx-size = 64000;
-    ornithCtxSize = 128000;
 
     stage-helper = ''
       set -euo pipefail
@@ -80,7 +78,7 @@ let
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
-        --ctx-size ${toString default-ctx-size} \
+        --ctx-size 32768 \
         --n-predict 8192 \
         --fit on --fit-target 1536 --fit-ctx 32768 \
         --temp 0.6 --top-p 0.95 --top-k 20 \
@@ -121,7 +119,7 @@ let
         --port "$PORT"
     '';
 
-    launchScriptOrnithSm = mk-launch-script "ornith-1.0-9b-q4" ''
+    launchScriptOrnith = mk-launch-script "ornith-1.0-9b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/ornith-1.0-9b-Q4_K_M.gguf" \
@@ -141,23 +139,13 @@ let
         --port "$PORT"
     '';
 
-    launchScriptOrnithLg = mk-launch-script "ornith-1.0-9b-q8" ''
+    launchScriptMiniCPM = mk-launch-script "minicpm-v-4.6" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/ornith-1.0-9b-Q8_0.gguf" \
-        --reasoning-format deepseek \
-        --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx ${toString default-ctx-size}  \
-        --parallel 1 \
-        --no-mmap \
-        --ctx-size ${toString default-ctx-size}  \
-        --temp 0.6 \
-        --top-p 0.95 \
-        --top-k 20 \
-        --threads 10 --threads-batch 12 \
-        --batch-size 512 --ubatch-size 256 \
-        --mlock \
-        --jinja \
+        -m "${source-model-dir}/MiniCPM-V-4_6-F16.gguf" \
+        --mmproj "${source-model-dir}/mmproj-MiniCPM-V-4_6-F16.gguf" \
+        -c 8192 --temp 0.7 --top-p 0.8 --top-k 100 --repeat-penalty 1.05 \
+        --reasoning off \
         --port "$PORT"
     '';
   in {
@@ -195,11 +183,11 @@ let
             healthCheckTimeout = 600;
           };
           "ornith-1.0-9b-q4" = {
-            cmd = "${launchScriptOrnithSm} ${"$"}{PORT}";
+            cmd = "${launchScriptOrnith} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
-          "ornith-1.0-9b-q8" = {
-            cmd = "${launchScriptOrnithLg} ${"$"}{PORT}";
+          "minicpm-v-4.6" = {
+            cmd = "${launchScriptMiniCPM} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
         };
