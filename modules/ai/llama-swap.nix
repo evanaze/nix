@@ -171,9 +171,7 @@ let
         --port "$PORT"
     '';
   in {
-    environment.systemPackages = with pkgs; [
-      lact
-    ];
+    services.lact.enable = true;
 
     services.llama-swap = {
       enable = true;
