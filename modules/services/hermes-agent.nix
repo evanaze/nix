@@ -47,8 +47,8 @@ let
 
     common-hermes-settings = {
       model = {
-        default = "gpt-5.5";
-        provider = "openai-codex";
+        default = "gemma-4-12b-q4";
+        provider = "local";
       };
       memory.provider = "openviking";
       browser = {
@@ -85,6 +85,12 @@ let
             "gemma-4-12b-q4"
             "qwen3.6-35b-a3b"
           ];
+        };
+      };
+      auxillary = {
+        vision = {
+          provider = "local";
+          model = "minicpm-v-4.6";
         };
       };
       platforms.api_server.enabled = true;
