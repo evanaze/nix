@@ -90,7 +90,7 @@ let
           ];
         };
       };
-      auxillary = {
+      auxiliary = {
         vision = {
           provider = "local";
           model = "minicpm-v-4.6";
