@@ -100,7 +100,7 @@ let
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/Qwen3.6-28B-REAP20-A3B-Q4_K_M.gguf" \
-        --ctx-size 64000 \
+        --ctx-size 8192 \
         -b 2048 \
         -ub 1024 \
         --no-mmap \
@@ -112,8 +112,6 @@ let
         --min-p 0.0 \
         --presence-penalty 0.0 \
         --repeat-penalty 1.0 \
-        -ctk turbo4 \
-        -ctv turbo2 \
         --jinja \
         --cache-reuse 256 \
         --n-cpu-moe 17 \
