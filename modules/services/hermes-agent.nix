@@ -137,14 +137,15 @@ let
       "A+ /home/${username}/workspace - - - - d:u:hermes:rwX"
     ];
 
-    users.users.${username}.extraGroups = ["hermes"];
+    users.users = {
+      ${username}.extraGroups = ["hermes"];
+      hermes.linger = true;
+    };
 
     environment.systemPackages = [
       pkgs.hermes-agent
       pkgs.python313Packages.firecrawl-py
     ];
-
-    users.users.hermes.linger = true;
 
     services.hermes-agent = {
       enable = true;
