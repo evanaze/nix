@@ -98,7 +98,7 @@ let
                 {
                   id = "gemma-4-12b-q4";
                   name = "Gemma 4 12B Q4";
-                  contextWindow = 64000;
+                  contextWindow = 128000;
                   maxTokens = 4096;
                 }
               ];
