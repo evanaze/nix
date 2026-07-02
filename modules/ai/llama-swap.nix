@@ -11,7 +11,7 @@ let
     systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";
     staging-root = "/var/tmp/llama-cpp";
-    ctx-size = 64000;
+    default-ctx-size = 64000;
     ornithCtxSize = 128000;
 
     stage-helper = ''
@@ -80,7 +80,7 @@ let
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
-        --ctx-size ${toString ctx-size} \
+        --ctx-size ${toString default-ctx-size} \
         --n-predict 8192 \
         --fit on --fit-target 1536 --fit-ctx 32768 \
         --temp 0.6 --top-p 0.95 --top-k 20 \
@@ -106,10 +106,10 @@ let
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
         --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx ${toString ctx-size} \
+        --fit on --fit-target 1536 --fit-ctx ${toString default-ctx-size} \
         --parallel 1 \
         --no-mmap \
-        --ctx-size ${toString ctx-size} \
+        --ctx-size ${toString default-ctx-size} \
         --temp 1.0 \
         --top-p 0.95 \
         --top-k 64 \
@@ -121,16 +121,16 @@ let
         --port "$PORT"
     '';
 
-    launchScriptOrnith = mk-launch-script "ornith-1.0-9b-q4" ''
+    launchScriptOrnithSm = mk-launch-script "ornith-1.0-9b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/ornith-1.0-9b-Q4_K_M.gguf" \
         --reasoning-format deepseek \
         --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx ${toString ornithCtxSize} \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
         --parallel 1 \
         --no-mmap \
-        --ctx-size ${toString ornithCtxSize} \
+        --ctx-size 128000 \
         --temp 0.6 \
         --top-p 0.95 \
         --top-k 20 \
@@ -138,7 +138,26 @@ let
         --batch-size 512 --ubatch-size 256 \
         --mlock \
         --jinja \
-        --chat-template-kwargs '{"preserve_thinking": true}' \
+        --port "$PORT"
+    '';
+
+    launchScriptOrnithLg = mk-launch-script "ornith-1.0-9b-q8" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/ornith-1.0-9b-Q8.gguf" \
+        --reasoning-format deepseek \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx ${toString default-ctx-size}  \
+        --parallel 1 \
+        --no-mmap \
+        --ctx-size ${toString default-ctx-size}  \
+        --temp 0.6 \
+        --top-p 0.95 \
+        --top-k 20 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --mlock \
+        --jinja \
         --port "$PORT"
     '';
   in {
@@ -176,7 +195,11 @@ let
             healthCheckTimeout = 600;
           };
           "ornith-1.0-9b-q4" = {
-            cmd = "${launchScriptOrnith} ${"$"}{PORT}";
+            cmd = "${launchScriptOrnithSm} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "ornith-1.0-9b-q8" = {
+            cmd = "${launchScriptOrnithLg} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
         };
