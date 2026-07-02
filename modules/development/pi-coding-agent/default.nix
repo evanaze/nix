@@ -67,7 +67,7 @@ let
         models = {
           providers = {
             "llama-local" = {
-              api = "openai-completions";
+              api = "openai-chat";
               apiKey = "none";
               baseUrl = "https://llm.spitz-pickerel.ts.net/v1";
               compat = {
