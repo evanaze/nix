@@ -144,6 +144,8 @@ let
       pkgs.python313Packages.firecrawl-py
     ];
 
+    users.users.hermes.linger = true;
+
     services.hermes-agent = {
       enable = true;
       createUser = true;
