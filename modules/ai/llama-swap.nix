@@ -144,7 +144,7 @@ let
     launchScriptOrnithLg = mk-launch-script "ornith-1.0-9b-q8" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/ornith-1.0-9b-Q8.gguf" \
+        -m "${source-model-dir}/ornith-1.0-9b-Q8_0.gguf" \
         --reasoning-format deepseek \
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx ${toString default-ctx-size}  \
