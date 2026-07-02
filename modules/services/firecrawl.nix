@@ -5,8 +5,9 @@ let
     pkgs,
     ...
   }: let
-    firecrawlSrc = pkgs.callPackage ../../pkgs/firecrawl {};
-    firecrawlRev = "44a6a1665e6ecb565c16a05b25719b377c45c0c5";
+    firecrawl = pkgs.callPackage ../../pkgs/firecrawl {};
+    firecrawlSrc = firecrawl.src;
+    firecrawlRev = firecrawl.rev;
     prepareStamp = "7";
 
     appDir = "/var/lib/firecrawl";
