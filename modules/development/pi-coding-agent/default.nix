@@ -24,6 +24,8 @@ let
       '';
     };
   in {
+    programs.nix-ld.enable = true;
+
     sops.secrets."nocodb/env" = {
       owner = username;
       mode = "0400";
