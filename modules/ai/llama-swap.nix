@@ -171,8 +171,6 @@ let
         --port "$PORT"
     '';
   in {
-    services.lact.enable = true;
-
     services.llama-swap = {
       enable = true;
       port = 8724;
