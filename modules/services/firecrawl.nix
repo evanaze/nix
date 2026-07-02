@@ -19,7 +19,7 @@ let
     databaseName = "firecrawl_nuq";
 
     nodejs = pkgs.nodejs_22;
-    pnpm = pkgs.pnpm_10_29_2;
+    pnpm = pkgs.pnpm;
   in {
     config = lib.mkIf (config.networking.hostName == "jupiter") {
       users.groups.firecrawl = {};
@@ -270,30 +270,6 @@ let
         };
       };
 
-      systemd.services.firecrawl-tsserve = {
-        after = [
-          "tailscaled-autoconnect.service"
-          "caddy.service"
-          "firecrawl.service"
-        ];
-        wants = [
-          "tailscaled-autoconnect.service"
-          "caddy.service"
-          "firecrawl.service"
-        ];
-        wantedBy = ["multi-user.target"];
-        description = "Using Tailscale Serve to publish Firecrawl";
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          Restart = "on-failure";
-          RestartSec = "10s";
-        };
-        script = ''
-          ${lib.getExe pkgs.tailscale} serve clear svc:firecrawl || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:firecrawl --https=443 http://127.0.0.1:${toString caddyPort}
-        '';
-      };
     };
   };
 in {

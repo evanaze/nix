@@ -58,11 +58,14 @@ let
           rewrite_loopback_urls = false;
         };
       };
-      web.search_backend = "searxng";
+      web = {
+        backend = "firecrawl";
+        search_backend = "firecrawl";
+        extract_backend = "firecrawl";
+      };
       plugins.enabled = [
         "oh-my-hermes"
         "rtk-rewrite"
-        "web-searxng"
       ];
       file_read_max_chars = 30000;
       tool_output = {
@@ -141,7 +144,10 @@ let
 
     users.users.${username}.extraGroups = ["hermes"];
 
-    environment.systemPackages = [pkgs.hermes-agent];
+    environment.systemPackages = [
+      pkgs.hermes-agent
+      pkgs.python313Packages.firecrawl-py
+    ];
 
     services.hermes-agent = {
       enable = true;
@@ -180,7 +186,7 @@ let
         MESSAGING_CWD = "${state-dir}/workspace";
         OBSIDIAN_VAULT_PATH = default-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
-        SEARXNG_URL = "http://127.0.0.1:8311";
+        FIRECRAWL_API_URL = "http://127.0.0.1:3020";
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
@@ -231,7 +237,7 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         CAMOFOX_URL = "http://127.0.0.1:9377";
-        SEARXNG_URL = "http://127.0.0.1:8311";
+        FIRECRAWL_API_URL = "http://127.0.0.1:3020";
         OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
       };
       path = [
@@ -287,7 +293,7 @@ let
         HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
         OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
-        SEARXNG_URL = "http://127.0.0.1:8311";
+        FIRECRAWL_API_URL = "http://127.0.0.1:3020";
       };
       serviceConfig = {
         Type = "simple";
