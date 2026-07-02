@@ -8,8 +8,8 @@ let
   }: {
     services.llama-cpp = {
       enable = true;
-      # modelsDir = "/mnt/jupiter-llama-models";
       settings = {
+        port = 8724;
         models-preset = '''';
       };
     };
@@ -17,6 +17,5 @@ let
 in {
   flake.modules.nixos = {
     aiLlamaCpp = module;
-    aiServer = module;
   };
 }
