@@ -49,6 +49,7 @@ let
       model = {
         default = "gemma-4-12b-q4";
         provider = "local";
+        context_length = 128000;
       };
       memory.provider = "openviking";
       browser = {
@@ -88,12 +89,6 @@ let
             "gemma-4-12b-q4"
             "qwen3.6-35b-a3b"
           ];
-        };
-      };
-      auxiliary = {
-        vision = {
-          provider = "local";
-          model = "minicpm-v-4.6";
         };
       };
       platforms.api_server.enabled = true;
