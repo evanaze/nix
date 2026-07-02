@@ -106,10 +106,10 @@ let
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
         --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx ${toString default-ctx-size} \
+        --fit on --fit-target 1536 --fit-ctx 131000 \
         --parallel 1 \
         --no-mmap \
-        --ctx-size ${toString default-ctx-size} \
+        --ctx-size 131000 \
         --temp 1.0 \
         --top-p 0.95 \
         --top-k 64 \
