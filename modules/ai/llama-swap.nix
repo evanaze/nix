@@ -96,6 +96,30 @@ let
         --port "$PORT"
     '';
 
+    launchScriptQwenReap = mk-launch-script "qwen3.6-reap" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/Qwen3.6-28B-REAP20-A3B-Q4_K_M.gguf" \
+        --ctx-size 64000 \
+        -b 2048 \
+        -ub 1024 \
+        --no-mmap \
+        --mlock \
+        -t 3 \
+        --temp 0.7 \
+        --top-p 0.95 \
+        --top-k 20 \
+        --min-p 0.0 \
+        --presence-penalty 0.0 \
+        --repeat-penalty 1.0 \
+        -ctk turbo4 \
+        -ctv turbo2 \
+        --jinja \
+        --cache-reuse 256 \
+        --n-cpu-moe 17 \
+        --port "$PORT"
+    '';
+
     launchScriptGemma = mk-launch-script "gemma-4-12b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
@@ -156,6 +180,10 @@ let
         models = {
           "qwen3.6-35b-a3b" = {
             cmd = "${launchScriptQwen} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "qwen3.6-reap" = {
+            cmd = "${launchScriptQwenReap} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
           "gemma-4-12b-q4" = {
