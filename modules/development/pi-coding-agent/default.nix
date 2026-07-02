@@ -40,10 +40,11 @@ let
         ];
         settings = {
           defaultProvider = "llama-local";
-          defaultModel = "ornith-1.0-9b-q4";
+          defaultModel = "ornith-1.0-9b-q8";
           defaultThinkingLevel = "medium";
           enabledModels = [
             "ornith-1.0-9b-q4"
+            "ornith-1.0-9b-q8"
             "qwen3.6-35b-a3b"
             "gemma-4-12b-q4"
             "gpt-5.5"
@@ -77,6 +78,13 @@ let
                   name = "Ornith 1.0 9B Q4_K_M";
                   reasoning = true;
                   contextWindow = 128000;
+                  maxTokens = 4096;
+                }
+                {
+                  id = "ornith-1.0-9b-q8";
+                  name = "Ornith 1.0 9B Q8";
+                  reasoning = true;
+                  contextWindow = 64000;
                   maxTokens = 4096;
                 }
                 {
