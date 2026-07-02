@@ -96,6 +96,12 @@ let
                   maxTokens = 4096;
                 }
                 {
+                  id = "qwen3.6-reap";
+                  name = "Qwen 3.6 28B A3B REAP";
+                  contextWindow = 64000;
+                  maxTokens = 4096;
+                }
+                {
                   id = "gemma-4-12b-q4";
                   name = "Gemma 4 12B Q4";
                   contextWindow = 128000;
