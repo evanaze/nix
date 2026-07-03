@@ -42,7 +42,7 @@ let
       repo = "stackmagic-research";
       rev = "refs/heads/main";
       private = true;
-      hash = lib.fakeHash;
+      hash = "sha256-1fzzcUzfvkxBbKeIvBnzt+iqlzzL6HBZ5SwWrMnvaGE=";
     };
 
     common-hermes-settings = {
