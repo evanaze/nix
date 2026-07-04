@@ -4,7 +4,6 @@
       busybox
       cachix
       cron
-      devenv
       dig
       expect
       git
