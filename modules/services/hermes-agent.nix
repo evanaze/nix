@@ -64,6 +64,7 @@ let
         search_backend = "firecrawl";
         extract_backend = "firecrawl";
       };
+      terminal.cwd = "${state-dir}/workspace";
       plugins.enabled = [
         "oh-my-hermes"
         "rtk-rewrite"
@@ -181,7 +182,6 @@ let
         HOME = state-dir;
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
-        MESSAGING_CWD = "${state-dir}/workspace";
         OBSIDIAN_VAULT_PATH = default-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
         FIRECRAWL_API_URL = "http://127.0.0.1:3020";
@@ -207,6 +207,7 @@ let
         "camofox.service"
         "hermes-research-profile.service"
       ];
+      environment.MESSAGING_CWD = lib.mkForce null;
       wants = [
         "camofox.service"
         "hermes-research-profile.service"
