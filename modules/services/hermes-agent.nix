@@ -162,7 +162,7 @@ let
             "--enable-write"
           ];
           env = {
-            ACTUAL_PASSWORD = "{env:ACTUAL_PASSWORD}";
+            ACTUAL_PASSWORD = "\${env:ACTUAL_PASSWORD}";
             ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
           };
           timeout = 60;
@@ -175,7 +175,11 @@ let
         nixos.command = "mcp-nixos";
         nocodb-leads = {
           url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
-          headers."xc-mcp-token" = "{env:NOCODB_LEADS_MCP_TOKEN}";
+          headers."xc-mcp-token" = "\${env:NOCODB_LEADS_MCP_TOKEN}";
+        };
+        nocodb-competitors = {
+          url = "https://nocodb.spitz-pickerel.ts.net/mcp/nc7ekmhb4vs5tzmx";
+          headers."xc-mcp-token" = "\${env:NOCODB_COMPETITORS_MCP_TOKEN}";
         };
       };
       environment = {
