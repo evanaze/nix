@@ -45,6 +45,14 @@ let
       hash = "sha256-x2DGiNUd3Tc28QZov92hjW0MnNy55Eyiq9UgML+Tyxc=";
     };
 
+    stackmagic-accountability = pkgs.fetchFromGitHub {
+      owner = "evanaze";
+      repo = "stackmagic-accountability";
+      rev = "refs/heads/main";
+      private = true;
+      hash = lib.fakeHash;
+    };
+
     common-hermes-settings = {
       model = {
         default = "gemma-4-12b-q4";
@@ -103,7 +111,7 @@ let
     };
 
     research-profile-settings = lib.recursiveUpdate common-hermes-settings {
-      skills.external_dirs = ["${stackmagic-research}"];
+      skills.external_dirs = ["${stackmagic-research}" "${stackmagic-accountability}"];
     };
 
     research-profile-config =
@@ -156,11 +164,7 @@ let
       mcpServers = {
         actual = {
           command = "npx";
-          args = [
-            "-y"
-            "actual-mcp"
-            "--enable-write"
-          ];
+          args = ["-y" "actual-mcp" "--enable-write"];
           env = {
             ACTUAL_PASSWORD = "\${env:ACTUAL_PASSWORD}";
             ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
@@ -191,6 +195,7 @@ let
       extraPackages = [
         pkgs.mcp-nixos
         stackmagic-research
+        stackmagic-accountability
       ];
       extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
