@@ -98,6 +98,7 @@ let
               jls = "journalctl -l --no-pager -n 50 -u $1";
               dup = "devenv up";
               ducklake = "$HOME/.local/bin/ducklake";
+              pi = "nono run --profile pi --allow-cwd -- pi";
               pgconn = "psql -h pg.spitz-pickerel.ts.net -p 5432 -U postgres";
               showsvcs = "systemctl --type=service --state=running";
               sshpi = "tailscale ssh evanaze@mercury.spitz-pickerel.ts.net";
