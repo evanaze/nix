@@ -130,6 +130,25 @@ let
         };
         timeout = 60;
         connect_timeout = 30;
+        tools = {
+          exclude = [
+            "create-category"
+            "update-category"
+            "delete-category"
+            "create-category-group"
+            "update-category-group"
+            "delete-category-group"
+            "create-payee"
+            "update-payee"
+            "delete-payee"
+            "create-rule"
+            "update-rule"
+            "delete-rule"
+            "update-transaction"
+            "delete-transaction"
+            "create-transaction"
+          ];
+        };
       };
       donetick = {
         command = mcp-stdio-commands.donetick;
@@ -141,6 +160,15 @@ let
         };
         timeout = 60;
         connect_timeout = 30;
+        tools = {
+          exclude = [
+            "update_label"
+            "delete_label"
+            "pause_chore_timer"
+            "start_chore_timer"
+            "list_circle_members"
+          ];
+        };
       };
       nixos.command = mcp-stdio-commands.nixos;
       nocodb-leads = {
