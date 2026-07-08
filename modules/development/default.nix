@@ -10,6 +10,7 @@
       bun
       codex
       nixd
+      nono
       python313Packages.huggingface-hub
     ];
   };
