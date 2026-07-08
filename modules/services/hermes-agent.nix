@@ -211,10 +211,8 @@ let
         stackmagic-accountability
         stackmagic-research
       ];
-      extraPythonPackages = [
-        rtk-hermes
-        pkgs.python312Packages.firecrawl-py
-      ];
+      extraDependencyGroups = ["firecrawl"];
+      extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
     };
 
