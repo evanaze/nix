@@ -121,6 +121,10 @@ let
     };
 
     default-profile-settings = lib.recursiveUpdate common-hermes-settings {
+      skills.disabled = [
+        "airtable"
+        "notion"
+      ];
       plugins.enabled = [
         "disk-cleanup"
         "ntfy-platform"
@@ -222,10 +226,12 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
-      extraPackages = mcp-stdio-packages ++ [
-        stackmagic-accountability
-        stackmagic-research
-      ];
+      extraPackages =
+        mcp-stdio-packages
+        ++ [
+          stackmagic-accountability
+          stackmagic-research
+        ];
       extraDependencyGroups = hermes-extra-dependency-groups;
       extraPythonPackages = hermes-extra-python-packages;
       extraPlugins = [oh-my-hermers];
