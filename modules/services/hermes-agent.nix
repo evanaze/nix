@@ -50,7 +50,7 @@ let
       repo = "stackmagic-accountability";
       rev = "refs/heads/main";
       private = true;
-      hash = "sha256-TVC0AktR4WhiSoZ7Zb2nQfZ0+F+5ZOX3ZkN4vOJqR80=";
+      hash = lib.fakeHash;
     };
 
     common-hermes-settings = {
