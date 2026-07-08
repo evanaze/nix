@@ -31,6 +31,16 @@ let
 
     hermes-extra-dependency-groups = ["firecrawl"];
     hermes-extra-python-packages = [rtk-hermes];
+    mcp-stdio-packages = [
+      pkgs.mcp-nixos
+      pkgs.nodejs_22
+      pkgs.uv
+    ];
+    mcp-stdio-commands = {
+      actual = "${pkgs.nodejs_22}/bin/npx";
+      donetick = "${pkgs.uv}/bin/uvx";
+      nixos = lib.getExe pkgs.mcp-nixos;
+    };
     hermes-package = pkgs.hermes-agent.override {
       extraDependencyGroups = hermes-extra-dependency-groups;
       extraPythonPackages = hermes-extra-python-packages;
@@ -172,7 +182,7 @@ let
       settings = default-profile-settings;
       mcpServers = {
         actual = {
-          command = "npx";
+          command = mcp-stdio-commands.actual;
           args = ["-y" "actual-mcp" "--enable-write"];
           env = {
             ACTUAL_PASSWORD = "\${env:ACTUAL_PASSWORD}";
@@ -182,7 +192,7 @@ let
           connect_timeout = 30;
         };
         donetick = {
-          command = "uvx";
+          command = mcp-stdio-commands.donetick;
           args = ["donetick-mcp"];
           env = {
             DONETICK_BASE_URL = "https://todo.spitz-pickerel.ts.net";
@@ -192,7 +202,7 @@ let
           timeout = 60;
           connect_timeout = 30;
         };
-        nixos.command = "mcp-nixos";
+        nixos.command = mcp-stdio-commands.nixos;
         nocodb-leads = {
           url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
           headers."xc-mcp-token" = "\${env:NOCODB_LEADS_MCP_TOKEN}";
@@ -212,9 +222,7 @@ let
       };
       environmentFiles = [config.sops.secrets."hermes/env".path];
       addToSystemPackages = true;
-      extraPackages = [
-        pkgs.mcp-nixos
-        pkgs.uv
+      extraPackages = mcp-stdio-packages ++ [
         stackmagic-accountability
         stackmagic-research
       ];
@@ -306,6 +314,7 @@ let
         "hermes-agent.service"
         "hermes-research-profile.service"
       ];
+      path = mcp-stdio-packages;
       wants = [
         "hermes-agent.service"
         "hermes-research-profile.service"

@@ -14,6 +14,10 @@
 
   perSystem = {pkgs, ...}: {
     checks = let
+      inherit (inputs.self.nixosConfigurations.jupiter.config.services.hermes-agent.settings.mcp_servers)
+        actual
+        donetick
+        nixos;
       formatFiles = [
         ../modules/checks.nix
         ../modules/hosts.nix
@@ -48,6 +52,13 @@
         for file in ${lintFileArgs}; do
           statix check "$file"
         done
+        touch $out
+      '';
+
+      hermes-mcp-stdio-commands = pkgs.runCommand "hermes-mcp-stdio-commands-check" {} ''
+        [ "${actual.command}" = "${pkgs.nodejs_22}/bin/npx" ]
+        [ "${donetick.command}" = "${pkgs.uv}/bin/uvx" ]
+        [ "${nixos.command}" = "${pkgs.mcp-nixos}/bin/mcp-nixos" ]
         touch $out
       '';
     };
