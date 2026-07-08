@@ -15,7 +15,6 @@ let
     research-profile = "research";
     research-profile-home = "${hermes-home}/profiles/${research-profile}";
     research-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
-    bundled-obsidian-skill = "${pkgs.hermes-agent}/share/hermes-agent/skills/note-taking/obsidian";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -29,6 +28,14 @@ let
       format = "pyproject";
       build-system = [pkgs.python312Packages.setuptools];
     };
+
+    hermes-extra-dependency-groups = ["firecrawl"];
+    hermes-extra-python-packages = [rtk-hermes];
+    hermes-package = pkgs.hermes-agent.override {
+      extraDependencyGroups = hermes-extra-dependency-groups;
+      extraPythonPackages = hermes-extra-python-packages;
+    };
+    bundled-obsidian-skill = "${hermes-package}/share/hermes-agent/skills/note-taking/obsidian";
 
     oh-my-hermers = pkgs.fetchFromGitHub {
       owner = "evanaze";
@@ -155,7 +162,7 @@ let
     };
 
     environment.systemPackages = [
-      pkgs.hermes-agent
+      hermes-package
     ];
 
     services.hermes-agent = {
@@ -211,8 +218,8 @@ let
         stackmagic-accountability
         stackmagic-research
       ];
-      extraDependencyGroups = ["firecrawl"];
-      extraPythonPackages = [rtk-hermes];
+      extraDependencyGroups = hermes-extra-dependency-groups;
+      extraPythonPackages = hermes-extra-python-packages;
       extraPlugins = [oh-my-hermers];
     };
 
@@ -261,7 +268,7 @@ let
       };
       path = [
         pkgs.coreutils
-        pkgs.hermes-agent
+        hermes-package
       ];
       restartTriggers = [research-profile-config];
       serviceConfig = {
@@ -276,7 +283,7 @@ let
         set -euo pipefail
 
         if [ ! -d "${research-profile-home}" ]; then
-          ${lib.getExe pkgs.hermes-agent} profile create ${research-profile}
+          ${lib.getExe hermes-package} profile create ${research-profile}
         fi
 
         touch "${research-profile-home}/.no-bundled-skills"
@@ -321,7 +328,7 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe pkgs.hermes-agent} -p ${research-profile} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
+      script = "${lib.getExe hermes-package} -p ${research-profile} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
     };
 
     services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
