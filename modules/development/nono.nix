@@ -31,6 +31,7 @@ let
         ];
         write = [];
         allow_file = [
+          "/dev/kvm"
           "/run/secrets/nocodb/env"
           "/home/evanaze/.pi-lens/sessionstart.log"
           "/home/evanaze/.config/rpiv-web-tools/config.json"
