@@ -156,7 +156,6 @@ let
 
     environment.systemPackages = [
       pkgs.hermes-agent
-      pkgs.python313Packages.firecrawl-py
     ];
 
     services.hermes-agent = {
@@ -212,7 +211,10 @@ let
         stackmagic-accountability
         stackmagic-research
       ];
-      extraPythonPackages = [rtk-hermes];
+      extraPythonPackages = [
+        rtk-hermes
+        pkgs.python312Packages.firecrawl-py
+      ];
       extraPlugins = [oh-my-hermers];
     };
 
