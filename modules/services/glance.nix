@@ -482,10 +482,17 @@ let
                       cache = "1h";
                       options = {
                         location = "\${WEATHER_LOCATION}";
+                        latitude = "39.7392";
+                        longitude = "-104.9903";
+                        timezone = config.time.timeZone;
                       };
                       template = ''
                         {{/* THESE VALUES CAN BE CHANGED BY ADDING AN ENTRY TO THE OPTIONS SECTION */}}
+                          {{ $location := .Options.StringOr "location" "Local forecast" }}
+                          {{ $latitude := .Options.StringOr "latitude" "" }}
+                          {{ $longitude := .Options.StringOr "longitude" "" }}
                           {{ $temp_unit := .Options.StringOr "temp_unit" "celsius" }}
+                          {{ $timezone := .Options.StringOr "timezone" "UTC" }}
                           {{ $weekend_color := .Options.StringOr "weekend_color" "var(--color-separator)" }}
                           {{ $overlay_color := .Options.StringOr "overlay_color" "hsl(var(--bghs), var(--bgl), 50%)" }}
                           {{/* the following variables define the coloring of the sunny/cloudy/etc. weather icons*/}}
@@ -515,18 +522,13 @@ let
                             {{ $temp_white = .Options.FloatOr "temp_white" 30.0 }}
                           {{end}}
 
-                        {{/* Request 1: get latitude and longitude for user's city */}}
-                        {{ $location_string := replaceAll " " "%20" (.Options.StringOr "location" "") }}
-                        {{ $url1 := printf "https://geocoding-api.open-meteo.com/v1/search?name=%s&count=20&language=en&format=json" $location_string }}
-                        {{ $req1 := newRequest $url1 | getResponse }}
-                        {{ $latitude := $req1.JSON.String "results.0.latitude" }}
-                        {{ $longitude := $req1.JSON.String "results.0.longitude" }}
-
-                        {{/* Request 2: get daily weather forecast based on latitude and longitude */}}
-                        {{ $url2 := printf "https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&temperature_unit=%s&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=America/New_York" $latitude $longitude $temp_unit}}
-                        {{ $req2 := newRequest $url2 | getResponse }}
-
+                        {{ if and (ne $latitude "") (ne $longitude "") }}
+                          {{/* Request: get daily weather forecast using configured coordinates */}}
+                          {{ $url := printf "https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&temperature_unit=%s&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=%s" $latitude $longitude $temp_unit $timezone }}
+                          {{ $req2 := newRequest $url | getResponse }}
+                          {{ if eq $req2.Response.StatusCode 200 }}
                         <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                          <p class="size-h5 color-subdue" style="margin-bottom: 8px;">{{ $location }}</p>
 
                           {{/* Show abbreivated day of week */}}
                           {{ $dates := $req2.JSON.Array "daily.time" }}
@@ -627,7 +629,7 @@ let
 
                         {{/* get overall max and min temp over week's range */}}
                         {{/* to determine vertical scale */}}
-                        <div style="display: flex; justify-content: flex-start; align-items: center;">
+                          <div style="display: flex; justify-content: flex-start; align-items: center;">
 
                           {{ $max_max := 0 }}
                           {{ range $maxTemps }}
@@ -694,6 +696,12 @@ let
 
                           </div>
                         </div>
+                          {{ else }}
+                        <p class="color-negative">Weather forecast is temporarily unavailable for {{ $location }}.</p>
+                          {{ end }}
+                        {{ else }}
+                        <p class="color-negative">Weather forecast coordinates are not configured for {{ $location }}.</p>
+                        {{ end }}
                       '';
                     }
                   ];
