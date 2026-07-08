@@ -57,7 +57,6 @@ let
           packages = [
             "npm:pi-mcp-adapter"
             "npm:pi-zentui"
-            "npm:@gotgenes/pi-permission-system"
             "npm:@hypabolic/pi-hypa"
             "npm:@juicesharp/rpiv-ask-user-question"
             "npm:@juicesharp/rpiv-todo"
