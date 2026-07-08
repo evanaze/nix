@@ -1,6 +1,7 @@
 {
   imports = [
     ./pi-coding-agent/default.nix
+    ./pi-coding-agent/aft.nix
     ./pi-coding-agent/gondolin.nix
     ./pi-coding-agent/remnic.nix
     ./pi-coding-agent/pi-subagents.nix
