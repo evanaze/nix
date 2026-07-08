@@ -477,6 +477,48 @@ let
                     }
                     {
                       type = "custom-api";
+                      title = "Donetick Today";
+                      title-url = "\${DONETICK_BASE_URL}";
+                      cache = "15m";
+                      url = "\${DONETICK_BASE_URL}/eapi/v1/chore";
+                      headers = {
+                        Accept = "application/json";
+                        secretkey = "\${DONETICK_API_TOKEN}";
+                      };
+                      template = ''
+                        {{ $today := now.Format "2006-01-02" }}
+                        {{ $shown := 0 }}
+                        {{ $items := .JSON.Array "" }}
+
+                        {{ if eq (len $items) 0 }}
+                          {{ $items = .JSON.Array "res" }}
+                        {{ end }}
+
+                        {{ if gt (len $items) 0 }}
+                          <ul class="list list-gap-10">
+                            {{ range $items }}
+                              {{ if and (lt $shown 7) (.Bool "isActive") (.Exists "nextDueDate") }}
+                                {{ $due := .String "nextDueDate" | parseTime "rfc3339" }}
+                                {{ if eq ($due.In now.Location).Format "2006-01-02" $today }}
+                                  {{ $shown = add $shown 1 }}
+                                  <li>
+                                    <div class="flex items-center gap-10">
+                                      <span class="size-h4 color-primary text-truncate">{{ .String "name" }}</span>
+                                    </div>
+                                  </li>
+                                {{ end }}
+                              {{ end }}
+                            {{ end }}
+                          </ul>
+                        {{ end }}
+
+                        {{ if eq $shown 0 }}
+                          <p class="color-subdue">No tasks due today.</p>
+                        {{ end }}
+                      '';
+                    }
+                    {
+                      type = "custom-api";
                       title = "Weather Forecast";
                       body-type = "string";
                       cache = "1h";

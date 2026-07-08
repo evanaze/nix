@@ -175,6 +175,17 @@ let
           timeout = 60;
           connect_timeout = 30;
         };
+        donetick = {
+          command = "uvx";
+          args = ["donetick-mcp"];
+          env = {
+            DONETICK_BASE_URL = "https://todo.spitz-pickerel.ts.net";
+            DONETICK_USERNAME = "\${env:DONETICK_USERNAME}";
+            DONETICK_PASSWORD = "\${env:DONETICK_PASSWORD}";
+          };
+          timeout = 60;
+          connect_timeout = 30;
+        };
         nixos.command = "mcp-nixos";
         nocodb-leads = {
           url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
@@ -197,6 +208,7 @@ let
       addToSystemPackages = true;
       extraPackages = [
         pkgs.mcp-nixos
+        pkgs.uv
         stackmagic-accountability
         stackmagic-research
       ];
