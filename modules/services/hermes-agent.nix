@@ -111,7 +111,10 @@ let
     };
 
     research-profile-settings = lib.recursiveUpdate common-hermes-settings {
-      skills.external_dirs = ["${stackmagic-research}" "${stackmagic-accountability}"];
+      skills.external_dirs = [
+        "${stackmagic-accountability}"
+        "${stackmagic-research}"
+      ];
     };
 
     research-profile-config =
@@ -194,8 +197,8 @@ let
       addToSystemPackages = true;
       extraPackages = [
         pkgs.mcp-nixos
-        stackmagic-research
         stackmagic-accountability
+        stackmagic-research
       ];
       extraPythonPackages = [rtk-hermes];
       extraPlugins = [oh-my-hermers];
