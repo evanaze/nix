@@ -120,6 +120,49 @@ let
       platforms.api_server.enabled = true;
     };
 
+    hermes-mcp-servers = {
+      actual = {
+        command = mcp-stdio-commands.actual;
+        args = ["-y" "actual-mcp" "--enable-write"];
+        env = {
+          ACTUAL_PASSWORD = "\${env:ACTUAL_PASSWORD}";
+          ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
+        };
+        timeout = 60;
+        connect_timeout = 30;
+      };
+      donetick = {
+        command = mcp-stdio-commands.donetick;
+        args = ["donetick-mcp"];
+        env = {
+          DONETICK_BASE_URL = "https://todo.spitz-pickerel.ts.net";
+          DONETICK_USERNAME = "\${env:DONETICK_USERNAME}";
+          DONETICK_PASSWORD = "\${env:DONETICK_PASSWORD}";
+        };
+        timeout = 60;
+        connect_timeout = 30;
+      };
+      nixos.command = mcp-stdio-commands.nixos;
+      nocodb-leads = {
+        url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
+        headers."xc-mcp-token" = "\${env:NOCODB_LEADS_MCP_TOKEN}";
+      };
+      nocodb-competitors = {
+        url = "https://nocodb.spitz-pickerel.ts.net/mcp/nc7ekmhb4vs5tzmx";
+        headers."xc-mcp-token" = "\${env:NOCODB_COMPETITORS_MCP_TOKEN}";
+      };
+    };
+
+    default-profile-mcp-servers = lib.removeAttrs hermes-mcp-servers [
+      "nocodb-leads"
+      "nocodb-competitors"
+    ];
+
+    research-profile-mcp-servers = lib.removeAttrs hermes-mcp-servers [
+      "actual"
+      "nixos"
+    ];
+
     default-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.disabled = [
         "airtable"
@@ -197,6 +240,7 @@ let
         "${stackmagic-accountability}"
         "${stackmagic-research}"
       ];
+      mcp_servers = research-profile-mcp-servers;
     };
 
     research-profile-config =
@@ -245,38 +289,7 @@ let
       createUser = true;
       stateDir = "${state-dir}";
       settings = default-profile-settings;
-      mcpServers = {
-        actual = {
-          command = mcp-stdio-commands.actual;
-          args = ["-y" "actual-mcp" "--enable-write"];
-          env = {
-            ACTUAL_PASSWORD = "\${env:ACTUAL_PASSWORD}";
-            ACTUAL_SERVER_URL = "https://budget.spitz-pickerel.ts.net";
-          };
-          timeout = 60;
-          connect_timeout = 30;
-        };
-        donetick = {
-          command = mcp-stdio-commands.donetick;
-          args = ["donetick-mcp"];
-          env = {
-            DONETICK_BASE_URL = "https://todo.spitz-pickerel.ts.net";
-            DONETICK_USERNAME = "\${env:DONETICK_USERNAME}";
-            DONETICK_PASSWORD = "\${env:DONETICK_PASSWORD}";
-          };
-          timeout = 60;
-          connect_timeout = 30;
-        };
-        nixos.command = mcp-stdio-commands.nixos;
-        nocodb-leads = {
-          url = "https://nocodb.spitz-pickerel.ts.net/mcp/ncv4hm8lp1enp7fk";
-          headers."xc-mcp-token" = "\${env:NOCODB_LEADS_MCP_TOKEN}";
-        };
-        nocodb-competitors = {
-          url = "https://nocodb.spitz-pickerel.ts.net/mcp/nc7ekmhb4vs5tzmx";
-          headers."xc-mcp-token" = "\${env:NOCODB_COMPETITORS_MCP_TOKEN}";
-        };
-      };
+      mcpServers = default-profile-mcp-servers;
       environment = {
         HOME = state-dir;
         HERMES_HOME = hermes-home;
