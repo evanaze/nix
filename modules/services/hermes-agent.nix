@@ -163,6 +163,12 @@ let
       "nixos"
     ];
 
+    default-profile-config =
+      (pkgs.formats.yaml {}).generate "hermes-default-profile-config.yaml"
+      (lib.recursiveUpdate default-profile-settings {
+        mcp_servers = default-profile-mcp-servers;
+      });
+
     default-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.disabled = [
         "airtable"
@@ -320,13 +326,51 @@ let
     systemd.services.hermes-agent = {
       after = [
         "camofox.service"
+        "hermes-default-profile.service"
         "hermes-research-profile.service"
       ];
       environment.MESSAGING_CWD = lib.mkForce null;
       wants = [
         "camofox.service"
+        "hermes-default-profile.service"
         "hermes-research-profile.service"
       ];
+    };
+
+    systemd.services.hermes-default-profile = {
+      description = "Bootstrap Hermes default profile";
+      after = [
+        "systemd-tmpfiles-setup.service"
+        "create-appdata-datasets.service"
+        "zfs-mount.service"
+      ];
+      requires = [
+        "systemd-tmpfiles-setup.service"
+        "create-appdata-datasets.service"
+        "zfs-mount.service"
+      ];
+      before = [
+        "hermes-agent.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+      };
+      path = [pkgs.coreutils];
+      restartTriggers = [default-profile-config];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        User = "hermes";
+        Group = "hermes";
+        UMask = "0007";
+      };
+      script = ''
+        set -euo pipefail
+        install -D -m 0640 ${default-profile-config} "${hermes-home}/config.yaml"
+      '';
     };
 
     systemd.services.hermes-research-profile = {
