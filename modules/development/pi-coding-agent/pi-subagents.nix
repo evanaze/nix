@@ -146,10 +146,21 @@ let
 
   module = {username, ...}: {
     home-manager.users.${username} = {
-      programs.pi-coding-agent.settings.packages = [
-        "npm:pi-subagents"
-        "npm:pi-intercom"
-      ];
+      programs.pi-coding-agent.settings = {
+        packages = [
+          "npm:pi-subagents"
+          "npm:pi-intercom"
+        ];
+        subagents = {
+          defaultModel = "ornith-1.0-9b-q6";
+          agentOverrides = {
+            planner.model = "gpt-5.4";
+            reviewer.model = "gpt-5.5";
+            context-builder.model = "gpt-5.4";
+            oracle.model = "gpt-5.5";
+          };
+        };
+      };
 
       home.file.".pi/agent/agents/tdd-primary.md".text = tddPrimaryAgent;
       home.file.".pi/agent/agents/tdd-taskmaster.md".text = tddTaskmasterAgent;
