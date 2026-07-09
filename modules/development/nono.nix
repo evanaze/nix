@@ -26,67 +26,69 @@ let
       nono
     ];
 
-    home-manager.users.${username}.home.file.".config/nono/profiles/pi.json".text = builtins.toJSON {
-      extends = "nolabs-ai/pi";
-      meta = {
-        name = "pi";
+    home-manager.users.${username} = {
+      home.file.".config/nono/profiles/pi.json".text = builtins.toJSON {
+        extends = "nolabs-ai/pi";
+        meta = {
+          name = "pi";
+        };
+        groups = {
+          include = [];
+          exclude = [];
+        };
+        commands = {
+          allow = [];
+          deny = [];
+        };
+        workdir = {
+          access = "readwrite";
+        };
+        filesystem = {
+          allow = [];
+          read = [
+            "/tmp"
+          ];
+          write = [];
+          allow_file = [
+            "/dev/kvm"
+            "/run/secrets/nocodb/env"
+            "/home/evanaze/.pi-lens/sessionstart.log"
+            "/home/evanaze/.config/rpiv-web-tools/config.json"
+          ];
+          read_file = [];
+          write_file = [];
+          deny = [];
+          bypass_protection = [];
+          suppress_save_prompt = [];
+        };
+        network = {
+          block = false;
+          allow_domain = [];
+          credentials = [];
+          open_port = [];
+          listen_port = [];
+          custom_credentials = {};
+        };
+        env_credentials = {};
+        hooks = {};
+        rollback = {
+          exclude_patterns = [];
+          exclude_globs = [];
+        };
       };
-      groups = {
-        include = [];
-        exclude = [];
-      };
-      commands = {
-        allow = [];
-        deny = [];
-      };
-      workdir = {
-        access = "readwrite";
-      };
-      filesystem = {
-        allow = [];
-        read = [
-          "/tmp"
-        ];
-        write = [];
-        allow_file = [
-          "/dev/kvm"
-          "/run/secrets/nocodb/env"
-          "/home/evanaze/.pi-lens/sessionstart.log"
-          "/home/evanaze/.config/rpiv-web-tools/config.json"
-        ];
-        read_file = [];
-        write_file = [];
-        deny = [];
-        bypass_protection = [];
-        suppress_save_prompt = [];
-      };
-      network = {
-        block = false;
-        allow_domain = [];
-        credentials = [];
-        open_port = [];
-        listen_port = [];
-        custom_credentials = {};
-      };
-      env_credentials = {};
-      hooks = {};
-      rollback = {
-        exclude_patterns = [];
-        exclude_globs = [];
-      };
-    };
 
-    home-manager.users.${username}.systemd.user.services.nono-pi-pack-install = {
-      Unit = {
-        Description = "Install nono Pi base pack";
-      };
-      Service = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = "${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install";
-      };
-      Install = {
-        WantedBy = ["default.target"];
+      systemd.user.services.nono-pi-pack-install = {
+        Unit = {
+          Description = "Install nono Pi base pack";
+        };
+        Service = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install";
+        };
+        Install = {
+          WantedBy = ["default.target"];
+        };
       };
     };
   };
