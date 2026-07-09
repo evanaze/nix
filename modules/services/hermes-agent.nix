@@ -521,7 +521,7 @@ let
         "tailscaled.service"
       ];
       wantedBy = ["multi-user.target"];
-      description = "Publish Hermes WebUI via Tailscale Serve";
+      description = "Publish Hermes Dashboard via Tailscale Serve";
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -529,8 +529,8 @@ let
         RestartSec = "10s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 http://127.0.0.1:${toString dashboardProxyPort}
+        ${lib.getExe pkgs.tailscale} serve clear svc:hermes-dashboard || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:hermes-dashboard --https=443 http://127.0.0.1:${toString dashboardProxyPort}
       '';
     };
   };
