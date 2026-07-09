@@ -1,8 +1,17 @@
 let
   module = {username, ...}: {
-    home-manager.users.${username}.programs.pi-coding-agent.settings.packages = [
-      "npm:@cortexkit/aft"
-    ];
+    home-manager.users.${username} = {
+      home.file.".config/cortexkit/aft.jsonc" = {
+        text = ''
+          {
+            "$schema": "https://raw.githubusercontent.com/cortexkit/aft/main/assets/aft.schema.json"
+          }
+        '';
+      };
+      programs.pi-coding-agent.settings.packages = [
+        "npm:@cortexkit/aft-pi"
+      ];
+    };
   };
 in {
   flake.modules.nixos = {
