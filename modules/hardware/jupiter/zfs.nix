@@ -58,7 +58,7 @@ let
         "grafana.service"
         "jellyfin.service"
         "hermes-agent.service"
-        "hermes-research-profile.service"
+        "hermes-stackmagic-profile.service"
         "donetick.service"
         "chromadb.service"
       ];

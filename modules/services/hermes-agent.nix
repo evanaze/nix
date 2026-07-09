@@ -12,9 +12,10 @@ let
     dashboardPort = 9119;
     dashboardProxyPort = 9120;
     default-obsidian-vault-path = "/mnt/eye/documents/Knowledge Base";
-    research-profile = "research";
-    research-profile-home = "${hermes-home}/profiles/${research-profile}";
-    research-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
+    stackmagic-profile = "stackmagic";
+    stackmagic-profile-home = "${hermes-home}/profiles/${stackmagic-profile}";
+    stackmagic-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
+    legacy-research-profile-home = "${hermes-home}/profiles/research";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -186,7 +187,7 @@ let
       "nocodb-competitors"
     ];
 
-    research-profile-mcp-servers = lib.removeAttrs hermes-mcp-servers [
+    stackmagic-profile-mcp-servers = lib.removeAttrs hermes-mcp-servers [
       "actual"
       "nixos"
     ];
@@ -269,17 +270,17 @@ let
       ];
     };
 
-    research-profile-settings = lib.recursiveUpdate common-hermes-settings {
+    stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.external_dirs = [
         "${stackmagic-accountability}"
         "${stackmagic-research}"
       ];
-      mcp_servers = research-profile-mcp-servers;
+      mcp_servers = stackmagic-profile-mcp-servers;
     };
 
-    research-profile-config =
-      (pkgs.formats.yaml {}).generate "hermes-research-profile-config.yaml"
-      research-profile-settings;
+    stackmagic-profile-config =
+      (pkgs.formats.yaml {}).generate "hermes-stackmagic-profile-config.yaml"
+      stackmagic-profile-settings;
   in {
     nixpkgs.overlays = [
       inputs.hermes-agent.overlays.default
@@ -355,13 +356,13 @@ let
       after = [
         "camofox.service"
         "hermes-default-profile.service"
-        "hermes-research-profile.service"
+        "hermes-stackmagic-profile.service"
       ];
       environment.MESSAGING_CWD = lib.mkForce null;
       wants = [
         "camofox.service"
         "hermes-default-profile.service"
-        "hermes-research-profile.service"
+        "hermes-stackmagic-profile.service"
       ];
     };
 
@@ -401,8 +402,8 @@ let
       '';
     };
 
-    systemd.services.hermes-research-profile = {
-      description = "Bootstrap Hermes research profile";
+    systemd.services.hermes-stackmagic-profile = {
+      description = "Bootstrap Hermes stackmagic profile";
       after = [
         "systemd-tmpfiles-setup.service"
         "create-appdata-datasets.service"
@@ -424,13 +425,13 @@ let
         HERMES_MANAGED = "true";
         CAMOFOX_URL = "http://127.0.0.1:9377";
         FIRECRAWL_API_URL = "http://127.0.0.1:3020";
-        OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
+        OBSIDIAN_VAULT_PATH = stackmagic-obsidian-vault-path;
       };
       path = [
         pkgs.coreutils
         hermes-package
       ];
-      restartTriggers = [research-profile-config];
+      restartTriggers = [stackmagic-profile-config];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -442,34 +443,39 @@ let
       script = ''
         set -euo pipefail
 
-        if [ ! -d "${research-profile-home}" ]; then
-          ${lib.getExe hermes-package} profile create ${research-profile}
+        if [ -d "${legacy-research-profile-home}" ]; then
+          chmod -R u+w "${legacy-research-profile-home}" || true
+          rm -rf "${legacy-research-profile-home}"
         fi
 
-        touch "${research-profile-home}/.no-bundled-skills"
-        chmod 0640 "${research-profile-home}/.no-bundled-skills"
-        install -d -m 0750 "${research-profile-home}/skills/note-taking"
-
-        if [ -e "${research-profile-home}/skills/note-taking/obsidian" ]; then
-          chmod -R u+w "${research-profile-home}/skills/note-taking/obsidian" || true
-          rm -rf "${research-profile-home}/skills/note-taking/obsidian"
+        if [ ! -d "${stackmagic-profile-home}" ]; then
+          ${lib.getExe hermes-package} profile create ${stackmagic-profile}
         fi
 
-        cp -r --no-preserve=mode "${bundled-obsidian-skill}" "${research-profile-home}/skills/note-taking/"
-        chmod -R u+rwX "${research-profile-home}/skills/note-taking/obsidian"
-        install -D -m 0640 ${research-profile-config} "${research-profile-home}/config.yaml"
+        touch "${stackmagic-profile-home}/.no-bundled-skills"
+        chmod 0640 "${stackmagic-profile-home}/.no-bundled-skills"
+        install -d -m 0750 "${stackmagic-profile-home}/skills/note-taking"
+
+        if [ -e "${stackmagic-profile-home}/skills/note-taking/obsidian" ]; then
+          chmod -R u+w "${stackmagic-profile-home}/skills/note-taking/obsidian" || true
+          rm -rf "${stackmagic-profile-home}/skills/note-taking/obsidian"
+        fi
+
+        cp -r --no-preserve=mode "${bundled-obsidian-skill}" "${stackmagic-profile-home}/skills/note-taking/"
+        chmod -R u+rwX "${stackmagic-profile-home}/skills/note-taking/obsidian"
+        install -D -m 0640 ${stackmagic-profile-config} "${stackmagic-profile-home}/config.yaml"
       '';
     };
 
     systemd.services.hermes-dashboard = {
       after = [
         "hermes-agent.service"
-        "hermes-research-profile.service"
+        "hermes-stackmagic-profile.service"
       ];
       path = mcp-stdio-packages;
       wants = [
         "hermes-agent.service"
-        "hermes-research-profile.service"
+        "hermes-stackmagic-profile.service"
       ];
       wantedBy = ["multi-user.target"];
       description = "Hermes Agent Web Dashboard";
@@ -478,7 +484,7 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
-        OBSIDIAN_VAULT_PATH = research-obsidian-vault-path;
+        OBSIDIAN_VAULT_PATH = stackmagic-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
         FIRECRAWL_API_URL = "http://127.0.0.1:3020";
       };
@@ -489,7 +495,7 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe hermes-package} -p ${research-profile} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
+      script = "${lib.getExe hermes-package} -p ${stackmagic-profile} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
     };
 
     services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
