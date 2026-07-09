@@ -148,7 +148,6 @@ let
     home-manager.users.${username} = {
       programs.pi-coding-agent.settings.packages = [
         "npm:pi-subagents"
-        "npm:pi-lens"
         "npm:pi-intercom"
       ];
 
