@@ -20,6 +20,9 @@ let
             . ${lib.escapeShellArg nocodbEnvFile}
             set +a
           fi
+
+          export NPM_CONFIG_CACHE="$HOME/.cache/pi/npm"
+          export npm_config_cache="$NPM_CONFIG_CACHE"
         ''}
       '';
     };
