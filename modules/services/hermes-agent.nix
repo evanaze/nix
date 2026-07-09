@@ -55,20 +55,12 @@ let
       hash = "sha256-+43r25EpGq+wN2Rsj3+lBjccqogcuENN1luomawaMLg=";
     };
 
-    stackmagic-research = pkgs.fetchFromGitHub {
+    stackmagic-skills = pkgs.fetchFromGitHub {
       owner = "evanaze";
-      repo = "stackmagic-research";
+      repo = "stackmagic-skills";
       rev = "refs/heads/main";
       private = true;
-      hash = "sha256-x2DGiNUd3Tc28QZov92hjW0MnNy55Eyiq9UgML+Tyxc=";
-    };
-
-    stackmagic-accountability = pkgs.fetchFromGitHub {
-      owner = "evanaze";
-      repo = "stackmagic-accountability";
-      rev = "refs/heads/main";
-      private = true;
-      hash = "sha256-ulVrEWLxkjMw08QKavFJ0dcN5faO6FMfOqihYa56Uvg=";
+      hash = lib.fakeHash;
     };
 
     common-hermes-settings = {
@@ -271,10 +263,7 @@ let
     };
 
     stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
-      skills.external_dirs = [
-        "${stackmagic-accountability}"
-        "${stackmagic-research}"
-      ];
+      skills.external_dirs = ["${stackmagic-skills}"];
       mcp_servers = stackmagic-profile-mcp-servers;
     };
 
@@ -337,10 +326,7 @@ let
       addToSystemPackages = true;
       extraPackages =
         mcp-stdio-packages
-        ++ [
-          stackmagic-accountability
-          stackmagic-research
-        ];
+        ++ [stackmagic-skills];
       extraDependencyGroups = hermes-extra-dependency-groups;
       extraPythonPackages = hermes-extra-python-packages;
       extraPlugins = [oh-my-hermers];
