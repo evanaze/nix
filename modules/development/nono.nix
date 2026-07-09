@@ -1,26 +1,4 @@
 let
-  nonoPiPackInstall = pkgs:
-    pkgs.writeShellApplication {
-      name = "nono-pi-pack-install";
-      runtimeInputs = [
-        pkgs.gnugrep
-        pkgs.nono
-      ];
-      text = ''
-        set -euo pipefail
-
-        if nono list --installed 2>/dev/null | grep -Fq "nolabs-ai/pi"; then
-          exit 0
-        fi
-
-        if nono pull nolabs-ai/pi; then
-          exit 0
-        fi
-
-        nono pull nolabs-ai/pi --force
-      '';
-    };
-
   module = {
     pkgs,
     username,
@@ -30,26 +8,55 @@ let
       nono
     ];
 
-    home-manager.users.${username} = {lib, ...}: {
+    home-manager.users.${username} = {
       home.file.".config/nono/profiles/pi.json".text = builtins.toJSON {
-        extends = "nolabs-ai/pi";
+        extends = "default";
         meta = {
           name = "pi";
+          version = "1.0.0";
+          description = "Pi Coding Agent profile (locally managed from the nolabs-ai/pi base policy)";
+          author = "nolabs-ai";
         };
         groups = {
-          include = [];
-          exclude = [];
+          include = [
+            "node_runtime"
+            "rust_runtime"
+            "python_runtime"
+            {
+              name = "user_caches_macos";
+              when = "macos";
+            }
+            {
+              name = "user_caches_linux";
+              when = "linux";
+            }
+            {
+              name = "linux_sysfs_read";
+              when = "linux";
+            }
+            "nix_runtime"
+            "git_config"
+            "unlink_protection"
+          ];
+        };
+        security = {
+          signal_mode = "isolated";
+          capability_elevation = false;
         };
         commands = {
           allow = [];
           deny = [];
         };
-        workdir = {
-          access = "readwrite";
-        };
         filesystem = {
-          allow = [];
+          allow = [
+            "$HOME/.pi"
+            "$NONO_CONFIG/profile-drafts"
+          ];
           read = [
+            "$HOME/.nvm/"
+            "$HOME/.agents/skills"
+            "$NONO_PACKAGES"
+            "$NONO_CONFIG/profiles"
             "/tmp"
           ];
           write = [];
@@ -63,7 +70,9 @@ let
           write_file = [];
           deny = [];
           bypass_protection = [];
-          suppress_save_prompt = [];
+          suppress_save_prompt = [
+            "$NONO_PACKAGES/nolabs-ai/pi"
+          ];
         };
         network = {
           block = false;
@@ -71,19 +80,70 @@ let
           credentials = [];
           open_port = [];
           listen_port = [];
-          custom_credentials = {};
+          custom_credentials = {
+            openai = {
+              upstream = "https://api.openai.com/v1";
+              credential_key = "OPENAI_API_KEY";
+              inject_header = "Authorization";
+              credential_format = "Bearer {}";
+              env_var = "OPENAI_API_KEY";
+            };
+            anthropic = {
+              upstream = "https://api.anthropic.com";
+              credential_key = "ANTHROPIC_API_KEY";
+              inject_header = "x-api-key";
+              credential_format = "{}";
+              env_var = "ANTHROPIC_API_KEY";
+            };
+            gemini = {
+              upstream = "https://generativelanguage.googleapis.com";
+              credential_key = "GOOGLE_API_KEY";
+              inject_header = "x-goog-api-key";
+              credential_format = "{}";
+              env_var = "GEMINI_API_KEY";
+            };
+            github = {
+              upstream = "https://api.github.com";
+              credential_key = "GITHUB_TOKEN";
+              inject_header = "Authorization";
+              credential_format = "token {}";
+              env_var = "GITHUB_TOKEN";
+            };
+            gitlab = {
+              upstream = "https://gitlab.com/api";
+              credential_key = "GITLAB_TOKEN";
+              inject_header = "Authorization";
+              credential_format = "Bearer {}";
+              env_var = "GITLAB_TOKEN";
+            };
+          };
         };
-        env_credentials = {};
-        hooks = {};
-        rollback = {
-          exclude_patterns = [];
-          exclude_globs = [];
+        workdir = {
+          access = "readwrite";
         };
+        open_urls = {
+          allow_origins = [
+            "https://auth.openai.com"
+            "https://claude.ai"
+            "https://github.com"
+          ];
+          allow_localhost = true;
+        };
+        allow_launch_services = true;
+        undo = {
+          exclude_patterns = [
+            "node_modules"
+            ".next"
+            "__pycache__"
+            "target"
+            ".pi"
+          ];
+          exclude_globs = [
+            "*.tmp.[0-9]*.[0-9]*"
+          ];
+        };
+        interactive = true;
       };
-
-      home.activation.nonoPiPackInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        ${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install
-      '';
     };
   };
 in {
