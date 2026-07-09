@@ -52,11 +52,13 @@ let
         done
         log_msg "[llama-swap] command:$command"
 
-        if ! "${systemd-inhibit}" \
+        if "${systemd-inhibit}" \
           --what=sleep \
           --mode=block \
           --why="llama-swap model on port $port is loaded" \
           "$@" >"$log_file" 2>&1; then
+          return 0
+        else
           local status=$?
           log_msg "[llama-swap] upstream command exited with status $status"
           /run/current-system/sw/bin/tail -n 200 "$log_file" >&2 || true
@@ -74,38 +76,17 @@ let
         ${script-body}
       '';
 
-    launchScriptQwen = mk-launch-script "qwen3.6-35b-a3b" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
-        --ctx-size 32768 \
-        --n-predict 8192 \
-        --fit on --fit-target 1536 --fit-ctx 32768 \
-        --temp 0.6 --top-p 0.95 --top-k 20 \
-        --presence-penalty 0.0 --repeat-penalty 1.0 \
-        -ctk q8_0 -ctv q8_0 \
-        --flash-attn on \
-        --batch-size 512 --ubatch-size 256 \
-        --threads 10 --threads-batch 12 \
-        --mlock \
-        --no-mmap \
-        --parallel 1 --prio 2 --no-warmup \
-        --spec-type draft-mtp --spec-draft-n-max 2 \
-        --jinja \
-        --chat-template-kwargs '{"preserve_thinking": true}' \
-        --port "$PORT"
-    '';
-
     launchScriptQwenReap = mk-launch-script "qwen3.6-reap" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/Qwen3.6-28B-REAP20-A3B-Q4_K_M.gguf" \
-        --ctx-size 8192 \
-        -b 2048 \
-        -ub 1024 \
-        --no-mmap \
-        --mlock \
-        -t 3 \
+        --ctx-size 32768 \
+        --fit on --fit-target 1536 --fit-ctx 32768 \
+        -ctk q8_0 -ctv q8_0 \
+        --flash-attn on \
+        --parallel 1 \
+        --batch-size 512 --ubatch-size 256 \
+        --threads 10 --threads-batch 12 \
         --temp 0.7 \
         --top-p 0.95 \
         --top-k 20 \
@@ -115,6 +96,52 @@ let
         --jinja \
         --cache-reuse 256 \
         --n-cpu-moe 17 \
+        --port "$PORT"
+    '';
+
+    launchScriptGemma21B = mk-launch-script "gemma-4-21b-q4" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/Gemma-4-21B.i1-Q4_K_M.gguf" \
+        --ctx-size 32768 \
+        --fit on --fit-target 1536 --fit-ctx 32768 \
+        -ctk q8_0 -ctv q8_0 \
+        --flash-attn on \
+        --parallel 1 \
+        --batch-size 512 --ubatch-size 256 \
+        --threads 10 --threads-batch 12 \
+        --jinja \
+        --port "$PORT"
+    '';
+
+    launchScriptGlmFlashReap = mk-launch-script "glm-4.7-flash-reap-23b-q4" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/GLM-4.7-Flash-REAP-23B-A3B-UD-Q4_K_XL.gguf" \
+        --ctx-size 32768 \
+        --fit on --fit-target 1536 --fit-ctx 32768 \
+        -ctk q8_0 -ctv q8_0 \
+        --flash-attn on \
+        --parallel 1 \
+        --batch-size 512 --ubatch-size 256 \
+        --threads 10 --threads-batch 12 \
+        --jinja \
+        --n-cpu-moe 17 \
+        --port "$PORT"
+    '';
+
+    launchScriptLfmBf16 = mk-launch-script "lfm2.5-8b-bf16" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/LFM2.5-8B-A1B-BF16.gguf" \
+        --ctx-size 32768 \
+        --fit on --fit-target 1536 --fit-ctx 32768 \
+        -ctk q8_0 -ctv q8_0 \
+        --flash-attn on \
+        --parallel 1 \
+        --batch-size 512 --ubatch-size 256 \
+        --threads 10 --threads-batch 12 \
+        --jinja \
         --port "$PORT"
     '';
 
@@ -128,14 +155,13 @@ let
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx 128000 \
         --parallel 1 \
-        --no-mmap \
         --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
         --temp 1.0 \
         --top-p 0.95 \
         --top-k 64 \
         --threads 10 --threads-batch 12 \
         --batch-size 512 --ubatch-size 256 \
-        --mlock \
         --jinja \
         --chat-template-kwargs '{"preserve_thinking": true}' \
         --port "$PORT"
@@ -149,14 +175,66 @@ let
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx 128000 \
         --parallel 1 \
-        --no-mmap \
         --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
         --temp 0.6 \
         --top-p 0.95 \
         --top-k 20 \
         --threads 10 --threads-batch 12 \
         --batch-size 512 --ubatch-size 256 \
-        --mlock \
+        --jinja \
+        --port "$PORT"
+    '';
+
+    launchScriptOrnithQ6 = mk-launch-script "ornith-1.0-9b-q6" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/ornith-1.0-9b-Q6_K.gguf" \
+        --reasoning-format deepseek \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
+        --parallel 1 \
+        --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
+        --temp 0.6 \
+        --top-p 0.95 \
+        --top-k 20 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --jinja \
+        --port "$PORT"
+    '';
+
+    launchScriptOrnithQ8 = mk-launch-script "ornith-1.0-9b-q8" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/ornith-1.0-9b-Q8_0.gguf" \
+        --reasoning-format deepseek \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx 65536 \
+        --parallel 1 \
+        --ctx-size 65536 \
+        -ctk q8_0 -ctv q8_0 \
+        --temp 0.6 \
+        --top-p 0.95 \
+        --top-k 20 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --jinja \
+        --port "$PORT"
+    '';
+
+    launchScriptLfmBalanced = mk-launch-script "lfm2.5-8b-balanced" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/LFM2.5-8B-A1B-APEX-I-Balanced.gguf" \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
+        --parallel 1 \
+        --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
         --jinja \
         --port "$PORT"
     '';
@@ -166,7 +244,7 @@ let
         "${llama-server}" \
         -m "${source-model-dir}/MiniCPM-V-4_6-F16.gguf" \
         --mmproj "${source-model-dir}/mmproj-MiniCPM-V-4_6-F16.gguf" \
-        -c 8192 --temp 0.7 --top-p 0.8 --top-k 100 --repeat-penalty 1.05 \
+        --ctx-size 8192 --temp 0.7 --top-p 0.8 --top-k 100 --repeat-penalty 1.05 \
         --reasoning off \
         --port "$PORT"
     '';
@@ -176,13 +254,22 @@ let
       port = 8724;
       settings = {
         models = {
-          "qwen3.6-35b-a3b" = {
-            cmd = "${launchScriptQwen} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
+          # Sidecars only: gemma-4-12B-it-assistant-Q8_0.gguf and mmproj-MiniCPM-V-4_6-F16.gguf must never become top-level model keys.
           "qwen3.6-reap" = {
             cmd = "${launchScriptQwenReap} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
+            healthCheckTimeout = 900;
+          };
+          "gemma-4-21b-q4" = {
+            cmd = "${launchScriptGemma21B} ${"$"}{PORT}";
+            healthCheckTimeout = 900;
+          };
+          "glm-4.7-flash-reap-23b-q4" = {
+            cmd = "${launchScriptGlmFlashReap} ${"$"}{PORT}";
+            healthCheckTimeout = 900;
+          };
+          "lfm2.5-8b-bf16" = {
+            cmd = "${launchScriptLfmBf16} ${"$"}{PORT}";
+            healthCheckTimeout = 900;
           };
           "gemma-4-12b-q4" = {
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
@@ -192,8 +279,20 @@ let
             cmd = "${launchScriptOrnith} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
+          "lfm2.5-8b-balanced" = {
+            cmd = "${launchScriptLfmBalanced} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
           "minicpm-v-4.6" = {
             cmd = "${launchScriptMiniCPM} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "ornith-1.0-9b-q6" = {
+            cmd = "${launchScriptOrnithQ6} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "ornith-1.0-9b-q8" = {
+            cmd = "${launchScriptOrnithQ8} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
         };
