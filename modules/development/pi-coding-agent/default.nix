@@ -26,6 +26,13 @@ let
         ''}
       '';
     };
+    local-agent-builder-skill = pkgs.fetchFromGitHub {
+      name = "local-agent-builder";
+      owner = "kyuz0";
+      repo = "local-agent-builder";
+      rev = "e5b048925acbf9a981ddb28bf61a72a46f60e34a";
+      hash = "sha256-CJ2RIO8x5UsqKBG8962EdeQ5BNmCThpgnubI+Y1nQDg=";
+    };
   in {
     programs.nix-ld.enable = true;
 
@@ -69,6 +76,9 @@ let
             "npm:@juicesharp/rpiv-ask-user-question"
             "npm:@juicesharp/rpiv-todo"
             "npm:@juicesharp/rpiv-web-tools"
+          ];
+          skills = [
+            "${local-agent-builder-skill}/skills"
           ];
         };
         models = {
