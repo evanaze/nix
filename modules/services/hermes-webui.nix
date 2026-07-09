@@ -58,7 +58,7 @@ let
       environment = {
         HERMES_HOME = "/mnt/eye/appdata/hermes/.hermes";
         HERMES_HOME_MODE = "0770";
-        HERMES_WEBUI_CHAT_BACKEND = "legacy";
+        HERMES_WEBUI_CHAT_BACKEND = "api_server";
         HERMES_WEBUI_AGENT_DIR = "${inputs.hermes-agent.outPath}";
       };
       serviceConfig = {

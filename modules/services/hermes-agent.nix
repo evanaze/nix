@@ -60,7 +60,7 @@ let
       repo = "stackmagic-skills";
       rev = "refs/heads/main";
       private = true;
-      hash = lib.fakeHash;
+      hash = "sha256-TW2oXvmmlYMXQAsA4sx1xn8jCyVxqkXaa2aNmNf9sPM=";
     };
 
     common-hermes-settings = {
