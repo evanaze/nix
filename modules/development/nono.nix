@@ -13,7 +13,11 @@ let
           exit 0
         fi
 
-        nono pull nolabs-ai/pi
+        if nono pull nolabs-ai/pi; then
+          exit 0
+        fi
+
+        nono pull nolabs-ai/pi --force
       '';
     };
 
@@ -26,7 +30,7 @@ let
       nono
     ];
 
-    home-manager.users.${username} = {
+    home-manager.users.${username} = {lib, ...}: {
       home.file.".config/nono/profiles/pi.json".text = builtins.toJSON {
         extends = "nolabs-ai/pi";
         meta = {
@@ -77,19 +81,9 @@ let
         };
       };
 
-      systemd.user.services.nono-pi-pack-install = {
-        Unit = {
-          Description = "Install nono Pi base pack";
-        };
-        Service = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install";
-        };
-        Install = {
-          WantedBy = ["default.target"];
-        };
-      };
+      home.activation.nonoPiPackInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        ${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install
+      '';
     };
   };
 in {
