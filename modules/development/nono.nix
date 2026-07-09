@@ -1,4 +1,22 @@
 let
+  nonoPiPackInstall = pkgs:
+    pkgs.writeShellApplication {
+      name = "nono-pi-pack-install";
+      runtimeInputs = [
+        pkgs.gnugrep
+        pkgs.nono
+      ];
+      text = ''
+        set -euo pipefail
+
+        if nono list --installed 2>/dev/null | grep -Fq "nolabs-ai/pi"; then
+          exit 0
+        fi
+
+        nono pull nolabs-ai/pi
+      '';
+    };
+
   module = {
     pkgs,
     username,
@@ -9,7 +27,7 @@ let
     ];
 
     home-manager.users.${username}.home.file.".config/nono/profiles/pi.json".text = builtins.toJSON {
-      extends = "always-further/pi";
+      extends = "nolabs-ai/pi";
       meta = {
         name = "pi";
       };
@@ -55,6 +73,20 @@ let
       rollback = {
         exclude_patterns = [];
         exclude_globs = [];
+      };
+    };
+
+    home-manager.users.${username}.systemd.user.services.nono-pi-pack-install = {
+      Unit = {
+        Description = "Install nono Pi base pack";
+      };
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${nonoPiPackInstall pkgs}/bin/nono-pi-pack-install";
+      };
+      Install = {
+        WantedBy = ["default.target"];
       };
     };
   };
