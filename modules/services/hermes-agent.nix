@@ -449,7 +449,7 @@ let
         fi
 
         if [ ! -d "${stackmagic-profile-home}" ]; then
-          ${lib.getExe hermes-package} profile create ${stackmagic-profile}
+          ${lib.getExe hermes-package} profile create --no-skills ${stackmagic-profile}
         fi
 
         touch "${stackmagic-profile-home}/.no-bundled-skills"
