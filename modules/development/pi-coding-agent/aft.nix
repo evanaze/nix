@@ -5,7 +5,7 @@ let
         text = ''
           {
             "$schema": "https://raw.githubusercontent.com/cortexkit/aft/main/assets/aft.schema.json",
-            "hoist_builtin_tools": false
+            "disabled_tools": ["read", "write", "edit", "bash"]
           }
         '';
       };
