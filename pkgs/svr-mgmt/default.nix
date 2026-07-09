@@ -5,7 +5,7 @@
 }:
 buildGoModule {
   pname = "svr-mgmt";
-  version = "0-unstable-2026-06-20";
+  version = "0-unstable-2026-07-07";
 
   src = fetchFromGitHub {
     owner = "evanaze";
