@@ -78,6 +78,5 @@ let
 in {
   flake.modules.nixos = {
     aiVllm = module;
-    aiServer = module;
   };
 }
