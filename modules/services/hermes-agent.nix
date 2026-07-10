@@ -87,7 +87,7 @@ let
           status_online = "🟢 Online";
           status_offline = "🔴 Offline";
           command_menu = {
-            max_commands = 5;
+            max_commands = 50;
             priority_mode = "replace";
             priority = ["stackmagic-accountability"];
           };
@@ -315,9 +315,7 @@ let
       hermes.linger = true;
     };
 
-    environment.systemPackages = [
-      hermes-package
-    ];
+    environment.systemPackages = [hermes-package];
 
     services.hermes-agent = {
       enable = true;
