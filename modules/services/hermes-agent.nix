@@ -261,17 +261,27 @@ let
     };
 
     stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
-      skills.external_dirs = ["${stackmagic-skills}"];
+      skills = {
+        external_dirs = ["${stackmagic-skills}"];
+        disabled = [
+          "evaluating-llms-harness"
+          "himalaya"
+          "huggingface-hub"
+          "maps"
+        ];
+      };
       mcp_servers = stackmagic-profile-mcp-servers;
-      platforms.api_server.extra.port = 8643;
-      gateway.platforms.telegram.extra = {
-        status_indicator = true;
-        status_online = "🟢 Online";
-        status_offline = "🔴 Offline";
-        command_menu = {
-          max_commands = 50;
-          priority_mode = "replace";
-          priority = ["stackmagic-accountability"];
+      platforms = {
+        api_server.extra.port = 8643;
+        telegram.extra = {
+          status_indicator = true;
+          status_online = "🟢 Online";
+          status_offline = "🔴 Offline";
+          command_menu = {
+            max_commands = 100;
+            priority_mode = "replace";
+            priority = ["stackmagic-accountability"];
+          };
         };
       };
     };
