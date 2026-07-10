@@ -11,6 +11,7 @@ let
     hermes-home = "${state-dir}/.hermes";
     dashboardPort = 9119;
     dashboardProxyPort = 9120;
+    stackmagic-agent-port = 8643;
     default-obsidian-vault-path = "/mnt/eye/documents/Knowledge Base";
     stackmagic-profile = "stackmagic";
     stackmagic-profile-home = "${hermes-home}/profiles/${stackmagic-profile}";
@@ -272,7 +273,7 @@ let
       };
       mcp_servers = stackmagic-profile-mcp-servers;
       platforms = {
-        api_server.extra.port = 8643;
+        api_server.extra.port = stackmagic-agent-port;
         telegram.extra = {
           status_indicator = true;
           status_online = "🟢 Online";
@@ -529,7 +530,7 @@ let
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe hermes-package} -p ${stackmagic-profile} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
+      script = "${lib.getExe hermes-package} dashboard --host 0.0.0.0 --port ${toString dashboardPort} --no-open --skip-build";
     };
 
     services.caddy.virtualHosts."http://:${toString dashboardProxyPort}" = {
@@ -565,6 +566,29 @@ let
       script = ''
         ${lib.getExe pkgs.tailscale} serve clear svc:hermes-dashboard || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:hermes-dashboard --https=443 http://127.0.0.1:${toString dashboardProxyPort}
+      '';
+    };
+
+    systemd.services.sm-agent-tsserve = {
+      after = [
+        "hermes-stackmagic-gateway.service"
+        "tailscaled.service"
+      ];
+      wants = [
+        "hermes-stackmagic-gateway.service"
+        "tailscaled.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Publish Hermes API Server with the StackMagic Agent port";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:stackmagic-agent || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:stackmagic-agent --https=443 http://127.0.0.1:${toString stackmagic-agent-port}
       '';
     };
   };
