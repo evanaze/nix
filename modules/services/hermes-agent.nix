@@ -508,14 +508,14 @@ let
         HERMES_HOME = hermes-home;
         HERMES_MANAGED = "true";
         HERMES_DASHBOARD_PUBLIC_URL = "https://agent.spitz-pickerel.ts.net";
-        OBSIDIAN_VAULT_PATH = stackmagic-obsidian-vault-path;
+        OBSIDIAN_VAULT_PATH = default-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
         FIRECRAWL_API_URL = "http://127.0.0.1:3020";
       };
       serviceConfig = {
         Type = "simple";
         User = "hermes";
-        EnvironmentFile = config.sops.secrets."hermes/env".path;
+        EnvironmentFile = config.sops.secrets."hermes/default-env".path;
         Restart = "on-failure";
         RestartSec = "5s";
       };
