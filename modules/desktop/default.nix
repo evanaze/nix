@@ -20,6 +20,7 @@
       postgresql
       python314
       slack
+      telegram-desktop
       xclip
       zoom-us
     ];
