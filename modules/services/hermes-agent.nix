@@ -81,18 +81,6 @@ let
         search_backend = "searxng";
         extract_backend = "firecrawl";
       };
-      gateway.platforms.telegram = {
-        extra = {
-          status_indicator = true;
-          status_online = "🟢 Online";
-          status_offline = "🔴 Offline";
-          command_menu = {
-            max_commands = 50;
-            priority_mode = "replace";
-            priority = ["stackmagic-accountability"];
-          };
-        };
-      };
       terminal.cwd = "${state-dir}/workspace";
       plugins.enabled = [
         "oh-my-hermes"
@@ -276,6 +264,21 @@ let
     stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.external_dirs = ["${stackmagic-skills}"];
       mcp_servers = stackmagic-profile-mcp-servers;
+      gateway.platforms = {
+        port = 8643;
+        telegram = {
+          extra = {
+            status_indicator = true;
+            status_online = "🟢 Online";
+            status_offline = "🔴 Offline";
+            command_menu = {
+              max_commands = 50;
+              priority_mode = "replace";
+              priority = ["stackmagic-accountability"];
+            };
+          };
+        };
+      };
     };
 
     stackmagic-profile-config =
@@ -351,13 +354,11 @@ let
       after = [
         "camofox.service"
         "hermes-default-profile.service"
-        "hermes-stackmagic-profile.service"
       ];
       environment.MESSAGING_CWD = lib.mkForce null;
       wants = [
         "camofox.service"
         "hermes-default-profile.service"
-        "hermes-stackmagic-profile.service"
       ];
     };
 
@@ -411,6 +412,7 @@ let
       ];
       before = [
         "hermes-agent.service"
+        "hermes-stackmagic-gateway.service"
         "hermes-dashboard.service"
       ];
       wantedBy = ["multi-user.target"];
@@ -462,15 +464,46 @@ let
       '';
     };
 
-    systemd.services.hermes-dashboard = {
+    systemd.services.hermes-stackmagic-gateway = {
+      description = "Hermes Agent Gateway for stackmagic profile";
       after = [
-        "hermes-agent.service"
+        "camofox.service"
         "hermes-stackmagic-profile.service"
       ];
       path = mcp-stdio-packages;
       wants = [
-        "hermes-agent.service"
+        "camofox.service"
         "hermes-stackmagic-profile.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+        OBSIDIAN_VAULT_PATH = stackmagic-obsidian-vault-path;
+        CAMOFOX_URL = "http://127.0.0.1:9377";
+        FIRECRAWL_API_URL = "http://127.0.0.1:3020";
+      };
+      serviceConfig = {
+        Type = "simple";
+        User = "hermes";
+        Group = "hermes";
+        EnvironmentFile = config.sops.secrets."hermes/env".path;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      script = "${lib.getExe hermes-package} -p ${stackmagic-profile} gateway run";
+    };
+
+    systemd.services.hermes-dashboard = {
+      after = [
+        "hermes-stackmagic-profile.service"
+        "hermes-stackmagic-gateway.service"
+      ];
+      path = mcp-stdio-packages;
+      wants = [
+        "hermes-stackmagic-profile.service"
+        "hermes-stackmagic-gateway.service"
       ];
       wantedBy = ["multi-user.target"];
       description = "Hermes Agent Web Dashboard";
