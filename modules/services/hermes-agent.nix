@@ -30,7 +30,7 @@ let
       build-system = [pkgs.python312Packages.setuptools];
     };
 
-    hermes-extra-dependency-groups = ["firecrawl"];
+    hermes-extra-dependency-groups = ["firecrawl" "messaging"];
     hermes-extra-python-packages = [rtk-hermes];
     mcp-stdio-packages = [
       pkgs.mcp-nixos
