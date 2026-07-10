@@ -78,9 +78,20 @@ let
         };
       };
       web = {
-        backend = "firecrawl";
-        search_backend = "firecrawl";
+        search_backend = "searxng";
         extract_backend = "firecrawl";
+      };
+      gateway.platforms.telegram = {
+        extra = {
+          status_indicator = true;
+          status_online = "🟢 Online";
+          status_offline = "🔴 Offline";
+          command_menu = {
+            max_commands = 5;
+            priority_mode = "replace";
+            priority = ["stackmagic-accountability"];
+          };
+        };
       };
       terminal.cwd = "${state-dir}/workspace";
       plugins.enabled = [
@@ -265,16 +276,6 @@ let
     stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.external_dirs = ["${stackmagic-skills}"];
       mcp_servers = stackmagic-profile-mcp-servers;
-      gateway.platforms.telegram.extra = {
-        status_indicator = true;
-        status_online = "🟢 Online";
-        status_offline = "🔴 Offline";
-        command_menu = {
-          max_commands = 5;
-          priority_mode = "replace";
-          priority = ["stackmagic-accountability"];
-        };
-      };
     };
 
     stackmagic-profile-config =
