@@ -152,9 +152,10 @@ let
           "npm:pi-intercom"
         ];
         subagents = {
-          defaultModel = "ornith-1.0-9b-q6";
+          defaultModel = "gemma-4-12b-q4";
           agentOverrides = {
             planner.model = "gpt-5.4";
+            worker.model = "ornith-1.0-9b-q6";
             reviewer.model = "gpt-5.5";
             context-builder.model = "gpt-5.4";
             oracle.model = "gpt-5.5";

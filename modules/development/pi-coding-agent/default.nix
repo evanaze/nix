@@ -52,7 +52,7 @@ let
         ];
         settings = {
           defaultProvider = "llama-local";
-          defaultModel = "ornith-1.0-9b-q6";
+          defaultModel = "gemma-4-12b-q4";
           defaultThinkingLevel = "medium";
           enabledModels = [
             "gemma-4-12b-q4"
