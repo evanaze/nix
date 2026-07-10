@@ -15,7 +15,6 @@ let
     stackmagic-profile = "stackmagic";
     stackmagic-profile-home = "${hermes-home}/profiles/${stackmagic-profile}";
     stackmagic-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
-    legacy-research-profile-home = "${hermes-home}/profiles/research";
 
     rtk-hermes = pkgs.python312Packages.buildPythonPackage {
       pname = "rtk-hermes";
@@ -264,19 +263,15 @@ let
     stackmagic-profile-settings = lib.recursiveUpdate common-hermes-settings {
       skills.external_dirs = ["${stackmagic-skills}"];
       mcp_servers = stackmagic-profile-mcp-servers;
-      gateway.platforms = {
-        port = 8643;
-        telegram = {
-          extra = {
-            status_indicator = true;
-            status_online = "🟢 Online";
-            status_offline = "🔴 Offline";
-            command_menu = {
-              max_commands = 50;
-              priority_mode = "replace";
-              priority = ["stackmagic-accountability"];
-            };
-          };
+      platforms.api_server.extra.port = 8643;
+      gateway.platforms.telegram.extra = {
+        status_indicator = true;
+        status_online = "🟢 Online";
+        status_offline = "🔴 Offline";
+        command_menu = {
+          max_commands = 50;
+          priority_mode = "replace";
+          priority = ["stackmagic-accountability"];
         };
       };
     };
@@ -334,7 +329,7 @@ let
         CAMOFOX_URL = "http://127.0.0.1:9377";
         FIRECRAWL_API_URL = "http://127.0.0.1:3020";
       };
-      environmentFiles = [config.sops.secrets."hermes/env".path];
+      environmentFiles = [config.sops.secrets."hermes/default-env".path];
       addToSystemPackages = true;
       extraPackages =
         mcp-stdio-packages
@@ -344,7 +339,13 @@ let
       extraPlugins = [oh-my-hermers];
     };
 
-    sops.secrets."hermes/env" = {
+    sops.secrets."hermes/default-env" = {
+      owner = "hermes";
+      group = "hermes";
+      mode = "0640";
+    };
+
+    sops.secrets."hermes/stackmagic-env" = {
       owner = "hermes";
       group = "hermes";
       mode = "0640";
@@ -435,15 +436,10 @@ let
         User = "hermes";
         Group = "hermes";
         UMask = "0007";
-        EnvironmentFile = config.sops.secrets."hermes/env".path;
+        EnvironmentFile = config.sops.secrets."hermes/stackmagic-env".path;
       };
       script = ''
         set -euo pipefail
-
-        if [ -d "${legacy-research-profile-home}" ]; then
-          chmod -R u+w "${legacy-research-profile-home}" || true
-          rm -rf "${legacy-research-profile-home}"
-        fi
 
         if [ ! -d "${stackmagic-profile-home}" ]; then
           ${lib.getExe hermes-package} profile create --no-skills ${stackmagic-profile}
@@ -478,7 +474,7 @@ let
       wantedBy = ["multi-user.target"];
       environment = {
         HOME = state-dir;
-        HERMES_HOME = hermes-home;
+        HERMES_HOME = stackmagic-profile-home;
         HERMES_MANAGED = "true";
         OBSIDIAN_VAULT_PATH = stackmagic-obsidian-vault-path;
         CAMOFOX_URL = "http://127.0.0.1:9377";
@@ -488,11 +484,11 @@ let
         Type = "simple";
         User = "hermes";
         Group = "hermes";
-        EnvironmentFile = config.sops.secrets."hermes/env".path;
+        EnvironmentFile = config.sops.secrets."hermes/stackmagic-env".path;
         Restart = "on-failure";
         RestartSec = "5s";
       };
-      script = "${lib.getExe hermes-package} -p ${stackmagic-profile} gateway run";
+      script = "${lib.getExe hermes-package} gateway run";
     };
 
     systemd.services.hermes-dashboard = {
