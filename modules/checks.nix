@@ -22,11 +22,13 @@
         ../modules/checks.nix
         ../modules/hosts.nix
         ../modules/ai/llama-swap.nix
+        ../modules/ai/vllm.nix
         ../modules/hardware/jupiter/llama-models.nix
       ];
       lintFiles = [
         ../modules/checks.nix
         ../modules/ai/llama-swap.nix
+        ../modules/ai/vllm.nix
         ../modules/hardware/jupiter/llama-models.nix
       ];
       formatFileArgs = lib.concatStringsSep " " (map toString formatFiles);
