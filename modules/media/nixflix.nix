@@ -213,6 +213,8 @@ in {
   systemd.services.radarr.wants = ["blocky.service"];
   systemd.services.prowlarr.after = ["blocky.service"];
   systemd.services.prowlarr.wants = ["blocky.service"];
+  systemd.services.recyclarr.after = ["blocky.service"];
+  systemd.services.recyclarr.wants = ["blocky.service"];
 
   # services.postgresql.dataDir = lib.mkForce "/var/lib/postgresql/17";
 

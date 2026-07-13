@@ -8,7 +8,7 @@ let
     firecrawl = pkgs.callPackage ../../pkgs/firecrawl {};
     firecrawlSrc = firecrawl.src;
     firecrawlRev = firecrawl.rev;
-    prepareStamp = "7";
+    prepareStamp = "8";
 
     appDir = "/var/lib/firecrawl";
     releaseDir = "${appDir}/releases/${firecrawlRev}";
@@ -178,7 +178,7 @@ let
           set -euo pipefail
 
           stamp=/var/lib/postgresql/.firecrawl-nuq-schema-${firecrawlRev}
-          if [ -f "$stamp" ]; then
+          if [ -f "$stamp" ] && [ "$(psql -Atqc "SELECT to_regclass('nuq.queue_crawl_finished') IS NOT NULL" ${databaseName})" = "t" ]; then
             exit 0
           fi
 
@@ -226,6 +226,7 @@ let
         environment = {
           BULL_AUTH_KEY = "@";
           CARGO_HOME = "${appDir}/cargo";
+          CI = "true";
           FIRECRAWL_APP_HOST = "127.0.0.1";
           FIRECRAWL_APP_PORT = toString firecrawlPort;
           FIRECRAWL_APP_SCHEME = "http";
@@ -237,6 +238,7 @@ let
           NUQ_DATABASE_URL = "postgresql://postgres@127.0.0.1:5432/${databaseName}";
           NUQ_DATABASE_URL_LISTEN = "postgresql://postgres@127.0.0.1:5432/${databaseName}";
           NUQ_RABBITMQ_URL = "amqp://guest:guest@127.0.0.1:5672";
+          PNPM_HOME = "${appDir}/pnpm";
           PORT = toString firecrawlPort;
           REDIS_RATE_LIMIT_URL = "redis://127.0.0.1:6379/2";
           REDIS_URL = "redis://127.0.0.1:6379/1";
@@ -247,7 +249,7 @@ let
           User = "firecrawl";
           Group = "firecrawl";
           WorkingDirectory = apiDir;
-          ExecStart = "${lib.getExe nodejs} dist/src/harness.js --start-built";
+          ExecStart = "${lib.getExe nodejs} dist/src/harness.js --start-docker";
           Restart = "on-failure";
           RestartSec = "10s";
           StateDirectory = "firecrawl";
