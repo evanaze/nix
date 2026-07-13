@@ -1,4 +1,12 @@
 let
+  openvikingCompatOverlay = inputs: final: prev: {
+    openviking = final.callPackage ../../pkgs/openviking/package.nix {
+      inherit (prev.openviking) src version;
+      ov-cli = final.ov-cli;
+      ragfs-python = inputs.openviking.packages.${final.stdenv.hostPlatform.system}.ragfs-python;
+    };
+  };
+
   module = {
     pkgs,
     lib,
@@ -6,7 +14,10 @@ let
     inputs,
     ...
   }: {
-    nixpkgs.overlays = [inputs.openviking.overlays.default];
+    nixpkgs.overlays = [
+      inputs.openviking.overlays.default
+      (openvikingCompatOverlay inputs)
+    ];
 
     environment.systemPackages = with pkgs; [
       openviking
@@ -14,6 +25,7 @@ let
 
     services.openviking = {
       enable = true;
+      package = pkgs.openviking;
       configFile = config.sops.secrets."openviking/conf".path;
     };
 

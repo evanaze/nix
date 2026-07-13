@@ -1,4 +1,12 @@
 let
+  openvikingCompatOverlay = inputs: final: prev: {
+    openviking = final.callPackage ../../pkgs/openviking/package.nix {
+      inherit (prev.openviking) src version;
+      ov-cli = final.ov-cli;
+      ragfs-python = inputs.openviking.packages.${final.stdenv.hostPlatform.system}.ragfs-python;
+    };
+  };
+
   module = {
     config,
     username,
@@ -27,7 +35,10 @@ let
       '';
     };
   in {
-    nixpkgs.overlays = [inputs.openviking.overlays.default];
+    nixpkgs.overlays = [
+      inputs.openviking.overlays.default
+      (openvikingCompatOverlay inputs)
+    ];
 
     sops.secrets."nocodb/env" = {
       owner = username;
