@@ -1,6 +1,6 @@
 let
   module = # aspects/networking/blocky.nix - Blocky DNS ad-blocking
-{...}: {
+  {lib, ...}: {
   services.blocky = {
     enable = true;
     settings = {
@@ -23,8 +23,8 @@ let
           reddit = [
             ''
               reddit.com
-              www.reddit.com
-              i.redd.it
+              redd.it
+              redditmedia.com
               redditstatic.com
             ''
           ];
@@ -64,7 +64,7 @@ let
   };
 
   networking = {
-    nameservers = ["127.0.0.1"];
+    nameservers = lib.mkBefore ["127.0.0.1"];
     firewall = {
       allowedTCPPorts = [53];
       allowedUDPPorts = [53];
