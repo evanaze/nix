@@ -6,6 +6,7 @@ let
     system,
     ...
   }: let
+    enableCamofox = false;
     camofoxPort = 9377;
     dataDir = "/mnt/eye/appdata/camofox";
 
@@ -14,7 +15,7 @@ let
     joCamofoxBrowser = camoufoxPackages.jo-camofox-browser;
     camoufoxBin = lib.getExe camoufox;
   in {
-    config = lib.mkIf (config.networking.hostName == "jupiter") {
+    config = lib.mkIf (config.networking.hostName == "jupiter" && enableCamofox) {
       users.groups.camofox = {};
       users.users.camofox = {
         isSystemUser = true;
