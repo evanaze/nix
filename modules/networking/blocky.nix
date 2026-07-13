@@ -30,7 +30,10 @@ let
           ];
         };
         clientGroupsBlock = {
-          default = ["ads"];
+          default = [
+            "ads"
+            "reddit"
+          ];
           iphone = [
             "ads"
             "reddit"
