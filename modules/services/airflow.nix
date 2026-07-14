@@ -84,7 +84,7 @@ let
   };
 in {
   flake.modules.nixos = {
-    servicesAirflow = module;
-    services = module;
+    # servicesAirflow = module;
+    # services = module;
   };
 }
