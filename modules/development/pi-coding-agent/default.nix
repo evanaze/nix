@@ -23,6 +23,10 @@ let
 
           export NPM_CONFIG_CACHE="$HOME/.cache/pi/npm"
           export npm_config_cache="$NPM_CONFIG_CACHE"
+          export npm_config_nodedir=${lib.escapeShellArg (lib.getDev pkgs.nodejs)}
+          export npm_config_node_gyp=${lib.escapeShellArg "${pkgs.nodejs}/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js"}
+          export npm_config_python=${lib.escapeShellArg (lib.getExe pkgs.python3)}
+          export PYTHON="$npm_config_python"
         ''}
       '';
     };
@@ -47,8 +51,11 @@ let
         package = piWithNocodbEnv;
         extraPackages = with pkgs; [
           bun
+          gcc
+          gnumake
           nodejs
           mcp-nixos
+          python3
         ];
         settings = {
           defaultProvider = "llama-local";
