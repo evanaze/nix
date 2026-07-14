@@ -11,6 +11,10 @@ let
     airflowHome = "/var/lib/airflow";
     airflowEnvFile = "${airflowHome}/airflow.env";
     airflowExe = lib.getExe pkgs.apache-airflow;
+    airflowPythonPath = pkgs.python314Packages.makePythonPath [
+      pkgs.python314Packages.asyncpg
+      pkgs.python314Packages.psycopg2
+    ];
 
     airflowEnvironment = {
       AIRFLOW_HOME = airflowHome;
@@ -21,6 +25,7 @@ let
       AIRFLOW__CORE__LOAD_EXAMPLES = "False";
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN = "postgresql+psycopg2://${airflowUser}@/${databaseName}?host=/run/postgresql";
       AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK = "True";
+      PYTHONPATH = airflowPythonPath;
     };
 
     mkAirflowService = {
