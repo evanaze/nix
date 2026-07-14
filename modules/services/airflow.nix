@@ -67,9 +67,7 @@ let
       {
         name = airflowUser;
         ensureDBOwnership = true;
-        ensureClauses = {
-          login = true;
-        };
+        ensureClauses.login = true;
       }
     ];
 
@@ -97,6 +95,7 @@ let
       path = with pkgs; [
         coreutils
         openssl
+        postgresql
       ];
       environment = airflowEnvironment;
       serviceConfig = {
