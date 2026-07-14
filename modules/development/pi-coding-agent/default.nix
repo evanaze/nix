@@ -76,6 +76,7 @@ let
             "npm:@juicesharp/rpiv-ask-user-question"
             "npm:@juicesharp/rpiv-todo"
             "npm:@juicesharp/rpiv-web-tools"
+            "npm:@plannotator/pi-extension"
           ];
           skills = [
             "${local-agent-builder-skill}/skills"
