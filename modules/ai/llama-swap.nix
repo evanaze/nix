@@ -76,7 +76,7 @@ let
         ${script-body}
       '';
 
-    launchScriptQwenTernary = mk-launch-script "qwen3.6-ternary" ''
+    launchScriptQwenBonsai = mk-launch-script "qwen3.6-bonsai" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
         -m "${source-model-dir}/Ternary-Bonsai-27B-dspark-bf16.gguf" \
@@ -278,8 +278,8 @@ let
       settings = {
         models = {
           # Sidecars only: gemma-4-12B-it-assistant-Q8_0.gguf and mmproj-MiniCPM-V-4_6-F16.gguf must never become top-level model keys.
-          "qwen3.6-ternary" = {
-            cmd = "${launchScriptQwenTernary} ${"$"}{PORT}";
+          "qwen3.6-bonsai" = {
+            cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
             healthCheckTimeout = 900;
           };
           "gemma-4-21b-q4" = {
