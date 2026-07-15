@@ -167,6 +167,28 @@ let
         --port "$PORT"
     '';
 
+    launchScriptGemmaUnsensored = mk-launch-script "gemma-4-12b-q4-us" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf" \
+        --spec-draft-model "${source-model-dir}/gemma-4-12B-it-assistant-Q8_0.gguf" \
+        --spec-type draft-mtp \
+        --spec-draft-n-max 3 \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
+        --parallel 1 \
+        --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
+        --temp 1.0 \
+        --top-p 0.95 \
+        --top-k 64 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --jinja \
+        --chat-template-kwargs '{"preserve_thinking": true}' \
+        --port "$PORT"
+    '';
+
     launchScriptOrnith = mk-launch-script "ornith-1.0-9b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
@@ -273,6 +295,10 @@ let
           };
           "gemma-4-12b-q4" = {
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
+          };
+          "gemma-4-12b-q4-us" = {
+            cmd = "${launchScriptGemmaUnsensored} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
           "ornith-1.0-9b-q4" = {
