@@ -59,7 +59,7 @@ let
         ];
         settings = {
           defaultProvider = "llama-local";
-          defaultModel = "qwen3.6-bonsai";
+          defaultModel = "ornith-1.0-9b-q6";
           defaultThinkingLevel = "medium";
           enabledModels = [
             "gemma-4-12b-q4"
