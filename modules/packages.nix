@@ -6,6 +6,7 @@
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
       oh-my-openagent = pkgs.callPackage ../pkgs/oh-my-openagent {};
       svr-mgmt = pkgs.callPackage ../pkgs/svr-mgmt {};
+      llama-prisma = pkgs.callPackage ../pkgs/llama-prisma {};
       # duck-ui = pkgs.callPackage ../pkgs/duck-ui {
       #   bun2nix = inputs.bun2nix.packages.${pkgs.system}.default;
       # };
