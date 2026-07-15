@@ -59,7 +59,7 @@ let
         ];
         settings = {
           defaultProvider = "llama-local";
-          defaultModel = "gemma-4-12b-q4";
+          defaultModel = "qwen3.6-ternary";
           defaultThinkingLevel = "medium";
           enabledModels = [
             "gemma-4-12b-q4"
@@ -71,7 +71,7 @@ let
             "ornith-1.0-9b-q4"
             "ornith-1.0-9b-q6"
             "ornith-1.0-9b-q8"
-            "qwen3.6-reap"
+            "qwen3.6-ternary"
             "gpt-5.5"
             "gpt-5.4"
             "gpt-5.4-mini"
@@ -158,9 +158,9 @@ let
                   maxTokens = 8192;
                 }
                 {
-                  id = "qwen3.6-reap";
-                  name = "Qwen 3.6 28B A3B REAP";
-                  contextWindow = 32768;
+                  id = "qwen3.6-ternary";
+                  name = "Qwen 3.6 Ternary Bonsai 27B";
+                  contextWindow = 128000;
                   maxTokens = 8192;
                 }
               ];

@@ -76,12 +76,12 @@ let
         ${script-body}
       '';
 
-    launchScriptQwenReap = mk-launch-script "qwen3.6-reap" ''
+    launchScriptQwenTernary = mk-launch-script "qwen3.6-ternary" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/Qwen3.6-28B-REAP20-A3B-Q4_K_M.gguf" \
-        --ctx-size 32768 \
-        --fit on --fit-target 1536 --fit-ctx 32768 \
+        -m "${source-model-dir}/Ternary-Bonsai-27B-dspark-bf16.gguf" \
+        --ctx-size 128000 \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
         -ctk q8_0 -ctv q8_0 \
         --flash-attn on \
         --parallel 1 \
@@ -91,11 +91,12 @@ let
         --top-p 0.95 \
         --top-k 20 \
         --min-p 0.0 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
         --presence-penalty 0.0 \
         --repeat-penalty 1.0 \
         --jinja \
         --cache-reuse 256 \
-        --n-cpu-moe 17 \
         --port "$PORT"
     '';
 
@@ -277,8 +278,8 @@ let
       settings = {
         models = {
           # Sidecars only: gemma-4-12B-it-assistant-Q8_0.gguf and mmproj-MiniCPM-V-4_6-F16.gguf must never become top-level model keys.
-          "qwen3.6-reap" = {
-            cmd = "${launchScriptQwenReap} ${"$"}{PORT}";
+          "qwen3.6-ternary" = {
+            cmd = "${launchScriptQwenTernary} ${"$"}{PORT}";
             healthCheckTimeout = 900;
           };
           "gemma-4-21b-q4" = {
