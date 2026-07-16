@@ -19,10 +19,10 @@ let
       '';
     };
   in {
-    home-manager.users.${username}.programs.pi-coding-agent = {
-      extraPackages = [pkgs.qemu];
-      settings.packages = ["${gondolinExtensionPackage}"];
-    };
+    # home-manager.users.${username}.programs.pi-coding-agent = {
+    #   extraPackages = [pkgs.qemu];
+    #   settings.packages = ["${gondolinExtensionPackage}"];
+    # };
   };
 in {
   flake.modules.nixos = {
