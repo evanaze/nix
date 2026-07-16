@@ -59,7 +59,7 @@ let
         ];
         settings = {
           defaultProvider = "llama-local";
-          defaultModel = "ornith-1.0-9b-q6";
+          defaultModel = "deepseek/deepseek-v4-flash";
           defaultThinkingLevel = "medium";
           enabledModels = [
             "gemma-4-12b-q4"
@@ -72,10 +72,6 @@ let
             "ornith-1.0-9b-q6"
             "ornith-1.0-9b-q8"
             "qwen3.6-bonsai"
-            "gpt-5.5"
-            "gpt-5.4"
-            "gpt-5.4-mini"
-            "gpt-5.3-codex-spark"
           ];
           packages = [
             "npm:pi-mcp-adapter"
