@@ -7,13 +7,13 @@
   hermes-agent ? null,
 }:
 let
-  version = "0.52.0";
+  version = "0.52.76";
 
   src = fetchFromGitHub {
     owner = "nesquena";
     repo = "hermes-webui";
     rev = "v${version}";
-    hash = "sha256-ngCivz9D+WrDbVdrPUnNC5KP9NBIjSezAPJpzFPBqyw=";
+    hash = "sha256-kHb+hxTpSwyxx2R+qzesDDIhHWy7oZ/r1P6d6c7Zgz8=";
   };
 
   pythonEnv =
