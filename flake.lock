@@ -281,11 +281,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1784344581,
-        "narHash": "sha256-MyxeUiVizZRs0+PBHrtCva9cFxbDQaiaYkxDVqEjrgE=",
+        "lastModified": 1784480818,
+        "narHash": "sha256-tdbZw1gkzinUdZExj0WmYeT3ut9LUQ6u8nKJCAEhUaA=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "f3c9a2b7262a989ba7e9408d00471fda8f788d16",
+        "rev": "2511abe3dd864013ef9a20c14c50e432f901f703",
         "type": "github"
       },
       "original": {
@@ -303,11 +303,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783008725,
-        "narHash": "sha256-jGiy6+sxjNWXSjp25uoJuNfyH9zBK1PEDY0lVoL4ibQ=",
+        "lastModified": 1784288435,
+        "narHash": "sha256-ReRHaLgr/uVqdD8afFSn+myXIfpHeOhP0yYe0TJqAA8=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "bca82caa46d5ec0f5d422c61fb1e30bc51313cbe",
+        "rev": "43b3c1ab9d40fb1dbb008f451988a91e375825e9",
         "type": "github"
       },
       "original": {
@@ -373,11 +373,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1784435512,
-        "narHash": "sha256-YoSI7XoivACGckrSW5VH+ej0DEDCx8MSATw69f0WvV8=",
+        "lastModified": 1784528561,
+        "narHash": "sha256-WkRJtUb5UPThG/1C9+edA+PmU99BynonuHr5swv/a/o=",
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "e598cef87465981fcea1c0339edfcf5d9716c917",
+        "rev": "371ee065fd708ef2e800406549d41443b78c3dad",
         "type": "github"
       },
       "original": {
@@ -414,11 +414,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784407317,
-        "narHash": "sha256-iZrxHToDJWnvt+5LGAtvuQMTy1NZYlNEKbKaVtBJNcc=",
+        "lastModified": 1784489491,
+        "narHash": "sha256-j9maqjx1T8+ljAVntAdSI5hSGCm77QNZz64JF1rJNu0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "39411a8e12a5526d992e65bc7e3dc9a4414d6713",
+        "rev": "3139deb8cafbe73b39b24451255b2fdd3426077e",
         "type": "github"
       },
       "original": {
@@ -529,11 +529,11 @@
         "vpn-confinement": "vpn-confinement"
       },
       "locked": {
-        "lastModified": 1783893086,
-        "narHash": "sha256-EZiAu34r/TdsxAuHrjCwV+EVg7h/0glzBfxEvjmuGzw=",
+        "lastModified": 1784475101,
+        "narHash": "sha256-IxWzHKBYxWVciypxWWmqjfOzvABgrCOcT3wQVYBv1oY=",
         "owner": "kiriwalawren",
         "repo": "nixflix",
-        "rev": "141cfe004293aad221ab89ddacc4c30c7f6af2cf",
+        "rev": "f518c76ce58c5108c584b5f13c9eb00e881ad734",
         "type": "github"
       },
       "original": {
@@ -830,11 +830,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1784277663,
-        "narHash": "sha256-qYPYMcEus8kVeJ0i4Om2SpHSBvS5gkjgjrOpSu78OWs=",
+        "lastModified": 1784443453,
+        "narHash": "sha256-JaabAt78dje4UHYgw6jmkCtAnPNRYbGS5u0e048sI30=",
         "owner": "Daaboulex",
         "repo": "openviking-nix",
-        "rev": "ad12f238f6bf8ae3473d8e33505a27915d7be013",
+        "rev": "e39d6bd4db9e205e244104124f33890a427ea7d2",
         "type": "github"
       },
       "original": {
