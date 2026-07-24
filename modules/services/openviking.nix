@@ -65,6 +65,6 @@ let
 in {
   flake.modules.nixos = {
     servicesOpenviking = module;
-    services = module;
+    # services = module;
   };
 }
