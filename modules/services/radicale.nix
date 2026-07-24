@@ -10,7 +10,10 @@ let
   in {
     services.radicale = {
       enable = true;
-      settings.server.hosts = ["0.0.0.0:${toString radicalePort}"];
+      settings = {
+        server.hosts = ["0.0.0.0:${toString radicalePort}"];
+        auth.type = "none";
+      };
     };
 
     services.caddy.virtualHosts."http://:${toString caddyPort}" = {
