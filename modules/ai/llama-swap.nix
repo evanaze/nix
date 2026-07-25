@@ -103,8 +103,9 @@ let
     launchScriptGemma = mk-launch-script "gemma-4-12b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" \
-        --spec-draft-model "${source-model-dir}/gemma-4-12B-it-assistant-Q8_0.gguf" \
+        -m "${source-model-dir}/gemma-4-12b-it-UD-Q4_K_XL.gguf" \
+        --spec-draft-model "${source-model-dir}/mtp-gemma-4-12B-it.gguf" \
+        --mmproj "${source-model-dir}/gemma-4-mmproj-F16.gguf" \
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
         --flash-attn on \
