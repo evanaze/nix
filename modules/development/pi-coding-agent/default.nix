@@ -63,14 +63,9 @@ let
           defaultThinkingLevel = "medium";
           enabledModels = [
             "gemma-4-12b-q4"
-            "gemma-4-21b-q4"
-            "glm-4.7-flash-reap-23b-q4"
             "lfm2.5-8b-balanced"
-            "lfm2.5-8b-bf16"
             "minicpm-v-4.6"
-            "ornith-1.0-9b-q4"
             "ornith-1.0-9b-q6"
-            "ornith-1.0-9b-q8"
             "qwen3.6-bonsai"
           ];
           packages = [
@@ -103,27 +98,9 @@ let
                   maxTokens = 8192;
                 }
                 {
-                  id = "gemma-4-21b-q4";
-                  name = "Gemma 4 21B Q4";
-                  contextWindow = 32768;
-                  maxTokens = 8192;
-                }
-                {
-                  id = "glm-4.7-flash-reap-23b-q4";
-                  name = "GLM 4.7 Flash REAP 23B Q4";
-                  contextWindow = 32768;
-                  maxTokens = 8192;
-                }
-                {
                   id = "lfm2.5-8b-balanced";
                   name = "LFM 2.5 8B Balanced";
                   contextWindow = 128000;
-                  maxTokens = 8192;
-                }
-                {
-                  id = "lfm2.5-8b-bf16";
-                  name = "LFM 2.5 8B BF16";
-                  contextWindow = 32768;
                   maxTokens = 8192;
                 }
                 {
@@ -133,13 +110,6 @@ let
                   maxTokens = 4096;
                 }
                 {
-                  id = "ornith-1.0-9b-q4";
-                  name = "Ornith 1.0 9B Q4_K_M";
-                  reasoning = true;
-                  contextWindow = 128000;
-                  maxTokens = 8192;
-                }
-                {
                   id = "ornith-1.0-9b-q6";
                   name = "Ornith 1.0 9B Q6_K";
                   reasoning = true;
@@ -147,44 +117,10 @@ let
                   maxTokens = 8192;
                 }
                 {
-                  id = "ornith-1.0-9b-q8";
-                  name = "Ornith 1.0 9B Q8_0";
-                  reasoning = true;
-                  contextWindow = 65536;
-                  maxTokens = 8192;
-                }
-                {
                   id = "qwen3.6-bonsai";
                   name = "Qwen 3.6 Ternary Bonsai 27B";
                   contextWindow = 128000;
                   maxTokens = 8192;
-                }
-              ];
-            };
-            "openai" = {
-              api = "openai-completions";
-              baseUrl = "https://api.openai.com/v1";
-              models = [
-                {
-                  id = "gpt-5.5";
-                  name = "GPT-5.5";
-                  reasoning = true;
-                  contextWindow = 400000;
-                  maxTokens = 128000;
-                }
-                {
-                  id = "gpt-5.4";
-                  name = "GPT-5.4";
-                  reasoning = true;
-                  contextWindow = 400000;
-                  maxTokens = 128000;
-                }
-                {
-                  id = "gpt-5.4-mini";
-                  name = "GPT-5.4 Mini";
-                  reasoning = true;
-                  contextWindow = 400000;
-                  maxTokens = 128000;
                 }
               ];
             };

@@ -100,52 +100,6 @@ let
         --port "$PORT"
     '';
 
-    launchScriptGemma21B = mk-launch-script "gemma-4-21b-q4" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/Gemma-4-21B.i1-Q4_K_M.gguf" \
-        --ctx-size 32768 \
-        --fit on --fit-target 1536 --fit-ctx 32768 \
-        -ctk q8_0 -ctv q8_0 \
-        --flash-attn on \
-        --parallel 1 \
-        --batch-size 512 --ubatch-size 256 \
-        --threads 10 --threads-batch 12 \
-        --jinja \
-        --port "$PORT"
-    '';
-
-    launchScriptGlmFlashReap = mk-launch-script "glm-4.7-flash-reap-23b-q4" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/GLM-4.7-Flash-REAP-23B-A3B-UD-Q4_K_XL.gguf" \
-        --ctx-size 32768 \
-        --fit on --fit-target 1536 --fit-ctx 32768 \
-        -ctk q8_0 -ctv q8_0 \
-        --flash-attn on \
-        --parallel 1 \
-        --batch-size 512 --ubatch-size 256 \
-        --threads 10 --threads-batch 12 \
-        --jinja \
-        --n-cpu-moe 17 \
-        --port "$PORT"
-    '';
-
-    launchScriptLfmBf16 = mk-launch-script "lfm2.5-8b-bf16" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/LFM2.5-8B-A1B-BF16.gguf" \
-        --ctx-size 32768 \
-        --fit on --fit-target 1536 --fit-ctx 32768 \
-        -ctk q8_0 -ctv q8_0 \
-        --flash-attn on \
-        --parallel 1 \
-        --batch-size 512 --ubatch-size 256 \
-        --threads 10 --threads-batch 12 \
-        --jinja \
-        --port "$PORT"
-    '';
-
     launchScriptGemma = mk-launch-script "gemma-4-12b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
@@ -190,25 +144,6 @@ let
         --port "$PORT"
     '';
 
-    launchScriptOrnith = mk-launch-script "ornith-1.0-9b-q4" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/ornith-1.0-9b-Q4_K_M.gguf" \
-        --reasoning-format deepseek \
-        --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx 128000 \
-        --parallel 1 \
-        --ctx-size 128000 \
-        -ctk q8_0 -ctv q8_0 \
-        --temp 0.6 \
-        --top-p 0.95 \
-        --top-k 20 \
-        --threads 10 --threads-batch 12 \
-        --batch-size 512 --ubatch-size 256 \
-        --jinja \
-        --port "$PORT"
-    '';
-
     launchScriptOrnithQ6 = mk-launch-script "ornith-1.0-9b-q6" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
@@ -218,25 +153,6 @@ let
         --fit on --fit-target 1536 --fit-ctx 128000 \
         --parallel 1 \
         --ctx-size 128000 \
-        -ctk q8_0 -ctv q8_0 \
-        --temp 0.6 \
-        --top-p 0.95 \
-        --top-k 20 \
-        --threads 10 --threads-batch 12 \
-        --batch-size 512 --ubatch-size 256 \
-        --jinja \
-        --port "$PORT"
-    '';
-
-    launchScriptOrnithQ8 = mk-launch-script "ornith-1.0-9b-q8" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/ornith-1.0-9b-Q8_0.gguf" \
-        --reasoning-format deepseek \
-        --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx 65536 \
-        --parallel 1 \
-        --ctx-size 65536 \
         -ctk q8_0 -ctv q8_0 \
         --temp 0.6 \
         --top-p 0.95 \
@@ -282,28 +198,12 @@ let
             cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
             healthCheckTimeout = 900;
           };
-          "gemma-4-21b-q4" = {
-            cmd = "${launchScriptGemma21B} ${"$"}{PORT}";
-            healthCheckTimeout = 900;
-          };
-          "glm-4.7-flash-reap-23b-q4" = {
-            cmd = "${launchScriptGlmFlashReap} ${"$"}{PORT}";
-            healthCheckTimeout = 900;
-          };
-          "lfm2.5-8b-bf16" = {
-            cmd = "${launchScriptLfmBf16} ${"$"}{PORT}";
-            healthCheckTimeout = 900;
-          };
           "gemma-4-12b-q4" = {
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
           "gemma-4-12b-q4-us" = {
             cmd = "${launchScriptGemmaUnsensored} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "ornith-1.0-9b-q4" = {
-            cmd = "${launchScriptOrnith} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
           "lfm2.5-8b-balanced" = {
@@ -316,10 +216,6 @@ let
           };
           "ornith-1.0-9b-q6" = {
             cmd = "${launchScriptOrnithQ6} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "ornith-1.0-9b-q8" = {
-            cmd = "${launchScriptOrnithQ8} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
         };
