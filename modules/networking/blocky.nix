@@ -21,6 +21,18 @@ let
           blocking = {
             denylists = {
               ads = ["https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"];
+              youtube = [
+                ''
+                  *.youtube.com
+                  *.youtu.be
+                  *.ytimg.com
+                  *.googlevideo.com
+                  *.youtubeeducation.com
+                  *.youtubekids.com
+                  *.youtube-nocookie.com
+
+                ''
+              ];
               reddit = [
                 ''
                   *.reddit.com
@@ -36,6 +48,7 @@ let
               default = [
                 "ads"
                 "reddit"
+                "youtube"
               ];
               host = ["ads"];
             };
