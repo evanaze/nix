@@ -160,9 +160,6 @@
           sqlfluff = {
             command = "${lib.getExe pkgs.sqlfluff}";
           };
-          sqlfmt = {
-            command = "${lib.getExe pkgs.python312Packages.sqlfmt}";
-          };
           bicep = {
             command = "${lib.getExe pkgs.bicep}";
           };
