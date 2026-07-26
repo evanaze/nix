@@ -68,18 +68,18 @@ let
           "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
           agents = {
             sisyphus = {
-              model = "openai/gpt-5.4";
+              model = "deepseek/deepseek-v4-flash";
               variant = "high";
             };
-            hephaestus.model = "openai/gpt-5.5";
-            oracle.model = "openai/gpt-5.5";
-            prometheus.model = "openai/gpt-5.5";
-            atlas.model = "openai/gpt-5.4";
-            librarian.model = "openai/gpt-5.4";
-            explore.model = "openai/gpt-5.4";
-            "multimodal-looker".model = "openai/gpt-5.4";
+            hephaestus.model = "deepseek/deepseek-v4-pro";
+            oracle.model = "deepseek/deepseek-v4-pro";
+            prometheus.model = "deepseek/deepseek-v4-pro";
+            atlas.model = "deepseek/deepseek-v4-pro";
+            librarian.model = "deepseek/deepseek-v4-flash";
+            explore.model = "deepseek/deepseek-v4-flash";
+            "multimodal-looker".model = "deepseek/deepseek-v4-flash";
             momus = {
-              model = "openai/gpt-5.5";
+              model = "deepseek/deepseek-v4-flash";
               variant = "high";
             };
           };
