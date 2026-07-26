@@ -1,5 +1,26 @@
 let
+  # Mark task-sdk as dontCheckPythonMetadata to avoid pname mismatch
+  # (derivation pname="task-sdk" but upstream pyproject.toml says "apache-airflow-task-sdk")
+  fixTaskSdk = drv:
+    if drv.pname or "" == "task-sdk"
+    then drv.overrideAttrs { dontCheckPythonMetadata = true; }
+    else drv;
+
+  # Recursively fix task-sdk references in dependency trees (airflowCore also depends on it)
+  fixDeps = deps: map (dep:
+    if dep.pname or "" == "apache-airflow-core" then
+      dep.overrideAttrs (old: {
+        propagatedBuildInputs = fixDeps (old.propagatedBuildInputs or []);
+      })
+    else
+      fixTaskSdk dep
+  ) deps;
+
   airflowCompatOverlay = final: prev: {
+    apache-airflow = prev.apache-airflow.overrideAttrs (old: {
+      propagatedBuildInputs = fixDeps (old.propagatedBuildInputs or []);
+    });
+
     pythonPackagesExtensions =
       (prev.pythonPackagesExtensions or [])
       ++ [
