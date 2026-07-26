@@ -11,9 +11,9 @@ let
     airflowHome = "/var/lib/airflow";
     airflowEnvFile = "${airflowHome}/airflow.env";
     airflowExe = lib.getExe pkgs.apache-airflow;
-    airflowPythonPath = pkgs.python314Packages.makePythonPath [
-      pkgs.python314Packages.asyncpg
-      pkgs.python314Packages.psycopg2
+    airflowPythonPath = pkgs.python313Packages.makePythonPath [
+      pkgs.python313Packages.asyncpg
+      pkgs.python313Packages.psycopg2
     ];
 
     airflowEnvironment = {
