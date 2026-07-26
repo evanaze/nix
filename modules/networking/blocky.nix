@@ -33,19 +33,19 @@ let
               ];
             };
             clientGroupsBlock = {
-              default = ["ads"];
-              iphone = [
+              default = [
                 "ads"
                 "reddit"
               ];
+              host = ["ads"];
             };
           };
 
           clientLookup = {
             clients = {
-              iphone = [
-                "192.168.1.100"
-                "100.74.29.10"
+              host = [
+                "127.0.0.1"
+                "::1"
               ];
             };
           };
