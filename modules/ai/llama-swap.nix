@@ -126,7 +126,7 @@ let
     launchScriptGemmaQ6 = mk-launch-script "gemma-4-12b-q6" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/gemma-4-12b-it-q6.gguf" \
+        -m "${source-model-dir}/gemma-4-12b-it-Q6_K.gguf" \
         --spec-draft-model "${source-model-dir}/mtp-gemma-4-12B-it.gguf" \
         --mmproj "${source-model-dir}/gemma-4-mmproj-F16.gguf" \
         --spec-type draft-mtp \
