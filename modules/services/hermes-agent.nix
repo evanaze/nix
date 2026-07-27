@@ -106,6 +106,7 @@ let
             "minicpm-v-4.6"
             "ornith-1.0-9b-q4"
             "gemma-4-12b-q4"
+            "gemma-4-12b-q6"
             "qwen3.6-35b-a3b"
           ];
         };
