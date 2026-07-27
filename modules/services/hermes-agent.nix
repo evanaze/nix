@@ -67,6 +67,7 @@ let
       model = {
         default = "gemma-4-12b-q4";
         provider = "local";
+        base_url = "https://llm.spitz-pickerel.ts.net/v1";
         context_length = 128000;
       };
       memory.provider = "openviking";
