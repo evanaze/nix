@@ -134,6 +134,7 @@ in {
         networking
         services
         servicesGlance
+        servicesPaseo
         tools
       ];
       extraModules = [
@@ -141,6 +142,7 @@ in {
         inputs.kestra-nix.nixosModules.kestra
         inputs.nixflix.nixosModules.default
         inputs.openviking.nixosModules.default
+        inputs.paseo.nixosModules.default
       ];
     };
   };

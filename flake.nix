@@ -33,6 +33,7 @@
       url = "github:Daaboulex/openviking-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    paseo.url = "github:getpaseo/paseo";
     slippi = {
       url = "github:lytedev/slippi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
