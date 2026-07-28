@@ -44,7 +44,9 @@ let
           capability_elevation = false;
         };
         commands = {
-          allow = [];
+          allow = [
+            "journalctl"
+          ];
           deny = [];
         };
         filesystem = {
@@ -58,6 +60,8 @@ let
             "$NONO_PACKAGES"
             "$NONO_CONFIG/profiles"
             "/tmp"
+            "/var/log"
+            "/mnt/eye"
           ];
           write = [];
           allow_file = [
