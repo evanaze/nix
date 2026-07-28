@@ -58,7 +58,7 @@ let
           python3
         ];
         settings = {
-          defaultProvider = "llama-local";
+          defaultProvider = "openrouter";
           defaultModel = "deepseek/deepseek-v4-flash";
           defaultThinkingLevel = "medium";
           enabledModels = [
