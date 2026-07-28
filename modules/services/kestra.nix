@@ -71,6 +71,6 @@ let
   };
 in {
   flake.modules.nixos = {
-    services = module;
+    # services = module;
   };
 }
