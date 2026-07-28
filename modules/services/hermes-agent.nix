@@ -66,7 +66,6 @@ let
     common-hermes-settings = {
       model = {
         default = "gemma-4-12b-q4";
-        provider = "local";
         base_url = "https://llm.spitz-pickerel.ts.net/v1";
         context_length = 128000;
       };
