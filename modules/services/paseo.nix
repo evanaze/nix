@@ -13,6 +13,7 @@ let
         enable = true;
         openFirewall = false;
         listenAddress = "127.0.0.1";
+        hostnames = [".spitz-pickerel.ts.net"];
         settings = {
           features.webUi.enabled = true;
         };
