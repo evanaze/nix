@@ -11,7 +11,7 @@ buildGoModule {
     owner = "evanaze";
     repo = "svr-mgmt";
     rev = "1fa2ce85521d3611e96582277ebcb82b76768cd3";
-    hash = lib.fakeHash;
+    hash = "sha256-nN8AQxbCp6ZH5ceMVC7YnlDZgXlOSOvbE9JQfm29lZM=";
   };
 
   vendorHash = null;
