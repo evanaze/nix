@@ -7,6 +7,7 @@
       oh-my-openagent = pkgs.callPackage ../pkgs/oh-my-openagent {};
       svr-mgmt = pkgs.callPackage ../pkgs/svr-mgmt {};
       llama-prisma = pkgs.callPackage ../pkgs/llama-prisma {};
+      dirac = pkgs.callPackage ../pkgs/dirac {};
       # duck-ui = pkgs.callPackage ../pkgs/duck-ui {
       #   bun2nix = inputs.bun2nix.packages.${pkgs.system}.default;
       # };
