@@ -13,28 +13,10 @@ let
     package = pkgs.nix-serve-ng;
   };
 
-  systemd.services.nix-cache-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "nix-serve.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "nix-serve.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Actual";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:cache || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:cache --https=443 ${toString config.services.nix-serve.port}
-    '';
-  };
+  # No tailscale serve needed — WireGuard already encrypts the tunnel,
+  # and the userspace TLS proxy it adds is the download bottleneck.
+  # Clients connect directly over plain HTTP to the Tailscale IP.
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [config.services.nix-serve.port];
 };
 in {
   flake.modules.nixos = {

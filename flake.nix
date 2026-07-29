@@ -2,7 +2,7 @@
   description = "NixOS configuration - Dendritic Pattern";
 
   nixConfig = {
-    extra-substituters = ["https://cache.spitz-pickerel.ts.net"];
+    extra-substituters = ["http://jupiter.spitz-pickerel.ts.net:5000"];
     extra-trusted-public-keys = ["cache:+h9wYaxp+qMa0hHTTnh3cAPmn1DmvlPDj27dfEh+6kA="];
     connect-timeout = 5;
   };
