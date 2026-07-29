@@ -10,7 +10,6 @@
       calibre
       code-cursor
       google-chrome
-      gnomeExtensions.caffeine
       hunspell
       hunspellDicts.en-us
       inkscape
