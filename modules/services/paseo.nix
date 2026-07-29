@@ -6,7 +6,7 @@ let
     ...
   }: let
     paseoPort = 6767;
-    tailnet = "spitz-pickerel.ts.net";
+    caddyPort = 6768;
   in {
     config = lib.mkIf (config.networking.hostName == "jupiter") {
       services.paseo = {
@@ -16,6 +16,16 @@ let
         settings = {
           features.webUi.enabled = true;
         };
+      };
+
+      services.caddy.virtualHosts."http://:${toString caddyPort}" = {
+        extraConfig = ''
+          reverse_proxy localhost:${toString paseoPort} {
+            header_up X-Forwarded-Proto https
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Host {host}
+          }
+        '';
       };
 
       # Tailscale Serve publishes Paseo inside the tailnet
@@ -40,7 +50,7 @@ let
         };
         script = ''
           ${lib.getExe pkgs.tailscale} serve clear svc:paseo || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:paseo --https=443 http://127.0.0.1:${toString paseoPort}
+          ${lib.getExe pkgs.tailscale} serve --service=svc:paseo --https=443 http://127.0.0.1:${toString caddyPort}
         '';
       };
     };
