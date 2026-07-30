@@ -9,6 +9,7 @@
       brave
       calibre
       code-cursor
+      discord
       google-chrome
       hunspell
       hunspellDicts.en-us
