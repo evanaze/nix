@@ -8,7 +8,7 @@
 }:
 
 let
-  version = "4.13.0";
+  version = "4.19.3";
 
   fetchNpmTarball = name: hash:
     fetchurl {
@@ -19,11 +19,11 @@ let
   platformPackages = [
     {
       name = "oh-my-openagent-linux-x64";
-      src = fetchNpmTarball "oh-my-openagent-linux-x64" "sha256-+gGpHhngylr+oesJ83GDfopLxi8m80VrhVrkh9K8fvk=";
+      src = fetchNpmTarball "oh-my-openagent-linux-x64" "sha512-c6vXpjSmy8SILNo5OkDv/zbiwZByv95Cr6f7WPNdUEend4CFak0FuxIUSTTxtiBeuVVPqxtdz3D/3VNUb2mpdQ==";
     }
     {
       name = "oh-my-openagent-linux-x64-baseline";
-      src = fetchNpmTarball "oh-my-openagent-linux-x64-baseline" "sha256-HUTLCu5Sq4Y4QeN0aysNymH3zG0NPerfc5Xpfjh+Rng=";
+      src = fetchNpmTarball "oh-my-openagent-linux-x64-baseline" "sha512-PkH2EJSoQy8OJX6PcBsKi9DRS8EgaNxy8n7MNfte5sa2zyybjVTr7IrfxR481C/IEG0+2PWPBCNjTkmnDxSDRg==";
     }
   ];
 in
@@ -31,7 +31,7 @@ stdenv.mkDerivation {
   pname = "oh-my-openagent";
   inherit version;
 
-  src = fetchNpmTarball "oh-my-openagent" "sha256-2cmMqLkHGZMyJK7rutUM3Om5cTJ9v11Iwb/X4sX0LC4=";
+  src = fetchNpmTarball "oh-my-openagent" "sha512-eQclumP6RS2BYqruqOUbubMea5sLCqwWbbBtvsJaDiAVmhERh1ZrWrZTqCg0QlBh8MrFpsXqhs7TljeE8WE9wQ==";
 
   nativeBuildInputs = [ makeWrapper ];
 

@@ -65,7 +65,7 @@ let
         };
 
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
-          "$schema" = "https://unpkg.com/oh-my-openagent@4.13.0/schema.json";
+          "$schema" = "https://unpkg.com/oh-my-openagent@4.19.3/schema.json";
           agents = {
             sisyphus = {
               model = "deepseek/deepseek-v4-flash";
@@ -109,7 +109,7 @@ let
           autoupdate = true;
           lsp = true;
           plugin = [
-            "oh-my-openagent@4.13.0"
+            "oh-my-openagent@4.19.3"
             "@openviking/opencode-plugin"
           ];
           compaction = {
