@@ -1,13 +1,17 @@
 {
-  stdenv,
   lib,
+  buildNpmPackage,
   fetchurl,
   nodejs,
   makeWrapper,
+  ripgrep,
 }: let
   version = "0.4.28";
+
+  # Vendored lockfile (generated with: npm install --package-lock-only --ignore-scripts --production)
+  lockfile = ./package-lock.json;
 in
-  stdenv.mkDerivation {
+  buildNpmPackage {
     pname = "dirac";
     inherit version;
 
@@ -16,20 +20,45 @@ in
       hash = "sha512-rNHDVOKGsfoW1bGFxM/heGnB5VMG3pWVLUGG8paBx8CEIRxosIc+nS0+KfQzb4iwRaAWnkVKwU03hEZELr+1hw==";
     };
 
+    sourceRoot = "package";
+
+    npmDepsHash = "sha256-Z/wY1YLK5FXhCYT6LeOW78Xb9xW7qSNloSbUWmPZIJ0=";
+
+    dontNpmBuild = true;
+
+    buildInputs = [nodejs];
     nativeBuildInputs = [makeWrapper];
 
-    sourceRoot = "package";
+    postPatch = ''
+      cp ${lockfile} ./package-lock.json
+    '';
+
+    preBuild = ''
+      # Replace @vscode/ripgrep with shim using system ripgrep.
+      # Must run AFTER npm deps are extracted (preBuild = after configure).
+      rm -rf node_modules/@vscode/ripgrep
+      mkdir -p node_modules/@vscode/ripgrep
+      cat > node_modules/@vscode/ripgrep/index.js << 'EOF'
+      module.exports.rgPath = "${ripgrep}/bin/rg";
+      EOF
+      cat > node_modules/@vscode/ripgrep/package.json << EOF
+      {
+        "name": "@vscode/ripgrep",
+        "version": "1.15.9",
+        "main": "index.js"
+      }
+      EOF
+    '';
 
     installPhase = ''
       runHook preInstall
 
-      packageRoot=$out/share/node_modules/dirac-cli
-      mkdir -p "$packageRoot" "$out/bin"
-
-      cp -r . "$packageRoot/"
+      mkdir -p $out/share/node_modules/dirac-cli $out/bin
+      cp -r . $out/share/node_modules/dirac-cli/
 
       makeWrapper ${lib.getExe nodejs} $out/bin/dirac \
-        --add-flags "$packageRoot/dist/cli.mjs"
+        --set NODE_PATH $out/share/node_modules/dirac-cli/node_modules \
+        --add-flags "$out/share/node_modules/dirac-cli/dist/cli.mjs"
 
       runHook postInstall
     '';
@@ -43,4 +72,3 @@ in
       mainProgram = "dirac";
     };
   }
-
