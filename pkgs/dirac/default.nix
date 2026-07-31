@@ -58,6 +58,7 @@ in
 
       makeWrapper ${lib.getExe nodejs} $out/bin/dirac \
         --set NODE_PATH $out/share/node_modules/dirac-cli/node_modules \
+        --set DIRAC_NO_AUTO_UPDATE 1 \
         --add-flags "$out/share/node_modules/dirac-cli/dist/cli.mjs"
 
       runHook postInstall
