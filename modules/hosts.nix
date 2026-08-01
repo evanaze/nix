@@ -65,7 +65,6 @@ in {
         businessDuckdbClient
         core
         desktop
-        desktopHermes
         development
         gaming
         hardware
@@ -95,7 +94,6 @@ in {
         businessDuckdbClient
         core
         desktop
-        desktopHermes
         development
         gamingSteam
         hardware

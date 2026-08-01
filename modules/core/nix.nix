@@ -20,10 +20,18 @@ in {
         done
       ''}
     '';
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      # Use jupiter as a binary cache for all hosts (declared here so it's baked
+      # into each machine's nix.conf, unlike flake.nix nixConfig which is an
+      # untrusted setting and gets ignored during rebuilds).
+      extra-substituters = ["http://jupiter.spitz-pickerel.ts.net:5000"];
+      extra-trusted-public-keys = ["cache:+h9wYaxp+qMa0hHTTnh3cAPmn1DmvlPDj27dfEh+6kA="];
+      connect-timeout = 5;
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
