@@ -12,8 +12,8 @@ buildGoModule {
   src = fetchFromGitHub {
     owner = "evanaze";
     repo = "writr";
-    rev = "5b474643771b57fa3c1a226b8cfc80d2ebf2d6c9";
-    hash = "sha256-3mnyCHDOXcqg+lRDZ1Cezg606SGh9YIicJPI0SAK1ps=";
+    rev = "888b856c87534c34d8e9cbecfb8dd045e3267413";
+    hash = "sha256-8vEgGJNSrC16zf92OpRvpewHhmG205hmiY02PwRlcAU=";
   };
 
   vendorHash = "sha256-lshVybtUjJE3Pa5/XBy7ya5t/i+VhnO/C8jRjQf7Dks=";
