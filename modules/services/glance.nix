@@ -6,10 +6,30 @@ let
     ...
   }: let
     glancePort = 8320;
+    glanceCaddyPort = 8321;
     tailnet = "spitz-pickerel.ts.net";
   in {
     config = lib.mkIf (config.networking.hostName == "jupiter") {
       sops.secrets.glance = {};
+
+      # Serve Glance through Caddy with an in-memory HTTP page cache so that
+      # opening a new tab returns the already-rendered page instantly instead of
+      # Glance re-rendering every widget template on each request.
+      services.caddy = {
+        enable = true;
+        virtualHosts."http://:${toString glanceCaddyPort}" = {
+          extraConfig = ''
+            cache {
+              ttl 2m
+            }
+            reverse_proxy 127.0.0.1:${toString glancePort} {
+              header_up X-Forwarded-Proto https
+              header_up X-Forwarded-For {remote_host}
+              header_up X-Forwarded-Host {host}
+            }
+          '';
+        };
+      };
 
       services.glance = {
         enable = true;
@@ -759,11 +779,13 @@ let
         after = [
           "tailscaled-autoconnect.service"
           "tailscaled.service"
+          "caddy.service"
           "glance.service"
         ];
         wants = [
           "tailscaled-autoconnect.service"
           "tailscaled.service"
+          "caddy.service"
           "glance.service"
         ];
         wantedBy = ["multi-user.target"];
@@ -776,7 +798,7 @@ let
         };
         script = ''
           ${lib.getExe pkgs.tailscale} serve clear svc:home || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:home --https=443 http://127.0.0.1:${toString glancePort}
+          ${lib.getExe pkgs.tailscale} serve --service=svc:home --https=443 http://127.0.0.1:${toString glanceCaddyPort}
         '';
       };
     };

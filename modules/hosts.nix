@@ -131,7 +131,6 @@ in {
         smartctlExporter
         networking
         services
-        servicesGlance
         servicesPaseo
         tools
       ];
