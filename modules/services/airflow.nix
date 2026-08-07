@@ -149,7 +149,7 @@ let
       command = "triggerer";
     };
 
-    services.caddy.virtualHosts."http://127.0.0.1:${toString caddyPort}" = {
+    services.caddy.virtualHosts."http://:${toString caddyPort}" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:${toString airflowPort} {
           header_up X-Forwarded-Proto https
