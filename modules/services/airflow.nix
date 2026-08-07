@@ -10,7 +10,10 @@ let
     airflowUser = "airflow";
     airflowHome = "/var/lib/airflow";
     airflowEnvFile = "${airflowHome}/airflow.env";
-    airflowExe = lib.getExe pkgs.apache-airflow;
+    airflow = pkgs.apache-airflow.override {
+      enabledProviders = ["git"];
+    };
+    airflowExe = lib.getExe airflow;
     airflowPythonPath = pkgs.python313Packages.makePythonPath [
       pkgs.python313Packages.asyncpg
       pkgs.python313Packages.psycopg2
@@ -24,6 +27,20 @@ let
       AIRFLOW__CORE__EXECUTOR = "LocalExecutor";
       AIRFLOW__CORE__LOAD_EXAMPLES = "False";
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN = "postgresql+psycopg2://${airflowUser}@/${databaseName}?host=/run/postgresql";
+      AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST = ''
+        [
+          {
+            "name": "stackmagic-research",
+            "classpath": "airflow.providers.git.bundles.git.GitDagBundle",
+            "kwargs": {
+              "git_conn_id": "my_git_conn",
+              "subdir": "dags",
+              "tracking_ref": "main",
+              "refresh_interval": 0
+            }
+          }
+        ]
+      '';
       AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK = "True";
       PYTHONPATH = airflowPythonPath;
     };
