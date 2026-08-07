@@ -13,7 +13,13 @@ let
     airflow = pkgs.apache-airflow.override {
       enabledProviders = ["git"];
     };
-    airflowExe = lib.getExe airflow;
+    # NB: use the top-level `apache-airflow` binary instead of lib.getExe (which
+    # resolves to the `airflow` meta.mainProgram symlink pointing at airflow-core's
+    # wrapper). The airflow-core wrapper only loads the provider packages that
+    # airflow-core itself depends on (the requiredProviders) and omits the
+    # enabledProviders passed via the .override, so the git provider would never be
+    # visible. The top-level `apache-airflow` wrapper includes all enabled providers.
+    airflowExe = "${airflow}/bin/apache-airflow";
     airflowPythonPath = pkgs.python313Packages.makePythonPath [
       pkgs.python313Packages.asyncpg
       pkgs.python313Packages.psycopg2
