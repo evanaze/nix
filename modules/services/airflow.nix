@@ -13,12 +13,6 @@ let
     airflow = pkgs.apache-airflow.override {
       enabledProviders = ["git"];
     };
-    # NB: use the top-level `apache-airflow` binary instead of lib.getExe (which
-    # resolves to the `airflow` meta.mainProgram symlink pointing at airflow-core's
-    # wrapper). The airflow-core wrapper only loads the provider packages that
-    # airflow-core itself depends on (the requiredProviders) and omits the
-    # enabledProviders passed via the .override, so the git provider would never be
-    # visible. The top-level `apache-airflow` wrapper includes all enabled providers.
     airflowExe = "${airflow}/bin/apache-airflow";
     airflowPythonPath = pkgs.python313Packages.makePythonPath [
       pkgs.python313Packages.asyncpg
@@ -32,21 +26,22 @@ let
       AIRFLOW__CORE__EXECUTION_API_SERVER_URL = "http://127.0.0.1:${toString airflowPort}/execution/";
       AIRFLOW__CORE__EXECUTOR = "LocalExecutor";
       AIRFLOW__CORE__LOAD_EXAMPLES = "False";
+      AIRFLOW__CORE__TEST_CONNECTION = "Enabled";
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN = "postgresql+psycopg2://${airflowUser}@/${databaseName}?host=/run/postgresql";
-      # AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST = ''
-      #   [
-      #     {
-      #       "name": "stackmagic-research",
-      #       "classpath": "airflow.providers.git.bundles.git.GitDagBundle",
-      #       "kwargs": {
-      #         "git_conn_id": "my_git_conn",
-      #         "subdir": "dags",
-      #         "tracking_ref": "main",
-      #         "refresh_interval": 0
-      #       }
-      #     }
-      #   ]
-      # '';
+      AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST = ''
+        [
+          {
+            "name": "stackmagic-research",
+            "classpath": "airflow.providers.git.bundles.git.GitDagBundle",
+            "kwargs": {
+              "git_conn_id": "stackmagic-research",
+              "subdir": "dags",
+              "tracking_ref": "main",
+              "refresh_interval": 0
+            }
+          }
+        ]
+      '';
       AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK = "True";
       PYTHONPATH = airflowPythonPath;
     };
