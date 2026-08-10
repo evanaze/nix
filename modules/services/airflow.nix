@@ -14,9 +14,12 @@ let
       enabledProviders = ["git"];
     };
     airflowExe = "${airflow}/bin/apache-airflow";
-    airflowPythonPath = pkgs.python313Packages.makePythonPath [
-      pkgs.python313Packages.asyncpg
-      pkgs.python313Packages.psycopg2
+    airflowPython = airflow.pythonPackages;
+    stackmagicResearch = airflowPython.callPackage ../../pkgs/stackmagic-research {};
+    airflowPythonPath = airflowPython.makePythonPath [
+      stackmagicResearch
+      airflowPython.asyncpg
+      airflowPython.psycopg2
     ];
 
     airflowEnvironment = {

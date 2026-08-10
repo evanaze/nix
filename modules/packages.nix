@@ -9,6 +9,7 @@
       llama-prisma = pkgs.callPackage ../pkgs/llama-prisma {};
       dirac = pkgs.callPackage ../pkgs/dirac {};
       writr = pkgs.callPackage ../pkgs/writr {};
+      stackmagic-research = pkgs.python313Packages.callPackage ../pkgs/stackmagic-research {};
       # duck-ui = pkgs.callPackage ../pkgs/duck-ui {
       #   bun2nix = inputs.bun2nix.packages.${pkgs.system}.default;
       # };
