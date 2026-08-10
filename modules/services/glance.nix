@@ -193,50 +193,7 @@ let
                         {
                           title = "AI KVM";
                           url = "https://ai-kvm.${tailnet}";
-                          icon = "si:keyboard-settings";
-                        }
-                      ];
-                    }
-                    {
-                      type = "bookmarks";
-                      groups = [
-                        {
-                          title = "Server";
-                          links = [
-                            {
-                              title = "Search";
-                              url = "https://search.${tailnet}";
-                            }
-                            {
-                              title = "Todo";
-                              url = "https://todo.${tailnet}";
-                            }
-                            {
-                              title = "Alerts";
-                              url = "https://alerts.${tailnet}";
-                            }
-                            {
-                              title = "Cache";
-                              url = "https://cache.${tailnet}";
-                            }
-                          ];
-                        }
-                        {
-                          title = "Common";
-                          links = [
-                            {
-                              title = "GitHub";
-                              url = "https://github.com";
-                            }
-                            {
-                              title = "NixOS Search";
-                              url = "https://search.nixos.org";
-                            }
-                            {
-                              title = "Tailscale";
-                              url = "https://login.tailscale.com/admin/machines";
-                            }
-                          ];
+                          icon = "mdi:keyboard-settings";
                         }
                       ];
                     }
