@@ -156,8 +156,8 @@ let
                       cache = "1m";
                       sites = [
                         {
-                          title = "AI";
-                          url = "https://ai.${tailnet}";
+                          title = "Hermes";
+                          url = "https://agent.${tailnet}";
                           icon = "mdi:brain";
                         }
                         {
@@ -176,14 +176,24 @@ let
                           icon = "si:immich";
                         }
                         {
-                          title = "Memory";
-                          url = "https://memory.${tailnet}";
-                          icon = "mdi:database-search";
+                          title = "Airflow";
+                          url = "https://jobs.${tailnet}";
+                          icon = "si:apacheairflow";
                         }
                         {
                           title = "Monitoring";
                           url = "https://monitoring.${tailnet}";
                           icon = "si:grafana";
+                        }
+                        {
+                          title = "Todo";
+                          url = "https://todo.${tailnet}";
+                          icon = "si:checkmarx";
+                        }
+                        {
+                          title = "AI KVM";
+                          url = "https://ai-kvm.${tailnet}";
+                          icon = "si:keyboard-settings";
                         }
                       ];
                     }
