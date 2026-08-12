@@ -86,7 +86,9 @@
           SET s3_access_key_id = '$S3_KEY';
           SET s3_secret_access_key = '$S3_SECRET';
           ATTACH 'ducklake:postgres:postgresql://stackmagic_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/stackmagic_catalog' AS stackmagic;
-          ATTACH 'ducklake:postgres:postgresql://de_rec_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec;
+          # de_rec is an empty (new) DuckLake catalog: it requires a DATA_PATH.
+          # Supplying it on ATTACH lets DuckLake create/find the data files.
+          ATTACH 'ducklake:postgres:postgresql://de_rec_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec (DATA_PATH 's3://de-rec-lake/storage/');
           EOF
 
           exec duckdb -init "$INIT"
