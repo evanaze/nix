@@ -23,6 +23,37 @@
     environment.systemPackages = with pkgs; [duckdb];
 
     home-manager.users.${username} = {
+      # Completion for the ducklake wrapper. home-manager's programs.zsh.enableCompletion
+      # (set in modules/development/zsh.nix) puts $XDG_DATA_HOME/zsh/site-functions on
+      # fpath automatically, so a file named `_ducklake` under .config/zsh/site-functions
+      # gets symlinked there and just works.
+      home.file.".config/zsh/site-functions/_ducklake" = {
+        text = ''
+          #compdef ducklake
+
+          _ducklake() {
+            local -a options
+            options=(
+              '(-c --command)'{-c,--command}'[run SQL from string]:SQL string:'
+              '(-f --file)'{-f,--file}'[run SQL from file]:file:_files'
+              '(-init)'--init'[read SQL from file before starting REPL]:file:_files'
+              '(-read-only)'--read-only'[open database read-only]'
+              '(-csv -json)'{-csv,-json}'[output format]'
+              '(-header -noheader)'{-header,-noheader}'[show/hide column headers]'
+              '(-list -line -column)'{-list,-line,-column}'[output mode]'
+              '(-s)'{-s,--sql}'[run SQL statement]:SQL string:'
+              '(-no-stdin)'--no-stdin'[do not read from stdin]'
+              '(-list)'--list'[list available extensions]'
+              '1:database file:_files'
+              '*::argument:_files'
+            )
+            _arguments -C $options
+          }
+
+          _ducklake "$@"
+        '';
+      };
+
       home.file.".local/bin/ducklake" = {
         executable = true;
         text = ''
@@ -54,8 +85,8 @@
           cat >> "$INIT" << EOF
           SET s3_access_key_id = '$S3_KEY';
           SET s3_secret_access_key = '$S3_SECRET';
-          ATTACH 'postgres://stackmagic_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/stackmagic_catalog' AS stackmagic (TYPE postgres);
-          ATTACH 'postgres://de_rec_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec (TYPE postgres);
+          ATTACH 'ducklake:postgres:postgresql://stackmagic_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/stackmagic_catalog' AS stackmagic;
+          ATTACH 'ducklake:postgres:postgresql://de_rec_catalog:$DB_PASS@pg.spitz-pickerel.ts.net:5432/de_rec_catalog' AS de_rec;
           EOF
 
           exec duckdb -init "$INIT"
