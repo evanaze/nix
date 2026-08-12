@@ -21,7 +21,7 @@ buildPythonPackage {
     repo = "stackmagic-research";
     rev = "e4554ca1ac6be290779e12749b67a518c7dffaa9";
     private = true;
-    hash = lib.fakeHash;
+    hash = "sha256-iG4ABcvXM06Mfyx0xsx2VMgjlNcVliO37XL8sMDpG6o=";
   };
 
   nativeBuildInputs = [
