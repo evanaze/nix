@@ -68,6 +68,9 @@ let
       ];
       wantedBy = ["multi-user.target"];
       environment = airflowEnvironment;
+      path = with pkgs; [
+        bash
+      ];
       serviceConfig = {
         Type = "simple";
         User = airflowUser;
@@ -119,6 +122,7 @@ let
         "airflow-triggerer.service"
       ];
       path = with pkgs; [
+        bash
         coreutils
         openssl
         postgresql
