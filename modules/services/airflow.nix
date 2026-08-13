@@ -70,7 +70,7 @@ let
       environment = airflowEnvironment;
       path = with pkgs; [
         bash
-        uv
+        stackmagicResearch
       ];
       serviceConfig = {
         Type = "simple";
