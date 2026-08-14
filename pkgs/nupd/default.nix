@@ -13,10 +13,10 @@ buildGoModule {
     owner = "evanaze";
     repo = "nupd";
     rev = "f126351abac93081a7fb50bd66572dc132d049b3";
-    hash = lib.fakeHash;
+    hash = "sha256-8UwZqzLTTPa4Y95FBUOP1SEIJCJjVj8cYwbFjcu7y5M=";
   };
 
-  vendorHash = lib.fakeHash;
+  vendorHash = null;
 
   meta = {
     description = "Nix Package Update utility";
