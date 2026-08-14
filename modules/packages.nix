@@ -1,18 +1,14 @@
 {
   perSystem = {pkgs, ...}: {
     packages = {
-      dragonfly-gguf-client = pkgs.callPackage ../pkgs/dragonfly-gguf-client {};
-      twenty = pkgs.callPackage ../pkgs/twenty {};
+      dirac = pkgs.callPackage ../pkgs/dirac {};
       hermes-webui = pkgs.callPackage ../pkgs/hermes-webui {};
+      llama-prisma = pkgs.callPackage ../pkgs/llama-prisma {};
+      nupd = pkgs.callPackage ../pkgs/nupd {};
       oh-my-openagent = pkgs.callPackage ../pkgs/oh-my-openagent {};
       svr-mgmt = pkgs.callPackage ../pkgs/svr-mgmt {};
-      llama-prisma = pkgs.callPackage ../pkgs/llama-prisma {};
-      dirac = pkgs.callPackage ../pkgs/dirac {};
-      writr = pkgs.callPackage ../pkgs/writr {};
       stackmagic-research = pkgs.python313Packages.callPackage ../pkgs/stackmagic-research {};
-      # duck-ui = pkgs.callPackage ../pkgs/duck-ui {
-      #   bun2nix = inputs.bun2nix.packages.${pkgs.system}.default;
-      # };
+      writr = pkgs.callPackage ../pkgs/writr {};
     };
   };
 }

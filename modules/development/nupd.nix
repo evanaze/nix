@@ -6,12 +6,12 @@ let
     ...
   }: {
     environment.systemPackages = [
-      inputs.self.packages.${system}.writr
+      inputs.self.packages.${system}.nupd
     ];
   };
 in {
   flake.modules.nixos = {
-    developmentWritr = module;
+    developmentNupd = module;
     development = module;
   };
 }
