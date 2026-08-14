@@ -19,9 +19,9 @@ buildPythonPackage {
   src = fetchFromGitHub {
     owner = "evanaze";
     repo = "stackmagic-research";
-    rev = "86054c6892698cba7e9ff8db10bdf5e0f79d0bce";
     private = true;
-    hash = "sha256-HutfzrEK4yr6PZhD42EHxGvQHFk290DqRF+ziYKAIx8=";
+    rev = "43500bc6ceba233b59fadb610c9c32b76e6efcc6";
+    hash = "sha256-7DgspcGDsIrHJuGRQUB4KHXcIY0u+IG3dsUEgCsQNfQ=";
   };
 
   nativeBuildInputs = [
