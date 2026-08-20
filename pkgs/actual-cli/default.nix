@@ -14,7 +14,7 @@ in
 
     src = fetchurl {
       url = "https://registry.npmjs.org/@actual-app/cli/-/cli-${version}.tgz";
-      hash = "sha256-F/OHIQmYEjeyuY+j6wcp8UGuRjOuO8OnV7PA34UtQNU=";
+      hash = "sha256-1UAthd/As1enwzuuM0auQfEpB+ujj7myNxKYCSGH8xc=";
     };
 
     sourceRoot = "package";
