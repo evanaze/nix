@@ -6,8 +6,6 @@ let
     };
 
     sops.secrets.kubernetes = {
-      owner = "k3s";
-      group = "k3s";
       mode = "0640";
     };
 
