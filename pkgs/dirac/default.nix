@@ -7,8 +7,6 @@
   ripgrep,
 }: let
   version = "0.4.37";
-
-  # Vendored lockfile (generated with: npm install --package-lock-only --ignore-scripts --production)
   lockfile = ./package-lock.json;
 in
   buildNpmPackage {
