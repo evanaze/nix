@@ -26,28 +26,7 @@ let
       ];
     };
 
-    systemd.services.grafana-tsserve = {
-      after = [
-        "tailscaled-autoconnect.service"
-        "grafana.service"
-      ];
-      wants = [
-        "tailscaled-autoconnect.service"
-        "grafana.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Using Tailscale Serve to publish Grafana";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:monitoring || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:monitoring --https=443 http://127.0.0.1:2342
-      '';
-    };
+    services.tailscale.serve.services.monitoring.endpoints."tcp:443" = "https://127.0.0.1:2342";
   };
 in {
   flake.modules.nixos = {

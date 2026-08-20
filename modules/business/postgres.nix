@@ -33,27 +33,7 @@ let
       runAsLocalSuperUser = true;
     };
 
-    systemd.services.postgres-tsserve = {
-      after = [
-        "tailscaled-autoconnect.service"
-        "postgresql.service"
-      ];
-      wants = [
-        "tailscaled-autoconnect.service"
-        "postgresql.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Using Tailscale Serve to publish PostgreSQL";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve --service=svc:pg --tcp 5432 tcp://127.0.0.1:5432
-      '';
-    };
+    services.tailscale.serve.services.pg.endpoints."tcp:5432" = "tcp://127.0.0.1:5432";
   };
 in {
   flake.modules.nixos = {
