@@ -6,7 +6,7 @@
   makeWrapper,
   ripgrep,
 }: let
-  version = "0.4.28";
+  version = "0.4.37";
 
   # Vendored lockfile (generated with: npm install --package-lock-only --ignore-scripts --production)
   lockfile = ./package-lock.json;
@@ -17,12 +17,12 @@ in
 
     src = fetchurl {
       url = "https://registry.npmjs.org/dirac-cli/-/dirac-cli-${version}.tgz";
-      hash = "sha512-rNHDVOKGsfoW1bGFxM/heGnB5VMG3pWVLUGG8paBx8CEIRxosIc+nS0+KfQzb4iwRaAWnkVKwU03hEZELr+1hw==";
+      hash = "sha512-d8OUR1vJ93Y9Z86BNcqrdQKqtbMJfnPIQuRVt//dhZhUV+wLs6hbwRM51Me0rPfPOC14c9qXRv3/zjlsKLlM7w==";
     };
 
     sourceRoot = "package";
 
-    npmDepsHash = "sha256-Z/wY1YLK5FXhCYT6LeOW78Xb9xW7qSNloSbUWmPZIJ0=";
+    npmDepsHash = "sha256-1JLWa2FDlTB5I36SRo5KeAz1U+baprjlnvFbtd7M2Lc=";
 
     dontNpmBuild = true;
 
