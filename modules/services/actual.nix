@@ -48,7 +48,7 @@ let
       };
     };
 
-    services.tailscale.serve.services.budget.endpoints."tcp:443" = "http://127.0.0.1:${toString actualPort}";
+    services.tailscale.serve.services.budget.endpoints."tcp:443" = "https://127.0.0.1:${toString actualPort}";
   };
 in {
   flake.modules.nixos = {

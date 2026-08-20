@@ -70,7 +70,7 @@ let
       script = "${lib.getExe hermes-webui}";
     };
 
-    services.tailscale.serve.services.agent.endpoints."tcp:443" = "http://127.0.0.1:8787";
+    services.tailscale.serve.services.agent.endpoints."tcp:443" = "https://127.0.0.1:8787";
   };
 in {
   flake.modules.nixos = {

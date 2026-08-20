@@ -26,7 +26,7 @@ let
       ];
     };
 
-    services.tailscale.serve.services.monitoring.endpoints."tcp:443" = "http://127.0.0.1:2342";
+    services.tailscale.serve.services.monitoring.endpoints."tcp:443" = "https://127.0.0.1:2342";
   };
 in {
   flake.modules.nixos = {
