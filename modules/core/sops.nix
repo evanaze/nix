@@ -25,7 +25,6 @@ let
           };
           admin-pass = {};
           grafana = {};
-          actual = {};
           "nut/ups-passwd" = {};
         };
       };

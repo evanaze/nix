@@ -29,13 +29,16 @@ let
       };
     };
 
+    nixpkgs.overlays = [actualCliOverlay];
+    sops.secrets.actual = {};
+
     systemd.services."actual-sync" = {
       after = ["actual.service"];
       requires = ["actual.service"];
       description = "Sync Actual Budget bank transactions";
       script = ''
         set -eu
-        ${lib.getExe actual-cli} server bank-sync --server-url http://localhost:5006 --password /run/secrets/ts-server-key;
+        ${lib.getExe pkgs.actual-cli} server bank-sync --server-url http://localhost:5006 --password ${config.sops.secrets.actual.path};
       '';
       serviceConfig = {
         Type = "oneshot";

@@ -10,13 +10,16 @@
 in
   buildNpmPackage {
     pname = "actual-cli";
+    inherit version;
 
     src = fetchurl {
-          url = "https://registry.npmjs.org/@actual-app/cli/-/cli-${version}.tgz";
-          hash = "sha256-32ZdtebuEqgycoMbTRuBoAGAK+srq8XUAL8dHfMoaDo=";
-        };
+      url = "https://registry.npmjs.org/@actual-app/cli/-/cli-${version}.tgz";
+      hash = "sha256-F/OHIQmYEjeyuY+j6wcp8UGuRjOuO8OnV7PA34UtQNU=";
+    };
 
-    npmDepsHash = "sha256-pH6uVnERlG5QMzsx5wj2CepoCfEyhR3/KJQ5M3y/lsQ=";
+    sourceRoot = "package";
+
+    npmDepsHash = "sha256-uu+n2n+lr9FvE+sktLJ+eq03ifqEKoYkBHOZqe/M11g=";
     dontNpmBuild = true;
 
     buildInputs = [nodejs];
@@ -36,4 +39,4 @@ in
     '';
 
     meta.mainProgram = "actual";
-  };
+  }
