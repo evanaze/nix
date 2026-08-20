@@ -101,7 +101,6 @@ in {
         hardwareUsbTethering
         networkingVpn
         monitoring
-        servicesKubernetes
         tools
       ];
       extraModules = [

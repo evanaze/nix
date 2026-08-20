@@ -17,6 +17,8 @@ let
       token = config.sops.secrets.kubernetes.path;
       clusterInit = true;
     };
+
+    services.tailscale.serve.services.k8s.endpoints."tcp:443" = "http://localhost:6443";
   };
 in {
   flake.modules.nixos = {
