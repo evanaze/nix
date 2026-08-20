@@ -55,28 +55,7 @@ in {
     '';
   };
 
-  systemd.services.seaweedfs-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "seaweedfs.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "seaweedfs.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish SeaweedFS";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:swfs || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:swfs --https=443 http://127.0.0.1:${toString seaweedfsS3Port}
-    '';
-  };
+  services.tailscale.serve.services.swfs.endpoints."tcp:443" = "http://127.0.0.1:${toString seaweedfsS3Port}";
 };
 in {
   flake.modules.nixos = {

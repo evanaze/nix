@@ -546,53 +546,9 @@ let
       '';
     };
 
-    systemd.services.hermes-tsserve = {
-      after = [
-        "caddy.service"
-        "hermes-dashboard.service"
-        "tailscaled.service"
-      ];
-      wants = [
-        "caddy.service"
-        "hermes-dashboard.service"
-        "tailscaled.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Publish Hermes Dashboard via Tailscale Serve";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:hermes-dashboard || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:hermes-dashboard --https=443 http://127.0.0.1:${toString dashboardProxyPort}
-      '';
-    };
+    services.tailscale.serve.services.hermes-dashboard.endpoints."tcp:443" = "http://127.0.0.1:${toString dashboardProxyPort}";
 
-    systemd.services.sm-agent-tsserve = {
-      after = [
-        "hermes-stackmagic-gateway.service"
-        "tailscaled.service"
-      ];
-      wants = [
-        "hermes-stackmagic-gateway.service"
-        "tailscaled.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Publish Hermes API Server with the StackMagic Agent port";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:stackmagic-agent || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:stackmagic-agent --https=443 http://127.0.0.1:${toString stackmagic-agent-port}
-      '';
-    };
+    services.tailscale.serve.services.stackmagic-agent.endpoints."tcp:443" = "http://127.0.0.1:${toString stackmagic-agent-port}";
   };
 in {
   flake.modules.nixos = {

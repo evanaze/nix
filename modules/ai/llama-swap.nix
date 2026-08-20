@@ -326,27 +326,7 @@ let
       '';
     };
 
-    systemd.services.llm-tsserve = {
-      after = [
-        "tailscaled-autoconnect.service"
-        "llama-swap.service"
-      ];
-      wants = [
-        "tailscaled-autoconnect.service"
-        "llama-swap.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Using Tailscale Serve to publish Llama Swap";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve --service=svc:llm --https=443 ${toString config.services.llama-swap.port}
-      '';
-    };
+    services.tailscale.serve.services.llm.endpoints."tcp:443" = "http://127.0.0.1:${toString config.services.llama-swap.port}";
   };
 in {
   flake.modules.nixos = {

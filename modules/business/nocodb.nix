@@ -8,7 +8,6 @@ let
   nocodbPort = 8082;
   caddyPort = 8083;
   redisPort = 6380;
-  tsServePort = 443;
 in {
   services.caddy = {
     enable = true;
@@ -57,30 +56,7 @@ in {
     port = redisPort;
   };
 
-  systemd.services.nocodb-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "caddy.service"
-      "docker-nocodb.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "caddy.service"
-      "docker-nocodb.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Publish NocoDB via Tailscale Serve";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:nocodb || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:nocodb --https=${toString tsServePort} http://127.0.0.1:${toString caddyPort}
-    '';
-  };
+  services.tailscale.serve.services.nocodb.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPort}";
 };
 in {
   flake.modules.nixos = {

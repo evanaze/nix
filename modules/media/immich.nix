@@ -24,28 +24,7 @@ let
   in
     map (d: "d ${mediaDir}/${d} 0750 immich media -") immichDirs;
 
-  systemd.services.immich-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "immich-server.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "immich-server.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Immich";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:photos || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:photos --https=443 http://localhost:2283
-    '';
-  };
+  services.tailscale.serve.services.photos.endpoints."tcp:443" = "http://localhost:2283";
 };
 in {
   flake.modules.nixos = {

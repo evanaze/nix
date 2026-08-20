@@ -179,27 +179,7 @@ let
     };
   };
 
-  systemd.services.nut-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "nut-server.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "nut-server.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish NUT UPS service";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve --service=svc:nut --tcp 3493 tcp://127.0.0.1:3493
-    '';
-  };
+  services.tailscale.serve.services.nut.endpoints."tcp:3493" = "tcp://127.0.0.1:3493";
 
   systemd.services.nut-delayed-ups-shutdown = {
     enable = true;

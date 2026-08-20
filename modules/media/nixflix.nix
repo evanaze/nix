@@ -233,51 +233,9 @@ in {
     }) (builtins.attrNames caddyPorts)
   );
 
-  systemd.services.jellyfin-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "jellyfin.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "jellyfin.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Jellyfin";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:media || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:media --https=443 http://127.0.0.1:${toString caddyPorts.jellyfin}
-    '';
-  };
+  services.tailscale.serve.services.media.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPorts.jellyfin}";
 
-  systemd.services.lidarr-tsserve = {
-    after = [
-      "tailscaled-autoconnect.service"
-      "lidarr.service"
-    ];
-    wants = [
-      "tailscaled-autoconnect.service"
-      "lidarr.service"
-    ];
-    wantedBy = ["multi-user.target"];
-    description = "Using Tailscale Serve to publish Lidarr";
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "10s";
-    };
-    script = ''
-      ${lib.getExe pkgs.tailscale} serve clear svc:lidarr || true
-      ${lib.getExe pkgs.tailscale} serve --service=svc:lidarr --https=443 http://127.0.0.1:${toString caddyPorts.lidarr}
-    '';
-  };
+  services.tailscale.serve.services.lidarr.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPorts.lidarr}";
 
   sops.secrets = {
     "sonarr/api_key" = {};

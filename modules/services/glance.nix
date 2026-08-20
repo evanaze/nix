@@ -399,32 +399,7 @@ let
         };
       };
 
-      systemd.services.glance-tsserve = {
-        after = [
-          "tailscaled-autoconnect.service"
-          "tailscaled.service"
-          "caddy.service"
-          "glance.service"
-        ];
-        wants = [
-          "tailscaled-autoconnect.service"
-          "tailscaled.service"
-          "caddy.service"
-          "glance.service"
-        ];
-        wantedBy = ["multi-user.target"];
-        description = "Using Tailscale Serve to publish Glance";
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          Restart = "on-failure";
-          RestartSec = "10s";
-        };
-        script = ''
-          ${lib.getExe pkgs.tailscale} serve clear svc:home || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:home --https=443 http://127.0.0.1:${toString glanceCaddyPort}
-        '';
-      };
+      services.tailscale.serve.services.home.endpoints."tcp:443" = "http://127.0.0.1:${toString glanceCaddyPort}";
     };
   };
 in {

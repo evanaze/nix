@@ -51,30 +51,7 @@ in {
         };
       };
 
-      systemd.services.ntfy-tsserve = {
-        after = [
-          "tailscaled-autoconnect.service"
-          "tailscaled.service"
-          "ntfy-sh.service"
-        ];
-        wants = [
-          "tailscaled-autoconnect.service"
-          "tailscaled.service"
-          "ntfy-sh.service"
-        ];
-        wantedBy = ["multi-user.target"];
-        description = "Using Tailscale Serve to publish ntfy";
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          Restart = "on-failure";
-          RestartSec = "10s";
-        };
-        script = ''
-          ${lib.getExe pkgs.tailscale} serve clear svc:alerts || true
-          ${lib.getExe pkgs.tailscale} serve --service=svc:alerts --https=443 http://127.0.0.1:${toString ntfyPort}
-        '';
-      };
+      services.tailscale.serve.services.alerts.endpoints."tcp:443" = "http://127.0.0.1:${toString ntfyPort}";
     };
   };
 }

@@ -115,31 +115,7 @@ let
       '';
     };
 
-    # Tailscale Serve now points to Caddy instead of Donetick directly
-    systemd.services.donetick-tsserve = {
-      after = [
-        "tailscaled-autoconnect.service"
-        "caddy.service"
-        "donetick.service"
-      ];
-      wants = [
-        "tailscaled-autoconnect.service"
-        "caddy.service"
-        "donetick.service"
-      ];
-      wantedBy = ["multi-user.target"];
-      description = "Using Tailscale Serve to publish Donetick (via Caddy)";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        Restart = "on-failure";
-        RestartSec = "10s";
-      };
-      script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:todo || true
-        ${lib.getExe pkgs.tailscale} serve --service=svc:todo --https=443 http://127.0.0.1:${toString caddyPort}
-      '';
-    };
+    services.tailscale.serve.services.todo.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPort}";
   };
 in {
   flake.modules.nixos = {
