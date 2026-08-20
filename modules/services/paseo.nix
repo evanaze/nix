@@ -28,31 +28,6 @@ let
       '';
     };
 
-    # Tailscale Serve publishes Paseo inside the tailnet
-    # systemd.services.paseo-tsserve = {
-    #   after = [
-    #     "tailscaled-autoconnect.service"
-    #     "tailscaled.service"
-    #     "paseo.service"
-    #   ];
-    #   wants = [
-    #     "tailscaled-autoconnect.service"
-    #     "tailscaled.service"
-    #     "paseo.service"
-    #   ];
-    #   wantedBy = ["multi-user.target"];
-    #   description = "Using Tailscale Serve to publish Paseo";
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     RemainAfterExit = true;
-    #     Restart = "on-failure";
-    #     RestartSec = "10s";
-    #   };
-    #   script = ''
-    #     ${lib.getExe pkgs.tailscale} serve clear svc:paseo || true
-    #     ${lib.getExe pkgs.tailscale} serve --service=svc:paseo --https=443 http://127.0.0.1:${toString caddyPort}
-    #   '';
-    # };
     services.tailscale.serve.services.paseo.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPort}";
   };
 in {
