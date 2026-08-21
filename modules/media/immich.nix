@@ -24,7 +24,7 @@ let
     in
       map (d: "d ${mediaDir}/${d} 0750 immich media -") immichDirs;
 
-    services.tailscale.serve.services.photos.endpoints."tcp:443" = "http://localhost:2283";
+    services.tailscale.serve.services.photos.endpoints."tcp:443" = "https://localhost:2283";
   };
 in {
   flake.modules.nixos = {

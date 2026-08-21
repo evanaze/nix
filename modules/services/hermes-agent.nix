@@ -546,9 +546,9 @@ let
       '';
     };
 
-    services.tailscale.serve.services.hermes-dashboard.endpoints."tcp:443" = "http://127.0.0.1:${toString dashboardProxyPort}";
+    services.tailscale.serve.services.hermes-dashboard.endpoints."tcp:443" = "https://127.0.0.1:${toString dashboardProxyPort}";
 
-    services.tailscale.serve.services.stackmagic-agent.endpoints."tcp:443" = "http://127.0.0.1:${toString stackmagic-agent-port}";
+    services.tailscale.serve.services.stackmagic-agent.endpoints."tcp:443" = "https://127.0.0.1:${toString stackmagic-agent-port}";
   };
 in {
   flake.modules.nixos = {

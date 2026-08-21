@@ -55,7 +55,7 @@ let
       '';
     };
 
-    services.tailscale.serve.services.swfs.endpoints."tcp:443" = "http://127.0.0.1:${toString seaweedfsS3Port}";
+    services.tailscale.serve.services.swfs.endpoints."tcp:443" = "https://127.0.0.1:${toString seaweedfsS3Port}";
   };
 in {
   flake.modules.nixos = {

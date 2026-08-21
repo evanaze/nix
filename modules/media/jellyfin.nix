@@ -34,6 +34,6 @@
         "render"
       ];
 
-      services.tailscale.serve.services.media.endpoints."tcp:443" = "http://127.0.0.1:8096";
+      services.tailscale.serve.services.media.endpoints."tcp:443" = "https://127.0.0.1:8096";
     };
 }

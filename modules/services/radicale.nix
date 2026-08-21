@@ -26,7 +26,7 @@ let
       '';
     };
 
-    services.tailscale.serve.services.cal.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPort}";
+    services.tailscale.serve.services.cal.endpoints."tcp:443" = "https://127.0.0.1:${toString caddyPort}";
   };
 in {
   flake.modules.nixos = {
