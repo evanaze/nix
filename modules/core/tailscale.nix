@@ -29,6 +29,7 @@ let
         "seaweedfs.service"
         "immich-server.service"
         "docker-nocodb.service"
+        "paseo.service"
         "hermes-webui.service"
       ];
       wants = [
@@ -44,6 +45,7 @@ let
         "seaweedfs.service"
         "immich-server.service"
         "docker-nocodb.service"
+        "paseo.service"
         "hermes-webui.service"
       ];
     };
