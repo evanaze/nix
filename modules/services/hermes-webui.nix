@@ -70,7 +70,28 @@ let
       script = "${lib.getExe hermes-webui}";
     };
 
-    services.tailscale.serve.services.agent.endpoints."tcp:443" = "https://127.0.0.1:8787";
+    systemd.services.agent-tsserve = {
+      after = [
+        "hermes-webui.service"
+        "tailscaled.service"
+      ];
+      wants = [
+        "hermes-webui.service"
+        "tailscaled.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Publish Hermes WebUI via Tailscale Serve";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 8787
+      '';
+    };
   };
 in {
   flake.modules.nixos = {

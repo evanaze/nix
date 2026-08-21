@@ -39,7 +39,28 @@ let
       mode = "0440";
     };
 
-    services.tailscale.serve.services.memory.endpoints."tcp:443" = "http://localhost:1933";
+    systemd.services.openviking-tsserve = {
+      after = [
+        "tailscaled-autoconnect.service"
+        "openviking.service"
+      ];
+      wants = [
+        "tailscaled-autoconnect.service"
+        "openviking.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Using Tailscale Serve to publish Openviking";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:memory || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:memory --https=443 http://localhost:1933
+      '';
+    };
   };
 in {
   flake.modules.nixos = {

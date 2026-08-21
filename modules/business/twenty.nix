@@ -57,6 +57,29 @@ in {
   services.postgres.ensureDatabases = ["twenty"];
 
   # Tailscale Serve publishes Twenty (via Caddy)
-  services.tailscale.serve.services.crm.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPort}";
+  systemd.services.twenty-tsserve = {
+    after = [
+      "tailscaled-autoconnect.service"
+      "caddy.service"
+      "twenty.service"
+    ];
+    wants = [
+      "tailscaled-autoconnect.service"
+      "caddy.service"
+      "twenty.service"
+    ];
+    wantedBy = ["multi-user.target"];
+    description = "Using Tailscale Serve to publish Twenty (via Caddy)";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = "10s";
+    };
+    script = ''
+      ${lib.getExe pkgs.tailscale} serve clear svc:crm || true
+      ${lib.getExe pkgs.tailscale} serve --service=svc:crm --https=443 http://127.0.0.1:${toString caddyPort}
+    '';
+  };
 };
 }

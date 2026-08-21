@@ -185,7 +185,30 @@ let
       '';
     };
 
-    services.tailscale.serve.services.jobs.endpoints."tcp:443" = "https://127.0.0.1:${toString caddyPort}";
+    systemd.services.airflow-tsserve = {
+      after = [
+        "tailscaled-autoconnect.service"
+        "caddy.service"
+        "airflow-api.service"
+      ];
+      wants = [
+        "tailscaled-autoconnect.service"
+        "caddy.service"
+        "airflow-api.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Using Tailscale Serve to publish Airflow";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:jobs || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:jobs --https=443 http://127.0.0.1:${toString caddyPort}
+      '';
+    };
   };
 in {
   flake.modules.nixos = {

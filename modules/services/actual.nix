@@ -6,7 +6,6 @@ let
     username,
     ...
   }: let
-    actualPort = 5006;
     actualCliOverlay = final: prev: {
       actual-cli = final.callPackage ../../pkgs/actual-cli {};
     };
@@ -15,7 +14,7 @@ let
       enable = true;
       user = username;
       settings = {
-        port = actualPort;
+        port = 5006;
         dataDir = "/mnt/eye/appdata/actual";
       };
     };
@@ -39,7 +38,7 @@ let
       description = "Sync Actual Budget bank transactions";
       script = ''
         set -eu
-        ${lib.getExe pkgs.actual-cli} server bank-sync --server-url http://localhost:${toString actualPort} --password ${config.sops.secrets.actual.path};
+        ${lib.getExe pkgs.actual-cli} server bank-sync --server-url http://localhost:5006 --password ${config.sops.secrets.actual.path};
       '';
       serviceConfig = {
         Type = "oneshot";
@@ -48,7 +47,28 @@ let
       };
     };
 
-    services.tailscale.serve.services.budget.endpoints."tcp:443" = "https://127.0.0.1:${toString actualPort}";
+    systemd.services.actual-tsserve = {
+      after = [
+        "tailscaled-autoconnect.service"
+        "actual.service"
+      ];
+      wants = [
+        "tailscaled-autoconnect.service"
+        "actual.service"
+      ];
+      wantedBy = ["multi-user.target"];
+      description = "Using Tailscale Serve to publish Actual";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      };
+      script = ''
+        ${lib.getExe pkgs.tailscale} serve clear svc:budget || true
+        ${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=443 5006
+      '';
+    };
   };
 in {
   flake.modules.nixos = {
