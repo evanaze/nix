@@ -233,9 +233,9 @@ let
       }) (builtins.attrNames caddyPorts)
     );
 
-    services.tailscale.serve.services.media.endpoints."tcp:443" = "https://127.0.0.1:${toString caddyPorts.jellyfin}";
+    services.tailscale.serve.services.media.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPorts.jellyfin}";
 
-    services.tailscale.serve.services.lidarr.endpoints."tcp:443" = "https://127.0.0.1:${toString caddyPorts.lidarr}";
+    services.tailscale.serve.services.lidarr.endpoints."tcp:443" = "http://127.0.0.1:${toString caddyPorts.lidarr}";
 
     sops.secrets = {
       "sonarr/api_key" = {};

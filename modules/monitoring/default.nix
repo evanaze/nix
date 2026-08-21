@@ -51,7 +51,7 @@ in {
         };
       };
 
-      services.tailscale.serve.services.alerts.endpoints."tcp:443" = "https://127.0.0.1:${toString ntfyPort}";
+      services.tailscale.serve.services.alerts.endpoints."tcp:443" = "http://127.0.0.1:${toString ntfyPort}";
     };
   };
 }
