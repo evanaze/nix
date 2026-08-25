@@ -1,12 +1,4 @@
 let
-  openvikingCompatOverlay = inputs: final: prev: {
-    openviking = final.callPackage ../../pkgs/openviking/package.nix {
-      inherit (prev.openviking) src version;
-      ov-cli = final.ov-cli;
-      ragfs-python = inputs.openviking.packages.${final.stdenv.hostPlatform.system}.ragfs-python;
-    };
-  };
-
   module = {
     config,
     username,
@@ -16,7 +8,6 @@ let
     system,
     ...
   }: let
-    openvikingEndpoint = "https://memory.spitz-pickerel.ts.net";
     nocodbEnvFile = config.sops.secrets."nocodb/env".path;
     opencodeWithNocodbEnv = pkgs.symlinkJoin {
       inherit (pkgs.opencode) meta;
@@ -35,35 +26,17 @@ let
       '';
     };
   in {
-    nixpkgs.overlays = [
-      inputs.openviking.overlays.default
-      (openvikingCompatOverlay inputs)
-    ];
-
     sops.secrets."nocodb/env" = {
       owner = username;
       mode = "0400";
     };
 
-    environment.systemPackages = with pkgs; [
-      ov-cli
+    environment.systemPackages = [
       inputs.self.packages.${system}.oh-my-openagent
     ];
 
     home-manager.users.${username} = {
       home.file = {
-        ".openviking/ovcli.conf".text = ''
-          {"url": "${openvikingEndpoint}"}
-        '';
-
-        ".openviking/ovcli.settings.conf".text = ''
-          {"language": "en"}
-        '';
-
-        ".config/opencode/openviking-config.json".text = builtins.toJSON {
-          endpoint = openvikingEndpoint;
-        };
-
         ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
           "$schema" = "https://unpkg.com/oh-my-openagent@4.19.3/schema.json";
           agents = {
@@ -110,7 +83,6 @@ let
           lsp = true;
           plugin = [
             "oh-my-openagent@4.19.3"
-            "@openviking/opencode-plugin"
           ];
           compaction = {
             auto = true;

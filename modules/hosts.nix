@@ -74,6 +74,7 @@ in {
         tools
       ];
       extraModules = [
+        inputs.deepseek-harness.nixosModules.default
         inputs.nixos-hardware.nixosModules.common-pc
         inputs.nixos-hardware.nixosModules.common-pc-ssd
         inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
@@ -104,6 +105,7 @@ in {
         tools
       ];
       extraModules = [
+        inputs.deepseek-harness.nixosModules.default
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
     };
@@ -135,10 +137,9 @@ in {
         tools
       ];
       extraModules = [
+        inputs.deepseek-harness.nixosModules.default
         inputs.hermes-agent.nixosModules.default
-        inputs.kestra-nix.nixosModules.kestra
         inputs.nixflix.nixosModules.default
-        inputs.openviking.nixosModules.default
         inputs.paseo.nixosModules.default
       ];
     };

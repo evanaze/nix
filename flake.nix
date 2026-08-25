@@ -9,14 +9,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    deepseek-harness.url = "github:moraxyc/deepseek-harness.nix";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    kestra-nix = {
-      url = "github:evanaze/kestra-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
@@ -27,10 +24,6 @@
     };
     nixflix = {
       url = "github:kiriwalawren/nixflix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    openviking = {
-      url = "github:Daaboulex/openviking-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     paseo.url = "github:getpaseo/paseo";
@@ -58,9 +51,6 @@
     bun2nix = {
       url = "github:nix-community/bun2nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    llama-cpp = {
-      url = "github:ggml-org/llama.cpp/04eb4c446d22b63449d5dc41c038987d4d8cc3a6";
     };
   };
 

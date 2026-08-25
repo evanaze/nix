@@ -70,7 +70,6 @@ let
         base_url = "https://llm.spitz-pickerel.ts.net/v1";
         context_length = 128000;
       };
-      memory.provider = "openviking";
       browser = {
         cloud_provider = "local";
         camofox = {

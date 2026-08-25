@@ -7,16 +7,13 @@
   version,
   ov-cli,
   ragfs-python,
-}:
-
-let
-  mkTreeSitterWheel =
-    {
-      pname,
-      grammarVersion,
-      url,
-      hash,
-    }:
+}: let
+  mkTreeSitterWheel = {
+    pname,
+    grammarVersion,
+    url,
+    hash,
+  }:
     python3Packages.buildPythonPackage {
       inherit pname;
       version = grammarVersion;
@@ -168,121 +165,121 @@ let
     doCheck = false;
   });
 in
-python3Packages.buildPythonApplication {
-  pname = "openviking";
-  inherit version src;
-  pyproject = true;
+  python3Packages.buildPythonApplication {
+    pname = "openviking";
+    inherit version src;
+    pyproject = true;
 
-  env = {
-    SETUPTOOLS_SCM_PRETEND_VERSION = version;
-    OPENVIKING_VERSION = version;
-    OV_X86_BUILD_VARIANTS = "avx2";
-    OV_SKIP_RAGFS_BUILD = "1";
-    OV_REQUIRE_RAGFS_BUILD = "0";
-  };
+    env = {
+      SETUPTOOLS_SCM_PRETEND_VERSION = version;
+      OPENVIKING_VERSION = version;
+      OV_X86_BUILD_VARIANTS = "avx2";
+      OV_SKIP_RAGFS_BUILD = "1";
+      OV_REQUIRE_RAGFS_BUILD = "0";
+    };
 
-  postPatch = ''
-    substituteInPlace pyproject.toml \
-      --replace-fail '"cmake>=3.15",' "" \
-      --replace-fail '"maturin>=1.0,<2.0",' ""
-  '';
+    postPatch = ''
+      substituteInPlace pyproject.toml \
+        --replace-fail '"cmake>=3.15",' "" \
+        --replace-fail '"maturin>=1.0,<2.0",' ""
+    '';
 
-  preBuild = ''
-    mkdir -p prebuilt
-    cp ${ov-cli}/bin/ov prebuilt/
-    export OV_PREBUILT_BIN_DIR=$(pwd)/prebuilt
+    preBuild = ''
+      mkdir -p prebuilt
+      cp ${ov-cli}/bin/ov prebuilt/
+      export OV_PREBUILT_BIN_DIR=$(pwd)/prebuilt
 
-    mkdir -p openviking/lib
-    cp ${ragfs-python}/${python3Packages.python.sitePackages}/ragfs_python/ragfs_python*.so openviking/lib/
-  '';
+      mkdir -p openviking/lib
+      cp ${ragfs-python}/${python3Packages.python.sitePackages}/ragfs_python/ragfs_python*.so openviking/lib/
+    '';
 
-  build-system = with python3Packages; [
-    setuptools
-    setuptools-scm
-    pybind11
-    wheel
-  ];
-
-  nativeBuildInputs = [cmake];
-  dontUseCmakeConfigure = true;
-  pythonRelaxDeps = true;
-  hardeningDisable = ["format"];
-
-  dependencies =
-    (with python3Packages; [
-      pydantic
-      typing-extensions
-      pyyaml
-      httpx
-      requests
-      urllib3
-      loguru
-      cryptography
-      argon2-cffi
-      pathspec
-      openai
-      litellm
-      mcp
-      fastapi
-      uvicorn
-      python-multipart
-      pdfplumber
-      pdfminer-six
-      python-docx
-      python-pptx
-      openpyxl
-      olefile
-      xlrd
-      ebooklib
-      readabilipy
-      markdownify
-      feedparser
-      defusedxml
-      tree-sitter
-      tree-sitter-python
-      tree-sitter-javascript
-      tree-sitter-rust
-      tree-sitter-c-sharp
-      opentelemetry-api
-      opentelemetry-sdk
-      opentelemetry-exporter-otlp-proto-grpc
-      opentelemetry-exporter-otlp-proto-http
-      json-repair
-      apscheduler
-      xxhash
-      jinja2
-      tabulate
-      protobuf
-      typer
-    ])
-    ++ [
-      tree-sitter-typescript
-      tree-sitter-java
-      tree-sitter-cpp
-      tree-sitter-go
-      tree-sitter-php
-      tree-sitter-lua
-      lark-oapi
-      opentelemetry-instrumentation-asyncio
-      volcengine
-      volcengine-python-sdk
-      openviking-sdk
-      ragfs-python
+    build-system = with python3Packages; [
+      setuptools
+      setuptools-scm
+      pybind11
+      wheel
     ];
 
-  doCheck = false;
+    nativeBuildInputs = [cmake];
+    dontUseCmakeConfigure = true;
+    pythonRelaxDeps = true;
+    hardeningDisable = ["format"];
 
-  postInstall = ''
-    site=$out/lib/python*/site-packages/openviking
-    test -f $site/bin/ov || { echo "ERROR: ov binary not found in package" >&2; exit 1; }
-    test -f "$(echo $site/lib/ragfs_python*.so)" || { echo "ERROR: ragfs_python extension not found in package" >&2; exit 1; }
-  '';
+    dependencies =
+      (with python3Packages; [
+        pydantic
+        typing-extensions
+        pyyaml
+        httpx
+        requests
+        urllib3
+        loguru
+        cryptography
+        argon2-cffi
+        pathspec
+        openai
+        litellm
+        mcp
+        fastapi
+        uvicorn
+        python-multipart
+        pdfplumber
+        pdfminer-six
+        python-docx
+        python-pptx
+        openpyxl
+        olefile
+        xlrd
+        ebooklib
+        readabilipy
+        markdownify
+        feedparser
+        defusedxml
+        tree-sitter
+        tree-sitter-python
+        tree-sitter-javascript
+        tree-sitter-rust
+        tree-sitter-c-sharp
+        opentelemetry-api
+        opentelemetry-sdk
+        opentelemetry-exporter-otlp-proto-grpc
+        opentelemetry-exporter-otlp-proto-http
+        json-repair
+        apscheduler
+        xxhash
+        jinja2
+        tabulate
+        protobuf
+        typer
+      ])
+      ++ [
+        tree-sitter-typescript
+        tree-sitter-java
+        tree-sitter-cpp
+        tree-sitter-go
+        tree-sitter-php
+        tree-sitter-lua
+        lark-oapi
+        opentelemetry-instrumentation-asyncio
+        volcengine
+        volcengine-python-sdk
+        openviking-sdk
+        ragfs-python
+      ];
 
-  meta = {
-    description = "OpenViking — agent-native context database for AI agents";
-    homepage = "https://github.com/volcengine/OpenViking";
-    license = lib.licenses.asl20;
-    mainProgram = "openviking-server";
-    platforms = ["x86_64-linux"];
-  };
-}
+    doCheck = false;
+
+    postInstall = ''
+      site=$out/lib/python*/site-packages/openviking
+      test -f $site/bin/ov || { echo "ERROR: ov binary not found in package" >&2; exit 1; }
+      test -f "$(echo $site/lib/ragfs_python*.so)" || { echo "ERROR: ragfs_python extension not found in package" >&2; exit 1; }
+    '';
+
+    meta = {
+      description = "OpenViking — agent-native context database for AI agents";
+      homepage = "https://github.com/volcengine/OpenViking";
+      license = lib.licenses.asl20;
+      mainProgram = "openviking-server";
+      platforms = ["x86_64-linux"];
+    };
+  }
