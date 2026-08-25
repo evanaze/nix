@@ -6,7 +6,7 @@ let
     inputs,
     ...
   }: let
-    llama-cpp = inputs.llama-cpp.packages.${pkgs.system}.cuda;
+    llama-cpp = pkgs.llama-cpp.override {cudaSupport = true;};
     llama-server = lib.getExe' llama-cpp "llama-server";
     systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";
@@ -217,7 +217,6 @@ let
       port = 8724;
       settings = {
         models = {
-
           # Sidecars only: gemma-4-12B-it-assistant-Q8_0.gguf and mmproj-MiniCPM-V-4_6-F16.gguf must never become top-level model keys.
           "qwen3.6-bonsai" = {
             cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
