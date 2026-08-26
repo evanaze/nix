@@ -38,7 +38,7 @@ let
       description = "Sync Actual Budget bank transactions";
       script = ''
         set -eu
-        ${lib.getExe pkgs.actual-cli} server bank-sync --server-url http://localhost:5006 --password ${config.sops.secrets.actual.path};
+        ${lib.getExe pkgs.actual-cli} server bank-sync --server-url http://localhost:5006;
       '';
       serviceConfig = {
         Type = "oneshot";
