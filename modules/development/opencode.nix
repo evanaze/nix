@@ -31,46 +31,7 @@ let
       mode = "0400";
     };
 
-    environment.systemPackages = [
-      inputs.self.packages.${system}.oh-my-openagent
-    ];
-
     home-manager.users.${username} = {
-      home.file = {
-        ".config/opencode/oh-my-openagent.json".text = builtins.toJSON {
-          "$schema" = "https://unpkg.com/oh-my-openagent@4.19.3/schema.json";
-          agents = {
-            sisyphus = {
-              model = "deepseek/deepseek-v4-flash";
-              variant = "high";
-            };
-            hephaestus.model = "deepseek/deepseek-v4-pro";
-            oracle.model = "deepseek/deepseek-v4-pro";
-            prometheus.model = "deepseek/deepseek-v4-pro";
-            atlas.model = "deepseek/deepseek-v4-pro";
-            librarian.model = "deepseek/deepseek-v4-flash";
-            explore.model = "deepseek/deepseek-v4-flash";
-            "multimodal-looker".model = "deepseek/deepseek-v4-flash";
-            momus = {
-              model = "deepseek/deepseek-v4-flash";
-              variant = "high";
-            };
-          };
-          categories = {
-            "visual-engineering".model = "openai/gpt-5.5";
-            ultrabrain = {
-              model = "openai/gpt-5.5";
-              variant = "high";
-            };
-            artistry.model = "openai/gpt-5.5";
-            quick.model = "openai/gpt-5.4-mini";
-            "unspecified-low".model = "openai/gpt-5.4-mini";
-            "unspecified-high".model = "openai/gpt-5.5";
-            writing.model = "openai/gpt-5.4";
-          };
-        };
-      };
-
       programs.opencode = {
         enable = true;
         enableMcpIntegration = true;
@@ -81,9 +42,7 @@ let
         settings = {
           autoupdate = true;
           lsp = true;
-          plugin = [
-            "oh-my-openagent@4.19.3"
-          ];
+          plugin = [];
           compaction = {
             auto = true;
             prune = true;
