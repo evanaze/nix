@@ -65,7 +65,6 @@ let
         RestartSec = "10s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:budget || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:budget --https=443 5006
       '';
     };

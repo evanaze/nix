@@ -46,7 +46,6 @@ let
         RestartSec = "10s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:cal || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:cal --https=443 http://127.0.0.1:${toString caddyPort}
       '';
     };

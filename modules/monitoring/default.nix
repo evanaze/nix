@@ -71,7 +71,6 @@ in {
           RestartSec = "10s";
         };
         script = ''
-          ${lib.getExe pkgs.tailscale} serve clear svc:alerts || true
           ${lib.getExe pkgs.tailscale} serve --service=svc:alerts --https=443 http://127.0.0.1:${toString ntfyPort}
         '';
       };

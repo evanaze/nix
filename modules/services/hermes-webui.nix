@@ -88,7 +88,6 @@ let
         RestartSec = "10s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:agent || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:agent --https=443 8787
       '';
     };
