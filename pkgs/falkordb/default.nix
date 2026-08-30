@@ -5,7 +5,7 @@
   autoPatchelfHook,
   openssl,
 }: let
-  version = "4.18.2";
+  version = "4.20.4";
 in
   stdenv.mkDerivation {
     pname = "falkordb";
@@ -13,7 +13,7 @@ in
 
     src = fetchurl {
       url = "https://github.com/FalkorDB/FalkorDB/releases/download/v${version}/falkordb-x64.so";
-      hash = "sha256-TTR+nPuBh7FDNbXrLRSx48wSfkh/vD2dlPUtHUT+wk4=";
+      hash = "sha256-0ma5d30nhiysz5an4h0cwkq042r2ic0ldqh5v6d4rzf2knc6psl1";
     };
 
     dontUnpack = true;
