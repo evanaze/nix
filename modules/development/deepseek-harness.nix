@@ -7,19 +7,11 @@ let
   }: {
     programs.dsh = {
       enable = true;
-      profiles = {
-        tui = {
-          bundles = [pkgs.dsh.bundles.tui];
-        };
-      };
+      profiles.tui.bundles = [pkgs.dsh.bundles.tui];
       defaultProfile = "nix-tui";
     };
 
     home-manager.users.${username} = {
-      # dsh reads LLM provider routes from ~/.dsh/settings.yaml under the
-      # `llm-pi-ai: providers:` section (see config-catalog ->
-      # @deepseek-ai/dsh-llm-pi-ai). This mirrors the providers declared in
-      # opencode.nix and pi-coding-agent/default.nix.
       home.file.".dsh/settings.yaml".text = ''
         llm-pi-ai:
           providers:
@@ -72,6 +64,6 @@ let
 in {
   flake.modules.nixos = {
     developmentDeepseekHarness = module;
-    development = module;
+    # development = module;
   };
 }
