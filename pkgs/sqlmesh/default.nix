@@ -2,11 +2,9 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
-
   # build-system
   setuptools,
   setuptools-scm,
-
   # dependencies
   click,
   croniter,
@@ -29,7 +27,6 @@
   tenacity,
   time-machine,
 }:
-
 buildPythonPackage (finalAttrs: {
   pname = "sqlmesh";
   version = "0.236.1";
@@ -88,8 +85,8 @@ buildPythonPackage (finalAttrs: {
     homepage = "https://sqlmesh.com";
     changelog = "https://github.com/SQLMesh/sqlmesh/blob/v${finalAttrs.version}/CHANGELOG.md";
     license = lib.licenses.asl20;
-    maintainers = with lib.maintainers; [ ];
-    platforms = lib.platforms.unix;
+    maintainers = with lib.maintainers; [];
+    platforms = lib.platforms.linux;
     mainProgram = "sqlmesh";
   };
 })
