@@ -13,7 +13,7 @@ in
 
     src = fetchurl {
       url = "https://github.com/FalkorDB/FalkorDB/releases/download/v${version}/falkordb-x64.so";
-      hash = "sha256-0ma5d30nhiysz5an4h0cwkq042r2ic0ldqh5v6d4rzf2knc6psl1";
+      hash = "sha256-geprmJ3C/Uya2QXiRgGLIgsC8OQMQGJV+dpHaMFoRVU=";
     };
 
     dontUnpack = true;
@@ -23,7 +23,7 @@ in
     # autoPatchelfHook scans for needed libs; add more here if FalkorDB
     # pulls in extra shared libraries on Linux.
     buildInputs =
-      lib.optionals stdenv.isLinux [stdenv.cc.cc.lib]
+      lib.optionals stdenv.isLinux [openssl stdenv.cc.cc.lib]
       ++ lib.optionals stdenv.isDarwin [openssl];
 
     installPhase = ''

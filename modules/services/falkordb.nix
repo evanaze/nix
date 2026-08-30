@@ -10,10 +10,6 @@ let
     falkordbDir = "/mnt/eye/appdata/falkordb";
   in {
     config = lib.mkIf (config.networking.hostName == "jupiter") {
-      systemd.tmpfiles.rules = [
-        "d ${falkordbDir} 0750 redis redis -"
-      ];
-
       services.redis.servers.falkordb = {
         enable = true;
         port = falkordbPort;
@@ -23,7 +19,7 @@ let
         settings = {
           loadmodule = ["${falkordb}/lib/falkordb.so"];
           timeout = "0";
-          dir = falkordbDir;
+          dir = lib.mkForce falkordbDir;
         };
       };
 
@@ -36,6 +32,11 @@ let
           "create-appdata-datasets.service"
           "zfs-mount.service"
         ];
+        preStart = ''
+          mkdir -p ${falkordbDir}
+          chown redis:redis ${falkordbDir}
+          chmod 0750 ${falkordbDir}
+        '';
         serviceConfig.StateDirectory = "redis-falkordb";
       };
     };
