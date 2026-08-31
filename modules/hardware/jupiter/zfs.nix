@@ -61,6 +61,7 @@ let
         "hermes-stackmagic-profile.service"
         "donetick.service"
         "chromadb.service"
+        "redis-falkordb.service"
       ];
       wants = ["zfs-mount.service"];
       wantedBy = ["multi-user.target"];
@@ -72,15 +73,16 @@ let
         if ! ${pkgs.zfs}/bin/zfs list eye/appdata >/dev/null 2>&1; then
           ${pkgs.zfs}/bin/zfs create -o mountpoint=/mnt/eye/appdata eye/appdata
         fi
-        for ds in actual donetick grafana hermes jellyfin chromadb; do
+        for ds in actual chromadb donetick falkordb grafana hermes jellyfin; do
           if ! ${pkgs.zfs}/bin/zfs list eye/appdata/$ds >/dev/null 2>&1; then
             ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
           fi
         done
         chown evanaze:users /mnt/eye/appdata/actual || true
-        chown evanaze:users /mnt/eye/appdata/donetick || true
-        chown grafana:grafana /mnt/eye/appdata/grafana || true
         chown -R chromadb:chromadb /mnt/eye/appdata/chromadb || true
+        chown evanaze:users /mnt/eye/appdata/donetick || true
+        chown evanaze:users /mnt/eye/appdata/falkordb || true
+        chown grafana:grafana /mnt/eye/appdata/grafana || true
         chown hermes:hermes /mnt/eye/appdata/hermes || true
         chown evanaze:jellyfin /mnt/eye/appdata/jellyfin || true
       '';
@@ -89,10 +91,11 @@ let
     systemd.tmpfiles.rules = [
       "d /mnt/eye/appdata 0755 root root -"
       "d /mnt/eye/appdata/actual 0750 evanaze users -"
+      "d /mnt/eye/appdata/chromadb 0750 chromadb chromadb -"
       "d /mnt/eye/appdata/donetick 0755 evanaze users -"
+      "d /mnt/eye/appdata/falkordb 0750 evanaze users -"
       "d /mnt/eye/appdata/grafana 0750 grafana grafana -"
       "d /mnt/eye/appdata/hermes 0750 hermes hermes -"
-      "d /mnt/eye/appdata/chromadb 0750 chromadb chromadb -"
       "d /mnt/eye/documents 0755 evanaze users -"
       "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
       "d /mnt/eye/downloads 0755 evanaze users -"
@@ -115,12 +118,7 @@ let
       requires = ["zfs-mount.service"];
     };
 
-    systemd.services.jellyfin = {
-      after = ["zfs-mount.service"];
-      requires = ["zfs-mount.service"];
-    };
-
-    systemd.services.grafana = {
+    systemd.services.chromadb = {
       after = ["zfs-mount.service"];
       requires = ["zfs-mount.service"];
     };
@@ -130,12 +128,22 @@ let
       requires = ["zfs-mount.service"];
     };
 
+    systemd.services.falkordb = {
+      after = ["zfs-mount.service"];
+      requires = ["zfs-mount.service"];
+    };
+
+    systemd.services.grafana = {
+      after = ["zfs-mount.service"];
+      requires = ["zfs-mount.service"];
+    };
+
     systemd.services.hermes-agent = {
       after = ["zfs-mount.service"];
       requires = ["zfs-mount.service"];
     };
 
-    systemd.services.chromadb = {
+    systemd.services.jellyfin = {
       after = ["zfs-mount.service"];
       requires = ["zfs-mount.service"];
     };
