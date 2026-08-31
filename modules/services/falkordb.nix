@@ -34,10 +34,11 @@ let
         ];
         preStart = ''
           mkdir -p ${falkordbDir}
-          chown redis-falkordb:redis-falkordb ${falkordbDir}
           chmod 0750 ${falkordbDir}
         '';
         serviceConfig.StateDirectory = "redis-falkordb";
+        serviceConfig.SystemCallFilter = lib.mkForce "";
+        serviceConfig.ReadWritePaths = [falkordbDir];
       };
     };
   };

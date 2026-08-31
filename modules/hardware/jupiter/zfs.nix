@@ -81,7 +81,7 @@ let
         chown evanaze:users /mnt/eye/appdata/actual || true
         chown -R chromadb:chromadb /mnt/eye/appdata/chromadb || true
         chown evanaze:users /mnt/eye/appdata/donetick || true
-        chown evanaze:users /mnt/eye/appdata/falkordb || true
+        chown redis-falkordb:redis-falkordb /mnt/eye/appdata/falkordb || true
         chown grafana:grafana /mnt/eye/appdata/grafana || true
         chown hermes:hermes /mnt/eye/appdata/hermes || true
         chown evanaze:jellyfin /mnt/eye/appdata/jellyfin || true
