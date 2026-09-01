@@ -6,7 +6,12 @@ let
     inputs,
     ...
   }: let
-    llama-cpp = pkgs.llama-cpp.override {cudaSupport = true;};
+    # Vendored llama.cpp 0.2.0 (build 10566): the nixos-26.05 channel tree still ships
+    # build b9190 which predates upstream MTP "gemma4-assistant" support (PR #24282),
+    # causing mtp-gemma-4-12B-it.gguf to fail with
+    # "unknown model architecture: 'gemma4-assistant'".
+    # See pkgs/llama-cpp-0.2.0/default.nix for details.
+    llama-cpp = (pkgs.callPackage ../../pkgs/llama-cpp-0.2.0 {}).override {cudaSupport = true;};
     llama-server = lib.getExe' llama-cpp "llama-server";
     systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";
