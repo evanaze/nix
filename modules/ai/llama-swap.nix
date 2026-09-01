@@ -128,29 +128,6 @@ let
         --port "$PORT"
     '';
 
-    launchScriptGemmaQ6 = mk-launch-script "gemma-4-12b-q6" ''
-      run_llama_server "$PORT" \
-        "${llama-server}" \
-        -m "${source-model-dir}/gemma-4-12b-it-Q6_K.gguf" \
-        --spec-draft-model "${source-model-dir}/mtp-gemma-4-12B-it.gguf" \
-        --mmproj "${source-model-dir}/gemma-4-mmproj-F16.gguf" \
-        --spec-type draft-mtp \
-        --spec-draft-n-max 3 \
-        --flash-attn on \
-        --fit on --fit-target 1536 --fit-ctx 64000 \
-        --parallel 1 \
-        --ctx-size 64000 \
-        -ctk q8_0 -ctv q8_0 \
-        --temp 1.0 \
-        --top-p 0.95 \
-        --top-k 64 \
-        --threads 10 --threads-batch 12 \
-        --batch-size 512 --ubatch-size 256 \
-        --jinja \
-        --chat-template-kwargs '{"preserve_thinking": true}' \
-        --port "$PORT"
-    '';
-
     launchScriptGemmaUnsensored = mk-launch-script "gemma-4-12b-q4-us" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
@@ -222,12 +199,7 @@ let
       port = 8724;
       settings = {
         models = {
-          # Sidecars only: gemma-4-12B-it-assistant-Q8_0.gguf and mmproj-MiniCPM-V-4_6-F16.gguf must never become top-level model keys.
           "qwen3.6-bonsai" = {
-            cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
-            healthCheckTimeout = 900;
-          };
-          "local:qwen3.6-bonsai" = {
             cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
             healthCheckTimeout = 900;
           };
@@ -235,23 +207,7 @@ let
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
-          "local:gemma-4-12b-q4" = {
-            cmd = "${launchScriptGemma} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "gemma-4-12b-q6" = {
-            cmd = "${launchScriptGemmaQ6} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "local:gemma-4-12b-q6" = {
-            cmd = "${launchScriptGemmaQ6} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
           "gemma-4-12b-q4-us" = {
-            cmd = "${launchScriptGemmaUnsensored} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "local:gemma-4-12b-q4-us" = {
             cmd = "${launchScriptGemmaUnsensored} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
@@ -259,23 +215,11 @@ let
             cmd = "${launchScriptLfmBalanced} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
-          "local:lfm2.5-8b-balanced" = {
-            cmd = "${launchScriptLfmBalanced} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
           "minicpm-v-4.6" = {
             cmd = "${launchScriptMiniCPM} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
-          "local:minicpm-v-4.6" = {
-            cmd = "${launchScriptMiniCPM} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
           "ornith-1.0-9b-q6" = {
-            cmd = "${launchScriptOrnithQ6} ${"$"}{PORT}";
-            healthCheckTimeout = 600;
-          };
-          "local:ornith-1.0-9b-q6" = {
             cmd = "${launchScriptOrnithQ6} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
