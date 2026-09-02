@@ -10,8 +10,8 @@ buildGoModule {
   src = fetchFromGitHub {
     owner = "evanaze";
     repo = "svr-mgmt";
-    rev = "9c7d28d74de6117a9982b589981c27ca12775a03";
-    hash = "sha256-Vm0JZwrvNAHx+Ik7wsnft+vSntKTNKCR4YUgH0Vc5Yc=";
+    rev = "e7b3c29f0ab619bb21d43273e8f27896a5a79600";
+    hash = "sha256-720Sw8LcZ4KO8wjXiuPkWj2kIEusABiUSVah92gmgoY=";
   };
 
   vendorHash = null;
