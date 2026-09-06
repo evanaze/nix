@@ -9,6 +9,10 @@ let
 
     users.users.${username}.extraGroups = ["media"];
 
+    nixpkgs.config.permittedInsecurePackages = [
+      "immich-2.7.5"
+    ];
+
     services.immich = {
       enable = true;
       group = "media";
