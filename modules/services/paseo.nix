@@ -19,10 +19,13 @@ let
         port = paseoPort;
       };
       hostnames = [".spitz-pickerel.ts.net"];
+      inheritUserEnvironment = true;
       settings = {
         features.webUi.enabled = true;
       };
     };
+
+    # environment.systemPackages = [pkgs.pi-coding-agent];
 
     services.caddy.virtualHosts."http://:${toString caddyPort}" = {
       extraConfig = ''

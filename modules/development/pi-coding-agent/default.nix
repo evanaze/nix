@@ -69,7 +69,7 @@ let
             "qwen3.6-bonsai"
           ];
           packages = [
-            "npm:pi-mcp-adapter"
+            # "npm:pi-mcp-adapter"
             "npm:pi-zentui"
             "npm:@juicesharp/rpiv-ask-user-question"
             "npm:@juicesharp/rpiv-todo"

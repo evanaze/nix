@@ -170,7 +170,7 @@ let
   };
 in {
   flake.modules.nixos = {
-    developmentPiAgent = module;
-    development = module;
+    # developmentPiAgent = module;
+    # development = module;
   };
 }
