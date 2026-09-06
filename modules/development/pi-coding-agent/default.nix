@@ -65,7 +65,7 @@ let
             "gemma-4-12b-q4"
             "lfm2.5-8b-balanced"
             "minicpm-v-4.6"
-            "ornith-1.0-9b-q6"
+            "ornith-1.5-9b-q6"
             "qwen3.6-bonsai"
           ];
           packages = [
@@ -110,8 +110,8 @@ let
                   maxTokens = 4096;
                 }
                 {
-                  id = "ornith-1.0-9b-q6";
-                  name = "Ornith 1.0 9B Q6_K";
+                  id = "ornith-1.5-9b-q6";
+                  name = "Ornith 1.5 9B Q6_K";
                   reasoning = true;
                   contextWindow = 128000;
                   maxTokens = 8192;

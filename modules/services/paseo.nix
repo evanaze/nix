@@ -19,13 +19,13 @@ let
         port = paseoPort;
       };
       hostnames = [".spitz-pickerel.ts.net"];
-      inheritUserEnvironment = true;
       settings = {
         features.webUi.enabled = true;
+        agents.providers.pi = {
+          command = ["/etc/profiles/per-user/evanaze/bin/pi"];
+        };
       };
     };
-
-    # environment.systemPackages = [pkgs.pi-coding-agent];
 
     services.caddy.virtualHosts."http://:${toString caddyPort}" = {
       extraConfig = ''

@@ -150,10 +150,10 @@ let
         --port "$PORT"
     '';
 
-    launchScriptOrnithQ6 = mk-launch-script "ornith-1.0-9b-q6" ''
+    launchScriptOrnithQ6 = mk-launch-script "ornith-1.5-9b-q6" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/ornith-1.0-9b-Q6_K.gguf" \
+        -m "${source-model-dir}/ornith-1.5-9b-Q6_K.gguf" \
         --reasoning-format deepseek \
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx 128000 \
@@ -219,7 +219,7 @@ let
             cmd = "${launchScriptMiniCPM} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };
-          "ornith-1.0-9b-q6" = {
+          "ornith-1.5-9b-q6" = {
             cmd = "${launchScriptOrnithQ6} ${"$"}{PORT}";
             healthCheckTimeout = 600;
           };

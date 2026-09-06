@@ -47,8 +47,8 @@ let
                   input: [text, image]
                   contextWindow: 8192
                   maxTokens: 4096
-                - id: ornith-1.0-9b-q6
-                  name: Ornith 1.0 9B Q6_K
+                - id: ornith-1.5-9b-q6
+                  name: Ornith 1.5 9B Q6_K
                   reasoningEfforts:
                     off:
                     high: high
