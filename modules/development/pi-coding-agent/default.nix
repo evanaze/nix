@@ -128,10 +128,6 @@ let
         };
       };
 
-      home.sessionPath = [
-        "$HOME/.pi/agent/npm/node_modules/.bin"
-      ];
-
       home.file.".pi/IDENTITY.md".text = ''
         # Identity
 
@@ -147,17 +143,12 @@ let
         - **Test-first**: Write tests before implementation
         - **Clean code**: Prefer minimal, readable solutions
         - **Structure**: Clear organization with good separation of concerns
-        - **Documentation**: Include comments for complex logic
+        - **Documentation**: Only include comments for complex logic
 
         ## Work Style
         - Value efficiency and correctness
         - Prefer working in small, testable increments
         - Like clear feedback loops
-
-        ## Interests & Context
-        - Working with Nix configuration management
-        - AI coding assistants and memory systems
-        - Software development and automation
 
         ## Notes
         - This identity file was created on 2026-07-01
