@@ -22,7 +22,7 @@ let
       settings = {
         features.webUi.enabled = true;
         agents.providers.pi = {
-          command = ["/etc/profiles/per-user/evanaze/bin/pi"];
+          command = ["${pkgs.pi-coding-agent}/bin/pi"];
         };
       };
     };
