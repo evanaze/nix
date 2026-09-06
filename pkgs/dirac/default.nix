@@ -6,7 +6,7 @@
   makeWrapper,
   ripgrep,
 }: let
-  version = "0.4.37";
+  version = "0.5.9";
   lockfile = ./package-lock.json;
 in
   buildNpmPackage {
@@ -15,12 +15,12 @@ in
 
     src = fetchurl {
       url = "https://registry.npmjs.org/dirac-cli/-/dirac-cli-${version}.tgz";
-      hash = "sha512-d8OUR1vJ93Y9Z86BNcqrdQKqtbMJfnPIQuRVt//dhZhUV+wLs6hbwRM51Me0rPfPOC14c9qXRv3/zjlsKLlM7w==";
+      hash = "sha512-iPyP8MR/wRKTEDNwDBLroc1OnBlLF/HbK5rdLqpToR2z0qQcwtU8p3/Yt8JYEmgcQEVcqyxlvlLVzw9pBNo0zg==";
     };
 
     sourceRoot = "package";
 
-    npmDepsHash = "sha256-1JLWa2FDlTB5I36SRo5KeAz1U+baprjlnvFbtd7M2Lc=";
+    npmDepsHash = "sha256-6rDBxMT0QESWaz0shXAyDYEWjUWKlGyNg1NQzfUOnpM=";
 
     dontNpmBuild = true;
 
