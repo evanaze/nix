@@ -12,6 +12,12 @@ let
       enable = true;
       openFirewall = false;
       listenAddress = "127.0.0.1";
+      port = paseoPort;
+      relay = {
+        mode = "remote";
+        host = "paseo.spitz-pickerel.ts.net";
+        port = paseoPort;
+      };
       hostnames = [".spitz-pickerel.ts.net"];
       settings = {
         features.webUi.enabled = true;
@@ -49,7 +55,6 @@ let
         RestartSec = "10s";
       };
       script = ''
-        ${lib.getExe pkgs.tailscale} serve clear svc:paseo || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:paseo --https=443 http://127.0.0.1:${toString caddyPort}
       '';
     };
