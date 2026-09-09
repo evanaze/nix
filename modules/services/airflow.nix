@@ -40,7 +40,7 @@ let
               "git_conn_id": "stackmagic-research",
               "subdir": "src",
               "tracking_ref": "main",
-              "refresh_interval": 0
+              "refresh_interval": 300
             }
           }
         ]
