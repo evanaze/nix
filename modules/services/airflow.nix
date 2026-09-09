@@ -38,7 +38,7 @@ let
             "classpath": "airflow.providers.git.bundles.git.GitDagBundle",
             "kwargs": {
               "git_conn_id": "stackmagic-research",
-              "subdir": "dags",
+              "subdir": "src",
               "tracking_ref": "main",
               "refresh_interval": 0
             }
