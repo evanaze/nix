@@ -20,8 +20,8 @@ buildPythonPackage {
     owner = "evanaze";
     repo = "stackmagic-research";
     private = true;
-    rev = "e9c320b6495d1607a0e516092428165715dcdb95";
-    hash = "sha256-kFfiuA9UZ99VHRdo87EGc8fbkBP9KR4m++TcVqczlCc=";
+    rev = "abbfe74d47f871aa57c70fc4e9829fea84a391ab";
+    hash = "sha256-NzxtKkN81MhnztH664EINnA370Ggl/4/Db87xKzVvqA=";
   };
 
   nativeBuildInputs = [
