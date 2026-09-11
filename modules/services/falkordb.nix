@@ -40,6 +40,28 @@ let
         serviceConfig.SystemCallFilter = lib.mkForce "";
         serviceConfig.ReadWritePaths = [falkordbDir];
       };
+
+      systemd.services.falkordb-tsserve = {
+        after = [
+          "tailscaled-autoconnect.service"
+          "redis-falkordb.service"
+        ];
+        wants = [
+          "tailscaled-autoconnect.service"
+          "redis-falkordb.service"
+        ];
+        wantedBy = ["multi-user.target"];
+        description = "Using Tailscale Serve to publish FalkorDB";
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          Restart = "on-failure";
+          RestartSec = "10s";
+        };
+        script = ''
+          ${lib.getExe pkgs.tailscale} serve --service=svc:falkordb --https=443 falkordbPort
+        '';
+      };
     };
   };
 in {
