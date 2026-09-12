@@ -17,6 +17,8 @@
       stackmagic-research = pkgs.python313Packages.callPackage ../pkgs/stackmagic-research {};
       writr = pkgs.callPackage ../pkgs/writr {};
       sqlmesh = sqlmeshPkgs.callPackage ../pkgs/sqlmesh/default.nix {};
+      falkordb = pkgs.callPackage ../pkgs/falkordb {};
+      falkordb-browser = pkgs.callPackage ../pkgs/falkordb/browser.nix {};
       falkordb-python = pkgs.python313Packages.callPackage ../pkgs/falkordb/python-client.nix {};
     };
   };
