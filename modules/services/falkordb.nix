@@ -74,7 +74,7 @@ let
           RestartSec = "10s";
         };
         script = ''
-          ${lib.getExe pkgs.tailscale} serve --service=svc:falkordb --https=443 falkordbPort
+          ${lib.getExe pkgs.tailscale} serve --service=svc:falkordb --https=443 ${toString falkordbPort}
         '';
       };
       systemd.services.falkordb-browser = lib.mkIf cfg.browser.enable {
@@ -89,12 +89,14 @@ let
           ExecStart = "${lib.getExe' falkordb "falkordb-browser"}";
           Restart = "on-failure";
           RestartSec = "10s";
-          Environment = [
-            "PORT=${toString cfg.browser.port}"
-            "REDIS_URL=redis://127.0.0.1:${toString falkordbPort}"
-          ] ++ lib.optionals (cfg.browser.password != null) [
-            "FALKORDB_PASSWORD=${cfg.browser.password}"
-          ];
+          Environment =
+            [
+              "PORT=${toString cfg.browser.port}"
+              "REDIS_URL=redis://127.0.0.1:${toString falkordbPort}"
+            ]
+            ++ lib.optionals (cfg.browser.password != null) [
+              "FALKORDB_PASSWORD=${cfg.browser.password}"
+            ];
         };
       };
     };
