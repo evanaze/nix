@@ -131,7 +131,7 @@ let
                           <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100%;">
                             <p class="color-primary" style="margin-bottom:8px; font-weight:bold; text-align:center;">
                               <a
-                                href="https://apod.nasa.gov/apod/astropix.html"
+                                href="https://science.nasa.gov/apod/astropix.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style="color: inherit; text-decoration: none;"
