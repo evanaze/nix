@@ -31,6 +31,7 @@ let
       AIRFLOW__CORE__LOAD_EXAMPLES = "False";
       AIRFLOW__CORE__TEST_CONNECTION = "Enabled";
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN = "postgresql+psycopg2://${airflowUser}@/${databaseName}?host=/run/postgresql";
+      AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_STORAGE_PATH = "${airflowHome}/dag_bundles";
       AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST = ''
         [
           {
@@ -103,6 +104,7 @@ let
 
     systemd.tmpfiles.rules = [
       "d ${airflowHome}/dags 0750 ${airflowUser} ${airflowUser} -"
+      "d ${airflowHome}/dag_bundles 0750 ${airflowUser} ${airflowUser} -"
       "d ${airflowHome}/logs 0750 ${airflowUser} ${airflowUser} -"
     ];
 
