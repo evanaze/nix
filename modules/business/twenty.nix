@@ -13,11 +13,11 @@
       after = [
         "network.target"
         "postgresql.service"
-        "redis-twenty.service"
+        "redis-default.service"
       ];
       wants = [
         "postgresql.service"
-        "redis-twenty.service"
+        "redis-default.service"
       ];
       wantedBy = ["multi-user.target"];
       description = "Twenty - CRM";

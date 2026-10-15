@@ -203,14 +203,14 @@ let
           "network.target"
           "postgresql.service"
           "rabbitmq.service"
-          "redis-twenty.service"
+          "redis-default.service"
         ];
         requires = [
           "firecrawl-db-init.service"
           "firecrawl-prepare.service"
           "postgresql.service"
           "rabbitmq.service"
-          "redis-twenty.service"
+          "redis-default.service"
         ];
         wantedBy = ["multi-user.target"];
         path = [
