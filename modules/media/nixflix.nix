@@ -186,6 +186,15 @@ let
       "0"
       "1"
     ];
+
+    # Jellyfin 10.11 can report ItemId=null for libraries created before the
+    # current data-dir layout, making nixflix's options update return HTTP 400.
+    # The libraries and paths already exist; don't let that repair job block
+    # every NixOS activation.
+    systemd.services.jellyfin-libraries.serviceConfig.SuccessExitStatus = [
+      "0"
+      "1"
+    ];
     # systemd.services.prowlarr-indexers.wantedBy = lib.mkForce [];
 
     systemd.services.nixflix-setup-dirs.script = lib.mkForce ''

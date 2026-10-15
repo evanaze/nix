@@ -499,6 +499,13 @@ let
         EnvironmentFile = config.sops.secrets."hermes/stackmagic-env".path;
         Restart = "on-failure";
         RestartSec = "5s";
+        # Current Hermes multiplexes all profiles through the host gateway in
+        # hermes-agent.service. A profile gateway then exits 75 (already being
+        # served) or 78 (profile gateways are unsupported); both are expected.
+        SuccessExitStatus = [
+          "75"
+          "78"
+        ];
       };
       script = "${lib.getExe hermes-package} gateway run";
     };

@@ -14,7 +14,7 @@ let
       # directive is present, so other virtual hosts are unaffected.
       package = lib.mkDefault (pkgs.caddy.withPlugins {
         plugins = ["github.com/caddyserver/cache-handler@v0.16.0"];
-        hash = "sha256-41uiGaunQpwi2vpK+Kuy4eGpbTqjSdRhekPT1UeT9AY=";
+        hash = "sha256-bxQCRas0QioxUkSbOunjr5p5LUieo8QQA6MbdPSaSVo=";
       });
     };
   };
