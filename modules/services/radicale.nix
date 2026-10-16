@@ -8,14 +8,17 @@ let
     radicalePort = 5232;
     caddyPort = 5233;
   in {
-    sops.secrets."radicale/htpasswd" = {};
+    sops.secrets."radicale/htpasswd" = {
+      owner = "radicale";
+      mode = "0400";
+    };
 
     services.radicale = {
       enable = true;
       settings = {
         server.hosts = ["0.0.0.0:${toString radicalePort}"];
         auth = {
-          type = "htpassword";
+          type = "htpasswd";
           htpasswd_filename = config.sops.secrets."radicale/htpasswd".path;
         };
       };
