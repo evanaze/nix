@@ -1,9 +1,9 @@
 let
-  module = {...}: {
+  module = {config, ...}: {
     services.tailscale = {
       enable = true;
       openFirewall = true;
-      authKeyFile = "/run/secrets/ts-server-key";
+      authKeyFile = config.sops.secrets.ts-server-key.path;
       extraSetFlags = [
         "--ssh"
         "--exit-node="
