@@ -5,7 +5,7 @@ let
     pkgs,
     ...
   }: let
-    minifluxPort = 8080;
+    minifluxPort = 5080;
   in {
     users.groups.miniflux = {};
     users.users.miniflux = {
@@ -23,22 +23,30 @@ let
       '';
     };
 
+    services.postgresql = {
+      ensureDatabases = ["miniflux"];
+      ensureUsers = [
+        {
+          name = "miniflux";
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
     services.miniflux = {
       enable = true;
-      # Creates the `miniflux` database and PostgreSQL role (peer auth via
-      # the local socket, matching postgres.nix's sameuser map).
-      createDatabaseLocally = true;
+      createDatabaseLocally = false;
       adminCredentialsFile = config.sops.templates."miniflux-admin.env".path;
       config = {
         LISTEN_ADDR = "127.0.0.1:${toString minifluxPort}";
+        DATABASE_URL = "user=miniflux host=/run/postgresql dbname=miniflux";
         BASE_URL = "https://feed.spitz-pickerel.ts.net";
         RUN_MIGRATIONS = 1;
         CREATE_ADMIN = 1;
+        ALLOW_PRIVATE_NETWORKS = 1;
       };
     };
 
-    # Run as the dedicated static user instead of the module's DynamicUser
-    # so PostgreSQL peer authentication maps cleanly.
     systemd.services.miniflux.serviceConfig = {
       DynamicUser = lib.mkForce false;
       PrivateUsers = lib.mkForce false;
