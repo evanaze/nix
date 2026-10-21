@@ -6,11 +6,14 @@ let
   }: let
     rsshubPort = 1200;
   in {
-    environment.systemPackages = [pkgs.folo];
-
     services.rsshub = {
       enable = true;
-      settings.PORT = rsshubPort;
+      settings = {
+        PORT = rsshubPort;
+        FOLLOW_OWNER_USER_ID = "aze";
+        FOLLOW_DESCRIPTION = "aze's instance";
+        FOLLOW_USER_LIMIT = "100";
+      };
       redis = {
         enable = true;
         createLocally = false;
