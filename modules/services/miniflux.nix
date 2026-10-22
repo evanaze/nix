@@ -41,9 +41,9 @@ let
         LISTEN_ADDR = "127.0.0.1:${toString minifluxPort}";
         DATABASE_URL = "user=miniflux host=/run/postgresql dbname=miniflux";
         BASE_URL = "https://feed.spitz-pickerel.ts.net";
-        RUN_MIGRATIONS = 1;
-        CREATE_ADMIN = 1;
-        ALLOW_PRIVATE_NETWORKS = 1;
+        RUN_MIGRATIONS = true;
+        CREATE_ADMIN = true;
+        FETCHER_ALLOW_PRIVATE_NETWORKS = 1;
       };
     };
 
