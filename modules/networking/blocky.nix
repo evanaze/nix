@@ -50,7 +50,11 @@ let
                 "reddit"
                 "youtube"
               ];
-              host = ["ads"];
+              host = [
+                "ads"
+                "reddit"
+                "youtube"
+              ];
             };
           };
 
