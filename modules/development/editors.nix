@@ -27,6 +27,12 @@ let
           ghostty = {
             enable = true;
             enableZshIntegration = true;
+            # The ghostty flake's own `pkgs.ghostty` derivation (nix/package.nix)
+            # requires a `zig_0_17` argument that is never wired into the
+            # flake's `packages` function, so evaluating its default aborts
+            # ("Function called without required argument zig_0_17"). Use the
+            # stable, maintained nixpkgs `ghostty` package instead.
+            package = inputs.nixpkgs.legacyPackages.${system}.ghostty;
             installVimSyntax = true;
             settings = {
               font-family = "Iosevka";
