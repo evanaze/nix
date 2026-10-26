@@ -1,6 +1,7 @@
 let
   module = {
     config,
+    inputs,
     lib,
     pkgs,
     username,
@@ -146,6 +147,10 @@ let
 
       seerr = {
         enable = true;
+        # nixflix.seerr requires Seerr >= 3.5.0, but nixos-26.05 ships 3.2.0.
+        # Use the seerr build from the nixpkgs nixflix itself pins instead.
+        package =
+          inputs.nixflix.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.seerr;
         apiKey._secret = config.sops.secrets."seerr/api_key".path;
       };
 

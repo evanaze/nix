@@ -22,10 +22,7 @@
       url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixflix = {
-      url = "github:kiriwalawren/nixflix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixflix.url = "github:kiriwalawren/nixflix";
     paseo.url = "github:getpaseo/paseo";
     slippi = {
       url = "github:lytedev/slippi-nix";
@@ -36,10 +33,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hermes-agent = {
-      url = "github:NousResearch/hermes-agent";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hermes-agent.url = "github:NousResearch/hermes-agent";
     camoufox-nix = {
       url = "github:maximoffua/camoufox-nix";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -16,22 +16,7 @@ let
     stackmagic-profile = "stackmagic";
     stackmagic-profile-home = "${hermes-home}/profiles/${stackmagic-profile}";
     stackmagic-obsidian-vault-path = "/mnt/eye/documents/StackMagic";
-
-    rtk-hermes = pkgs.python312Packages.buildPythonPackage {
-      pname = "rtk-hermes";
-      version = "1.2.3";
-      src = pkgs.fetchFromGitHub {
-        owner = "ogallotti";
-        repo = "rtk-hermes";
-        rev = "v1.2.3";
-        hash = "sha256-7YRW6PODrCapfYLFn3DvgHAEME//RGC48GQt+s9ot0s=";
-      };
-      format = "pyproject";
-      build-system = [pkgs.python312Packages.setuptools];
-    };
-
     hermes-extra-dependency-groups = ["firecrawl" "messaging"];
-    hermes-extra-python-packages = [rtk-hermes];
     mcp-stdio-packages = [
       pkgs.mcp-nixos
       pkgs.nodejs_22
@@ -44,16 +29,8 @@ let
     };
     hermes-package = pkgs.hermes-agent.override {
       extraDependencyGroups = hermes-extra-dependency-groups;
-      extraPythonPackages = hermes-extra-python-packages;
     };
     bundled-obsidian-skill = "${hermes-package}/share/hermes-agent/skills/note-taking/obsidian";
-
-    oh-my-hermers = pkgs.fetchFromGitHub {
-      owner = "evanaze";
-      repo = "oh-my-hermers";
-      rev = "refs/heads/main";
-      hash = "sha256-+43r25EpGq+wN2Rsj3+lBjccqogcuENN1luomawaMLg=";
-    };
 
     stackmagic-skills = pkgs.fetchFromGitHub {
       owner = "evanaze";
@@ -72,6 +49,7 @@ let
       };
       browser = {
         cloud_provider = "local";
+        executable_path = "${pkgs.chromium}/bin/chromium";
         camofox = {
           managed_persistence = true;
           rewrite_loopback_urls = false;
@@ -82,10 +60,6 @@ let
         extract_backend = "firecrawl";
       };
       terminal.cwd = "${state-dir}/workspace";
-      plugins.enabled = [
-        "oh-my-hermes"
-        "rtk-rewrite"
-      ];
       file_read_max_chars = 30000;
       tool_output = {
         max_bytes = 20000;
@@ -296,9 +270,6 @@ let
       inputs.hermes-agent.overlays.default
     ];
 
-    # Shared Hermes HOME for both gateway/dashboard (hermes user) and CLI (evanaze)
-    # This lets the dashboard see CLI sessions and vice versa.
-    # Use mkForce to override the upstream module's default
     environment.variables = {
       HERMES_HOME = lib.mkForce "${hermes-home}";
     };
@@ -347,8 +318,6 @@ let
         mcp-stdio-packages
         ++ [stackmagic-skills];
       extraDependencyGroups = hermes-extra-dependency-groups;
-      extraPythonPackages = hermes-extra-python-packages;
-      extraPlugins = [oh-my-hermers];
     };
 
     sops.secrets."hermes/default-env" = {
@@ -575,6 +544,36 @@ let
         ${lib.getExe pkgs.tailscale} serve clear svc:hermes-dashboard || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:hermes-dashboard --https=443 http://127.0.0.1:${toString dashboardProxyPort}
       '';
+    };
+
+    systemd.services.hermes-check-jobs = {
+      description = "Run Hermes check_jobs.py script";
+      after = [
+        "zfs-mount.service"
+      ];
+      requires = [
+        "zfs-mount.service"
+      ];
+      environment = {
+        HOME = state-dir;
+        HERMES_HOME = hermes-home;
+        HERMES_MANAGED = "true";
+      };
+      serviceConfig = {
+        Type = "oneshot";
+        User = "hermes";
+        Group = "hermes";
+      };
+      script = "${pkgs.python3}/bin/python3 ${state-dir}/workspace/scripts/check_jobs.py";
+    };
+
+    systemd.timers.hermes-check-jobs = {
+      description = "Run Hermes check_jobs.py daily";
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true;
+      };
     };
 
     systemd.services.sm-agent-tsserve = {
