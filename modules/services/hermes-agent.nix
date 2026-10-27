@@ -275,7 +275,8 @@ let
     };
 
     systemd.tmpfiles.rules = [
-      "d ${hermes-home} 2770 hermes hermes -"
+      # 2750 (not group-writable): the gateway refuses control access otherwise
+      "d ${hermes-home} 2750 hermes hermes -"
       "d ${hermes-home}/profiles 2770 hermes hermes -"
       "z ${hermes-home}/memories 2770 hermes hermes -"
       "d ${hermes-home}/skills 2770 hermes hermes -"
@@ -544,36 +545,6 @@ let
         ${lib.getExe pkgs.tailscale} serve clear svc:hermes-dashboard || true
         ${lib.getExe pkgs.tailscale} serve --service=svc:hermes-dashboard --https=443 http://127.0.0.1:${toString dashboardProxyPort}
       '';
-    };
-
-    systemd.services.hermes-check-jobs = {
-      description = "Run Hermes check_jobs.py script";
-      after = [
-        "zfs-mount.service"
-      ];
-      requires = [
-        "zfs-mount.service"
-      ];
-      environment = {
-        HOME = state-dir;
-        HERMES_HOME = hermes-home;
-        HERMES_MANAGED = "true";
-      };
-      serviceConfig = {
-        Type = "oneshot";
-        User = "hermes";
-        Group = "hermes";
-      };
-      script = "${pkgs.python3}/bin/python3 ${state-dir}/workspace/scripts/check_jobs.py";
-    };
-
-    systemd.timers.hermes-check-jobs = {
-      description = "Run Hermes check_jobs.py daily";
-      wantedBy = ["timers.target"];
-      timerConfig = {
-        OnCalendar = "daily";
-        Persistent = true;
-      };
     };
 
     systemd.services.sm-agent-tsserve = {
