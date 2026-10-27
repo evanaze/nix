@@ -57,7 +57,10 @@ let
       description = "Hermes WebUI - browser interface for Hermes Agent";
       environment = {
         HERMES_HOME = "/mnt/eye/appdata/hermes/.hermes";
-        HERMES_HOME_MODE = "0770";
+        # 0750: group-write (e.g. 0770) trips the hermes gateway's
+        # unsafe_control_permissions check; evanaze gets read-only ACLs instead
+        # (see hermesAppdataAcl in modules/hardware/jupiter/zfs.nix)
+        HERMES_HOME_MODE = "0750";
         HERMES_WEBUI_CHAT_BACKEND = "api_server";
         HERMES_WEBUI_AGENT_DIR = "${inputs.hermes-agent.outPath}";
       };

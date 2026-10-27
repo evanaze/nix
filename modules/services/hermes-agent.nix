@@ -275,8 +275,11 @@ let
     };
 
     systemd.tmpfiles.rules = [
-      # 2750 (not group-writable): the gateway refuses control access otherwise
-      "d ${hermes-home} 2750 hermes hermes -"
+      # 0750 (not group-writable): the gateway refuses control access otherwise.
+      # Note: the effective rule lives in modules/hardware/jupiter/zfs.nix
+      # (lib.mkBefore) because the upstream hermes-agent module ships a
+      # conflicting 2770 rule for this path and first match wins.
+      "d ${hermes-home} 0750 hermes hermes -"
       "d ${hermes-home}/profiles 2770 hermes hermes -"
       "z ${hermes-home}/memories 2770 hermes hermes -"
       "d ${hermes-home}/skills 2770 hermes hermes -"

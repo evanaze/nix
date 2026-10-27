@@ -78,6 +78,9 @@ let
             ${pkgs.zfs}/bin/zfs create -o mountpoint=legacy eye/appdata/$ds
           fi
         done
+        # POSIX ACLs are used to grant evanaze read-only access to the hermes
+        # appdata (group-write would trip the hermes gateway permission check)
+        ${pkgs.zfs}/bin/zfs set acltype=posixacl eye/appdata/hermes || true
         chown evanaze:users /mnt/eye/appdata/actual || true
         chown -R chromadb:chromadb /mnt/eye/appdata/chromadb || true
         chown evanaze:users /mnt/eye/appdata/donetick || true
@@ -88,6 +91,16 @@ let
       '';
     };
 
+    # The upstream hermes-agent NixOS module ships tmpfiles rules forcing
+    # 2770 (group-writable) on these paths in 00-nixos.conf, and the first
+    # tmpfiles rule for a path wins. Group-write trips the hermes gateway's
+    # unsafe_control_permissions check, so override with an earlier-sorted
+    # config file (tmpfiles reads /etc/tmpfiles.d/*.conf lexicographically).
+    environment.etc."tmpfiles.d/0-hermes-home-perms.conf".text = ''
+      d /mnt/eye/appdata/hermes 0750 hermes hermes -
+      d /mnt/eye/appdata/hermes/.hermes 0750 hermes hermes -
+    '';
+
     systemd.tmpfiles.rules = [
       "d /mnt/eye/appdata 0755 root root -"
       "d /mnt/eye/appdata/actual 0750 evanaze users -"
@@ -95,7 +108,6 @@ let
       "d /mnt/eye/appdata/donetick 0755 evanaze users -"
       "d /mnt/eye/appdata/falkordb 0750 evanaze users -"
       "d /mnt/eye/appdata/grafana 0750 grafana grafana -"
-      "d /mnt/eye/appdata/hermes 0750 hermes hermes -"
       "d /mnt/eye/documents 0755 evanaze users -"
       "f /mnt/eye/documents/.stfolder 0644 evanaze users -"
       "d /mnt/eye/downloads 0755 evanaze users -"
@@ -107,6 +119,40 @@ let
       "d /mnt/eye/music 0755 evanaze users -"
       "f /mnt/eye/music/.stfolder 0644 evanaze users -"
     ];
+
+    # The hermes gateway refuses to start when /mnt/eye/appdata/hermes/.hermes
+    # is writable by another user (unsafe_control_permissions), so instead of
+    # group-write, grant evanaze read-only access via POSIX ACLs. The default
+    # ACL entries keep new files readable; the mask stays r-x so the mode
+    # remains 0750 and the gateway check passes.
+    # deps on hermes-agent-setup: the upstream hermes-agent module's
+    # activation script chmods these dirs to 2770 on every switch; this
+    # script must run after it to restore 0750 and apply the ACLs.
+    system.activationScripts.hermesAppdataAcl = {
+      deps = ["users" "hermes-agent-setup"];
+      text = ''
+        setfacl=${pkgs.acl}/bin/setfacl
+        find=${pkgs.findutils}/bin/find
+
+        appdata=/mnt/eye/appdata/hermes
+        if [ -d "$appdata" ]; then
+          chown hermes:hermes "$appdata" || true
+          chmod 0750 "$appdata"
+          chmod g-s "$appdata" || true
+          "$setfacl" -m u:evanaze:r-x,d:u:evanaze:r-x "$appdata"
+
+          if [ -d "$appdata/.hermes" ]; then
+            chown hermes:hermes "$appdata/.hermes" || true
+            chmod 0750 "$appdata/.hermes"
+            chmod g-s "$appdata/.hermes" || true
+            "$setfacl" -m u:evanaze:r-x "$appdata/.hermes"
+            "$find" "$appdata/.hermes" -type d -exec "$setfacl" -m u:evanaze:r-x,d:u:evanaze:r-x {} +
+            "$find" "$appdata/.hermes" -type f -perm /111 -exec "$setfacl" -m u:evanaze:r-x {} +
+            "$find" "$appdata/.hermes" -type f ! -perm /111 -exec "$setfacl" -m u:evanaze:r {} +
+          fi
+        fi
+      '';
+    };
 
     systemd.services.syncthing = {
       after = ["zfs-mount.service"];
