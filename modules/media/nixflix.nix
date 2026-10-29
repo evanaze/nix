@@ -154,6 +154,14 @@ let
         apiKey._secret = config.sops.secrets."seerr/api_key".path;
       };
 
+      navidrome = {
+        enable = true;
+        userName = "aze";
+        isAdmin = true;
+        password._secret = config.sops.secrets."navidrome/password".path;
+        port = 4533;
+      };
+
       vpn = {
         enable = true;
         wgConfFile = config.sops.secrets."wireguard/conf".path;
