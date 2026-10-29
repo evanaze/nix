@@ -158,10 +158,13 @@ let
 
       navidrome = {
         enable = true;
-        userName = "aze";
-        isAdmin = true;
-        password._secret = config.sops.secrets."navidrome/password".path;
-        pettings.Port = ports.navidrome;
+        users.aze = {
+          userName = "aze";
+          isAdmin = true;
+          email = "evanaze@gmail.com";
+          password._secret = config.sops.secrets."navidrome/password".path;
+        };
+        settings.Port = ports.navidrome;
       };
 
       vpn = {
