@@ -1,5 +1,20 @@
 let
+  # fastmcp 3.2.3's test suite fails against the anyio version in current
+  # nixpkgs (cancel-scope RuntimeError in stateful proxy tests).
+  fastmcpOverlay = final: prev: {
+    pythonPackagesExtensions =
+      (prev.pythonPackagesExtensions or [])
+      ++ [
+        (_pyFinal: pyPrev: {
+          fastmcp = pyPrev.fastmcp.overridePythonAttrs (_old: {
+            doCheck = false;
+          });
+        })
+      ];
+  };
+
   module = {username, ...}: {
+    nixpkgs.overlays = [fastmcpOverlay];
     home-manager.users.${username} = {
       programs.mcp = {
         enable = true;

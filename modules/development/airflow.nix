@@ -4,6 +4,12 @@ let
       (prev.pythonPackagesExtensions or [])
       ++ [
         (_pyFinal: pyPrev: {
+          # cadwyn's pytest suite treats DeprecationWarnings as errors, which
+          # fails against the anyio/starlette versions in current nixpkgs.
+          cadwyn = pyPrev.cadwyn.overridePythonAttrs (_old: {
+            doCheck = false;
+          });
+
           wirerope = pyPrev.wirerope.overridePythonAttrs (old: {
             postPatch =
               (old.postPatch or "")
