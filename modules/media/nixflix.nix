@@ -13,9 +13,11 @@ let
       radarr = 7878;
       lidarr = 8686;
       prowlarr = 9696;
+      qbittorrent = 8282;
       sabnzbd = 8080;
       jellyfin = 8096;
       seerr = 5055;
+      navidrome = 4533;
     };
     caddyPorts = {
       sonarr = 8300;
@@ -159,7 +161,7 @@ let
         userName = "aze";
         isAdmin = true;
         password._secret = config.sops.secrets."navidrome/password".path;
-        port = 4533;
+        pettings.Port = ports.navidrome;
       };
 
       vpn = {
@@ -312,6 +314,7 @@ let
       "jellyfin/api_key" = {};
       "jellyfin/admin_password" = {};
       "seerr/api_key" = {};
+      "navidrome/password" = {};
       "wireguard/conf" = {};
       "sabnzbd/api_key" = {};
       "sabnzbd/nzb_key" = {};
