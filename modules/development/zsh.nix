@@ -101,7 +101,7 @@ let
               aic = "nono run --profile pi --allow-cwd -- pi";
               pgconn = "psql -h pg.spitz-pickerel.ts.net -p 5432 -U postgres";
               showsvcs = "systemctl --type=service --state=running";
-              sshpi = "tailscale ssh evanaze@mercury.spitz-pickerel.ts.net";
+              sshpi = "tailscale ssh evanaze@europa.spitz-pickerel.ts.net";
               sshdt = "tailscale ssh evanaze@earth.spitz-pickerel.ts.net";
               sshlt = "tailscale ssh evanaze@mars.spitz-pickerel.ts.net";
               sshnas = "tailscale ssh evanaze@jupiter.spitz-pickerel.ts.net";
