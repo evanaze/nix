@@ -54,11 +54,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1794048626,
-        "narHash": "sha256-QPkaRRp3/lIerH44cVIjeNiTYr9nq3FPe6J5qRN4/OA=",
+        "lastModified": 1794158897,
+        "narHash": "sha256-PMQ6tLvBtrjzOu2XeCZTyURisPP7DlrdNQHIiJw8Qyg=",
         "owner": "moraxyc",
         "repo": "deepseek-harness.nix",
-        "rev": "d41045cb8efbae200337c563e8271fe4ce039a5d",
+        "rev": "587e4d06c39bb377b499c0e6310fc6eccf78cabe",
         "type": "github"
       },
       "original": {
@@ -253,11 +253,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1794117122,
-        "narHash": "sha256-2nVD75FmQGesOqSaHU8fEq6r0+r4ZsDrdyo/HHrZQk4=",
+        "lastModified": 1794160494,
+        "narHash": "sha256-AB+2SAk48iSiKi/UxsXFrW526cemJg18RlcqOdBOKHk=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "e035beb9437118b803830a5864ea2f4dd7094354",
+        "rev": "eb895f6128dba382ffeb5fedea97dcd61fcb5979",
         "type": "github"
       },
       "original": {
@@ -321,11 +321,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794121439,
-        "narHash": "sha256-0QMogVN/3u9GDdGiM/bR+F7Mp/AnrkVi6ge0XUmToaM=",
+        "lastModified": 1794160702,
+        "narHash": "sha256-hAmJkLuFmQ0bjx4RLz3lCV1jRn90QowoyhYASpyup/0=",
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "ee6db222660c84e4ba2cf158108f0e6fed9afe34",
+        "rev": "acdc8f1ba65c0231ae8277e846a4d55928913991",
         "type": "github"
       },
       "original": {
@@ -456,11 +456,11 @@
         "vpn-confinement": "vpn-confinement"
       },
       "locked": {
-        "lastModified": 1793928283,
-        "narHash": "sha256-sLTWqTA9y012hHeQvFDK3xX5adtVTNyrLCwP3IYBYcM=",
+        "lastModified": 1794134597,
+        "narHash": "sha256-/Yt0qxiE318BmXy982+VHDfrsCpPKnwOTtIhJ8QHy8Q=",
         "owner": "kiriwalawren",
         "repo": "nixflix",
-        "rev": "8f0426505cf6325ed6a997336f4f276a60e521f5",
+        "rev": "a8e7c53a8584850f99eab0dd44dd65b31397b926",
         "type": "github"
       },
       "original": {
@@ -735,11 +735,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1794121596,
-        "narHash": "sha256-DjBQH+oq8E5js8HoF3cPSZisNNL0Z8pVXaF4pVMY124=",
+        "lastModified": 1794150124,
+        "narHash": "sha256-DX4O9km3qfaXi0RQmH8kq8zGS/C3CBc+RCa4zY87Lqs=",
         "owner": "getpaseo",
         "repo": "paseo",
-        "rev": "b509d499f7b64521927b5c2ba5b8c5c8677d0cd9",
+        "rev": "01888dc5deb7c964491f784f260cb64378a7c4ed",
         "type": "github"
       },
       "original": {
