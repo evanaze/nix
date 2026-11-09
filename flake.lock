@@ -253,11 +253,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1794174015,
-        "narHash": "sha256-SMKx30eZC5tYmZgUCFsSArA+d7b2uJk0lerchhYMC00=",
+        "lastModified": 1794199585,
+        "narHash": "sha256-QymjvcLq5ZMTyD/59Raa8BlP0SleKNWkCJXw6W/v6Hs=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "c786f941f3b63f04a2c97d4c64cdd63cbdb589c4",
+        "rev": "cf5519b22f910ddc7885d2ef62deb94d38d43f22",
         "type": "github"
       },
       "original": {
@@ -321,11 +321,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794186468,
-        "narHash": "sha256-F4Gw9ukSvXrk4DKz75GwJYpll4R9YPiK+O7c30bGjKc=",
+        "lastModified": 1794206780,
+        "narHash": "sha256-tYsEhqs39kgTKSCAdzT+3r0J8X41N8vfuYcFAB4GLQw=",
         "owner": "NousResearch",
         "repo": "hermes-agent",
-        "rev": "fd6afb44e25dbc659beb4d604a52daed2ed97a23",
+        "rev": "466591fe65d0257c96083df16fcd39636032304c",
         "type": "github"
       },
       "original": {
@@ -735,11 +735,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1794184462,
-        "narHash": "sha256-3XV+n0bAXvhi/WE2Ot4fHgu2PfVcihzchtfRBpL2Wes=",
+        "lastModified": 1794201138,
+        "narHash": "sha256-k32ixYyZG8WHbfqX+CJA7zV4z3qdLtayoH0HvQ3k8+g=",
         "owner": "getpaseo",
         "repo": "paseo",
-        "rev": "148a394981de25b5e50bb28d40f02f7f70b72ac6",
+        "rev": "180f07587a967a22d53c5ba198c88ee61a731ba5",
         "type": "github"
       },
       "original": {
