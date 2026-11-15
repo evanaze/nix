@@ -45,15 +45,13 @@ let
               ];
             };
             clientGroupsBlock = {
+              # (DISABLED) reddit & youtube removed to disable their blocking.
+              # To re-enable, add "reddit" and "youtube" back to these lists.
               default = [
                 "ads"
-                "reddit"
-                "youtube"
               ];
               host = [
                 "ads"
-                "reddit"
-                "youtube"
               ];
             };
           };
