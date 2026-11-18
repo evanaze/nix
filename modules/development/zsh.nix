@@ -105,10 +105,10 @@ let
               sshdt = "tailscale ssh evanaze@earth.spitz-pickerel.ts.net";
               sshlt = "tailscale ssh evanaze@mars.spitz-pickerel.ts.net";
               sshnas = "tailscale ssh evanaze@jupiter.spitz-pickerel.ts.net";
-              update = "pushd $HOME/.config/nix && git pull && nix flake update && epush updating flake inputs && popd && nclean";
+              update = "pushd $HOME/.config/nix && git pull && nix flake update && epush updating flake inputs && popd";
               unpack = "fd . $1/ -x mv {} .";
               npush = "pushd $HOME/.config/nix && epush $@ && popd";
-              rebuild = "nh os switch $HOME/.config/nix";
+              rebuild = "nh os switch $HOME/.config/nix && nclean";
               nclean = "nh clean all --keep-since 7d --keep 3";
             };
           };
