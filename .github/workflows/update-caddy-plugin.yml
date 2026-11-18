@@ -1,0 +1,118 @@
+name: Update Caddy plugin
+
+on:
+  schedule:
+    - cron: "23 3 * * *" # nightly
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-caddy-plugin-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-caddy-plugin:
+    name: Check for caddy cache-handler plugin updates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Check for a new plugin release
+        id: check
+        run: |
+          set -euo pipefail
+
+          file=modules/services/caddy.nix
+
+          current=$(grep -oP 'cache-handler@\Kv[0-9.]+' "$file")
+          repo=caddyserver/cache-handler
+          latest=$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" \
+            | grep -oP '"tag_name":\s*"\K[^"]+')
+
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "Current: $current, latest: $latest"
+
+          if [ "$current" = "$latest" ]; then
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update version and compute new plugin hash
+        if: steps.check.outputs.update == 'true'
+        run: |
+          set -euo pipefail
+
+          file=modules/services/caddy.nix
+          current="${{ steps.check.outputs.current }}"
+          latest="${{ steps.check.outputs.latest }}"
+          fake_hash="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+
+          sed -i "s|cache-handler@${current}|cache-handler@${latest}|" "$file"
+          sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"${fake_hash}\"|" "$file"
+
+          plugin=$(grep -oP 'plugins = \["\K[^"]+' "$file")
+
+          write_expr() {
+            printf '%s\n' \
+              'let' \
+              '  flake = builtins.getFlake ("git+file://" + builtins.getEnv "REPO");' \
+              '  system = builtins.currentSystem;' \
+              '  pkgs = flake.inputs.nixpkgs.legacyPackages.${system};' \
+              'in' \
+              'pkgs.caddy.withPlugins {' \
+              "  plugins = [\"${plugin}\"];" \
+              "  hash = \"$1\";" \
+              '}' \
+              > "$RUNNER_TEMP/caddy-plugin.nix"
+          }
+
+          # First build with fake hash: expect failure revealing the real hash.
+          write_expr "$fake_hash"
+          set +e
+          output=$(REPO="$PWD" nix build --impure --no-link \
+            -f "$RUNNER_TEMP/caddy-plugin.nix" 2>&1)
+          set -e
+          echo "$output"
+
+          real_hash=$(echo "$output" | grep -oP 'got:\s*\Ksha256-[A-Za-z0-9+/=]+' | head -n1)
+          if [ -z "$real_hash" ]; then
+            echo "Failed to extract real hash from nix build output" >&2
+            exit 1
+          fi
+          echo "Real hash: $real_hash"
+
+          sed -i "s|hash = \"${fake_hash}\"|hash = \"${real_hash}\"|" "$file"
+
+          # Verification build with the real hash must succeed.
+          write_expr "$real_hash"
+          REPO="$PWD" nix build --impure --no-link -f "$RUNNER_TEMP/caddy-plugin.nix"
+
+      - name: Create or update pull request
+        if: steps.check.outputs.update == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/update-caddy-plugin
+          delete-branch: true
+          title: "auto: update caddy cache-handler plugin to ${{ steps.check.outputs.latest }}"
+          commit-message: "ci(caddy): update cache-handler plugin to ${{ steps.check.outputs.latest }}"
+          body: |
+            Automated update of the Caddy cache-handler plugin in `modules/services/caddy.nix`.
+
+            - Previous version: `${{ steps.check.outputs.current }}`
+            - New version: `${{ steps.check.outputs.latest }}`
+            - Vendor hash recomputed and verified via a `pkgs.caddy.withPlugins` build against this flake's nixpkgs input.
+          add-paths: |
+            modules/services/caddy.nix
