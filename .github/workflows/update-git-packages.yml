@@ -71,6 +71,13 @@ jobs:
               args+=(--version-regex "$version_regex")
             fi
 
+            # Work around nix-update 1.16.0 + Nix 2.35 regression: nix-update reads the
+            # flake source store path from `nix flake metadata`, but Nix 2.35 no longer
+            # realises that path in the store (especially on fresh runners / dirty trees).
+            # `nix flake prefetch` writes exactly that store path.
+            # https://github.com/Mic92/nix-update/issues/693
+            nix flake prefetch
+
             echo "Running: nix shell nixpkgs#nix-update nixpkgs#nixfmt -c nix-update ${args[*]}"
             nix shell nixpkgs#nix-update nixpkgs#nixfmt -c nix-update "${args[@]}"
           done < <(
