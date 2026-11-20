@@ -10,6 +10,13 @@ let
       wantedBy = ["network.target"];
     };
   };
+  # Run this immediately before power-cycling the switch, to capture the exact state:
+  #  ```bash
+  #  dmesg | tail -50 | grep -iE 'link|igc|carrier|phy|err'
+  #  ip link show enp4s0
+  #  # if you have ethtool:
+  #  ethtool enp4s0
+  #  ```
 in {
   flake.modules.nixos = {
     hardwareEthTool = module;
