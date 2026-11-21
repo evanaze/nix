@@ -12,7 +12,7 @@ let
           Unit.Description = "Bi-directional sync Documents folder with iCloud Drive";
           Service = {
             Type = "oneshot";
-            ExecStart = "${pkgs.rclone}/bin/rclone bisync '%h/Documents' 'iclouddrive:Documents' --resilient --recover --conflict-resolve newer --max-delete 10 --create-empty-src-dirs";
+            ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Documents iclouddrive:Documents --exclude /StackMagic/** --exclude '/Knowledge Base/**' --resilient --recover --conflict-resolve newer --max-delete 10 --create-empty-src-dirs";
           };
         };
 
@@ -20,7 +20,7 @@ let
           Unit.Description = "Bi-directional sync Downloads folder with iCloud Drive";
           Service = {
             Type = "oneshot";
-            ExecStart = "${pkgs.rclone}/bin/rclone bisync '%h/Downloads' 'iclouddrive:Downloads' --resilient --recover --conflict-resolve newer --force --create-empty-src-dirs";
+            ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Downloads iclouddrive:Downloads --resilient --recover --conflict-resolve newer --force --create-empty-src-dirs";
           };
         };
 
@@ -36,7 +36,7 @@ let
           Unit.Description = "Bi-directional sync StackMagic vault with iCloud Drive";
           Service = {
             Type = "oneshot";
-            ExecStart = "${pkgs.rclone}/bin/rclone bisync '%h/Documents/StackMagic' 'iclouddrive:Obsidian/StackMagic' --resilient --recover --conflict-resolve newer --max-delete 10 --create-empty-src-dirs";
+            ExecStart = "${pkgs.rclone}/bin/rclone bisync %h/Documents/StackMagic iclouddrive:Obsidian/StackMagic --resilient --recover --conflict-resolve newer --max-delete 10 --create-empty-src-dirs";
           };
         };
       };
