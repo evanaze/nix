@@ -226,6 +226,11 @@ let
         /etc/tmpfiles.d/10-sonarr.conf
     '';
 
+    # nixflix sends Lidarr a Radarr/Sonarr-style delayprofile payload (items[]),
+    # but Lidarr's API expects flat enableUsenet/enableTorrent fields, so this
+    # unit fails with HTTP 400 on every boot. Upstream bug; disable until fixed.
+    systemd.services.lidarr-delayprofiles.enable = false;
+
     systemd.services.lidarr = {
       serviceConfig.Type = lib.mkForce "exec";
       after = ["blocky.service"];
