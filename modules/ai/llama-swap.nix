@@ -108,11 +108,33 @@ let
     launchScriptGemma = mk-launch-script "gemma-4-12b-q4" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/gemma-4-12b-it-UD-Q4_K_XL.gguf" \
-        --spec-draft-model "${source-model-dir}/mtp-gemma-4-12B-it.gguf" \
-        --mmproj "${source-model-dir}/gemma-4-mmproj-F16.gguf" \
+        -m "${source-model-dir}/gemma-4/gemma-4-12b-it-UD-Q4_K_XL.gguf" \
+        --spec-draft-model "${source-model-dir}/gemma-4/mtp-gemma-4-12B-it.gguf" \
+        --mmproj "${source-model-dir}/gemma-4/gemma-4-mmproj-F16.gguf" \
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
+        --flash-attn on \
+        --fit on --fit-target 1536 --fit-ctx 128000 \
+        --parallel 1 \
+        --ctx-size 128000 \
+        -ctk q8_0 -ctv q8_0 \
+        --temp 1.0 \
+        --top-p 0.95 \
+        --top-k 64 \
+        --threads 10 --threads-batch 12 \
+        --batch-size 512 --ubatch-size 256 \
+        --jinja \
+        --chat-template-kwargs '{"preserve_thinking": true}' \
+        --port "$PORT"
+    '';
+
+    launchScriptInkling = mk-launch-script "inkling-2-mini-q2" ''
+      run_llama_server "$PORT" \
+        "${llama-server}" \
+        -m "${source-model-dir}/inkling-2/Inkling-2-Mini-UD-Q2_K_XL.gguf" \
+        --mmproj inkling-2/mmproj-F16.gguf \
+        --model-draft inkling-2/dspark-Inkling-2-Mini-Q8_0.gguf \
+        --spec-type draft-dspark --spec-draft-n-max 2 --n-gpu-layers-draft 99 \
         --flash-attn on \
         --fit on --fit-target 1536 --fit-ctx 128000 \
         --parallel 1 \
@@ -131,8 +153,8 @@ let
     launchScriptGemmaUnsensored = mk-launch-script "gemma-4-12b-q4-us" ''
       run_llama_server "$PORT" \
         "${llama-server}" \
-        -m "${source-model-dir}/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf" \
-        --spec-draft-model "${source-model-dir}/gemma-4-mmproj-F16.gguf" \
+        -m "${source-model-dir}/gemma-4/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf" \
+        --spec-draft-model "${source-model-dir}/gemma-4/gemma-4-mmproj-F16.gguf" \
         --spec-type draft-mtp \
         --spec-draft-n-max 3 \
         --flash-attn on \
@@ -202,6 +224,10 @@ let
           "qwen3.6-bonsai" = {
             cmd = "${launchScriptQwenBonsai} ${"$"}{PORT}";
             healthCheckTimeout = 900;
+          };
+          "inkling-2-mini-q2" = {
+            cmd = "${launchScriptInkling} ${"$"}{PORT}";
+            healthCheckTimeout = 600;
           };
           "gemma-4-12b-q4" = {
             cmd = "${launchScriptGemma} ${"$"}{PORT}";
