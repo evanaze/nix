@@ -141,8 +141,9 @@ let
         --ctx-size 128000 \
         -ctk q8_0 -ctv q8_0 \
         --temp 1.0 \
-        --top-p 0.95 \
-        --top-k 64 \
+        --top-p 1.0 \
+        --top-k 0 \
+        --min-p 0.0 \
         --threads 10 --threads-batch 12 \
         --batch-size 512 --ubatch-size 256 \
         --jinja \
