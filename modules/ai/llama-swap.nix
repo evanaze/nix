@@ -6,12 +6,17 @@ let
     inputs,
     ...
   }: let
-    # Vendored llama.cpp 0.2.0 (build 10566): the nixos-26.05 channel tree still ships
-    # build b9190 which predates upstream MTP "gemma4-assistant" support (PR #24282),
-    # causing mtp-gemma-4-12B-it.gguf to fail with
-    # "unknown model architecture: 'gemma4-assistant'".
-    # See pkgs/llama-cpp-0.2.0/default.nix for details.
-    llama-cpp = (pkgs.callPackage ../../pkgs/llama-cpp-0.2.0 {}).override {cudaSupport = true;};
+    # llama.cpp 1.0.0 (build 12359) from nixos-unstable: the pinned nixos-26.05 channel
+    # still ships build b9190, which lacks both Inkling 2 support and the MTP
+    # "gemma4-assistant" architecture (PR #24282) needed by mtp-gemma-4-12B-it.gguf.
+    # Once nixos-26.05 ships llama-cpp >= 1.0.0 this can go back to `pkgs.llama-cpp`.
+    llama-cpp = let
+      pkgsUnstable = import inputs.nixpkgs-unstable {
+        inherit (pkgs.stdenv.hostPlatform) system;
+        config.allowUnfree = true;
+      };
+    in
+      pkgsUnstable.llama-cpp.override {cudaSupport = true;};
     llama-server = lib.getExe' llama-cpp "llama-server";
     systemd-inhibit = lib.getExe' pkgs.systemd "systemd-inhibit";
     source-model-dir = "/mnt/jupiter-llama-models";

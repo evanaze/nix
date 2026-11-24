@@ -9,6 +9,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    # Used only for llama-cpp: nixos-26.05 still ships build b9190, while unstable
+    # carries llama.cpp 1.0.0 (build 12359) with Inkling 2 support.
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     deepseek-harness.url = "github:moraxyc/deepseek-harness.nix";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
