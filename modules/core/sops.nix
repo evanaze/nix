@@ -20,10 +20,11 @@ let
           generateKey = true;
         };
         secrets = {
+          admin-pass = {};
           openrouter-api-key = {
             owner = username;
           };
-          admin-pass = {};
+          "google/pagespeed_insights_key" = {};
           grafana = {};
           "nut/ups-passwd" = {};
         };
