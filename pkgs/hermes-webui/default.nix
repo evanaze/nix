@@ -7,13 +7,13 @@
   hermes-agent ? null,
 }:
 let
-  version = "0.52.0";
+  version = "0.52.732";
 
   src = fetchFromGitHub {
     owner = "nesquena";
     repo = "hermes-webui";
     rev = "v${version}";
-    hash = "sha256-ngCivz9D+WrDbVdrPUnNC5KP9NBIjSezAPJpzFPBqyw=";
+    hash = "sha256-vMnBQD8Xr6NAaCNkwnVBe/bkLP1apJqghY25N/BnFlA=";
   };
 
   pythonEnv =
@@ -37,7 +37,7 @@ stdenv.mkDerivation {
     runHook preInstall
 
     mkdir -p $out/share/hermes-webui
-    cp -r api static server.py bootstrap.py ctl.sh $out/share/hermes-webui/
+    cp -r api static server.py bootstrap.py managed_agent_startup.py mcp_server.py ctl.sh $out/share/hermes-webui/
     cp -r --dereference scripts $out/share/hermes-webui/ 2>/dev/null || true
 
     makeWrapper ${pythonEnv}/bin/python3 $out/bin/hermes-webui \
