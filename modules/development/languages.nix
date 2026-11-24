@@ -1,20 +1,20 @@
 let
-  module = # aspects/development/languages.nix - Programming languages
-{
-  pkgs,
-  username,
-  ...
-}: {
-  # Home-manager language packages
-  home-manager.users.${username} = {
-    home.packages = with pkgs; [
-      cargo
-      go
-      hugo
-      python3
-    ];
+  module = {
+    pkgs,
+    username,
+    ...
+  }: {
+    home-manager.users.${username} = {
+      home.packages = with pkgs; [
+        cargo
+        go
+        hugo
+        lua
+        luarocks
+        python3
+      ];
+    };
   };
-};
 in {
   flake.modules.nixos = {
     developmentLanguages = module;
